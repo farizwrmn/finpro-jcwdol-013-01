@@ -101,7 +101,7 @@ export default function Navbar() {
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}
           >
-            FinPRO
+            Tokopedya
           </Text>
 
           <Flex display={{ base: 'none', md: 'flex' }} m={'auto'}>
