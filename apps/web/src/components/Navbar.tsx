@@ -64,7 +64,7 @@ const NAV_ITEMS: Array<NavItem> = [
   },
 ];
 
-export default function WithSubnavigation() {
+export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
