@@ -10,12 +10,41 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Sample {
-  id        Int      @id @default(autoincrement())
-  name      String
-  code      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Role {
+  id                String     @id @default(cuid())
+  name              String?
+  @@map(name: "roles")
+}
 
-  @@map("samples") // if you want to use snake_case format
+model User {
+  id                String     @id @default(cuid())
+  name              String?
+  email             String?    @unique
+  password          String?
+  phone             String?
+  image             String?
+  gender            String?
+  birthDate         DateTime?  @map(name: "birth_date")
+  isVerified        Boolean    @default(false) @map(name: "is_verified")
+  createdDate       DateTime   @default(now()) @map(name: "created_date")
+  updatedDate       DateTime   @updatedAt @map(name: "updated_date")   
+  @@map(name: "users")
+}
+
+model Store {
+  id                String     @id @default(cuid())
+  name              String
+  address           String?
+  subdistrictId     Int?       @map(name:"subdistrict_id")
+  subdistrictName   String?    @map(name:"subdistrict_name")
+  cityId            Int?       @map(name:"city_id")
+  cityName          String?    @map(name:"city_name")
+  provinceId        Int?       @map(name:"province_id")
+  provinceName      String?    @map(name:"province_name")
+  postalCode        String?    @map(name:"postal_code")
+  longitude         String?
+  latitude          String?
+  createdDate       DateTime   @default(now()) @map(name: "created_date")
+  updatedDate       DateTime   @updatedAt @map(name: "updated_date")
+  @@map(name: "stores")
 }
