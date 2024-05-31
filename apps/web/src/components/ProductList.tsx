@@ -17,7 +17,12 @@ const ProductList = () => {
         Products Near You
       </Heading>
       <Divider />
-      <TableContainer flex={'1'} gap={5} mb={10} h={'520px'}>
+      <TableContainer
+        flex={'1'}
+        gap={5}
+        mb={10}
+        h={{ base: '480px', sm: '520px' }}
+      >
         <Table>
           <Stack flex={'row'} direction={'row'}>
             <ProductCard />

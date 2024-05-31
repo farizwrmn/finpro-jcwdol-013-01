@@ -27,7 +27,7 @@ export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <Box pb={1}>
+    <Box>
       <Flex
         bg={useColorModeValue('white', 'gray.800')}
         color={useColorModeValue('gray.600', 'white')}
@@ -76,7 +76,7 @@ export default function Navbar() {
             fontSize={'sm'}
             fontWeight={600}
             variant={'link'}
-            href={'/auth/sign-in'}
+            href={'/sign-in'}
             bg={'blue.400'}
             _hover={{ bg: 'blue.300' }}
             p={2}
@@ -90,7 +90,7 @@ export default function Navbar() {
             fontWeight={600}
             color={'white'}
             bg={'green.400'}
-            href={'/auth/sign-up'}
+            href={'/sign-up'}
             _hover={{
               bg: 'green.300',
             }}
