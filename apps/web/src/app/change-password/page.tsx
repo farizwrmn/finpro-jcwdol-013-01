@@ -1,100 +1,126 @@
 'use client';
-
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import {
+  Flex,
   Box,
-  Heading,
   FormControl,
   FormLabel,
   Input,
+  InputGroup,
+  HStack,
+  InputRightElement,
+  Stack,
   Button,
+  Heading,
   Text,
-  useDisclosure,
+  useColorModeValue,
+  Link,
+  Divider,
 } from '@chakra-ui/react';
-import { Container } from '@chakra-ui/react';
+import { useState } from 'react';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
-const ChangePassword: React.FC = () => {
-  const [formData, setFormData] = useState<{
-    currentPassword: string;
-    newPassword: string;
-    confirmPassword: string;
-  }>({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: '',
-  });
-  const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
-  const { isOpen, onClose } = useDisclosure();
+interface ChangePasswordProps {}
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [event.target.name]: event.target.value });
-  };
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    // Implementasikan logika untuk ubah password di sini (misalnya, API call)
-    // Ini placeholder, ganti dengan implementasi Anda
-    if (formData.newPassword !== formData.confirmPassword) {
-      setError('Password baru tidak cocok');
-      return;
-    }
-
-    setError(null); // Bersihkan pesan error sebelumnya
-    // Lakukan tindakan setelah ubah password berhasil (misalnya, redirect ke profil)
-    router.push('/profile');
-  };
+export default function SignUp(props: ChangePasswordProps) {
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <Container>
-      <Box mt={100}>
-        {/* Tampilan formulir */}
-        <form onSubmit={handleSubmit}>
-          <Heading as="h2" size="md" mb={4}>
-            Ubah Password
+    <Flex
+      minH={'100vh'}
+      align={'center'}
+      justify={'center'}
+      bg={useColorModeValue('gray.50', 'gray.800')}
+    >
+      <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+        <Stack align={'center'}>
+          <Heading fontSize={'4xl'} textAlign={'center'}>
+            Change Password
           </Heading>
-          <FormControl isRequired>
-            <FormLabel htmlFor="currentPassword">Password Saat Ini</FormLabel>
-            <Input
-              type="password"
-              id="currentPassword"
-              name="currentPassword"
-              value={formData.currentPassword}
-              onChange={handleChange}
-            />
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel htmlFor="newPassword">Password Baru</FormLabel>
-            <Input
-              type="password"
-              id="newPassword"
-              name="newPassword"
-              value={formData.newPassword}
-              onChange={handleChange}
-            />
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel htmlFor="confirmPassword">
-              Konfirmasi Password Baru
-            </FormLabel>
-            <Input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-            />
-          </FormControl>
-          {error && <Text color="red">{error}</Text>}
-          <Button type="submit" mt={4}>
-            Ubah Password
-          </Button>
-        </form>
-      </Box>
-    </Container>
+          <Divider />
+        </Stack>
+        <Box
+          rounded={'lg'}
+          bg={useColorModeValue('white', 'gray.700')}
+          boxShadow={'lg'}
+          p={8}
+        >
+          <Stack spacing={4}>
+            {/* Existing form fields remain here */}
+            <FormControl id="email" isRequired>
+              <FormLabel>Email address</FormLabel>
+              <Input type="email" />
+            </FormControl>
+            <FormControl id="currentPassword" isRequired>
+              <FormLabel>Current Password</FormLabel>
+              <InputGroup>
+                <Input type={showPassword ? 'text' : 'password'} />
+                <InputRightElement h={'full'}>
+                  <Button
+                    variant={'ghost'}
+                    onClick={() =>
+                      setShowPassword((showPassword) => !showPassword)
+                    }
+                  >
+                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+            </FormControl>
+            <FormControl id="newPassword" isRequired>
+              <FormLabel>New Password</FormLabel>
+              <InputGroup>
+                <Input type={showPassword ? 'text' : 'password'} />
+                <InputRightElement h={'full'}>
+                  <Button
+                    variant={'ghost'}
+                    onClick={() =>
+                      setShowPassword((showPassword) => !showPassword)
+                    }
+                  >
+                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+            </FormControl>
+            <FormControl id="confirmPassword" isRequired>
+              <FormLabel>Confirm New Password</FormLabel>
+              <InputGroup>
+                <Input type={showPassword ? 'text' : 'password'} />
+                <InputRightElement h={'full'}>
+                  <Button
+                    variant={'ghost'}
+                    onClick={() =>
+                      setShowPassword((showPassword) => !showPassword)
+                    }
+                  >
+                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+            </FormControl>
+            <Stack spacing={10} pt={2}>
+              <Button
+                loadingText="Submitting"
+                size="lg"
+                bg={'blue.400'}
+                color={'white'}
+                _hover={{ bg: 'blue.500' }}
+              >
+                Change Password
+              </Button>
+            </Stack>
+            {/* Existing link remains here */}
+            <Stack pt={6}>
+              <Text align={'center'}>
+                Forgot Password?{' '}
+                <Link color={'blue.400'} href="/reset-password">
+                  Reset Password
+                </Link>
+              </Text>
+            </Stack>
+          </Stack>
+        </Box>
+      </Stack>
+    </Flex>
   );
-};
-
-export default ChangePassword;
+}
