@@ -11,40 +11,46 @@ datasource db {
 }
 
 model Role {
-  id                String     @id @default(cuid())
-  name              String?
+  id    String @id @default(uuid())
+  name  String @unique
+  users User[]
+
   @@map(name: "roles")
 }
 
 model User {
-  id                String     @id @default(cuid())
-  name              String?
-  email             String?    @unique
-  password          String?
-  phone             String?
-  image             String?
-  gender            String?
-  birthDate         DateTime?  @map(name: "birth_date")
-  isVerified        Boolean    @default(false) @map(name: "is_verified")
-  createdDate       DateTime   @default(now()) @map(name: "created_date")
-  updatedDate       DateTime   @updatedAt @map(name: "updated_date")   
+  id          String    @id @default(uuid())
+  name        String?
+  email       String?   @unique
+  password    String?
+  phone       String?
+  image       String?
+  gender      String?
+  birthDate   DateTime? @map(name: "birth_date")
+  isVerified  Boolean   @default(false) @map(name: "is_verified")
+  createdDate DateTime  @default(now()) @map(name: "created_date")
+  updatedDate DateTime  @updatedAt @map(name: "updated_date")
+  roleId      String    @map(name: "role_id")
+  role        Role      @relation(fields: [roleId], references: [id])
+
   @@map(name: "users")
 }
 
 model Store {
-  id                String     @id @default(cuid())
-  name              String
-  address           String?
-  subdistrictId     Int?       @map(name:"subdistrict_id")
-  subdistrictName   String?    @map(name:"subdistrict_name")
-  cityId            Int?       @map(name:"city_id")
-  cityName          String?    @map(name:"city_name")
-  provinceId        Int?       @map(name:"province_id")
-  provinceName      String?    @map(name:"province_name")
-  postalCode        String?    @map(name:"postal_code")
-  longitude         String?
-  latitude          String?
-  createdDate       DateTime   @default(now()) @map(name: "created_date")
-  updatedDate       DateTime   @updatedAt @map(name: "updated_date")
+  id              String   @id @default(uuid())
+  name            String
+  address         String?
+  subdistrictId   Int?     @map(name: "subdistrict_id")
+  subdistrictName String?  @map(name: "subdistrict_name")
+  cityId          Int?     @map(name: "city_id")
+  cityName        String?  @map(name: "city_name")
+  provinceId      Int?     @map(name: "province_id")
+  provinceName    String?  @map(name: "province_name")
+  postalCode      String?  @map(name: "postal_code")
+  longitude       String?
+  latitude        String?
+  createdDate     DateTime @default(now()) @map(name: "created_date")
+  updatedDate     DateTime @updatedAt @map(name: "updated_date")
+
   @@map(name: "stores")
 }
