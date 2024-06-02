@@ -1,11 +1,7 @@
 [
   {
-    "name": "super_admin"
-  },
-  {
-    "name": "super_admin"
-  },
-  {
-    "name": "super_admin"
+    "name": "super_admin",
+    "email": "admin@gmail.com",
+    "password": "finpro1"
   }
 ]

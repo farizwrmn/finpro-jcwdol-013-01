@@ -65,7 +65,7 @@ export default function SignUp(props: ResetPasswordProps) {
             <Stack pt={6}>
               <Text align={'center'}>
                 Back to Login?{' '}
-                <Link color={'blue.400'} href="/login">
+                <Link color={'blue.400'} href="/sign-in">
                   Login
                 </Link>
               </Text>
