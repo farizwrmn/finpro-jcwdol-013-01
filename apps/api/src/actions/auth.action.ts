@@ -7,18 +7,18 @@ import { genSalt, hash, compare } from 'bcrypt';
 import { API_KEY } from '../config';
 import { sign } from 'jsonwebtoken';
 
-const registerAction = async (data: User, avatar: string): Promise<User> => {
+const registerAction = async (data: User): Promise<User> => {
   try {
-    const check = await getUserByEmailQuery(data.email);
+    const check = await getUserByEmailQuery(data.email || '');
 
     if (check) throw new Error('user already exist');
 
     const salt = await genSalt(10);
     console.log(salt);
-    const hashPass = await hash(data.password, salt);
+    const hashPass = await hash(data.password || '', salt);
     console.log(hashPass);
 
-    const user = await registerQuery(data, hashPass, avatar);
+    const user = await registerQuery(data, hashPass);
 
     return user;
   } catch (err) {
@@ -34,14 +34,13 @@ const loginAction = async (data: Auth) => {
 
     // if (data.password === user.password)
 
-    const isValid = await compare(data.password, user.password);
+    const isValid = await compare(data.password, user.password || '');
 
     if (!isValid) throw new Error('password is wrong');
 
     const payload = {
       userId: user.id,
       email: user.email,
-      username: user.username,
       role: user.role.name,
     };
     const token = sign(payload, String(API_KEY), { expiresIn: '1h' });

@@ -42,7 +42,7 @@ const registerQuery = async (data: User, pass: string): Promise<User> => {
 
         await transporter.sendMail({
           from: 'sender address',
-          to: user.email,
+          to: user.email || '',
           subject: 'welcome to purwadhika',
           html,
         });
