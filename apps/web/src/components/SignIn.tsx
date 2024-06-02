@@ -70,7 +70,11 @@ export default function SignIn() {
                   <Checkbox>Remember me</Checkbox>
                 </Stack>
 
-                <Link color={'blue.400'} href="#" textAlign="center">
+                <Link
+                  color={'blue.400'}
+                  href="/change-password"
+                  textAlign="center"
+                >
                   Forgot password?
                 </Link>
                 <Link color={'blue.400'} href="/sign-up" textAlign="center">

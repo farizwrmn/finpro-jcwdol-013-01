@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import roles from './data/roles.json';
 import users from './data/users.json';
-import { genSalt, hash, compare } from 'bcrypt'
+import { genSalt, hash, compare } from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -38,9 +38,9 @@ const seedUsers = async () => {
         isVerified: true,
         role: {
           connect: {
-            name: "super_admin"
-          }
-        }
+            name: 'super_admin',
+          },
+        },
       },
     });
 
