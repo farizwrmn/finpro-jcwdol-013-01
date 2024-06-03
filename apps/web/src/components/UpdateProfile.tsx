@@ -16,6 +16,7 @@ import {
   Link,
   Divider,
   Image,
+  Select,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
@@ -84,11 +85,18 @@ export default function UpdateProfile(props: UpdateProfileProps) {
               <FormLabel>Name</FormLabel>
               <Input type="text" />
             </FormControl>
+            <FormControl id="phone">
+              <FormLabel>Phone</FormLabel>
+              <Input type="number" />
+            </FormControl>
             <FormControl id="gender">
               <FormLabel>Gender</FormLabel>
-              <Input type="text" />{' '}
-              {/* You might want to use a dropdown or radio buttons here */}
+              <Select placeholder="Select Gender">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </Select>
             </FormControl>
+
             <FormControl id="birthdate">
               <FormLabel>Birthdate</FormLabel>
               <Input type="date" />
