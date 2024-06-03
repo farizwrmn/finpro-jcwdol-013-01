@@ -5,9 +5,9 @@ import express, {
   Request,
   Response,
 } from 'express';
-import { API_PORT } from './config';
+import { API_PORT } from './config/index';
 
-import authRouter from './routes/auth.route';
+import authRouter from './routers/auth.router';
 import { HttpException } from './exceptions/HttpException';
 import { ErrorMiddleware } from './middlewares/error.middleware';
 
