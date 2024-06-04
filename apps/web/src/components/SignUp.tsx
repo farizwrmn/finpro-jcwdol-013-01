@@ -27,7 +27,7 @@ const RegisterView = () => {
       const form = new FormData();
       form.append('email', email);
       form.append('password', password);
-      const { data } = await instance.post('/auth/register');
+      const { data } = await instance.post('/auth/register', form);
       alert(data?.message);
     } catch (err) {
       console.log('error', err);
@@ -42,6 +42,7 @@ const RegisterView = () => {
     validationSchema: RegisterSchema,
     enableReinitialize: true,
     handleSubmit({ email, password }: FormValues, { resetForm }) {
+      console.log("masuk1", email, password);
       register({ email, password });
       resetForm();
       router.push('/sign-in');
