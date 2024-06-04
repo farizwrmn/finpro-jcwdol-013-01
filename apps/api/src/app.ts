@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import { API_PORT } from './config';
 
 import authRouter from './routes/auth.route';
+import userRouter from './routes/user.route';
 import { ErrorMiddleware } from './middlewares/error.middleware';
 import cors from 'cors';
 
@@ -17,6 +18,7 @@ app.use(cors());
 
 // initialize endpoint
 app.use('/auth', authRouter);
+app.use('/users', userRouter);
 
 // initialize error middleware
 app.use(ErrorMiddleware);
