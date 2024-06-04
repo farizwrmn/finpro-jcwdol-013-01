@@ -1,106 +1,73 @@
 'use client';
-import {
-  Flex,
-  Box,
-  FormControl,
-  FormLabel,
-  Input,
-  InputGroup,
-  HStack,
-  InputRightElement,
-  Stack,
-  Button,
-  Heading,
-  Text,
-  useColorModeValue,
-  Link,
-  Divider,
-} from '@chakra-ui/react';
-import { useState } from 'react';
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
-export default function SignUp() {
-  const [showPassword, setShowPassword] = useState(false);
+import React, { useCallback, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Box, Container, Text, Stack, Input, Button } from '@chakra-ui/react';
+import { withFormik } from 'formik';
+import * as Yup from 'yup';
+
+import { FormValues, FormProps } from '@/types';
+import { IUsers } from '@/interface/user.interface';
+
+import InnerForm from '@/components/innerForm';
+import instance from '@/utils/axiosInstance';
+
+const RegisterSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('Invalid email address format')
+    .required('Email is required'),
+  password: Yup.string().required('Password is required'),
+});
+
+const RegisterView = () => {
+  const router = useRouter();
+
+  const register = async ({ email, password }: IUsers) => {
+    try {
+      const form = new FormData();
+      form.append('email', email);
+      form.append('password', password);
+      const { data } = await instance.post('/auth/register');
+      alert(data?.message);
+    } catch (err) {
+      console.log('error', err);
+    }
+  };
+
+  const LoginForm = withFormik<FormProps, FormValues>({
+    mapPropsToValues: (props) => ({
+      email: props.initialEmail || '',
+      password: props.initialPassword || '',
+    }),
+    validationSchema: RegisterSchema,
+    enableReinitialize: true,
+    handleSubmit({ email, password }: FormValues, { resetForm }) {
+      register({ email, password });
+      resetForm();
+      router.push('/sign-in');
+    },
+  })(InnerForm);
 
   return (
-    <Flex
-      minH={'100vh'}
-      align={'center'}
-      justify={'center'}
-      bg={useColorModeValue('gray.50', 'gray.800')}
-    >
-      <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
-        <Stack align={'center'}>
-          <Heading fontSize={'4xl'} textAlign={'center'}>
-            Sign up
-          </Heading>
-          <Divider />
+    <Container>
+      <Box
+        display="flex"
+        sx={{
+          justifyContent: 'center',
+          marginTop: '2rem',
+          padding: '2rem',
+        }}
+      >
+        <Stack spacing={8}>
+          <Text variant="h4" sx={{ textAlign: 'center' }}>
+            Register Form
+          </Text>
+
+          <LoginForm />
         </Stack>
-        <Box
-          rounded={'lg'}
-          bg={useColorModeValue('white', 'gray.700')}
-          boxShadow={'lg'}
-          p={8}
-        >
-          <Stack spacing={4}>
-            <HStack>
-              <Box>
-                <FormControl id="firstName" isRequired>
-                  <FormLabel>First Name</FormLabel>
-                  <Input type="text" />
-                </FormControl>
-              </Box>
-              <Box>
-                <FormControl id="lastName">
-                  <FormLabel>Last Name</FormLabel>
-                  <Input type="text" />
-                </FormControl>
-              </Box>
-            </HStack>
-            <FormControl id="email" isRequired>
-              <FormLabel>Email address</FormLabel>
-              <Input type="email" />
-            </FormControl>
-            <FormControl id="password" isRequired>
-              <FormLabel>Password</FormLabel>
-              <InputGroup>
-                <Input type={showPassword ? 'text' : 'password'} />
-                <InputRightElement h={'full'}>
-                  <Button
-                    variant={'ghost'}
-                    onClick={() =>
-                      setShowPassword((showPassword) => !showPassword)
-                    }
-                  >
-                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-            </FormControl>
-            <Stack spacing={10} pt={2}>
-              <Button
-                loadingText="Submitting"
-                size="lg"
-                bg={'blue.400'}
-                color={'white'}
-                _hover={{
-                  bg: 'blue.500',
-                }}
-              >
-                Sign up
-              </Button>
-            </Stack>
-            <Stack pt={6}>
-              <Text align={'center'}>
-                Already a user?{' '}
-                <Link color={'blue.400'} href="/sign-in">
-                  Login
-                </Link>
-              </Text>
-            </Stack>
-          </Stack>
-        </Box>
-      </Stack>
-    </Flex>
+      </Box>
+    </Container>
   );
-}
+};
+
+export default RegisterView;
