@@ -7,11 +7,11 @@ const registerController = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const data = await registerAction(req.body);
+    const result = await registerAction(req.body);
 
     res.status(200).json({
       message: 'Register success',
-      data,
+      data: result,
     });
   } catch (err) {
     next(err);

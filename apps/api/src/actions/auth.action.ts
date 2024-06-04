@@ -1,4 +1,4 @@
-import { User } from '@prisma/client';
+import { User } from 'prisma/prisma-client';
 import { Auth } from '../interfaces/auth.interface';
 import { getUserByEmailQuery } from '../queries/user.query';
 import { loginQuery, registerQuery } from '../queries/auth.query';
