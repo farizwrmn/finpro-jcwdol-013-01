@@ -1,10 +1,10 @@
 import React from 'react';
-import SignUp from '@/components/SignUp';
+import RegisterView from '@/components/SignUp';
 
 const Page = () => {
   return (
     <div>
-      <SignUp />
+      <RegisterView />
     </div>
   );
 };
