@@ -84,6 +84,7 @@ export default function UpdateProfile(props: UpdateProfileProps) {
                 <option value="female">Female</option>
               </Select>
             </FormControl>
+
             <FormControl id="birthdate">
               <FormLabel>Birthdate</FormLabel>
               <Input type="date" />
