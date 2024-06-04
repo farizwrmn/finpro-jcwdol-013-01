@@ -13,11 +13,11 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  Link,
   Divider,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import Link from 'next/link';
 
 interface ChangePasswordProps {}
 
@@ -113,7 +113,7 @@ export default function SignUp(props: ChangePasswordProps) {
             <Stack pt={6}>
               <Text align={'center'}>
                 Forgot Password?{' '}
-                <Link color={'blue.400'} href="/reset-password">
+                <Link color={'red.700'} href="/reset-password">
                   Reset Password
                 </Link>
               </Text>

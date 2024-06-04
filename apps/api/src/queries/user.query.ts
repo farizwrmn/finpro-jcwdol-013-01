@@ -1,5 +1,5 @@
+import { IUser } from '@/interfaces/user.interface';
 import { PrismaClient } from '@prisma/client';
-import { User } from '@/interfaces/user.interface';
 
 const prisma = new PrismaClient();
 
@@ -20,4 +20,22 @@ const getUserByEmailQuery = async (email: string) => {
   }
 };
 
-export { getUserByEmailQuery };
+const updateUserQuery = async (id: string, data: IUser) => {
+  try {
+    const user = await prisma.user.update({
+      data: {
+        ...data,
+        birthDate: data.birthDate ? new Date(data.birthDate) : null,
+      },
+      where: {
+        id,
+      },
+    });
+
+    return user;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export { getUserByEmailQuery, updateUserQuery };
