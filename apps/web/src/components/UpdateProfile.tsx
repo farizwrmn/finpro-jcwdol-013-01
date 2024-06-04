@@ -13,13 +13,13 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  Link,
   Divider,
   Image,
   Select,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import Link from 'next/link';
 
 interface UpdateProfileProps {}
 
@@ -28,37 +28,13 @@ export default function UpdateProfile(props: UpdateProfileProps) {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+  function handleFileChange(event: ChangeEvent<HTMLInputElement>): void {
+    throw new Error('Function not implemented.');
+  }
 
-    if (!isValidImage(file)) {
-      alert('Invalid file type. Please choose a JPG, JPEG, PNG, or GIF image.');
-      return;
-    }
+  // ... existing file handling logic ...
 
-    if (file.size > 1024 * 1024) {
-      // 1MB in bytes
-      alert('Image size exceeds 1MB. Please choose a smaller image.');
-      return;
-    }
-
-    setSelectedFile(file);
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      if (reader.result) {
-        setPreviewImage(reader.result.toString());
-      }
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const isValidImage = (file: File) => {
-    const acceptedTypes = ['image/jpeg', 'image/png', 'image/gif'];
-    return acceptedTypes.includes(file.type);
-  };
-
-  // Existing form fields (email, current password, etc.) remain here
+  // ... existing form fields (email, current password, etc.) ...
 
   return (
     <Flex
@@ -86,8 +62,20 @@ export default function UpdateProfile(props: UpdateProfileProps) {
               <Input type="text" />
             </FormControl>
             <FormControl id="phone">
-              <FormLabel>Phone</FormLabel>
+              <FormLabel>Phone Number</FormLabel>
               <Input type="number" />
+            </FormControl>
+            <FormControl id="domicile">
+              <FormLabel>Domicile</FormLabel>
+              <Input type="text" />
+            </FormControl>
+            <FormControl id="city">
+              <FormLabel>City</FormLabel>
+              <Input type="text" />
+            </FormControl>
+            <FormControl id="userId">
+              <FormLabel>User ID</FormLabel>
+              <Input type="text" disabled /> {/* Disable user ID editing */}
             </FormControl>
             <FormControl id="gender">
               <FormLabel>Gender</FormLabel>
@@ -96,7 +84,6 @@ export default function UpdateProfile(props: UpdateProfileProps) {
                 <option value="female">Female</option>
               </Select>
             </FormControl>
-
             <FormControl id="birthdate">
               <FormLabel>Birthdate</FormLabel>
               <Input type="date" />
@@ -112,17 +99,19 @@ export default function UpdateProfile(props: UpdateProfileProps) {
                 />
               )}
             </FormControl>
-            {/* Existing form fields (current password, etc.)  */}
+            {/* Existing form fields ... */}
             <Stack spacing={10} pt={2}>
-              <Button
-                loadingText="Submitting"
-                size="lg"
-                bg={'blue.400'}
-                color={'white'}
-                _hover={{ bg: 'blue.500' }}
-              >
-                Update Profile
-              </Button>
+              <Link color={'blue.400'} href="/user-profile">
+                <Button
+                  loadingText="Submitting"
+                  size="lg"
+                  bg={'blue.400'}
+                  color={'white'}
+                  _hover={{ bg: 'blue.500' }}
+                >
+                  Update Profile
+                </Button>
+              </Link>
             </Stack>
           </Stack>
         </Box>

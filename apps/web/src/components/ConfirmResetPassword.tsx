@@ -13,7 +13,6 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  Link,
   Divider,
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
