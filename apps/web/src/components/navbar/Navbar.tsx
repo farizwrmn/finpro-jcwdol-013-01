@@ -10,11 +10,12 @@ import {
   useColorModeValue,
   useDisclosure,
   Image,
-  Link,
+  Text,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
+import Link from 'next/link';
 
 export interface NavItem {
   label: string;
@@ -70,33 +71,35 @@ export default function Navbar() {
           direction={'row'}
           spacing={2}
         >
-          <Button
-            color={'white'}
-            as={'a'}
-            fontSize={'sm'}
-            fontWeight={600}
-            variant={'link'}
-            href={'/sign-in'}
-            bg={'blue.400'}
-            _hover={{ bg: 'blue.300' }}
-            p={2}
-          >
-            Sign In
-          </Button>
-          <Button
-            as={'a'}
-            display={{ base: 'none', md: 'inline-flex' }}
-            fontSize={'sm'}
-            fontWeight={600}
-            color={'white'}
-            bg={'green.400'}
-            href={'/sign-up'}
-            _hover={{
-              bg: 'green.300',
-            }}
-          >
-            Sign Up
-          </Button>
+          <Link href="/sign-in">
+            <Text
+              p={5}
+              bg={'blue.400'}
+              color={'white'}
+              fontSize={'sm'}
+              fontWeight={600}
+              borderRadius={'lg'}
+              _hover={{ bg: 'blue.500' }}
+              cursor={'pointer'}
+            >
+              Sign In
+            </Text>
+          </Link>
+          <Link href={'/sign-up'}>
+            <Text
+              mr={0}
+              px={5}
+              bg={'green.400'}
+              color={'white'}
+              fontSize={'sm'}
+              fontWeight={600}
+              borderRadius={'lg'}
+              _hover={{ bg: 'green.500' }}
+              cursor={'pointer'}
+            >
+              Sign Up
+            </Text>
+          </Link>
         </Stack>
       </Flex>
 
