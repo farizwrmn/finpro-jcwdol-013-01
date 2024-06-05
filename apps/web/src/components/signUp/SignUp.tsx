@@ -17,6 +17,7 @@ import { FormValues, FormProps } from '@/types';
 import { IUsers } from '@/interface/user.interface';
 import InnerForm from './components/innerForm';
 import instance from '@/utils/axiosInstance';
+import PageWrapper from '../pageWrapper';
 
 const RegisterSchema = Yup.object().shape({
   email: Yup.string()
@@ -37,7 +38,7 @@ const RegisterView = () => {
       const { data } = await instance.post('/auth/register', form);
       alert(data?.message);
     } catch (err) {
-      console.log('error', err);
+      alert('Email already exist, please Log In');
     }
   };
 
@@ -49,7 +50,6 @@ const RegisterView = () => {
     validationSchema: RegisterSchema,
     enableReinitialize: true,
     handleSubmit({ email, password }: FormValues, { resetForm }) {
-      console.log('masuk1', email, password);
       register({ email, password });
       resetForm();
       router.push('/sign-in');
@@ -57,34 +57,36 @@ const RegisterView = () => {
   })(InnerForm);
 
   return (
-    <Flex
-      minH={'100vh'}
-      align={'center'}
-      justify={'center'}
-      bg={useColorModeValue('gray.50', 'gray.800')}
-      shadow={'2xl'}
-    >
-      <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
-        <Stack align={'center'}>
-          <Heading fontSize={'3xl'}>Sign Up</Heading>
-        </Stack>
-        <Divider />
-        <Box
-          rounded={'lg'}
-          bg={useColorModeValue('white', 'gray.700')}
-          boxShadow={'lg'}
-          p={{ base: '6', sm: '12' }}
-          display="flex"
-          sx={{
-            justifyContent: 'center',
-          }}
-        >
-          <Stack spacing={8}>
-            <LoginForm />
+    <PageWrapper>
+      <Flex
+        minH={'100vh'}
+        align={'center'}
+        justify={'center'}
+        bg={useColorModeValue('gray.50', 'gray.800')}
+        shadow={'2xl'}
+      >
+        <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
+          <Stack align={'center'}>
+            <Heading fontSize={'3xl'}>Sign Up</Heading>
           </Stack>
-        </Box>
-      </Stack>
-    </Flex>
+          <Divider />
+          <Box
+            rounded={'lg'}
+            bg={useColorModeValue('white', 'gray.700')}
+            boxShadow={'lg'}
+            p={{ base: '6', sm: '12' }}
+            display="flex"
+            sx={{
+              justifyContent: 'center',
+            }}
+          >
+            <Stack spacing={8}>
+              <LoginForm />
+            </Stack>
+          </Box>
+        </Stack>
+      </Flex>
+    </PageWrapper>
   );
 };
 

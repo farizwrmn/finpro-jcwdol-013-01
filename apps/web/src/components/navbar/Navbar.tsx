@@ -72,7 +72,7 @@ export default function Navbar() {
           spacing={2}
         >
           <Link href="/sign-in">
-            <Text
+            <Button
               p={5}
               bg={'blue.400'}
               color={'white'}
@@ -83,10 +83,10 @@ export default function Navbar() {
               cursor={'pointer'}
             >
               Sign In
-            </Text>
+            </Button>
           </Link>
           <Link href={'/sign-up'}>
-            <Text
+            <Button
               mr={0}
               px={5}
               bg={'green.400'}
@@ -98,7 +98,7 @@ export default function Navbar() {
               cursor={'pointer'}
             >
               Sign Up
-            </Text>
+            </Button>
           </Link>
         </Stack>
       </Flex>
