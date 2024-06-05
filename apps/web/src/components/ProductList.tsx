@@ -6,6 +6,9 @@ import {
   Stack,
   Divider,
   Tr,
+  SimpleGrid,
+  Grid,
+  Box,
 } from '@chakra-ui/react';
 import React from 'react';
 import ProductCard1 from './products/ayam';
@@ -19,17 +22,12 @@ const ProductList = () => {
   return (
     <>
       <Heading textAlign={'center'} mt={{ base: '5', sm: '-20' }} mb={5}>
-        Grocery Near You
+        Groceries Near You
       </Heading>
       <Divider />
-      <TableContainer
-        flex={'1'}
-        gap={5}
-        mb={10}
-        h={{ base: '480px', sm: '520px' }}
-      >
-        <Table>
-          <Stack flex={'row'} direction={'row'}>
+      <Box flex={'1'} gap={5} mb={10} h={{ base: '500px', sm: '520px' }}>
+        <SimpleGrid overflowX={'scroll'} pb={10} pt={5}>
+          <Stack flex={'row'} direction={'row'} h={'full'}>
             <ProductCard />
             <ProductCard1 />
             <ProductCard2 />
@@ -37,8 +35,8 @@ const ProductList = () => {
             <ProductCard4 />
             <ProductCard5 />
           </Stack>
-        </Table>
-      </TableContainer>
+        </SimpleGrid>
+      </Box>
     </>
   );
 };
