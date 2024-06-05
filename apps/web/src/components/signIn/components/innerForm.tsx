@@ -8,29 +8,35 @@ import {
 } from '@chakra-ui/react';
 import { FormikProps, Form, Field } from 'formik';
 import { FormValues } from '@/types';
+import { useState } from 'react';
+import Link from 'next/link';
 
 export default function InnerForm(props: FormikProps<FormValues>) {
   const { values, errors, touched, handleChange, handleSubmit, isSubmitting } =
     props;
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <Box
-      sx={{
-        minWidth: '300px',
-      }}
-    >
+    <Box>
       <Form onSubmit={handleSubmit}>
         <Stack spacing={4}>
-          <FormControl>
-            <FormLabel htmlFor="email">Email :</FormLabel>
+          <FormControl id="email">
+            <FormLabel htmlFor="email">Email </FormLabel>
             <Field
               name="email"
               type="email"
               onChange={handleChange}
               value={values.email}
+              style={{
+                padding: '5px',
+                border: '0.5px solid grey',
+                borderRadius: '5px',
+              }}
             />
             {touched.email && errors.email && (
               <Text
+                m={'2'}
+                textAlign={'center'}
                 sx={{
                   color: 'red',
                 }}
@@ -46,9 +52,16 @@ export default function InnerForm(props: FormikProps<FormValues>) {
               type="password"
               onChange={handleChange}
               value={values.password}
+              style={{
+                padding: '5px',
+                border: '0.5px solid grey',
+                borderRadius: '5px',
+              }}
             />
             {touched.password && errors.password && (
               <Text
+                m={'2'}
+                textAlign={'center'}
                 sx={{
                   color: 'red',
                 }}
@@ -57,14 +70,28 @@ export default function InnerForm(props: FormikProps<FormValues>) {
               </Text>
             )}
           </FormControl>
+          <Link href="/sign-up">
+            <Text
+              color={'blue.400'}
+              textAlign={'center'}
+              _hover={{ color: 'blue.500' }}
+            >
+              Don't have account yet?
+            </Text>
+          </Link>
           <Button
             sx={{
               marginTop: '15px',
             }}
             type="submit"
             disabled={isSubmitting}
+            bg={'green.400'}
+            color={'white'}
+            _hover={{
+              bg: 'green.500',
+            }}
           >
-            Register
+            Sign In
           </Button>
         </Stack>
       </Form>
