@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Box,
-  Text,
   Stack,
   Flex,
   useColorModeValue,
@@ -28,7 +27,6 @@ const RegisterSchema = Yup.object().shape({
 
 const RegisterView = () => {
   const router = useRouter();
-  const [showPassword, setShowPassword] = useState(false);
 
   const register = async ({ email, password }: IUsers) => {
     try {

@@ -11,6 +11,7 @@ import {
   useDisclosure,
   Image,
   Text,
+  Show,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import DesktopNav from './DesktopNav';
@@ -73,7 +74,7 @@ export default function Navbar() {
         >
           <Link href="/sign-in">
             <Button
-              p={5}
+              p={{ base: '2', sm: '5' }}
               bg={'blue.400'}
               color={'white'}
               fontSize={'sm'}
@@ -84,22 +85,25 @@ export default function Navbar() {
             >
               Sign In
             </Button>
-          </Link>
-          <Link href={'/sign-up'}>
-            <Button
-              mr={0}
-              px={5}
-              bg={'green.400'}
-              color={'white'}
-              fontSize={'sm'}
-              fontWeight={600}
-              borderRadius={'lg'}
-              _hover={{ bg: 'green.500' }}
-              cursor={'pointer'}
-            >
-              Sign Up
             </Button>
           </Link>
+          <Show above="sm">
+            <Link href={'/sign-up'}>
+              <Button
+                mr={0}
+                px={5}
+                bg={'green.400'}
+                color={'white'}
+                fontSize={'sm'}
+                fontWeight={600}
+                borderRadius={'lg'}
+                _hover={{ bg: 'green.500' }}
+                cursor={'pointer'}
+              >
+                Sign Up
+              </Button>
+            </Link>
+          </Show>
         </Stack>
       </Flex>
 
