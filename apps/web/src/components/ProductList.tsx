@@ -8,13 +8,18 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import React from 'react';
-import ProductCard from './ProductCard';
+import ProductCard1 from './products/ayam';
+import ProductCard from './products/beras';
+import ProductCard2 from './products/buah';
+import ProductCard3 from './products/minyak';
+import ProductCard4 from './products/sayur';
+import ProductCard5 from './products/bumbu';
 
 const ProductList = () => {
   return (
     <>
       <Heading textAlign={'center'} mt={{ base: '5', sm: '-20' }} mb={5}>
-        Products Near You
+        Grocery Near You
       </Heading>
       <Divider />
       <TableContainer
@@ -26,11 +31,11 @@ const ProductList = () => {
         <Table>
           <Stack flex={'row'} direction={'row'}>
             <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+            <ProductCard1 />
+            <ProductCard2 />
+            <ProductCard3 />
+            <ProductCard4 />
+            <ProductCard5 />
           </Stack>
         </Table>
       </TableContainer>

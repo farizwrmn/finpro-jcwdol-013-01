@@ -12,31 +12,27 @@ import {
   CardFooter,
 } from '@chakra-ui/react';
 
-const ProductCard = () => {
+const ProductCard1 = () => {
   return (
     <>
       <Card maxW="xs" shadow={'xl'}>
         <CardBody>
           <Image
-            src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
+            src="https://images.unsplash.com/photo-1587593810167-a84920ea0781?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2hpY2tlbiUyMG1lYXR8ZW58MHx8MHx8fDA%3D"
             alt="Green double couch with wooden legs"
             borderRadius="lg"
           />
           <Stack mt="6" spacing="3">
-            <Heading size="md">Living room Sofa</Heading>
-            <Text noOfLines={4}>
-              This sofa is perfect for modern tropical spaces, baroque inspired
-              spaces, earthy toned spaces and for people who love a chic design
-              with a sprinkle of vintage design.
-            </Text>
-            <Text color="blue.600" fontSize="2xl">
-              $450
+            <Heading size="md">Daging Ayam Segar</Heading>
+            <Text noOfLines={4}>Langsung dari peternak ayam berkualitas</Text>
+            <Text color="blue.600" fontSize="lg" mt={5} textAlign={'center'}>
+              Rp. 25.000,-
             </Text>
           </Stack>
         </CardBody>
         <Divider />
         <CardFooter>
-          <ButtonGroup spacing="2">
+          <ButtonGroup spacing="2" m={'auto'}>
             <Button variant="solid" colorScheme="blue">
               Buy now
             </Button>
@@ -50,4 +46,4 @@ const ProductCard = () => {
   );
 };
 
-export default ProductCard;
+export default ProductCard1;

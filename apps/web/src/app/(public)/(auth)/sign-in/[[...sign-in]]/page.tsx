@@ -1,10 +1,10 @@
 import React from 'react';
-import SignIn from '@/components/signIn/SignIn';
+import LoginView from '@/components/signIn/SignIn';
 
 const Page = () => {
   return (
     <div>
-      <SignIn />
+      <LoginView />
     </div>
   );
 };

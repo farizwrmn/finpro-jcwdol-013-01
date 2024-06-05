@@ -14,9 +14,8 @@ const registerAction = async (data: User): Promise<User> => {
     if (check) throw new Error('user already exist');
 
     const salt = await genSalt(10);
-    console.log(salt);
+
     const hashPass = await hash(data.password || '', salt);
-    console.log(hashPass);
 
     const user = await registerQuery(data, hashPass);
 
