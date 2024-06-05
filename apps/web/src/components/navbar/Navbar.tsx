@@ -85,6 +85,7 @@ export default function Navbar() {
             >
               Sign In
             </Button>
+            </Button>
           </Link>
           <Show above="sm">
             <Link href={'/sign-up'}>
