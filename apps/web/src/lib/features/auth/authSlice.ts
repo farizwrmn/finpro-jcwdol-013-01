@@ -59,14 +59,13 @@ export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
       password,
     });
     // const payload = await parseJWT(data?.data);
-
-    // // dispatch(
-    // //   loginState({
-    // //     email: payload?.email,
-    // //     isVerified: payload?.isVerified,
-    // //     avatar: payload?.avatar,
-    // //   }),
-    // // );
+    // dispatch(
+    //   loginState({
+    //     email: payload?.email,
+    //     isVerified: payload?.isVerified,
+    //     avatar: payload?.avatar,
+    //   }),
+    // );
     localStorage.setItem('token', String(data?.data));
   } catch (err) {
     alert('Email atau Password salah');
@@ -89,15 +88,15 @@ export const checkToken = (token: string) => async (dispatch: Dispatch) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    const payload = await parseJWT(data?.data);
-    dispatch(
-      tokenValidState({
-        email: payload?.email,
-        isVerified: payload?.isVerified,
-        avatar: payload?.avatar,
-      }),
-    );
-    localStorage.setItem('token', String(data?.data));
+    // const payload = await parseJWT(data?.data);
+    // dispatch(
+    //   tokenValidState({
+    //     email: payload?.email,
+    //     isVerified: payload?.isVerified,
+    //     avatar: payload?.avatar,
+    //   }),
+    // );
+    // localStorage.setItem('token', String(data?.data));
   } catch (err) {
     console.log(err);
   }
