@@ -29,13 +29,17 @@ const loginAction = async (data: Auth) => {
   try {
     const user = await getUserByEmailQuery(data.email);
 
-    if (!user) throw new Error('email doesnt exist');
+    if (!user) throw new Error(`email doesn't exist`);
 
     // if (data.password === user.password)
 
     const isValid = await compare(data.password, user.password || '');
 
-    if (!isValid) throw new Error('password is wrong');
+    if (!isValid) {
+      throw new Error('password is wrong');
+    } else {
+      console.log(`Welcome, ${user.email}`);
+    }
 
     const payload = {
       userId: user.id,

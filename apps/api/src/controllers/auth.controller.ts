@@ -27,7 +27,7 @@ const loginController = async (
     const data = await loginAction(req.body);
 
     res.status(200).json({
-      message: 'login success',
+      message: 'Login Success',
       data,
     });
   } catch (err) {

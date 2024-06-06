@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import { User } from '@prisma/client';
 import { Auth } from '../interfaces/auth.interface';
-// import { transporter } from '../helpers/nodemailer';
+import { transporter } from '../helpers/nodemailer';
 import * as handlebars from 'handlebars';
 import path from 'path';
 import fs from 'fs';
@@ -41,12 +41,12 @@ const registerQuery = async (data: User, pass: string): Promise<User> => {
           url: urlVerify,
         });
 
-        // await transporter.sendMail({
-        //   from: 'sender address',
-        //   to: user.email || '',
-        //   subject: 'welcome to purwadhika',
-        //   html,
-        // });
+        await transporter.sendMail({
+          from: 'sender address',
+          to: user.email || '',
+          subject: 'welcome to tokopedya',
+          html,
+        });
 
         return user;
       } catch (err) {
