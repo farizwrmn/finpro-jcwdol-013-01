@@ -59,7 +59,6 @@ export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
       password,
     });
     // const payload = await parseJWT(data?.data);
-
     // dispatch(
     //   loginState({
     //     email: payload?.email,
