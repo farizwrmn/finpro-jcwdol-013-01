@@ -38,7 +38,8 @@ const RegisterView = () => {
       const { data } = await instance.post('/auth/register', form);
       alert(data?.message);
     } catch (err) {
-      alert('Email already exist, please Log In');
+      console.error(err);
+      alert('Register failed');
     }
   };
 

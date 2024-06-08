@@ -1,8 +1,8 @@
-import express from 'express';
-import { updateUserController } from '@/controllers/user.controller';
+// import express from 'express';
+// import { updateUserController } from '@/controllers/user.controller';
 
-const router = express.Router();
+// const router = express.Router();
 
-router.patch('/:id', updateUserController);
+// router.patch('/:id', updateUserController);
 
-export default router;
+// export default router;

@@ -21,15 +21,15 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const adminGuard = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    if (req.user?.role.toLowerCase() !== 'admin')
-      throw new Error('Unauthorized');
+// const adminGuard = async (req: Request, res: Response, next: NextFunction) => {
+//   try {
+//     if (req.user?.role.toLowerCase() !== 'admin')
+//       throw new Error('Unauthorized');
 
-    next();
-  } catch (err) {
-    next(err);
-  }
-};
+//     next();
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
-export { verifyToken, adminGuard };
+export { verifyToken };
