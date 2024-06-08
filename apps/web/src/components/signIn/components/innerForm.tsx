@@ -8,13 +8,12 @@ import {
 } from '@chakra-ui/react';
 import { FormikProps, Form, Field } from 'formik';
 import { FormValues } from '@/types';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 
 export default function InnerForm(props: FormikProps<FormValues>) {
   const { values, errors, touched, handleChange, handleSubmit, isSubmitting } =
     props;
-  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <Box>

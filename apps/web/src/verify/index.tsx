@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Box, Container, Text, Stack, Button } from '@chakra-ui/react';
 
 import instance from '@/utils/axiosInstance';
-import PageWrapper from '@/components/pageWrapper';
+import Link from 'next/link';
 
 const VerifyView = () => {
   const params = useSearchParams();
@@ -42,15 +42,17 @@ const VerifyView = () => {
             Welcome to Tokopedya app, click the button below to verify your
             account
           </Text>
-          <Button
-            colorScheme="cyan"
-            sx={{
-              width: '5rem',
-            }}
-            onClick={() => verify()}
-          >
-            Verify
-          </Button>
+          <Link href={'/sign-in'}>
+            <Button
+              colorScheme="cyan"
+              sx={{
+                width: '5rem',
+              }}
+              onClick={() => verify()}
+            >
+              Verify
+            </Button>
+          </Link>
         </Stack>
       </Box>
     </Container>

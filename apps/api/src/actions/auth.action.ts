@@ -35,21 +35,18 @@ const loginAction = async (data: Auth) => {
 
     const isValid = await compare(data.password, user.password || '');
 
-    if (!isValid) {
-      throw new Error('password is wrong');
-    } else {
-      console.log(`Welcome, ${user.email}`);
-    }
+    if (!isValid) throw new Error('password is wrong');
 
     const payload = {
       userId: user.id,
       email: user.email,
-      role: user.role.name,
     };
     const token = sign(payload, String(API_KEY), { expiresIn: '1h' });
+    console.log(token);
 
     return { user, token };
   } catch (err) {
+    console.log(err);
     throw err;
   }
 };

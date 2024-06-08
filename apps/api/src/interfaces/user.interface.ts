@@ -1,9 +1,9 @@
 export interface IUser {
-  name?: string;
+  // name?: string;
   email?: string;
   password?: string;
-  phone?: string;
-  image?: string;
-  gender?: string;
-  birthDate?: Date;
+  // phone?: string;
+  // image?: string;
+  // gender?: string;
+  // birthDate?: Date;
 }
