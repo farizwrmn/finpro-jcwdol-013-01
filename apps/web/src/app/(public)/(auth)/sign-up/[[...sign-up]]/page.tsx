@@ -1,5 +1,5 @@
 import React from 'react';
-import RegisterView from '@/components/SignUp';
+import RegisterView from '@/components/signUp/SignUp';
 
 const Page = () => {
   return (

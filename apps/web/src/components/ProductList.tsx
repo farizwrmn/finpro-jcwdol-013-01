@@ -1,39 +1,31 @@
-import {
-  TableContainer,
-  Heading,
-  Table,
-  Tbody,
-  Stack,
-  Divider,
-  Tr,
-} from '@chakra-ui/react';
+import { Heading, Stack, Divider, SimpleGrid, Box } from '@chakra-ui/react';
 import React from 'react';
-import ProductCard from './ProductCard';
+import ProductCard1 from './products/ayam';
+import ProductCard from './products/beras';
+import ProductCard2 from './products/buah';
+import ProductCard3 from './products/minyak';
+import ProductCard4 from './products/sayur';
+import ProductCard5 from './products/bumbu';
 
 const ProductList = () => {
   return (
     <>
-      <Heading textAlign={'center'} mt={{ base: '5', sm: '-20' }} mb={5}>
-        Products Near You
+      <Heading textAlign={'center'} mt={{ base: '10', sm: '-20' }} mb={5}>
+        Groceries Near You
       </Heading>
       <Divider />
-      <TableContainer
-        flex={'1'}
-        gap={5}
-        mb={10}
-        h={{ base: '480px', sm: '520px' }}
-      >
-        <Table>
-          <Stack flex={'row'} direction={'row'}>
+      <Box flex={'1'} gap={5} mb={10} h={{ base: '500px', sm: '520px' }}>
+        <SimpleGrid overflowX={'scroll'} pb={10} pt={5}>
+          <Stack flex={'row'} direction={'row'} h={'full'}>
             <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
-            <ProductCard />
+            <ProductCard1 />
+            <ProductCard2 />
+            <ProductCard3 />
+            <ProductCard4 />
+            <ProductCard5 />
           </Stack>
-        </Table>
-      </TableContainer>
+        </SimpleGrid>
+      </Box>
     </>
   );
 };
