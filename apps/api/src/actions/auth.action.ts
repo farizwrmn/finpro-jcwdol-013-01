@@ -14,8 +14,9 @@ const registerAction = async (data: User): Promise<User> => {
     if (check) throw new Error('user already exist');
 
     const salt = await genSalt(10);
-
+    console.log(salt);
     const hashPass = await hash(data.password || '', salt);
+    console.log(hashPass);
 
     const user = await registerQuery(data, hashPass);
 
@@ -29,28 +30,23 @@ const loginAction = async (data: Auth) => {
   try {
     const user = await getUserByEmailQuery(data.email);
 
-    if (!user) throw new Error(`email doesn't exist`);
+    if (!user) throw new Error('email doesnt exist');
 
     // if (data.password === user.password)
 
     const isValid = await compare(data.password, user.password || '');
 
-    if (!isValid) {
-      throw new Error('password is wrong');
-    } else {
-      console.log(`Welcome, ${user.email}`);
-    }
+    if (!isValid) throw new Error('password is wrong');
 
     const payload = {
       userId: user.id,
       email: user.email,
+      role: user.role.name,
     };
     const token = sign(payload, String(API_KEY), { expiresIn: '1h' });
-    console.log(token);
 
     return { user, token };
   } catch (err) {
-    console.log(err);
     throw err;
   }
 };

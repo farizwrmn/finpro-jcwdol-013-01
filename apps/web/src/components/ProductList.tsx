@@ -6,7 +6,6 @@ import ProductCard2 from './products/buah';
 import ProductCard3 from './products/minyak';
 import ProductCard4 from './products/sayur';
 import ProductCard5 from './products/bumbu';
-import ProductCard1 from './products/ayam';
 
 const ProductList = () => {
   return (

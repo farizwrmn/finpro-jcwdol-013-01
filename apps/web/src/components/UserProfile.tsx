@@ -87,6 +87,9 @@ export default function UserProfile(props: UserProfileProps) {
           <Text color={useColorModeValue('gray.600', 'gray.200')}>
             User ID: {userId}
           </Text>
+          <Text color={useColorModeValue('gray.600', 'gray.200')}>
+            Saldo: IDR {/* Your saldo logic here */}
+          </Text>
         </Stack>
         {/* ... */}
       </Stack>
