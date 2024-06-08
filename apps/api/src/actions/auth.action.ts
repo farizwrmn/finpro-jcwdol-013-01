@@ -35,7 +35,11 @@ const loginAction = async (data: Auth) => {
 
     const isValid = await compare(data.password, user.password || '');
 
-    if (!isValid) throw new Error('password is wrong');
+    if (!isValid) {
+      throw new Error('password is wrong');
+    } else {
+      console.log(`Welcome, ${user.email}`);
+    }
 
     const payload = {
       userId: user.id,
