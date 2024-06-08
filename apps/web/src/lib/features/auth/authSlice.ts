@@ -58,16 +58,19 @@ export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
       email,
       password,
     });
-    // const payload = await parseJWT(data?.data);
-    // dispatch(
-    //   loginState({
-    //     email: payload?.email,
-    //     isVerified: payload?.isVerified,
-    //     avatar: payload?.avatar,
-    //   }),
-    // );
-    localStorage.setItem('token', String(data?.data));
+    const payload = await parseJWT(data?.data);
+
+    dispatch(
+      loginState({
+        email: payload?.email,
+        isVerified: payload?.isVerified,
+        avatar: payload?.avatar,
+      }),
+    );
+    console.log(data?.data);
+    localStorage.setItem('token', JSON.stringify(data?.data));
   } catch (err) {
+    console.log(err);
     alert('Email atau Password salah');
   }
 };
@@ -88,15 +91,15 @@ export const checkToken = (token: string) => async (dispatch: Dispatch) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    // const payload = await parseJWT(data?.data);
-    // dispatch(
-    //   tokenValidState({
-    //     email: payload?.email,
-    //     isVerified: payload?.isVerified,
-    //     avatar: payload?.avatar,
-    //   }),
-    // );
-    // localStorage.setItem('token', String(data?.data));
+    const payload = await parseJWT(data?.data);
+    dispatch(
+      tokenValidState({
+        email: payload?.email,
+        isVerified: payload?.isVerified,
+        avatar: payload?.avatar,
+      }),
+    );
+    localStorage.setItem('token', JSON.stringify(data?.data));
   } catch (err) {
     console.log(err);
   }

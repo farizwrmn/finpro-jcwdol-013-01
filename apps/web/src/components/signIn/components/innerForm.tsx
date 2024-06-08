@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react';
 import { FormikProps, Form, Field } from 'formik';
 import { FormValues } from '@/types';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Link from 'next/link';
 
 export default function InnerForm(props: FormikProps<FormValues>) {
@@ -18,8 +18,11 @@ export default function InnerForm(props: FormikProps<FormValues>) {
 
   return (
     <Box>
+    <Box>
       <Form onSubmit={handleSubmit}>
         <Stack spacing={4}>
+          <FormControl id="email">
+            <FormLabel htmlFor="email">Email </FormLabel>
           <FormControl id="email">
             <FormLabel htmlFor="email">Email </FormLabel>
             <Field
@@ -32,9 +35,16 @@ export default function InnerForm(props: FormikProps<FormValues>) {
                 border: '0.5px solid grey',
                 borderRadius: '5px',
               }}
+              style={{
+                padding: '5px',
+                border: '0.5px solid grey',
+                borderRadius: '5px',
+              }}
             />
             {touched.email && errors.email && (
               <Text
+                m={'2'}
+                textAlign={'center'}
                 m={'2'}
                 textAlign={'center'}
                 sx={{
@@ -57,9 +67,16 @@ export default function InnerForm(props: FormikProps<FormValues>) {
                 border: '0.5px solid grey',
                 borderRadius: '5px',
               }}
+              style={{
+                padding: '5px',
+                border: '0.5px solid grey',
+                borderRadius: '5px',
+              }}
             />
             {touched.password && errors.password && (
               <Text
+                m={'2'}
+                textAlign={'center'}
                 m={'2'}
                 textAlign={'center'}
                 sx={{
@@ -70,6 +87,15 @@ export default function InnerForm(props: FormikProps<FormValues>) {
               </Text>
             )}
           </FormControl>
+          <Link href="/sign-up">
+            <Text
+              color={'blue.400'}
+              textAlign={'center'}
+              _hover={{ color: 'blue.500' }}
+            >
+              Don't have account yet?
+            </Text>
+          </Link>
           <Link href="/sign-up">
             <Text
               color={'blue.400'}
@@ -90,7 +116,13 @@ export default function InnerForm(props: FormikProps<FormValues>) {
             _hover={{
               bg: 'blue.500',
             }}
+            bg={'blue.400'}
+            color={'white'}
+            _hover={{
+              bg: 'blue.500',
+            }}
           >
+            Sign In
             Sign In
           </Button>
         </Stack>
