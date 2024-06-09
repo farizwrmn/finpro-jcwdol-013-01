@@ -24,7 +24,7 @@ const UpdateProfileSchema = Yup.object().shape({
 export default function UserProfileEdit(): JSX.Element {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const user = useAppSelector(state => state.auth.user);
+  const user = useAppSelector((state) => state.auth.user);
 
   const UpdateProfileForm = withFormik<FormProps, FormValues>({
     mapPropsToValues: (props) => ({
@@ -38,10 +38,21 @@ export default function UserProfileEdit(): JSX.Element {
     }),
     validationSchema: UpdateProfileSchema,
     enableReinitialize: true,
-    handleSubmit({ name, email, phone, gender, birthDate }: FormValues, { resetForm }) {
-      dispatch(updateProfile(user.id as string, { name, email, phone, gender, birthDate }));
+    handleSubmit(
+      { name, email, phone, gender, birthDate }: FormValues,
+      { resetForm },
+    ) {
+      dispatch(
+        updateProfile(user.id as string, {
+          name,
+          email,
+          phone,
+          gender,
+          birthDate,
+        }),
+      );
       resetForm();
-      alert("Update user profile success");
+      alert('Update user profile success');
       router.push('/users/profile');
     },
   })(InnerForm);
