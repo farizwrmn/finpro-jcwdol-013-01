@@ -24,22 +24,21 @@ const RegisterSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email address format')
     .required('Email is required'),
-  password: Yup.string().required('Password is required'),
+  // password: Yup.string().required('Password is required'),
 });
 
 const RegisterView = () => {
   const router = useRouter();
 
-  const register = async ({ email, password }: IUsers) => {
+  const register = async ({ email }: IUsers) => {
     try {
       const form = new FormData();
       form.append('email', email);
-      form.append('password', password);
       const { data } = await instance.post('/auth/register', form);
       alert(data?.message);
     } catch (err) {
       console.error(err);
-      alert('Register failed');
+      alert('Email already exist, please Sign in');
     }
   };
 

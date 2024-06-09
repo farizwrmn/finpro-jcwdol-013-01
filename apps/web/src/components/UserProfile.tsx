@@ -32,7 +32,7 @@ export default function UserProfile(): JSX.Element {
     >
       <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
         <Stack align={'center'}>
-          <Heading fontSize={'3xl'}>Sign Up</Heading>
+          <Heading fontSize={'3xl'}>User Profile</Heading>
         </Stack>
         <Stack
           spacing={4}
