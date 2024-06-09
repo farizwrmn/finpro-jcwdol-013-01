@@ -29,10 +29,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
     try {
       const formData = new FormData();
       const inputFile = document.getElementById("image") as HTMLInputElement;
-      console.log("inputFile:", inputFile?.files?.item(0) as File);
       formData.append("image", inputFile?.files?.item(0) as File);
-
-      console.log("handleUpdateAvatar:", formData);
 
       dispatch(updateAvatar(values.id, formData));
       alert("Update Avatar Success");

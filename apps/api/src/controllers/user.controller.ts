@@ -25,9 +25,6 @@ const updateAvatarController = async (req: Request, res: Response, next: NextFun
     const { id } = req.params;
     const { file } = req;
 
-    console.log("updateAvatarController:", id, file);
-    console.log("image:", String(file?.filename));
-
     const data = await updateUserAction(id, {
       image: String(file?.filename)
     });

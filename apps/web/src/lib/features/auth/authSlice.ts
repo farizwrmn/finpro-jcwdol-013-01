@@ -93,7 +93,9 @@ export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
         role: user?.role.name,
       }),
     );
-    localStorage.setItem('token', JSON.stringify(data?.data));
+
+    localStorage.setItem('token', data?.data.token);
+    localStorage.setItem('user', JSON.stringify(user));
   } catch (err) {
     console.log(err);
     alert('Email atau Password salah');
@@ -104,6 +106,7 @@ export const signOut = () => async (dispatch: Dispatch) => {
   try {
     dispatch(logoutState());
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
   } catch (err) {
     console.log(err);
   }
@@ -132,7 +135,9 @@ export const checkToken = (token: string) => async (dispatch: Dispatch) => {
         role: user?.role.name,
       }),
     );
-    localStorage.setItem('token', JSON.stringify(data?.data));
+
+    localStorage.setItem('token', data?.data.token);
+    localStorage.setItem('user', JSON.stringify(user));
   } catch (err) {
     console.log(err);
   }
@@ -143,8 +148,7 @@ export const updateProfile = (id: string, params: IUserProfile) => async (dispat
     const { data } = await instance.patch(`/users/${id}`, { ...params });
 
     dispatch(updateProfileState({ ...params }));
-    console.log(data?.data);
-    localStorage.setItem('token', JSON.stringify(data?.data));
+    localStorage.setItem('user', JSON.stringify(data?.data));
   } catch (err) {
     console.log(err);
     alert('Update profile failed');
@@ -159,11 +163,10 @@ export const updateAvatar = (id: string, formData: FormData) => async (dispatch:
       }
     };
     const { data } = await instance.patch(`/users/${id}/avatar`, formData, config);
-    console.log("updateAvatar:", data)
     const image = data?.data.image;
 
     dispatch(updateAvatarState(image));
-    localStorage.setItem('token', JSON.stringify(data?.data));
+    localStorage.setItem('user', JSON.stringify(data?.data));
   } catch (err) {
     console.log(err);
     alert('Update avatar failed');
