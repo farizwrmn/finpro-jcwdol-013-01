@@ -7,6 +7,7 @@ import {
   FormLabel,
   Heading,
   Input,
+  Select,
   Stack,
   useColorModeValue,
   HStack,
@@ -15,6 +16,7 @@ import {
   IconButton,
   Center,
 } from '@chakra-ui/react';
+
 import { SmallCloseIcon } from '@chakra-ui/icons';
 
 export default function UserProfileEdit(): JSX.Element {
@@ -75,6 +77,18 @@ export default function UserProfileEdit(): JSX.Element {
             type="text" // Adjust the type based on your user ID data format
             disabled // This field is disabled as it's likely automatically generated
           />
+        </FormControl>
+        <FormControl id="gender">
+          <FormLabel>Gender</FormLabel>
+          <Select placeholder="Select Gender">
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </Select>
+        </FormControl>
+        <FormControl id="birthdate">
+          <FormLabel>Birthdate</FormLabel>
+          <Input type="date" />
         </FormControl>
         <FormControl id="email" isRequired>
           <FormLabel>Email address</FormLabel>
