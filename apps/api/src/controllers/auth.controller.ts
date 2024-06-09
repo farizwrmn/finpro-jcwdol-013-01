@@ -3,6 +3,7 @@ import {
   loginAction,
   registerAction,
   verifyAction,
+  refreshTokenAction,
 } from '../actions/auth.action';
 import { verify } from 'jsonwebtoken';
 import { API_KEY } from '@/config';
@@ -42,6 +43,25 @@ const loginController = async (
   }
 };
 
+const refreshTokenController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const email = req.user?.email as string;
+
+    const result = await refreshTokenAction(email);
+
+    res.status(200).json({
+      message: 'Refresh token success',
+      data: result,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 const verifyController = async (
   req: Request,
   res: Response,
@@ -64,4 +84,9 @@ const verifyController = async (
   }
 };
 
-export { registerController, loginController, verifyController };
+export {
+  registerController,
+  loginController,
+  verifyController,
+  refreshTokenController,
+};

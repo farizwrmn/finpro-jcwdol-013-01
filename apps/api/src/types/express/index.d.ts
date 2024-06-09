@@ -1,8 +1,13 @@
 export type User = {
-  userId: number;
-  email: string;
-  username: string;
-  role: string;
+  id?: string;
+  name?: string;
+  email?: string;
+  image?: string;
+  phone?: string;
+  gender?: string;
+  birthDate?: string;
+  isVerified?: boolean;
+  role?: string;
 };
 
 declare global {

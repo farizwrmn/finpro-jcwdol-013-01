@@ -29,28 +29,58 @@ const loginAction = async (data: Auth) => {
   try {
     const user = await getUserByEmailQuery(data.email);
 
-    if (!user) throw new Error(`email doesn't exist`);
+    if (!user) throw new Error('email doesnt exist');
 
     // if (data.password === user.password)
 
     const isValid = await compare(data.password, user.password || '');
 
-    if (!isValid) {
-      throw new Error('password is wrong');
-    } else {
-      console.log(`Welcome, ${user.email}`);
-    }
+    if (!isValid) throw new Error('password is wrong');
 
     const payload = {
-      userId: user.id,
+      id: user.id,
+      name: user.name,
       email: user.email,
+      image: user.image,
+      phone: user.phone,
+      gender: user.gender,
+      birthDate: user.birthDate,
+      isVerified: user.isVerified,
+      role: user.role.name,
     };
+
     const token = sign(payload, String(API_KEY), { expiresIn: '1h' });
     console.log(token);
 
     return { user, token };
   } catch (err) {
     console.log(err);
+    throw err;
+  }
+};
+
+const refreshTokenAction = async (email: string) => {
+  try {
+    const user = await getUserByEmailQuery(email);
+
+    if (!user) throw new HttpException(500, 'Something went wrong');
+
+    const payload = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      image: user.image,
+      phone: user.phone,
+      gender: user.gender,
+      birthDate: user.birthDate,
+      isVerified: user.isVerified,
+      role: user.role.name,
+    };
+
+    const token = sign(payload, String(API_KEY), { expiresIn: '1hr' });
+
+    return { user, token };
+  } catch (err) {
     throw err;
   }
 };
@@ -72,4 +102,4 @@ const verifyAction = async (data: Auth): Promise<void> => {
   }
 };
 
-export { registerAction, loginAction, verifyAction };
+export { registerAction, loginAction, verifyAction, refreshTokenAction };

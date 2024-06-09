@@ -20,4 +20,26 @@
 //   }
 // };
 
-// export { updateUserController };
+const updateAvatarController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const { file } = req;
+
+    const data = await updateUserAction(id, {
+      image: String(file?.filename),
+    });
+
+    res.status(200).json({
+      message: 'Update avatar success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export { updateUserController, updateAvatarController };

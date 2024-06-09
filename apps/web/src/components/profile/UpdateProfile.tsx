@@ -1,40 +1,61 @@
 'use client';
+
 import {
-  Flex,
-  Box,
-  FormControl,
-  FormLabel,
-  Input,
-  InputGroup,
-  HStack,
-  InputRightElement,
-  Stack,
   Button,
+  Flex,
   Heading,
-  Text,
+  Stack,
   useColorModeValue,
-  Divider,
-  Image,
-  Select,
 } from '@chakra-ui/react';
-import { ChangeEvent, useState } from 'react';
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import Link from 'next/link';
+import { withFormik } from 'formik';
+import * as Yup from 'yup';
+import { FormValues, FormProps } from './types';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { useRouter } from 'next/navigation';
+import InnerForm from './innerForm';
+import { updateProfile } from '@/lib/features/auth/authSlice';
 
-interface UpdateProfileProps {}
+const UpdateProfileSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('Invalid email address format')
+    .required('Email is required'),
+});
 
-export default function UpdateProfile(props: UpdateProfileProps) {
-  const [showPassword, setShowPassword] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
+export default function UserProfileEdit(): JSX.Element {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
 
-  function handleFileChange(event: ChangeEvent<HTMLInputElement>): void {
-    throw new Error('Function not implemented.');
-  }
-
-  // ... existing file handling logic ...
-
-  // ... existing form fields (email, current password, etc.) ...
+  const UpdateProfileForm = withFormik<FormProps, FormValues>({
+    mapPropsToValues: (props) => ({
+      id: props.initialId || user.id || '',
+      name: props.initialName || user.name || '',
+      email: props.initialEmail || user.email || '',
+      image: props.initialImage || user.image || '',
+      phone: props.initialPhone || user.phone || '',
+      gender: props.initialGender || user.gender || '',
+      birthDate: props.initialBirthDate || user.birthDate || '',
+    }),
+    validationSchema: UpdateProfileSchema,
+    enableReinitialize: true,
+    handleSubmit(
+      { name, email, phone, gender, birthDate }: FormValues,
+      { resetForm },
+    ) {
+      dispatch(
+        updateProfile(user.id as string, {
+          name,
+          email,
+          phone,
+          gender,
+          birthDate,
+        }),
+      );
+      resetForm();
+      alert('Update user profile success');
+      router.push('/users/profile');
+    },
+  })(InnerForm);
 
   return (
     <Flex
@@ -43,79 +64,20 @@ export default function UpdateProfile(props: UpdateProfileProps) {
       justify={'center'}
       bg={useColorModeValue('gray.50', 'gray.800')}
     >
-      <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
-        <Stack align={'center'}>
-          <Heading fontSize={'4xl'} textAlign={'center'}>
-            Update Profile
-          </Heading>
-          <Divider />
-        </Stack>
-        <Box
-          rounded={'lg'}
-          bg={useColorModeValue('white', 'gray.700')}
-          boxShadow={'lg'}
-          p={8}
-        >
-          <Stack spacing={4}>
-            <FormControl id="name">
-              <FormLabel>Name</FormLabel>
-              <Input type="text" />
-            </FormControl>
-            <FormControl id="phone">
-              <FormLabel>Phone Number</FormLabel>
-              <Input type="number" />
-            </FormControl>
-            <FormControl id="domicile">
-              <FormLabel>Domicile</FormLabel>
-              <Input type="text" />
-            </FormControl>
-            <FormControl id="city">
-              <FormLabel>City</FormLabel>
-              <Input type="text" />
-            </FormControl>
-            <FormControl id="userId">
-              <FormLabel>User ID</FormLabel>
-              <Input type="text" disabled /> {/* Disable user ID editing */}
-            </FormControl>
-            <FormControl id="gender">
-              <FormLabel>Gender</FormLabel>
-              <Select placeholder="Select Gender">
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-              </Select>
-            </FormControl>
-
-            <FormControl id="birthdate">
-              <FormLabel>Birthdate</FormLabel>
-              <Input type="date" />
-            </FormControl>
-            <FormControl id="profilePicture">
-              <FormLabel>Profile Picture</FormLabel>
-              <Input type="file" onChange={handleFileChange} />
-              {previewImage && (
-                <Image
-                  boxSize="150px"
-                  src={previewImage}
-                  alt="Profile Preview"
-                />
-              )}
-            </FormControl>
-            {/* Existing form fields ... */}
-            <Stack spacing={10} pt={2}>
-              <Link color={'blue.400'} href="/user-profile">
-                <Button
-                  loadingText="Submitting"
-                  size="lg"
-                  bg={'blue.400'}
-                  color={'white'}
-                  _hover={{ bg: 'blue.500' }}
-                >
-                  Update Profile
-                </Button>
-              </Link>
-            </Stack>
-          </Stack>
-        </Box>
+      <Stack
+        spacing={4}
+        w={'full'}
+        maxW={'md'}
+        bg={useColorModeValue('white', 'gray.700')}
+        rounded={'xl'}
+        boxShadow={'lg'}
+        p={6}
+        my={12}
+      >
+        <Heading lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl' }}>
+          User Profile Edit
+        </Heading>
+        <UpdateProfileForm />
       </Stack>
     </Flex>
   );

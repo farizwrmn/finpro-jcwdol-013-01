@@ -32,12 +32,12 @@ const ProductCard1 = () => {
         </CardBody>
         <Divider />
         <CardFooter>
-          <ButtonGroup spacing="2" m={'auto'}>
-            <Button variant="solid" colorScheme="blue">
-              Buy now
-            </Button>
+          <ButtonGroup spacing="2" flexDirection="column" m={'auto'}>
             <Button variant="ghost" colorScheme="blue">
               Add to cart
+            </Button>
+            <Button variant="solid" colorScheme="blue">
+              Buy now
             </Button>
           </ButtonGroup>
         </CardFooter>

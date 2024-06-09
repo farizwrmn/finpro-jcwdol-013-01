@@ -76,7 +76,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
               textAlign={'center'}
               _hover={{ color: 'blue.500' }}
             >
-              Don't have account yet?
+              {'Don\'t have account yet?'}
             </Text>
           </Link>
           <Button
