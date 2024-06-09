@@ -1,28 +1,31 @@
 import { PrismaClient } from '@prisma/client';
 import { User } from '@prisma/client';
-import { Auth } from '../interfaces/auth.interface';
+import { Auth, RegisterAuth } from '../interfaces/auth.interface';
 import { transporter } from '../helpers/nodemailer';
 import * as handlebars from 'handlebars';
 import path from 'path';
 import fs from 'fs';
+import { sign } from 'jsonwebtoken';
+import { API_KEY } from '@/config';
 
 const prisma = new PrismaClient();
 
-const registerQuery = async (data: User, pass: string): Promise<User> => {
+const registerQuery = async (data: RegisterAuth): Promise<User> => {
   try {
     const t = await prisma.$transaction(async (prisma) => {
+      console.log('masuk1');
       try {
         const user = await prisma.user.create({
           data: {
             email: data.email,
-            password: pass,
             role: {
               connect: {
-                name: 'super_admin',
+                name: 'customer',
               },
             },
           },
         });
+        console.log('masuk2');
         // const pathOldImage = path.join(__dirname, "../public", avatar)
         // fs.unlinkSync(pathOldImage);
 
@@ -31,7 +34,11 @@ const registerQuery = async (data: User, pass: string): Promise<User> => {
           '../templates',
           'registrationEmail.hbs',
         );
-        const token = 'asdasd';
+        const payload = {
+          userId: user.id,
+          email: user.email,
+        };
+        const token = sign(payload, String(API_KEY), { expiresIn: '1h' });
         const urlVerify = `http://localhost:3000/verify?token=${token}`;
         const templateSource = fs.readFileSync(templatePath, 'utf-8');
 
@@ -80,4 +87,24 @@ const loginQuery = async (data: Auth) => {
   }
 };
 
-export { registerQuery, loginQuery };
+const verifyQuery = async (data: Auth) => {
+  try {
+    await prisma.$transaction(async (prisma) => {
+      try {
+        await prisma.user.update({
+          data: {
+            password: data.password,
+            isVerified: true,
+          },
+          where: { email: data.email },
+        });
+      } catch (err) {
+        throw err;
+      }
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+
+export { registerQuery, loginQuery, verifyQuery };

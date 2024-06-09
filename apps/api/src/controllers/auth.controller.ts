@@ -1,5 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
-import { loginAction, registerAction } from '../actions/auth.action';
+import {
+  loginAction,
+  registerAction,
+  verifyAction,
+} from '../actions/auth.action';
+import { verify } from 'jsonwebtoken';
+import { API_KEY } from '@/config';
 
 const registerController = async (
   req: Request,
@@ -10,7 +16,8 @@ const registerController = async (
     const result = await registerAction(req.body);
 
     res.status(200).json({
-      message: 'Register success',
+      message:
+        'Register success, please verify your account through your email first before Sign in.',
       data: result,
     });
   } catch (err) {
@@ -35,4 +42,26 @@ const loginController = async (
   }
 };
 
-export { registerController, loginController };
+const verifyController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const email = req.user?.email as string;
+    const password = req.body.password;
+
+    await verifyAction({
+      email,
+      password,
+    });
+
+    res.status(200).json({
+      message: 'Verify success',
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { registerController, loginController, verifyController };
