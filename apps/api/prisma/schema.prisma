@@ -19,33 +19,54 @@ model Role {
 }
 
 model User {
-  id          String    @id @default(uuid())
-  name        String?
-  email       String?   @unique
-  password    String?
-  phone       String?
-  image       String?
-  gender      String?
-  birthDate   DateTime? @map(name: "birth_date")
-  isVerified  Boolean   @default(false) @map(name: "is_verified")
-  createdDate DateTime  @default(now()) @map(name: "created_date")
-  updatedDate DateTime  @updatedAt @map(name: "updated_date")
-  roleId      String    @map(name: "role_id")
-  role        Role      @relation(fields: [roleId], references: [id])
+  id              String        @id @default(uuid())
+  name            String?
+  email           String?       @unique
+  password        String?
+  phone           String?
+  image           String?
+  gender          String?
+  birthDate       DateTime?     @map(name: "birth_date")
+  isVerified      Boolean       @default(false) @map(name: "is_verified")
+  createdDate     DateTime      @default(now()) @map(name: "created_date")
+  updatedDate     DateTime      @updatedAt @map(name: "updated_date")
+  roleId          String        @map(name: "role_id")
+  role            Role          @relation(fields: [roleId], references: [id])
+  createdProducts Product[]     @relation("CreatedProducts")
+  updatedProducts Product[]     @relation("UpdatedProducts")
+  userAddress     UserAddress[]
 
   @@map(name: "users")
+}
+
+model UserAddress {
+  id              String  @id @default(uuid())
+  label           String
+  address         String
+  subdistrictId   Int     @map(name: "subdistrict_id")
+  subdistrictName String  @map(name: "subdistrict_name")
+  cityId          Int     @map(name: "city_id")
+  cityName        String  @map(name: "city_name")
+  provinceId      Int     @map(name: "province_id")
+  provinceName    String  @map(name: "province_name")
+  postalCode      String? @map(name: "postal_code")
+  isDefault       Boolean @default(false)
+  user            User    @relation(fields: [userId], references: [id])
+  userId          String  @map(name: "user_id")
+
+  @@map(name: "user_address")
 }
 
 model Store {
   id              String   @id @default(uuid())
   name            String
-  address         String?
-  subdistrictId   Int?     @map(name: "subdistrict_id")
-  subdistrictName String?  @map(name: "subdistrict_name")
-  cityId          Int?     @map(name: "city_id")
-  cityName        String?  @map(name: "city_name")
-  provinceId      Int?     @map(name: "province_id")
-  provinceName    String?  @map(name: "province_name")
+  address         String
+  subdistrictId   Int      @map(name: "subdistrict_id")
+  subdistrictName String   @map(name: "subdistrict_name")
+  cityId          Int      @map(name: "city_id")
+  cityName        String   @map(name: "city_name")
+  provinceId      Int      @map(name: "province_id")
+  provinceName    String   @map(name: "province_name")
   postalCode      String?  @map(name: "postal_code")
   longitude       String?
   latitude        String?
@@ -53,4 +74,34 @@ model Store {
   updatedDate     DateTime @updatedAt @map(name: "updated_date")
 
   @@map(name: "stores")
+}
+
+model Category {
+  id       String    @id @default(uuid())
+  name     String    @unique
+  slug     String    @unique
+  products Product[]
+
+  @@map(name: "categories")
+}
+
+model Product {
+  id            String   @id @default(uuid())
+  name          String   @unique
+  slug          String   @unique
+  description   String
+  image         String?
+  slicedPrice   Float    @default(0) @map(name: "sliced_price")
+  sellingPrice  Float    @default(0) @map(name: "selling_price")
+  isActive      Boolean  @default(true) @map(name: "is_active")
+  createdByUser User?    @relation("CreatedProducts", fields: [createdBy], references: [id])
+  createdBy     String?  @map(name: "created_by")
+  createdDate   DateTime @default(now()) @map(name: "created_date")
+  updatedByUser User?    @relation("UpdatedProducts", fields: [updatedBy], references: [id])
+  updatedBy     String?  @map(name: "updated_by")
+  updatedDate   DateTime @updatedAt @map(name: "updated_date")
+  category      Category @relation(fields: [categoryId], references: [id])
+  categoryId    String   @map(name: "category_id")
+
+  @@map(name: "products")
 }
