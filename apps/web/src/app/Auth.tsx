@@ -9,7 +9,8 @@ export default function Auth({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (typeof window !== undefined) {
-      const token = localStorage.getItem('token');
+      const payload = JSON.parse(localStorage.getItem('token') || '');
+      const token = payload.token;
       if (token) {
         dispatch(checkToken(token));
       }

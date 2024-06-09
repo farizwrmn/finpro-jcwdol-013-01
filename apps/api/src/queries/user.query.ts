@@ -20,22 +20,22 @@ const getUserByEmailQuery = async (email: string) => {
   }
 };
 
-// const updateUserQuery = async (id: string, data: IUser) => {
-//   try {
-//     const user = await prisma.user.update({
-//       data: {
-//         ...data,
-//         birthDate: data.birthDate ? new Date(data.birthDate) : null,
-//       },
-//       where: {
-//         id,
-//       },
-//     });
+const updateUserQuery = async (id: string, data: IUser) => {
+  try {
+    const user = await prisma.user.update({
+      data: {
+        ...data,
+        birthDate: data.birthDate ? new Date(data.birthDate) : null,
+      },
+      where: {
+        id,
+      },
+    });
 
-//     return user;
-//   } catch (err) {
-//     throw err;
-//   }
-// };
+    return user;
+  } catch (err) {
+    throw err;
+  }
+};
 
-export { getUserByEmailQuery };
+export { getUserByEmailQuery, updateUserQuery };

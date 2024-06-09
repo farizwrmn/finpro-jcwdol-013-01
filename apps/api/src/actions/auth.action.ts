@@ -39,10 +39,17 @@ const loginAction = async (data: Auth) => {
     if (!isValid) throw new Error('password is wrong');
 
     const payload = {
-      userId: user.id,
+      id: user.id,
+      name: user.name,
       email: user.email,
+      image: user.image,
+      phone: user.phone,
+      gender: user.gender,
+      birthDate: user.birthDate,
+      isVerified: user.isVerified,
       role: user.role.name,
     };
+
     const token = sign(payload, String(API_KEY), { expiresIn: '1h' });
 
     return { user, token };
@@ -51,4 +58,30 @@ const loginAction = async (data: Auth) => {
   }
 };
 
-export { registerAction, loginAction };
+const refreshTokenAction = async (email: string) => {
+  try {
+    const user = await getUserByEmailQuery(email);
+
+    if (!user) throw new HttpException(500, "Something went wrong");
+
+    const payload = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      image: user.image,
+      phone: user.phone,
+      gender: user.gender,
+      birthDate: user.birthDate,
+      isVerified: user.isVerified,
+      role: user.role.name,
+    };
+
+    const token = sign(payload, String(API_KEY), { expiresIn: "1hr" });
+
+    return { user, token };
+  } catch (err) {
+    throw err;
+  }
+};
+
+export { registerAction, loginAction, refreshTokenAction };
