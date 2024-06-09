@@ -2,23 +2,22 @@ import express, { Application } from 'express';
 import { API_PORT } from './config';
 
 import authRouter from './routes/auth.route';
-// import userRouter from './routes/user.route';
+import userRouter from './routes/user.route';
 import { ErrorMiddleware } from './middlewares/error.middleware';
 import cors from 'cors';
+import path = require("path");
 
 const PORT: number = Number(API_PORT) || 8000;
 
 const app: Application = express();
 
-// initialize middleware
-app.use(express.json());
-
-// CORS
 app.use(cors());
+app.use(express.json());
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // initialize endpoint
 app.use('/auth', authRouter);
-// app.use('/users', userRouter);
+app.use('/users', userRouter);
 
 // initialize error middleware
 app.use(ErrorMiddleware);

@@ -3,21 +3,49 @@
 import {
   Button,
   Flex,
-  FormControl,
-  FormLabel,
   Heading,
-  Input,
   Stack,
   useColorModeValue,
-  HStack,
-  Avatar,
-  AvatarBadge,
-  IconButton,
-  Center,
 } from '@chakra-ui/react';
-import { SmallCloseIcon } from '@chakra-ui/icons';
+import { withFormik } from 'formik';
+import * as Yup from 'yup';
+import { FormValues, FormProps } from './types';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { useRouter } from 'next/navigation';
+import InnerForm from './innerForm';
+import { updateProfile } from '@/lib/features/auth/authSlice';
+
+const UpdateProfileSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('Invalid email address format')
+    .required('Email is required'),
+});
 
 export default function UserProfileEdit(): JSX.Element {
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(state => state.auth.user);
+
+  const UpdateProfileForm = withFormik<FormProps, FormValues>({
+    mapPropsToValues: (props) => ({
+      id: props.initialId || user.id || '',
+      name: props.initialName || user.name || '',
+      email: props.initialEmail || user.email || '',
+      image: props.initialImage || user.image || '',
+      phone: props.initialPhone || user.phone || '',
+      gender: props.initialGender || user.gender || '',
+      birthDate: props.initialBirthDate || user.birthDate || '',
+    }),
+    validationSchema: UpdateProfileSchema,
+    enableReinitialize: true,
+    handleSubmit({ name, email, phone, gender, birthDate }: FormValues, { resetForm }) {
+      dispatch(updateProfile(user.id as string, { name, email, phone, gender, birthDate }));
+      resetForm();
+      alert("Update user profile success");
+      router.push('/users/profile');
+    },
+  })(InnerForm);
+
   return (
     <Flex
       minH={'100vh'}
@@ -38,90 +66,7 @@ export default function UserProfileEdit(): JSX.Element {
         <Heading lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl' }}>
           User Profile Edit
         </Heading>
-        <FormControl id="userName">
-          <FormLabel>User Icon</FormLabel>
-          <Stack direction={['column', 'row']} spacing={6}>
-            <Center>
-              <Avatar size="xl" src="https://bit.ly/sage-adebayo">
-                <AvatarBadge
-                  as={IconButton}
-                  size="sm"
-                  rounded="full"
-                  top="-10px"
-                  colorScheme="red"
-                  aria-label="remove Image"
-                  icon={<SmallCloseIcon />}
-                />
-              </Avatar>
-            </Center>
-            <Center w="full">
-              <Button w="full">Change Icon</Button>
-            </Center>
-          </Stack>
-        </FormControl>
-        <FormControl id="Name" isRequired>
-          <FormLabel>Name</FormLabel>
-          <Input
-            placeholder="Name"
-            _placeholder={{ color: 'gray.500' }}
-            type="text"
-          />
-        </FormControl>
-        <FormControl id="userId" isRequired isDisabled>
-          <FormLabel>User ID</FormLabel>
-          <Input
-            placeholder="User ID (automatically generated)"
-            _placeholder={{ color: 'gray.500' }}
-            type="text" // Adjust the type based on your user ID data format
-            disabled // This field is disabled as it's likely automatically generated
-          />
-        </FormControl>
-        <FormControl id="email" isRequired>
-          <FormLabel>Email address</FormLabel>
-          <Input
-            placeholder="your-email@example.com"
-            _placeholder={{ color: 'gray.500' }}
-            type="email"
-          />
-        </FormControl>
-        <FormControl id="domicile">
-          <FormLabel>Domicile</FormLabel>
-          <Input
-            placeholder="Enter your domicile"
-            _placeholder={{ color: 'gray.500' }}
-            type="text" // Adjust the type based on your domicile data format
-          />
-        </FormControl>
-        <FormControl id="phoneNumber" isRequired>
-          <FormLabel>Phone Number</FormLabel>
-          <Input
-            placeholder="Enter your phone number"
-            _placeholder={{ color: 'gray.500' }}
-            type="tel" // Use the "tel" type for phone number input
-          />
-        </FormControl>
-        <Stack spacing={6} direction={['column', 'row']}>
-          <Button
-            bg={'red.400'}
-            color={'white'}
-            w="full"
-            _hover={{
-              bg: 'red.500',
-            }}
-          >
-            Cancel
-          </Button>
-          <Button
-            bg={'blue.400'}
-            color={'white'}
-            w="full"
-            _hover={{
-              bg: 'blue.500',
-            }}
-          >
-            Submit
-          </Button>
-        </Stack>
+        <UpdateProfileForm />
       </Stack>
     </Flex>
   );

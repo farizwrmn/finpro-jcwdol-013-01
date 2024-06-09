@@ -5,32 +5,107 @@ import {
   Button,
   Stack,
   Text,
+  Select,
+  Center,
+  Avatar,
+  AvatarBadge,
+  IconButton,
+  Input,
 } from '@chakra-ui/react';
 import { FormikProps, Form, Field } from 'formik';
-import { FormValues } from '@/types';
+import { FormValues } from './types';
+import { useState } from 'react';
+import { SmallCloseIcon } from "@chakra-ui/icons";
+import { updateAvatar } from '@/lib/features/auth/authSlice';
+import { useAppDispatch } from "@/lib/hooks";
 
 export default function InnerForm(props: FormikProps<FormValues>) {
   const { values, errors, touched, handleChange, handleSubmit, isSubmitting } =
     props;
+  const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useAppDispatch();
+
+  const handleUpdateAvatar = async () => {
+    try {
+      const formData = new FormData();
+      const inputFile = document.getElementById("image") as HTMLInputElement;
+      console.log("inputFile:", inputFile?.files?.item(0) as File);
+      formData.append("image", inputFile?.files?.item(0) as File);
+
+      console.log("handleUpdateAvatar:", formData);
+
+      dispatch(updateAvatar(values.id, formData));
+      alert("Update Avatar Success");
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   return (
-    <Box
-      sx={{
-        minWidth: '300px',
-      }}
-    >
+    <Box>
       <Form onSubmit={handleSubmit}>
         <Stack spacing={4}>
-          <FormControl>
-            <FormLabel htmlFor="email">Email :</FormLabel>
+          <FormControl id="userName">
+            <Stack direction={['column', 'row']} spacing={6}>
+              <Center>
+                <Avatar size="xl" src={`http://localhost:8000/public/avatar/${values.image}`}>
+                  <AvatarBadge
+                    as={IconButton}
+                    size="sm"
+                    rounded="full"
+                    top="-10px"
+                    colorScheme="red"
+                    aria-label="remove Image"
+                    icon={<SmallCloseIcon />}
+                  />
+                </Avatar>
+              </Center>
+              <Center w="full">
+                <Input
+                  type="file"
+                  id="image"
+                  name="image"
+                  onChange={handleUpdateAvatar}
+                />
+              </Center>
+            </Stack>
+          </FormControl>
+          <FormControl id="Name">
+            <FormLabel>Name</FormLabel>
+            <Field
+              name="name"
+              type="text"
+              placeholder="Name"
+              _placeholder={{ color: 'gray.500' }}
+              onChange={handleChange}
+              value={values.name}
+            />
+            {touched.name && errors.name && (
+              <Text
+                m={'2'}
+                textAlign={'center'}
+                sx={{
+                  color: 'red',
+                }}
+              >
+                {errors.name}
+              </Text>
+            )}
+          </FormControl>
+          <FormControl id="email" isRequired>
+            <FormLabel>Email address</FormLabel>
             <Field
               name="email"
               type="email"
+              placeholder="your-email@example.com"
+              _placeholder={{ color: 'gray.500' }}
               onChange={handleChange}
               value={values.email}
             />
             {touched.email && errors.email && (
               <Text
+                m={'2'}
+                textAlign={'center'}
                 sx={{
                   color: 'red',
                 }}
@@ -39,33 +114,88 @@ export default function InnerForm(props: FormikProps<FormValues>) {
               </Text>
             )}
           </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="password">Password :</FormLabel>
+          <FormControl id="phoneNumber">
+            <FormLabel>Phone Number</FormLabel>
             <Field
-              name="password"
-              type="password"
+              name="phone"
+              type="tel"
+              placeholder="Enter your phone number"
+              _placeholder={{ color: 'gray.500' }}
               onChange={handleChange}
-              value={values.password}
+              value={values.phone}
             />
-            {touched.password && errors.password && (
+            {touched.phone && errors.phone && (
               <Text
+                m={'2'}
+                textAlign={'center'}
                 sx={{
                   color: 'red',
                 }}
               >
-                {errors.password}
+                {errors.phone}
               </Text>
             )}
           </FormControl>
-          <Button
-            sx={{
-              marginTop: '15px',
-            }}
-            type="submit"
-            disabled={isSubmitting}
-          >
-            Register
-          </Button>
+          <FormControl id="gender">
+            <FormLabel>Gender</FormLabel>
+            <Select
+              name="gender"
+              placeholder="Select Gender"
+              _placeholder={{ color: 'gray.500' }}
+              onChange={handleChange}
+              value={values.gender}
+            >
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </Select>
+          </FormControl>
+          <FormControl id="birthDate">
+            <FormLabel>Birth date</FormLabel>
+            <Field
+              name="birthDate"
+              type="date"
+              placeholder="Enter your birth date"
+              _placeholder={{ color: 'gray.500' }}
+              onChange={handleChange}
+              value={values.birthDate}
+            />
+            {touched.birthDate && errors.birthDate && (
+              <Text
+                m={'2'}
+                textAlign={'center'}
+                sx={{
+                  color: 'red',
+                }}
+              >
+                {errors.birthDate}
+              </Text>
+            )}
+          </FormControl>
+          <Stack spacing={6} direction={['column', 'row']}>
+            <Button
+              bg={'red.400'}
+              color={'white'}
+              w="full"
+              _hover={{
+                bg: 'red.500',
+              }}
+            >
+              Cancel
+            </Button>
+            <Button
+              bg={'blue.400'}
+              color={'white'}
+              w="full"
+              _hover={{
+                bg: 'blue.500',
+              }}
+              type="submit"
+              disabled={isSubmitting}
+            >
+              Update
+            </Button>
+          </Stack>
         </Stack>
       </Form>
     </Box>
