@@ -10,7 +10,7 @@ import ProductCard5 from './products/bumbu';
 const ProductList = () => {
   return (
     <>
-      <Heading textAlign={'center'} mt={{ base: '10', sm: '-20' }} mb={5}>
+      <Heading textAlign={'center'} mt={{ base: '10', sm: '10' }} mb={5}>
         Groceries Near You
       </Heading>
       <Divider />
