@@ -1,13 +1,13 @@
 import { User } from 'prisma/prisma-client';
-import { Auth } from '../interfaces/auth.interface';
+import { Auth, RegisterAuth } from '../interfaces/auth.interface';
 import { getUserByEmailQuery } from '../queries/user.query';
-import { loginQuery, registerQuery } from '../queries/auth.query';
+import { loginQuery, registerQuery, verifyQuery } from '../queries/auth.query';
 import { HttpException } from '../exceptions/HttpException';
 import { genSalt, hash, compare } from 'bcrypt';
 import { API_KEY } from '../config';
 import { sign } from 'jsonwebtoken';
 
-const registerAction = async (data: User): Promise<User> => {
+const registerAction = async (data: RegisterAuth): Promise<User> => {
   try {
     const check = await getUserByEmailQuery(data.email || '');
 
@@ -15,9 +15,9 @@ const registerAction = async (data: User): Promise<User> => {
 
     const salt = await genSalt(10);
 
-    const hashPass = await hash(data.password || '', salt);
+    // const hashPass = await hash(data.password || '', salt);
 
-    const user = await registerQuery(data, hashPass);
+    const user = await registerQuery(data);
 
     return user;
   } catch (err) {
@@ -55,4 +55,21 @@ const loginAction = async (data: Auth) => {
   }
 };
 
-export { registerAction, loginAction };
+const verifyAction = async (data: Auth): Promise<void> => {
+  try {
+    const findUser = await getUserByEmailQuery(data.email);
+    if (!findUser) throw new Error('something went wrong');
+    const salt = await genSalt(10);
+
+    const hashPass = await hash(data.password || '', salt);
+
+    await verifyQuery({
+      email: data.email,
+      password: hashPass,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { registerAction, loginAction, verifyAction };

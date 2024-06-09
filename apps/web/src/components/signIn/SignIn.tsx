@@ -81,6 +81,3 @@ const LoginView = () => {
 };
 
 export default LoginView;
-};
-
-export default LoginView;
