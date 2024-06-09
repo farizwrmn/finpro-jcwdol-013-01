@@ -46,31 +46,6 @@ export default function InnerForm(props: FormikProps<FormValues>) {
               </Text>
             )}
           </FormControl>
-          <FormControl>
-            <FormLabel htmlFor="password">Password :</FormLabel>
-            <Field
-              name="password"
-              type="password"
-              onChange={handleChange}
-              value={values.password}
-              style={{
-                padding: '5px',
-                border: '0.5px solid grey',
-                borderRadius: '5px',
-              }}
-            />
-            {touched.password && errors.password && (
-              <Text
-                m={'2'}
-                textAlign={'center'}
-                sx={{
-                  color: 'red',
-                }}
-              >
-                {errors.password}
-              </Text>
-            )}
-          </FormControl>
           <Link href="/sign-in">
             <Text
               color={'blue.400'}
