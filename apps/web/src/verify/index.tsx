@@ -100,7 +100,6 @@ const VerifyView = () => {
               </InputGroup>
             </FormControl>
             <Stack spacing={10} pt={2}>
-              {}
               <Button
                 loadingText="Submitting"
                 size="lg"
