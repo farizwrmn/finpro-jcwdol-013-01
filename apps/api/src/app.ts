@@ -3,6 +3,7 @@ import { API_PORT } from './config';
 
 import authRouter from './routes/auth.route';
 import userRouter from './routes/user.route';
+import storeRouter from './routes/store.route';
 import { ErrorMiddleware } from './middlewares/error.middleware';
 import cors from 'cors';
 import path = require("path");
@@ -18,6 +19,7 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 // initialize endpoint
 app.use('/auth', authRouter);
 app.use('/users', userRouter);
+app.use('/stores', storeRouter);
 
 // initialize error middleware
 app.use(ErrorMiddleware);
