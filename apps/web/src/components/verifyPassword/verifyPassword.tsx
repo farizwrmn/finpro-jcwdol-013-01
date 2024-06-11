@@ -1,50 +1,65 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import {
   Box,
-  Heading,
-  Flex,
   Stack,
+  Flex,
   useColorModeValue,
+  Heading,
   Divider,
 } from '@chakra-ui/react';
-
 import { withFormik } from 'formik';
 import * as Yup from 'yup';
-
-import { useAppDispatch } from '@/lib/hooks';
-import { signIn } from '@/lib/features/auth/authSlice';
-
-import { FormValues, FormProps } from './types';
-
-import InnerForm from '../signIn/components/innerForm';
+import { FormValues, FormProps } from '@/types';
+import { IUsers } from '@/interface/user.interface';
+import InnerForm from './component/innerForm';
+import instance from '@/utils/axiosInstance';
 import PageWrapper from '../pageWrapper';
 
-const LoginSchema = Yup.object().shape({
-  email: Yup.string()
-    .email('Invalid email address format')
-    .required('Email is required'),
+const PasswordSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
 });
 
-const LoginView = () => {
+const VerifyView = () => {
+  const params = useSearchParams();
   const router = useRouter();
-  const dispatch = useAppDispatch();
+
+  const verify = async ({ password }: IUsers) => {
+    try {
+      const param = params.toString().replace('token=', '');
+      await instance.post(
+        '/auth/verify',
+        {
+          password,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${param}`,
+          },
+        },
+      );
+      alert('Account verified, please Sign In');
+      router.push('/sign-in');
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const LoginForm = withFormik<FormProps, FormValues>({
     mapPropsToValues: (props) => ({
       email: props.initialEmail || '',
       password: props.initialPassword || '',
-      password1: props.initialPassword || '',
+      password1: props.initialPassword1 || '',
     }),
-    validationSchema: LoginSchema,
+    validationSchema: PasswordSchema,
     enableReinitialize: true,
     handleSubmit({ email, password }: FormValues, { resetForm }) {
-      dispatch(signIn({ email, password }));
+      verify({ email, password });
       resetForm();
-      router.push('/');
+      router.push('/sign-in');
     },
   })(InnerForm);
 
@@ -59,7 +74,7 @@ const LoginView = () => {
       >
         <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
           <Stack align={'center'}>
-            <Heading fontSize={'3xl'}>Sign In</Heading>
+            <Heading fontSize={'3xl'}>Set Password</Heading>
           </Stack>
           <Divider />
           <Box
@@ -82,4 +97,4 @@ const LoginView = () => {
   );
 };
 
-export default LoginView;
+export default VerifyView;
