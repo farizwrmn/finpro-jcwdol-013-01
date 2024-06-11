@@ -19,22 +19,28 @@ model Role {
 }
 
 model User {
-  id              String        @id @default(uuid())
-  name            String?
-  email           String?       @unique
-  password        String?
-  phone           String?
-  image           String?
-  gender          String?
-  birthDate       DateTime?     @map(name: "birth_date")
-  isVerified      Boolean       @default(false) @map(name: "is_verified")
-  createdDate     DateTime      @default(now()) @map(name: "created_date")
-  updatedDate     DateTime      @updatedAt @map(name: "updated_date")
-  roleId          String        @map(name: "role_id")
-  role            Role          @relation(fields: [roleId], references: [id])
-  createdProducts Product[]     @relation("CreatedProducts")
-  updatedProducts Product[]     @relation("UpdatedProducts")
-  userAddress     UserAddress[]
+  id                    String         @id @default(uuid())
+  name                  String?
+  email                 String?        @unique
+  password              String?
+  phone                 String?
+  image                 String?
+  gender                String?
+  birthDate             DateTime?      @map(name: "birth_date")
+  isVerified            Boolean        @default(false) @map(name: "is_verified")
+  longitude             String?
+  latitude              String?
+  createdDate           DateTime       @default(now()) @map(name: "created_date")
+  updatedDate           DateTime       @updatedAt @map(name: "updated_date")
+  roleId                String         @map(name: "role_id")
+  role                  Role           @relation(fields: [roleId], references: [id])
+  createdProducts       Product[]      @relation("CreatedProducts")
+  updatedProducts       Product[]      @relation("UpdatedProducts")
+  userAddress           UserAddress[]
+  createdStockHistories StockHistory[] @relation("CreatedStockHistories")
+  updatedStockHistories StockHistory[] @relation("UpdatedStockHistories")
+  carts                 Cart[]
+  orders                Order[]
 
   @@map(name: "users")
 }
@@ -50,28 +56,31 @@ model UserAddress {
   provinceId      Int     @map(name: "province_id")
   provinceName    String  @map(name: "province_name")
   postalCode      String? @map(name: "postal_code")
-  isDefault       Boolean @default(false)
+  isDefault       Boolean @default(false) @map(name: "is_default")
   user            User    @relation(fields: [userId], references: [id])
   userId          String  @map(name: "user_id")
+  orders          Order[]
 
   @@map(name: "user_address")
 }
 
 model Store {
-  id              String   @id @default(uuid())
+  id              String     @id @default(uuid())
   name            String
   address         String
-  subdistrictId   Int      @map(name: "subdistrict_id")
-  subdistrictName String   @map(name: "subdistrict_name")
-  cityId          Int      @map(name: "city_id")
-  cityName        String   @map(name: "city_name")
-  provinceId      Int      @map(name: "province_id")
-  provinceName    String   @map(name: "province_name")
-  postalCode      String?  @map(name: "postal_code")
+  subdistrictId   Int        @map(name: "subdistrict_id")
+  subdistrictName String     @map(name: "subdistrict_name")
+  cityId          Int        @map(name: "city_id")
+  cityName        String     @map(name: "city_name")
+  provinceId      Int        @map(name: "province_id")
+  provinceName    String     @map(name: "province_name")
+  postalCode      String?    @map(name: "postal_code")
   longitude       String?
   latitude        String?
-  createdDate     DateTime @default(now()) @map(name: "created_date")
-  updatedDate     DateTime @updatedAt @map(name: "updated_date")
+  createdDate     DateTime   @default(now()) @map(name: "created_date")
+  updatedDate     DateTime   @updatedAt @map(name: "updated_date")
+  stocks          Stock[]
+  discounts       Discount[]
 
   @@map(name: "stores")
 }
@@ -86,22 +95,151 @@ model Category {
 }
 
 model Product {
-  id            String   @id @default(uuid())
-  name          String   @unique
-  slug          String   @unique
+  id            String         @id @default(uuid())
+  name          String         @unique
+  slug          String         @unique
   description   String
   image         String?
-  slicedPrice   Float    @default(0) @map(name: "sliced_price")
-  sellingPrice  Float    @default(0) @map(name: "selling_price")
-  isActive      Boolean  @default(true) @map(name: "is_active")
-  createdByUser User?    @relation("CreatedProducts", fields: [createdBy], references: [id])
-  createdBy     String?  @map(name: "created_by")
-  createdDate   DateTime @default(now()) @map(name: "created_date")
-  updatedByUser User?    @relation("UpdatedProducts", fields: [updatedBy], references: [id])
-  updatedBy     String?  @map(name: "updated_by")
-  updatedDate   DateTime @updatedAt @map(name: "updated_date")
-  category      Category @relation(fields: [categoryId], references: [id])
-  categoryId    String   @map(name: "category_id")
+  slicedPrice   Float          @default(0) @map(name: "sliced_price")
+  sellingPrice  Float          @default(0) @map(name: "selling_price")
+  isActive      Boolean        @default(true) @map(name: "is_active")
+  createdByUser User?          @relation("CreatedProducts", fields: [createdBy], references: [id])
+  createdBy     String?        @map(name: "created_by")
+  createdDate   DateTime       @default(now()) @map(name: "created_date")
+  updatedByUser User?          @relation("UpdatedProducts", fields: [updatedBy], references: [id])
+  updatedBy     String?        @map(name: "updated_by")
+  updatedDate   DateTime       @updatedAt @map(name: "updated_date")
+  category      Category       @relation(fields: [categoryId], references: [id])
+  categoryId    String         @map(name: "category_id")
+  productImages ProductImage[]
+  stocks        Stock[]
+  discounts     Discount[]
+  cartItems     CartItem[]
+  orderItems    OrderItem[]
 
   @@map(name: "products")
+}
+
+model ProductImage {
+  id        String  @id @default(uuid())
+  image     String
+  product   Product @relation(fields: [productId], references: [id])
+  productId String  @map(name: "product_id")
+
+  @@map(name: "product_images")
+}
+
+model Stock {
+  id             String         @id @default(uuid())
+  baseStock      Float          @default(0) @map(name: "base_stock")
+  usedStock      Float          @default(0) @map(name: "used_stock")
+  remainingStock Float          @default(0) @map(name: "remaining_stock")
+  store          Store          @relation(fields: [storeId], references: [id])
+  storeId        String         @map(name: "store_id")
+  product        Product        @relation(fields: [productId], references: [id])
+  productId      String         @map(name: "product_id")
+  stockHistories StockHistory[]
+
+  @@map(name: "stocks")
+}
+
+model StockHistory {
+  id            String   @id @default(uuid())
+  type          String
+  stock         Float    @default(0)
+  stockProduct  Stock    @relation(fields: [stockId], references: [id])
+  stockId       String   @map(name: "stock_id")
+  createdByUser User?    @relation("CreatedStockHistories", fields: [createdBy], references: [id])
+  createdBy     String?  @map(name: "created_by")
+  createdDate   DateTime @default(now()) @map(name: "created_date")
+  updatedByUser User?    @relation("UpdatedStockHistories", fields: [updatedBy], references: [id])
+  updatedBy     String?  @map(name: "updated_by")
+  updatedDate   DateTime @updatedAt @map(name: "updated_date")
+
+  @@map(name: "stock_histories")
+}
+
+model Discount {
+  id              String  @id @default(uuid())
+  type            String
+  amount          Float   @default(0)
+  unit            String
+  minimumPrice    Float   @default(0) @map(name: "minimum_price")
+  maximumDiscount Float   @default(0) @map(name: "maximum_discount")
+  store           Store   @relation(fields: [storeId], references: [id])
+  storeId         String  @map(name: "store_id")
+  product         Product @relation(fields: [productId], references: [id])
+  productId       String  @map(name: "product_id")
+
+  @@map(name: "discounts")
+}
+
+model Cart {
+  id          String     @id @default(uuid())
+  user        User       @relation(fields: [userId], references: [id])
+  userId      String     @map(name: "user_id")
+  itemsPrice  Float      @default(0) @map(name: "items_price")
+  createdDate DateTime   @default(now()) @map(name: "created_date")
+  updatedDate DateTime   @updatedAt @map(name: "updated_date")
+  cartItems   CartItem[]
+
+  @@map(name: "carts")
+}
+
+model CartItem {
+  id           String  @id @default(uuid())
+  name         String
+  slug         String
+  description  String
+  image        String?
+  quantity     Float   @default(0)
+  slicedPrice  Float   @default(0) @map(name: "sliced_price")
+  sellingPrice Float   @default(0) @map(name: "selling_price")
+  cart         Cart    @relation(fields: [cartId], references: [id])
+  cartId       String  @map(name: "cart_id")
+  product      Product @relation(fields: [productId], references: [id])
+  productId    String  @map(name: "product_id")
+
+  @@map(name: "cart_items")
+}
+
+model Order {
+  id              String      @id @default(uuid())
+  orderNumber     String      @map(name: "order_number")
+  orderDate       DateTime    @default(now()) @map(name: "order_date")
+  user            User        @relation(fields: [userId], references: [id])
+  userId          String      @map(name: "user_id")
+  userAddress     UserAddress @relation(fields: [userAddressId], references: [id])
+  userAddressId   String      @map(name: "user_address_id")
+  itemsPrice      Float       @default(0) @map(name: "items_price")
+  shippingPrice   Float       @default(0) @map(name: "shipping_price")
+  discountPrice   Float       @default(0) @map(name: "discount_price")
+  totalPrice      Float       @default(0) @map(name: "total_price")
+  paymentMethod   String      @map(name: "payment_method")
+  paymentStatus   String      @default("UNPAID") @map(name: "payment_status")
+  paymentImage    String?     @map(name: "payment_image")
+  paymentDate     DateTime    @map(name: "payment_date")
+  shippingCourier String      @map(name: "shipping_courier")
+  shippingService String      @map(name: "shipping_service")
+  shippingStatus  String      @default("UNDELIVERED") @map(name: "shipping_status")
+  shippingDate    DateTime    @map(name: "shipping_date")
+  orderItems      OrderItem[]
+
+  @@map(name: "orders")
+}
+
+model OrderItem {
+  id          String  @id @default(uuid())
+  name        String
+  slug        String
+  description String
+  image       String?
+  quantity    Float   @default(0)
+  price       Float   @default(0) @map(name: "price")
+  order       Order   @relation(fields: [orderId], references: [id])
+  orderId     String  @map(name: "order_id")
+  product     Product @relation(fields: [productId], references: [id])
+  productId   String  @map(name: "product_id")
+
+  @@map(name: "order_items")
 }
