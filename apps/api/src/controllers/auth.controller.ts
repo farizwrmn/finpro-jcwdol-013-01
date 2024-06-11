@@ -18,7 +18,7 @@ const registerController = async (
 
     res.status(200).json({
       message:
-        'Register success, please verify your account through your email first before Sign in.',
+        'Register success, please verify your account trough your email first before Sign in.',
       data: result,
     });
   } catch (err) {

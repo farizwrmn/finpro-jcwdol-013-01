@@ -5,7 +5,7 @@ import {
 } from '@/controllers/user.controller';
 import { uploader } from '@/helpers/multer';
 
-// const router = express.Router();
+const router = express.Router();
 
 router.patch('/:id', updateUserController);
 router.patch(
@@ -14,4 +14,4 @@ router.patch(
   updateAvatarController,
 );
 
-// export default router;
+export default router;

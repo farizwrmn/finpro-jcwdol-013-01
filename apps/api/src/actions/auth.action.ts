@@ -50,7 +50,6 @@ const loginAction = async (data: Auth) => {
     };
 
     const token = sign(payload, String(API_KEY), { expiresIn: '1h' });
-    console.log(token);
 
     return { user, token };
   } catch (err) {

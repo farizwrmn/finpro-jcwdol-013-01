@@ -13,7 +13,6 @@ const prisma = new PrismaClient();
 const registerQuery = async (data: RegisterAuth): Promise<User> => {
   try {
     const t = await prisma.$transaction(async (prisma) => {
-      console.log('masuk1');
       try {
         const user = await prisma.user.create({
           data: {
@@ -25,7 +24,6 @@ const registerQuery = async (data: RegisterAuth): Promise<User> => {
             },
           },
         });
-        console.log('masuk2');
         // const pathOldImage = path.join(__dirname, "../public", avatar)
         // fs.unlinkSync(pathOldImage);
 

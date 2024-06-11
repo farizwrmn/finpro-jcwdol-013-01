@@ -6,6 +6,7 @@ import ProductCard2 from './products/buah';
 import ProductCard3 from './products/minyak';
 import ProductCard4 from './products/sayur';
 import ProductCard5 from './products/bumbu';
+import PageWrapper from './pageWrapper';
 
 const ProductList = () => {
   return (
@@ -14,7 +15,7 @@ const ProductList = () => {
         Groceries Near You
       </Heading>
       <Divider />
-      <Box flex={'1'} gap={5} mb={10} h={{ base: '500px', sm: '520px' }}>
+      <Box gap={5} mb={10} h={{ base: '500px', sm: '520px' }}>
         <SimpleGrid overflowX={'scroll'} pb={10} pt={5}>
           <Stack flex={'row'} direction={'row'} h={'full'}>
             <ProductCard />
