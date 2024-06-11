@@ -34,7 +34,7 @@ const initialState: Auth = {
     gender: '',
     birthDate: '',
     isVerified: false,
-    role: ''
+    role: '',
   },
   status: {
     isLogin: false,
@@ -143,36 +143,48 @@ export const checkToken = (token: string) => async (dispatch: Dispatch) => {
   }
 };
 
-export const updateProfile = (id: string, params: IUserProfile) => async (dispatch: Dispatch) => {
-  try {
-    const { data } = await instance.patch(`/users/${id}`, { ...params });
+export const updateProfile =
+  (id: string, params: IUserProfile) => async (dispatch: Dispatch) => {
+    try {
+      const { data } = await instance.patch(`/users/${id}`, { ...params });
 
-    dispatch(updateProfileState({ ...params }));
-    localStorage.setItem('user', JSON.stringify(data?.data));
-  } catch (err) {
-    console.log(err);
-    alert('Update profile failed');
-  }
-};
+      dispatch(updateProfileState({ ...params }));
+      localStorage.setItem('user', JSON.stringify(data?.data));
+    } catch (err) {
+      console.log(err);
+      alert('Update profile failed');
+    }
+  };
 
-export const updateAvatar = (id: string, formData: FormData) => async (dispatch: Dispatch) => {
-  try {
-    const config = {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    };
-    const { data } = await instance.patch(`/users/${id}/avatar`, formData, config);
-    const image = data?.data.image;
+export const updateAvatar =
+  (id: string, formData: FormData) => async (dispatch: Dispatch) => {
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+      const { data } = await instance.patch(
+        `/users/${id}/avatar`,
+        formData,
+        config,
+      );
+      const image = data?.data.image;
 
-    dispatch(updateAvatarState(image));
-    localStorage.setItem('user', JSON.stringify(data?.data));
-  } catch (err) {
-    console.log(err);
-    alert('Update avatar failed');
-  }
-};
+      dispatch(updateAvatarState(image));
+      localStorage.setItem('user', JSON.stringify(data?.data));
+    } catch (err) {
+      console.log(err);
+      alert('Update avatar failed');
+    }
+  };
 
-export const { loginState, logoutState, tokenValidState, updateProfileState, updateAvatarState } = authSlice.actions;
+export const {
+  loginState,
+  logoutState,
+  tokenValidState,
+  updateProfileState,
+  updateAvatarState,
+} = authSlice.actions;
 
 export default authSlice.reducer;

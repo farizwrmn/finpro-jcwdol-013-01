@@ -8,7 +8,7 @@ import categoryRouter from './routes/category.route';
 import productRouter from './routes/product.route';
 import { ErrorMiddleware } from './middlewares/error.middleware';
 import cors from 'cors';
-import path = require("path");
+import path = require('path');
 
 const PORT: number = Number(API_PORT) || 8000;
 

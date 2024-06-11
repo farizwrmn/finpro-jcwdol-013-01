@@ -67,16 +67,10 @@ export default function Footer() {
           <SocialButton label={'Twitter'} href={'#'}>
             <FaTwitter />
           </SocialButton>
-          <SocialButton
-            label={'GPS'}
-            href={'https://maps.app.goo.gl/jAy2RYr4hiKWcehA7'}
-          >
+          <SocialButton label={'GPS'} href={'/'}>
             <FaLocationArrow />
           </SocialButton>
-          <SocialButton
-            label={'Instagram'}
-            href={'https://instagram.com/warkopmilitan'}
-          >
+          <SocialButton label={'Instagram'} href={'/'}>
             <FaInstagram />
           </SocialButton>
         </Stack>

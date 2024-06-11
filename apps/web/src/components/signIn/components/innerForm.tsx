@@ -5,16 +5,27 @@ import {
   Button,
   Stack,
   Text,
+  Center,
 } from '@chakra-ui/react';
+import { FcGoogle } from 'react-icons/fc';
 import { FormikProps, Form, Field } from 'formik';
 import { FormValues } from '@/types';
 import { useRef, useState } from 'react';
 import Link from 'next/link';
+import { signIn } from 'next-auth/react';
+import { FieldValues, SubmitHandler } from 'react-hook-form';
 
 export default function InnerForm(props: FormikProps<FormValues>) {
   const { values, errors, touched, handleChange, handleSubmit, isSubmitting } =
     props;
   const [showPassword, setShowPassword] = useState(false);
+
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    signIn('credentials', {
+      ...data,
+      redirect: false,
+    });
+  };
 
   return (
     <Box>
@@ -76,7 +87,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
               textAlign={'center'}
               _hover={{ color: 'blue.500' }}
             >
-              {'Don\'t have account yet?'}
+              {"Don't have account yet?"}
             </Text>
           </Link>
           <Button
@@ -94,6 +105,21 @@ export default function InnerForm(props: FormikProps<FormValues>) {
             Sign In
           </Button>
         </Stack>
+        <Center pt={8}>
+          <Button
+            w={'full'}
+            maxW={'md'}
+            variant={'outline'}
+            leftIcon={<FcGoogle />}
+            onClick={() => {
+              signIn('google');
+            }}
+          >
+            <Center>
+              <Text>Sign in with Google</Text>
+            </Center>
+          </Button>
+        </Center>
       </Form>
     </Box>
   );

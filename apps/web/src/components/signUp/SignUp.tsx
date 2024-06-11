@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Box,
@@ -9,8 +9,6 @@ import {
   useColorModeValue,
   Heading,
   Divider,
-  Alert,
-  AlertIcon,
 } from '@chakra-ui/react';
 import { withFormik } from 'formik';
 import * as Yup from 'yup';
@@ -46,6 +44,7 @@ const RegisterView = () => {
     mapPropsToValues: (props) => ({
       email: props.initialEmail || '',
       password: props.initialPassword || '',
+      password1: props.initialPassword || '',
     }),
     validationSchema: RegisterSchema,
     enableReinitialize: true,
