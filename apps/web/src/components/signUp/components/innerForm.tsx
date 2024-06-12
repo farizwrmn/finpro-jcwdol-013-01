@@ -9,13 +9,10 @@ import {
 import { FormikProps, Form, Field } from 'formik';
 import { FormValues } from '@/types';
 import Link from 'next/link';
-import { useState } from 'react';
 
 export default function InnerForm(props: FormikProps<FormValues>) {
   const { values, errors, touched, handleChange, handleSubmit, isSubmitting } =
     props;
-
-  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <Box>

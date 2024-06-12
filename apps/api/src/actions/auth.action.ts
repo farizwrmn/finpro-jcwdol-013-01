@@ -53,6 +53,7 @@ const loginAction = async (data: Auth) => {
 
     return { user, token };
   } catch (err) {
+    console.log(err);
     throw err;
   }
 };
@@ -61,7 +62,7 @@ const refreshTokenAction = async (email: string) => {
   try {
     const user = await getUserByEmailQuery(email);
 
-    if (!user) throw new HttpException(500, "Something went wrong");
+    if (!user) throw new HttpException(500, 'Something went wrong');
 
     const payload = {
       id: user.id,
@@ -75,7 +76,7 @@ const refreshTokenAction = async (email: string) => {
       role: user.role.name,
     };
 
-    const token = sign(payload, String(API_KEY), { expiresIn: "1hr" });
+    const token = sign(payload, String(API_KEY), { expiresIn: '1hr' });
 
     return { user, token };
   } catch (err) {

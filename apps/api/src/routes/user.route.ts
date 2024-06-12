@@ -13,8 +13,8 @@ router.patch("/:id", verifyToken, updateUserController);
 router.delete("/:id", verifyToken, adminGuard, deleteUserController);
 router.patch(
   '/:id/avatar',
-  uploader("AVATAR_", "/avatar").single("image"),
-  updateAvatarController
+  uploader('AVATAR_', '/avatar').single('image'),
+  updateAvatarController,
 );
 
 export default router;

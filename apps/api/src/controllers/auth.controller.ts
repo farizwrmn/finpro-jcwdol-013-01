@@ -18,7 +18,7 @@ const registerController = async (
 
     res.status(200).json({
       message:
-        'Register success, please verify your account through your email first before Sign in.',
+        'Register success, please verify your account trough your email first before Sign in.',
       data: result,
     });
   } catch (err) {
@@ -46,7 +46,7 @@ const loginController = async (
 const refreshTokenController = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> => {
   try {
     const email = req.user?.email as string;
@@ -54,7 +54,7 @@ const refreshTokenController = async (
     const result = await refreshTokenAction(email);
 
     res.status(200).json({
-      message: "Refresh token success",
+      message: 'Refresh token success',
       data: result,
     });
   } catch (err) {
@@ -84,4 +84,9 @@ const verifyController = async (
   }
 };
 
-export { registerController, loginController, verifyController, refreshTokenController };
+export {
+  registerController,
+  loginController,
+  verifyController,
+  refreshTokenController,
+};
