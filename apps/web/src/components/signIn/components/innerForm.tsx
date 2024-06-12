@@ -112,7 +112,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
             variant={'outline'}
             leftIcon={<FcGoogle />}
             onClick={() => {
-              signIn('google');
+              onSubmit(signIn('google'));
             }}
           >
             <Center>
