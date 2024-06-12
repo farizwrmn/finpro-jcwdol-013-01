@@ -12,42 +12,22 @@ import {
   Td,
   TableContainer,
   Box,
-  Input,
-  Select,
-  IconButton,
-  Icon,
   Text,
   ButtonGroup,
   Button,
   Flex,
 } from '@chakra-ui/react';
-import {
-  FiArrowUp,
-  FiArrowDown,
-  FiSearch,
-  FiChevronLeft,
-  FiChevronRight,
-} from 'react-icons/fi';
 import { useRouter } from "next/navigation";
 import instance from "@/utils/axiosInstance";
+import { deleteStore, getStores } from "./services";
 
-interface Store {
-  id: number;
-  name: string;
-  subdistrict: string;
-  city: string;
-  province: string;
-}
-
-export const getStores = async () => {
-  try {
-    const { data } = await instance.get('/stores');
-    const stores = data?.data;
-    return stores;
-  } catch (err) {
-    console.error(err);
-  }
-};
+// interface Store {
+//   id: number;
+//   name: string;
+//   subdistrict: string;
+//   city: string;
+//   province: string;
+// }
 
 const Page = () => {
   // const stores: Store[] = [
@@ -76,6 +56,21 @@ const Page = () => {
       setStores(data);
     })()
   }, []);
+
+  const handleDelete = async (id: string, name: string) => {
+    if (!confirm(`Are you sure want to delete store ${name}`) || !id) return
+    try {
+      const store = await deleteStore(id);
+      if (!store) throw new Error("Delete store failed");
+      alert("Delete store success");
+
+      const data = await getStores();
+      setStores(data);
+    } catch (err) {
+      console.error(err);
+      alert("Delete store failed");
+    }
+  }
 
   // useEffect(() => {
   //   // Apply filtering
@@ -148,24 +143,24 @@ const Page = () => {
       </Text>
       <Card mt={10}>
         <CardBody>
+          <Flex p={4} gap={4}>
+            {/* <Input
+              placeholder="Search..."
+              value={keyword}
+              onChange={(e) => handleSearch(e.target.value)}
+            // leftIcon={<Icon as={FiSearch} />}
+            // Implement search functionality here
+            /> */}
+            <Button
+              colorScheme='blue'
+              onClick={() => {
+                router.push(`/admin/stores/create`);
+              }}
+            >
+              Add
+            </Button>
+          </Flex>
           <TableContainer>
-            <Flex p={4} gap={4}>
-              {/* <Input
-                placeholder="Search..."
-                value={keyword}
-                onChange={(e) => handleSearch(e.target.value)}
-              // leftIcon={<Icon as={FiSearch} />}
-              // Implement search functionality here
-              /> */}
-              <Button
-                colorScheme='blue'
-                onClick={() => {
-                  router.push(`/admin/stores/create`);
-                }}
-              >
-                Add
-              </Button>
-            </Flex>
             <Table variant="striped">
               <Thead>
                 <Tr>
@@ -190,12 +185,17 @@ const Page = () => {
                         <Button
                           colorScheme='blue'
                           onClick={() => {
-                            router.push(`/admin/stores/${store.id}`);
+                            router.push(`/admin/stores/edit/${store.id}`);
                           }}
                         >
                           Edit
                         </Button>
-                        <Button colorScheme='red'>Delete</Button>
+                        <Button
+                          colorScheme='red'
+                          onClick={() => handleDelete(store.id, store.name)}
+                        >
+                          Delete
+                        </Button>
                       </ButtonGroup>
                     </Td>
                   </Tr>

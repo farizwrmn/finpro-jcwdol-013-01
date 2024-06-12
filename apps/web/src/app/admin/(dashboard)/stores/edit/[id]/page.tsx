@@ -16,9 +16,11 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { useRouter } from "next/navigation";
-import { createStore, getCities, getProvinces, getSubdistricts } from "../services";
+import { getCities, getProvinces, getStoreByID, getSubdistricts, updateStore } from "../../services";
 
-const Page = () => {
+type Props = { params: { id: string } };
+
+const Page = ({ params: { id } }: Props) => {
   const [provinces, setProvinces] = useState<any[]>([]);
   const [cities, setCities] = useState<any[]>([]);
   const [subdistricts, setSubdistricts] = useState<any[]>([]);
@@ -37,6 +39,24 @@ const Page = () => {
   });
 
   const router = useRouter();
+
+  useEffect(() => {
+    (async () => {
+      const data = await getStoreByID(id);
+      setFormData({
+        name: data.name,
+        address: data.address,
+        provinceId: data.provinceId,
+        provinceName: data.provinceName,
+        cityId: data.cityId,
+        cityName: data.cityName,
+        subdistrictId: data.subdistrictId,
+        subdistrictName: data.subdistrictName,
+        longitude: data.longitude,
+        latitude: data.latitude,
+      })
+    })();
+  }, [id]);
 
   useEffect(() => {
     (async () => {
@@ -121,13 +141,13 @@ const Page = () => {
     e.preventDefault();
 
     try {
-      const store = await createStore(formData);
-      if (!store) throw new Error("Create store failed!");
-      alert("Create store success");
+      const store = await updateStore(id, formData);
+      if (!store) throw new Error("Update store failed!");
+      alert("Update store success");
       router.push("/admin/stores")
     } catch (err) {
       console.error(err);
-      alert("Create store failed");
+      alert("Update store failed");
     }
   }
 
@@ -259,7 +279,7 @@ const Page = () => {
                     _hover={{
                       bg: 'blue.500',
                     }}>
-                    Create
+                    Update
                   </Button>
                 </Stack>
               </Stack>
