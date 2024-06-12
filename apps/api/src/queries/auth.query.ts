@@ -17,6 +17,7 @@ const registerQuery = async (data: RegisterAuth): Promise<User> => {
         const user = await prisma.user.create({
           data: {
             email: data.email,
+            isVerified: false,
             role: {
               connect: {
                 name: 'customer',
