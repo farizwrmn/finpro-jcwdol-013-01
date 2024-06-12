@@ -26,7 +26,7 @@ import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
 import Link from 'next/link';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { FiBell, FiChevronDown } from 'react-icons/fi';
+import { FiChevronDown, FiShoppingCart } from 'react-icons/fi';
 import { signOut } from '@/lib/features/auth/authSlice';
 import { useRouter } from 'next/navigation';
 
@@ -95,7 +95,7 @@ export default function Navbar() {
                 size="lg"
                 variant="ghost"
                 aria-label="open menu"
-                icon={<FiBell />}
+                icon={<FiShoppingCart />}
                 ml={2}
               />
               <Flex alignItems={'center'}>
@@ -107,10 +107,8 @@ export default function Navbar() {
                   >
                     <HStack>
                       <Avatar
-                        size={'md'}
-                        src={
-                          'https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                        }
+                        size={{ base: 'sm', sm: 'md' }}
+                        src={user.image}
                         ml={2}
                       />
                       <VStack
