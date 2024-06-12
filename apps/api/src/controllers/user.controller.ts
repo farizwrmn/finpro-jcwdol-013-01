@@ -1,5 +1,63 @@
 import { Request, Response, NextFunction } from 'express';
-import { updateUserAction } from '@/actions/user.action';
+import {
+  createUserAction,
+  deleteUserAction,
+  getUserByIDAction,
+  getUsersAction,
+  updateUserAction,
+} from '../actions/user.action';
+
+const getUsersController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const data = await getUsersAction();
+
+    res.status(200).json({
+      message: 'Get users success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getUserByIDController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const data = await getUserByIDAction(id);
+
+    res.status(200).json({
+      message: 'Get user success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const createUserController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const data = await createUserAction(req.body);
+
+    res.status(200).json({
+      message: 'Create user success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
 
 const updateUserController = async (
   req: Request,
@@ -42,4 +100,29 @@ const updateAvatarController = async (
   }
 };
 
-export { updateUserController, updateAvatarController };
+const deleteUserController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const data = await deleteUserAction(id);
+
+    res.status(200).json({
+      message: 'Delete user success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export {
+  getUsersController,
+  getUserByIDController,
+  createUserController,
+  updateUserController,
+  updateAvatarController,
+  deleteUserController,
+};
