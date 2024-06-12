@@ -10,10 +10,12 @@
     "test": "npx cypress verify & cypress run --component"
   },
   "dependencies": {
+    "@next-auth/prisma-adapter": "^1.0.7",
     "@reduxjs/toolkit": "^2.2.5",
     "axios": "^1.7.2",
     "formik": "^2.4.6",
     "next": "^14.2.3",
+    "next-auth": "^4.24.7",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.2.1",
@@ -21,6 +23,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@types/next-auth": "^3.15.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
