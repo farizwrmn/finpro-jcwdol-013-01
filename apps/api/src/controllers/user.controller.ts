@@ -1,45 +1,63 @@
 import { Request, Response, NextFunction } from 'express';
-import { createUserAction, deleteUserAction, getUserByIDAction, getUsersAction, updateUserAction } from "../actions/user.action";
+import {
+  createUserAction,
+  deleteUserAction,
+  getUserByIDAction,
+  getUsersAction,
+  updateUserAction,
+} from '../actions/user.action';
 
-const getUsersController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const getUsersController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
   try {
     const data = await getUsersAction();
 
     res.status(200).json({
-      message: "Get users success",
-      data
+      message: 'Get users success',
+      data,
     });
   } catch (err) {
     next(err);
   }
-}
+};
 
-const getUserByIDController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const getUserByIDController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
   try {
     const { id } = req.params;
     const data = await getUserByIDAction(id);
 
     res.status(200).json({
-      message: "Get user success",
-      data
+      message: 'Get user success',
+      data,
     });
   } catch (err) {
     next(err);
   }
-}
+};
 
-const createUserController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const createUserController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
   try {
     const data = await createUserAction(req.body);
 
     res.status(200).json({
-      message: "Create user success",
-      data
+      message: 'Create user success',
+      data,
     });
   } catch (err) {
     next(err);
   }
-}
+};
 
 const updateUserController = async (
   req: Request,
@@ -82,19 +100,23 @@ const updateAvatarController = async (
   }
 };
 
-const deleteUserController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const deleteUserController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
   try {
     const { id } = req.params;
     const data = await deleteUserAction(id);
 
     res.status(200).json({
-      message: "Delete user success",
-      data
+      message: 'Delete user success',
+      data,
     });
   } catch (err) {
     next(err);
   }
-}
+};
 
 export {
   getUsersController,
@@ -103,4 +125,4 @@ export {
   updateUserController,
   updateAvatarController,
   deleteUserController,
-}
+};

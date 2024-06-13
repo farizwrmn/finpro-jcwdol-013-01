@@ -20,12 +20,12 @@ export default function InnerForm(props: FormikProps<FormValues>) {
     props;
   const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    signIn('credentials', {
-      ...data,
-      redirect: false,
-    });
-  };
+  // const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  //   signIn('credentials', {
+  //     ...data,
+  //     redirect: false,
+  //   });
+  // };
 
   return (
     <Box>
@@ -105,21 +105,6 @@ export default function InnerForm(props: FormikProps<FormValues>) {
             Sign In
           </Button>
         </Stack>
-        <Center pt={8}>
-          <Button
-            w={'full'}
-            maxW={'md'}
-            variant={'outline'}
-            leftIcon={<FcGoogle />}
-            onClick={() => {
-              signIn('google');
-            }}
-          >
-            <Center>
-              <Text>Sign in with Google</Text>
-            </Center>
-          </Button>
-        </Center>
       </Form>
     </Box>
   );
