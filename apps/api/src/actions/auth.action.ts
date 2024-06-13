@@ -1,6 +1,6 @@
 import { User } from 'prisma/prisma-client';
 import { Auth, RegisterAuth } from '../interfaces/auth.interface';
-import { getUserByEmailQuery } from '../queries/user.query';
+import { getUserByEmailQuery, updateUserQuery } from '../queries/user.query';
 import { loginQuery, registerQuery, verifyQuery } from '../queries/auth.query';
 import { HttpException } from '../exceptions/HttpException';
 import { genSalt, hash, compare } from 'bcrypt';
@@ -36,6 +36,11 @@ const loginAction = async (data: Auth) => {
     const isValid = await compare(data.password, user.password || '');
 
     if (!isValid) throw new Error('password is wrong');
+
+    await updateUserQuery(user.id, {
+      longitude: data.longitude,
+      latitude: data.latitude,
+    });
 
     const payload = {
       id: user.id,

@@ -5,9 +5,23 @@ import ProductCard3 from '@/components/ProductPage/products/minyak';
 import ProductCard4 from '@/components/ProductPage/products/bumbu';
 import ProductCard5 from '@/components/ProductPage/products/buah';
 import ProductCard from '@/components/ProductPage/products/sayur';
-import { Box, Divider, Heading, SimpleGrid, Stack } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Card,
+  CardBody,
+  CardFooter,
+  Divider,
+  Heading,
+  Image,
+  SimpleGrid,
+  Stack,
+  Text,
+} from '@chakra-ui/react';
 import React from 'react';
 import DashboardLayout from '../(dashboard)/layout';
+import productItems from '@/data/products.json';
 
 const layoutProduct = () => {
   return (
@@ -34,13 +48,41 @@ const layoutProduct = () => {
           templateColumns={{ base: 'repeat(2, 1fr)', sm: 'repeat(3, 1fr)' }}
           ml={{ base: '0', sm: '290' }}
         >
-          <ProductCard />
-          <ProductCard1 />
-          <ProductCard2 />
-          <ProductCard3 />
-          <ProductCard4 />
-          <ProductCard5 />
-        </SimpleGrid>{' '}
+          {productItems.map((item) => (
+            <Card maxW="xs" shadow={'xl'} w={'full'}>
+              <CardBody>
+                <Image
+                  src={item.imgUrl}
+                  alt="Green double couch with wooden legs"
+                  borderRadius="lg"
+                />
+                <Stack mt="6" spacing="3">
+                  <Heading size="md">{item.name}</Heading>
+                  <Text noOfLines={4}>{item.caption}</Text>
+                  <Text
+                    color="blue.600"
+                    fontSize="lg"
+                    mt={5}
+                    textAlign={'center'}
+                  >
+                    {item.price}
+                  </Text>
+                </Stack>
+              </CardBody>
+              <Divider />
+              <CardFooter>
+                <ButtonGroup spacing="2" m={'auto'}>
+                  <Button variant="ghost" colorScheme="blue">
+                    Add to cart
+                  </Button>
+                  <Button variant="solid" colorScheme="blue">
+                    Buy now
+                  </Button>
+                </ButtonGroup>
+              </CardFooter>
+            </Card>
+          ))}
+        </SimpleGrid>
       </Box>
     </>
   );
