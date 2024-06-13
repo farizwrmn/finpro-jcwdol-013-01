@@ -15,10 +15,10 @@ export const authOptions: NextAuthOptions = {
           image: profile.picture,
           role: {
             connect: {
-              name: "customer"
-            }
-          }
-        }
+              name: 'customer',
+            },
+          },
+        };
       },
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
@@ -33,19 +33,19 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     jwt: async ({ token, user }) => {
-      console.log("user.id: ", user.id);
+      console.log('user.id: ', user.id);
       // get user by id
       // create jwt payload
       // create jwt token
       // save token in local storage
-      if (user) token.id = user.id
+      if (user) token.id = user.id;
       return token;
     },
     session: async ({ session, token }) => {
-      console.log("session.user", session.user)
-      if (!session?.user) return session
-      return session
-    }
+      console.log('session.user', session.user);
+      if (!session?.user) return session;
+      return session;
+    },
   },
 };
 
