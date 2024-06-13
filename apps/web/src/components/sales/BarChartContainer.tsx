@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import {
   Box,
   Heading,
@@ -90,3 +90,4 @@ const BarChartContainer: React.FC = () => {
 };
 
 export default BarChartContainer;
+*/

@@ -1,4 +1,4 @@
-import React from 'react';
+/*import React from 'react';
 import {
   Box,
   Heading,
@@ -91,3 +91,4 @@ const DonutChartContainer: React.FC = () => {
 };
 
 export default DonutChartContainer;
+*/
