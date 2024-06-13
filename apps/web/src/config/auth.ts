@@ -1,20 +1,27 @@
 import GoogleProvider from 'next-auth/providers/google';
-import FacebookProvider from 'next-auth/providers/facebook';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import type { NextAuthOptions } from 'next-auth';
 import type { AuthErrorMessages } from '@/types/auth';
 import prisma from '../../../api/prisma/client';
-import { getSubSession } from '@/utils/auth';
 
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
+      profile(profile) {
+        return {
+          id: profile.sub,
+          name: profile.given_name,
+          email: profile.email,
+          image: profile.picture,
+          role: {
+            connect: {
+              name: 'customer',
+            },
+          },
+        };
+      },
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    }),
-    FacebookProvider({
-      clientId: process.env.FACEBOOK_CLIENT_ID as string,
-      clientSecret: process.env.FACEBOOK_CLIENT_SECRET as string,
     }),
   ],
   pages: {
@@ -22,15 +29,22 @@ export const authOptions: NextAuthOptions = {
   },
   adapter: PrismaAdapter(prisma),
   session: {
-    strategy: 'jwt',
+    strategy: 'database',
   },
   callbacks: {
-    jwt: async ({ token }) => {
+    jwt: async ({ token, user }) => {
+      console.log('user.id: ', user.id);
+      // get user by id
+      // create jwt payload
+      // create jwt token
+      // save token in local storage
+      if (user) token.id = user.id;
       return token;
     },
     session: async ({ session, token }) => {
+      console.log('session.user', session.user);
       if (!session?.user) return session;
-      return getSubSession(session, String(token.id));
+      return session;
     },
   },
 };

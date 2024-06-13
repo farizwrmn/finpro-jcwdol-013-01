@@ -62,6 +62,25 @@ const refreshTokenController = async (
   }
 };
 
+const getTokenController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const email = req.body.email as string;
+
+    const result = await refreshTokenAction(email);
+
+    res.status(200).json({
+      message: 'Refresh token success',
+      data: result,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 const verifyController = async (
   req: Request,
   res: Response,
@@ -89,4 +108,5 @@ export {
   loginController,
   verifyController,
   refreshTokenController,
+  getTokenController,
 };
