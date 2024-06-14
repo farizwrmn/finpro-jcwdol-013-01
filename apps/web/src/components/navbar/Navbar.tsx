@@ -29,6 +29,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { FiChevronDown, FiShoppingCart } from 'react-icons/fi';
 import { signOut } from '@/lib/features/auth/authSlice';
 import { useRouter } from 'next/navigation';
+import ShoppingCart from '../cart/ShoppingCart';
 
 export interface NavItem {
   label: string;
@@ -91,13 +92,32 @@ export default function Navbar() {
           </Flex>
           {status.isLogin ? (
             <HStack spacing={{ base: '0', md: '6' }}>
-              <IconButton
-                size="lg"
-                variant="ghost"
-                aria-label="open menu"
-                icon={<FiShoppingCart />}
-                ml={2}
-              />
+              <Flex alignItems={'center'}>
+                <Menu>
+                  <MenuButton
+                    py={2}
+                    transition="all 0.3s"
+                    _focus={{ boxShadow: 'none' }}
+                  >
+                    <HStack>
+                      <IconButton
+                        size="lg"
+                        variant="ghost"
+                        aria-label="open menu"
+                        icon={<FiShoppingCart />}
+                        ml={2}
+                      />
+                    </HStack>
+                  </MenuButton>
+                  <MenuList
+                    bg={useColorModeValue('white', 'gray.900')}
+                    borderColor={useColorModeValue('gray.200', 'gray.700')}
+                    h={{ base: '50px', sm: 'full' }}
+                  >
+                    <ShoppingCart />
+                  </MenuList>
+                </Menu>
+              </Flex>
               <Flex alignItems={'center'}>
                 <Menu>
                   <MenuButton
