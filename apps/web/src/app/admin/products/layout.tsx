@@ -1,10 +1,5 @@
 'use client';
-import ProductCard1 from '@/components/ProductPage/products/ayam';
-import ProductCard2 from '@/components/ProductPage/products/beras';
-import ProductCard3 from '@/components/ProductPage/products/minyak';
-import ProductCard4 from '@/components/ProductPage/products/bumbu';
-import ProductCard5 from '@/components/ProductPage/products/buah';
-import ProductCard from '@/components/ProductPage/products/sayur';
+
 import {
   Box,
   Button,
@@ -22,6 +17,8 @@ import {
 import React from 'react';
 import DashboardLayout from '../(dashboard)/layout';
 import productItems from '@/data/products.json';
+import { FormatCurrency } from '@/utils/FormatCurrenct';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const layoutProduct = () => {
   return (
@@ -65,18 +62,18 @@ const layoutProduct = () => {
                     mt={5}
                     textAlign={'center'}
                   >
-                    {item.price}
+                    {FormatCurrency(item.price)}
                   </Text>
                 </Stack>
               </CardBody>
               <Divider />
               <CardFooter>
                 <ButtonGroup spacing="2" m={'auto'}>
-                  <Button variant="ghost" colorScheme="blue">
-                    Add to cart
+                  <Button variant="ghost" colorScheme="green" w={120}>
+                    <FaEdit />
                   </Button>
-                  <Button variant="solid" colorScheme="blue">
-                    Buy now
+                  <Button variant="solid" colorScheme="red" w={120}>
+                    <FaTrash />
                   </Button>
                 </ButtonGroup>
               </CardFooter>

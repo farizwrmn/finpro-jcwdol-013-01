@@ -93,30 +93,15 @@ export default function Navbar() {
           {status.isLogin ? (
             <HStack spacing={{ base: '0', md: '6' }}>
               <Flex alignItems={'center'}>
-                <Menu>
-                  <MenuButton
-                    py={2}
-                    transition="all 0.3s"
-                    _focus={{ boxShadow: 'none' }}
-                  >
-                    <HStack>
-                      <IconButton
-                        size="lg"
-                        variant="ghost"
-                        aria-label="open menu"
-                        icon={<FiShoppingCart />}
-                        ml={2}
-                      />
-                    </HStack>
-                  </MenuButton>
-                  <MenuList
-                    bg={useColorModeValue('white', 'gray.900')}
-                    borderColor={useColorModeValue('gray.200', 'gray.700')}
-                    h={{ base: '50px', sm: 'full' }}
-                  >
-                    <ShoppingCart />
-                  </MenuList>
-                </Menu>
+                <Link href={'/shopping-cart'}>
+                  <IconButton
+                    size="lg"
+                    variant="ghost"
+                    aria-label="open menu"
+                    icon={<FiShoppingCart />}
+                    ml={2}
+                  />
+                </Link>
               </Flex>
               <Flex alignItems={'center'}>
                 <Menu>
