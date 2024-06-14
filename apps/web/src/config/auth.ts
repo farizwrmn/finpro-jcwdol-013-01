@@ -15,17 +15,10 @@ export const authOptions: NextAuthOptions = {
           image: profile.picture,
           role: {
             connect: {
-<<<<<<< HEAD
-              name: "customer"
-            }
-          }
-        }
-=======
               name: 'customer',
             },
           },
         };
->>>>>>> 5ca6c5d604f9a2e90433fd944f8a9ce82c7a5cce
       },
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
