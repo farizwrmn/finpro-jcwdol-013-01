@@ -148,7 +148,13 @@ export const checkToken = (token: string) => async (dispatch: Dispatch) => {
 export const updateProfile =
   (id: string, params: IUserProfile) => async (dispatch: Dispatch) => {
     try {
-      const { data } = await instance.patch(`/users/${id}`, { ...params });
+      const token = localStorage.getItem('token');
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await instance.patch(`/users/${id}`, { ...params }, config);
 
       dispatch(updateProfileState({ ...params }));
       localStorage.setItem('user', JSON.stringify(data?.data));
@@ -161,8 +167,10 @@ export const updateProfile =
 export const updateAvatar =
   (id: string, formData: FormData) => async (dispatch: Dispatch) => {
     try {
+      const token = localStorage.getItem('token');
       const config = {
         headers: {
+          Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
         },
       };
