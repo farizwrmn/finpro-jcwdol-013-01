@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 const getCategoriesQuery = async (filters: IFilterCategory): Promise<IResultCategory> => {
   try {
-    const { keyword = "", page = 1, size = 10 } = filters;
+    const { keyword = "", page = 1, size = 1000 } = filters;
 
     const categories = await prisma.category.findMany({
       where: {
