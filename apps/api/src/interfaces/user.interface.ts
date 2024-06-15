@@ -7,4 +7,6 @@ export interface IUser {
   gender?: string;
   birthDate?: Date;
   role?: string;
+  longitude?: number;
+  latitude?: number;
 }

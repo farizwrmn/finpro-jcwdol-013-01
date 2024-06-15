@@ -19,13 +19,13 @@ import * as Yup from 'yup';
 
 import { useAppDispatch } from '@/lib/hooks';
 import { signIn } from '@/lib/features/auth/authSlice';
-import { signIn as signInNextAuth } from 'next-auth/react'
+import { signIn as signInNextAuth } from 'next-auth/react';
 
 import { FormValues, FormProps } from './types';
 
 import InnerForm from '../signIn/components/innerForm';
 import PageWrapper from '../pageWrapper';
-import { FcGoogle } from "react-icons/fc";
+import { FcGoogle } from 'react-icons/fc';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -37,12 +37,9 @@ const LoginSchema = Yup.object().shape({
 type Props = {
   callbackUrl?: string;
   authError?: string | null;
-}
+};
 
-const LoginView = ({
-  callbackUrl,
-  authError,
-}: Props) => {
+const LoginView = ({ callbackUrl, authError }: Props) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -87,7 +84,8 @@ const LoginView = ({
           >
             <Stack spacing={8}>
               <LoginForm />
-              <Center pt={8}>
+              <Divider />
+              <Center flex={'1'} flexDirection={'column'}>
                 <Button
                   w={'full'}
                   maxW={'md'}

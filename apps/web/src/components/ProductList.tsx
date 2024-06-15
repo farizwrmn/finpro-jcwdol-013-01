@@ -1,12 +1,25 @@
-import { Heading, Stack, Divider, SimpleGrid, Box } from '@chakra-ui/react';
+'use client';
+
 import React from 'react';
-import ProductCard1 from './products/ayam';
-import ProductCard from './products/beras';
-import ProductCard2 from './products/buah';
-import ProductCard3 from './products/minyak';
-import ProductCard4 from './products/sayur';
-import ProductCard5 from './products/bumbu';
-import PageWrapper from './pageWrapper';
+import productItems from '@/data/products.json';
+import {
+  Alert,
+  Box,
+  Button,
+  ButtonGroup,
+  Card,
+  CardBody,
+  CardFooter,
+  Divider,
+  Heading,
+  Image,
+  SimpleGrid,
+  Stack,
+  Text,
+} from '@chakra-ui/react';
+import { FormatCurrency } from '@/utils/FormatCurrenct';
+import { FaCartPlus } from 'react-icons/fa';
+import Link from 'next/link';
 
 const ProductList = () => {
   return (
@@ -15,15 +28,45 @@ const ProductList = () => {
         Groceries Near You
       </Heading>
       <Divider />
-      <Box gap={5} mb={10} h={{ base: '500px', sm: '520px' }}>
+      <Box flex={'1'} gap={5} mb={10} h={{ base: '550px', sm: '600px' }}>
         <SimpleGrid overflowX={'scroll'} pb={10} pt={5}>
           <Stack flex={'row'} direction={'row'} h={'full'}>
-            <ProductCard />
-            <ProductCard1 />
-            <ProductCard2 />
-            <ProductCard3 />
-            <ProductCard4 />
-            <ProductCard5 />
+            {productItems.map((item) => (
+              <Card maxW="xs" shadow={'xl'} w={'full'}>
+                <CardBody>
+                  <Link href={item.Url}>
+                    <Image
+                      src={item.imgUrl}
+                      alt="Green double couch with wooden legs"
+                      borderRadius="lg"
+                    />
+                    <Stack mt="3" spacing="3">
+                      <Heading size="md">{item.name}</Heading>
+                      <Text noOfLines={4}>{item.caption}</Text>
+                      <Text
+                        color="blue.600"
+                        fontSize="lg"
+                        mt={5}
+                        textAlign={'center'}
+                      >
+                        {FormatCurrency(item.price)}
+                      </Text>
+                    </Stack>
+                  </Link>
+                </CardBody>
+                <Divider />
+                <CardFooter>
+                  <ButtonGroup spacing="2" m={'auto'}>
+                    <Button variant="solid" colorScheme="blue" w={120}>
+                      Buy now
+                    </Button>
+                    <Button variant="solid" colorScheme="green" w={120}>
+                      <FaCartPlus size={'26'} />
+                    </Button>
+                  </ButtonGroup>
+                </CardFooter>
+              </Card>
+            ))}
           </Stack>
         </SimpleGrid>
       </Box>

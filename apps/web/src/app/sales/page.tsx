@@ -1,10 +1,10 @@
-import SalesReport from '@/components/sales/SalesReport';
+import SalesReport from '@/components/sales/chart/SalesReport';
 import React from 'react';
 
 const page = () => {
   return (
     <div>
-      <SalesReport salesData={[]} leadsData={[]} newVisitorData={[]} />
+      <SalesReport />
     </div>
   );
 };

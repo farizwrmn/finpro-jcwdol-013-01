@@ -23,6 +23,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@types/faker": "^6.6.9",
     "@types/next-auth": "^3.15.0",
     "@types/node": "^20",
     "@types/react": "^18",

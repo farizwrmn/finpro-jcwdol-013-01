@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -17,9 +17,9 @@ import {
   Button,
   Flex,
 } from '@chakra-ui/react';
-import { useRouter } from "next/navigation";
-import instance from "@/utils/axiosInstance";
-import { deleteStore, getStores } from "./services";
+import { useRouter } from 'next/navigation';
+import instance from '@/utils/axiosInstance';
+import { deleteStore, getStores } from './services';
 
 // interface Store {
 //   id: number;
@@ -54,23 +54,23 @@ const Page = () => {
     (async () => {
       const data = await getStores();
       setStores(data);
-    })()
+    })();
   }, []);
 
   const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Are you sure want to delete store ${name}`) || !id) return
+    if (!confirm(`Are you sure want to delete store ${name}`) || !id) return;
     try {
       const store = await deleteStore(id);
-      if (!store) throw new Error("Delete store failed");
-      alert("Delete store success");
+      if (!store) throw new Error('Delete store failed');
+      alert('Delete store success');
 
       const data = await getStores();
       setStores(data);
     } catch (err) {
       console.error(err);
-      alert("Delete store failed");
+      alert('Delete store failed');
     }
-  }
+  };
 
   // useEffect(() => {
   //   // Apply filtering
@@ -152,7 +152,7 @@ const Page = () => {
             // Implement search functionality here
             /> */}
             <Button
-              colorScheme='blue'
+              colorScheme="blue"
               onClick={() => {
                 router.push(`/admin/stores/create`);
               }}
@@ -173,7 +173,7 @@ const Page = () => {
                 </Tr>
               </Thead>
               <Tbody>
-                {stores.map((store: any, index: number) => (
+                {stores?.map((store: any, index: number) => (
                   <Tr key={store.id}>
                     <Td>{index + 1}</Td>
                     <Td>{store.name}</Td>
@@ -183,7 +183,7 @@ const Page = () => {
                     <Td>
                       <ButtonGroup>
                         <Button
-                          colorScheme='blue'
+                          colorScheme="blue"
                           onClick={() => {
                             router.push(`/admin/stores/edit/${store.id}`);
                           }}
@@ -191,7 +191,7 @@ const Page = () => {
                           Edit
                         </Button>
                         <Button
-                          colorScheme='red'
+                          colorScheme="red"
                           onClick={() => handleDelete(store.id, store.name)}
                         >
                           Delete

@@ -29,6 +29,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { FiChevronDown, FiShoppingCart } from 'react-icons/fi';
 import { signOut } from '@/lib/features/auth/authSlice';
 import { useRouter } from 'next/navigation';
+import ShoppingCart from '../cart/ShoppingCart';
 
 export interface NavItem {
   label: string;
@@ -91,13 +92,17 @@ export default function Navbar() {
           </Flex>
           {status.isLogin ? (
             <HStack spacing={{ base: '0', md: '6' }}>
-              <IconButton
-                size="lg"
-                variant="ghost"
-                aria-label="open menu"
-                icon={<FiShoppingCart />}
-                ml={2}
-              />
+              <Flex alignItems={'center'}>
+                <Link href={'/shopping-cart'}>
+                  <IconButton
+                    size="lg"
+                    variant="ghost"
+                    aria-label="open menu"
+                    icon={<FiShoppingCart />}
+                    ml={2}
+                  />
+                </Link>
+              </Flex>
               <Flex alignItems={'center'}>
                 <Menu>
                   <MenuButton

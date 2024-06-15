@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "name": "Sayur Bayam",
+    "price": 5000,
+    "imgUrl": "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c3BpbmFjaHxlbnwwfHwwfHx8MA%3D%3D",
+    "caption": "Sayur bayam dari perkebunan sendiri",
+    "Url": "/"
+  },
+  {
+    "id": 2,
+    "name": "Daging Ayam Segar",
+    "price": 25000,
+    "imgUrl": "https://images.unsplash.com/photo-1587593810167-a84920ea0781?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2hpY2tlbiUyMG1lYXR8ZW58MHx8MHx8fDA%3D",
+    "caption": "Langsung dari peternak ayam berkualitas",
+    "Url": "/"
+  },
+  {
+    "id": 3,
+    "name": "Beras Pulen Petruk",
+    "price": 75000,
+    "imgUrl": "https://gratisongkir-storage.com/products/900x900/FC6WmSRVFl6Z.jpg",
+    "caption": "Beras petruk jawa tengah 5kg",
+    "Url": "/"
+  },
+  {
+    "id": 4,
+    "name": "Minyak Sawit Kita",
+    "price": 14000,
+    "imgUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2ZHrJKh6VWh61mXwCRKNYr9TO3UDhNW_VXA&s",
+    "caption": "Minyak goreng sawit berkualitas",
+    "Url": "/"
+  },
+  {
+    "id": 5,
+    "name": "Bumbu Racik Nasi Goreng",
+    "price": 5000,
+    "imgUrl": "https://images.unsplash.com/photo-1517646458010-ea6bd9f4a75f?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8c2Vhc29uaW5nfGVufDB8fDB8fHww",
+    "caption": "Bumbu instan nasi goreng",
+    "Url": "/"
+  },
+  {
+    "id": 6,
+    "name": "Jeruk California",
+    "price": 15000,
+    "imgUrl": "https://images.unsplash.com/photo-1591206369811-4eeb2f03bc95?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8b3JhbmdlJTIwZnJ1aXR8ZW58MHx8MHx8fDA%3D",
+    "caption": "Jeruk Sunkiss import dari AS",
+    "Url": "/"
+  }
+]
