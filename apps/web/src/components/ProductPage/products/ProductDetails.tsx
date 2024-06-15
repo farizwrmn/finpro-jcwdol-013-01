@@ -26,7 +26,6 @@ type Props = {
 export default function ProductDetails({ product }: Props) {
   const textColor = useColorModeValue('gray.900', 'gray.400');
   const dividerColor = useColorModeValue('gray.200', 'gray.600');
-  console.log(product);
 
   return (
     <Container maxW={'7xl'}>
@@ -39,7 +38,7 @@ export default function ProductDetails({ product }: Props) {
           <Image
             rounded={'md'}
             alt={'product image'}
-            src={product.imgUrl}
+            src={'/'}
             fit={'cover'}
             align={'center'}
             w={'100%'}
@@ -56,7 +55,7 @@ export default function ProductDetails({ product }: Props) {
               <p>{product.name}</p>
             </Heading>
             <Text color={textColor} fontWeight={300} fontSize={'2xl'}>
-              {FormatCurrency(product.price)}
+              {FormatCurrency(product.sellingPrice)}
             </Text>
           </Box>
 
@@ -71,7 +70,7 @@ export default function ProductDetails({ product }: Props) {
                 fontSize={'2xl'}
                 fontWeight={'300'}
               >
-                {product.caption}
+                {product.description}
               </Text>
             </VStack>
             <Box>
@@ -88,15 +87,15 @@ export default function ProductDetails({ product }: Props) {
               <List spacing={2}>
                 <ListItem>
                   <Text as={'span'} fontWeight={'bold'}>
-                    Brand :
+                    Category :
                   </Text>{' '}
-                  {product.brand}
+                  {product.category.name}
                 </ListItem>
                 <ListItem>
                   <Text as={'span'} fontWeight={'bold'}>
                     Stock:
                   </Text>{' '}
-                  {product.stock}
+                  {100}
                 </ListItem>
                 {/* Add more product details as needed */}
               </List>
