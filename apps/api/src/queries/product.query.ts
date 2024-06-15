@@ -1,12 +1,36 @@
 import { PrismaClient, Product } from "@prisma/client";
-import { IProduct } from "../interfaces/product.interface";
+import { IFilterProduct, IProduct, IResultProduct } from "../interfaces/product.interface";
 
 const prisma = new PrismaClient();
 
-const getProductsQuery = async (): Promise<Product[]> => {
+const getProductsQuery = async (filters: IFilterProduct): Promise<IResultProduct> => {
   try {
-    const products = await prisma.product.findMany({});
-    return products;
+    const { keyword = "", page = 1, size = 1000 } = filters;
+
+    const products = await prisma.product.findMany({
+      where: {
+        name: {
+          contains: keyword
+        }
+      },
+      skip: Number(page) > 0 ? (Number(page) - 1) * Number(size) : 0,
+      take: Number(size),
+    });
+
+    const data = await prisma.product.aggregate({
+      _count: {
+        id: true
+      },
+      where: {
+        name: {
+          contains: keyword
+        }
+      },
+    });
+    const count = data._count.id;
+    const pages = Math.ceil(count / size);
+
+    return { products, pages };
   } catch (err) {
     throw err;
   }
