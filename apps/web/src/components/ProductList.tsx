@@ -34,7 +34,7 @@ const ProductList = () => {
             {productItems.map((item) => (
               <Card maxW="xs" shadow={'xl'} w={'full'}>
                 <CardBody>
-                  <Link href={item.Url}>
+                  <Link href={`/products/${item.slug}`}>
                     <Image
                       src={item.imgUrl}
                       alt="Green double couch with wooden legs"
