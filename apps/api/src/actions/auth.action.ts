@@ -40,7 +40,6 @@ const loginAction = async (data: Auth) => {
     await updateUserQuery(user.id, {
       longitude: data.longitude,
       latitude: data.latitude,
-      role: user.role.name,
     });
 
     const payload = {
