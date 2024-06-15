@@ -1,8 +1,8 @@
 'use client';
 
+import { FormatCurrency } from '@/utils/FormatCurrency';
 import {
   Box,
-  chakra,
   Container,
   Stack,
   Text,
@@ -14,17 +14,18 @@ import {
   SimpleGrid,
   StackDivider,
   useColorModeValue,
-  VisuallyHidden,
   List,
   ListItem,
 } from '@chakra-ui/react';
-
-import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
 import { MdLocalShipping } from 'react-icons/md';
 
-export default function Simple() {
-  const textColor = useColorModeValue('gray.900', 'gray.400'); // Assuming string type
-  const dividerColor = useColorModeValue('gray.200', 'gray.600'); // Assuming string type
+type Props = {
+  product: any;
+};
+
+export default function ProductDetails({ product }: Props) {
+  const textColor = useColorModeValue('gray.900', 'gray.400');
+  const dividerColor = useColorModeValue('gray.200', 'gray.600');
 
   return (
     <Container maxW={'7xl'}>
@@ -37,9 +38,7 @@ export default function Simple() {
           <Image
             rounded={'md'}
             alt={'product image'}
-            src={
-              'https://cdn.hellosehat.com/wp-content/uploads/2023/06/1f8846be-shutterstock_1714464100.jpg?w=828&q=75'
-            }
+            src={'/'}
             fit={'cover'}
             align={'center'}
             w={'100%'}
@@ -53,10 +52,10 @@ export default function Simple() {
               fontWeight={600}
               fontSize={{ base: '2xl', sm: '4xl', lg: '5xl' }}
             >
-              <p>Beras</p>
+              <p>{product.name}</p>
             </Heading>
             <Text color={textColor} fontWeight={300} fontSize={'2xl'}>
-              IDR Rp.14.900 / Kg
+              {FormatCurrency(product.sellingPrice)}
             </Text>
           </Box>
 
@@ -71,7 +70,7 @@ export default function Simple() {
                 fontSize={'2xl'}
                 fontWeight={'300'}
               >
-                {/* Your product description here */}
+                {product.description}
               </Text>
             </VStack>
             <Box>
@@ -88,15 +87,15 @@ export default function Simple() {
               <List spacing={2}>
                 <ListItem>
                   <Text as={'span'} fontWeight={'bold'}>
-                    Brand :
+                    Category :
                   </Text>{' '}
-                  Cap Kaki 5
+                  {product.category.name}
                 </ListItem>
                 <ListItem>
                   <Text as={'span'} fontWeight={'bold'}>
                     Stock:
                   </Text>{' '}
-                  100 Kg
+                  {100}
                 </ListItem>
                 {/* Add more product details as needed */}
               </List>
