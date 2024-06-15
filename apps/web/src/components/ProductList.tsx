@@ -17,7 +17,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import { FormatCurrency } from '@/utils/FormatCurrenct';
+import { FormatCurrency } from '@/utils/FormatCurrency';
 import { FaCartPlus } from 'react-icons/fa';
 import Link from 'next/link';
 

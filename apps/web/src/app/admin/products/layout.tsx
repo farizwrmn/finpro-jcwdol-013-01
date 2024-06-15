@@ -17,7 +17,7 @@ import {
 import React from 'react';
 import DashboardLayout from '../(dashboard)/layout';
 import productItems from '@/data/products.json';
-import { FormatCurrency } from '@/utils/FormatCurrenct';
+import { FormatCurrency } from '@/utils/FormatCurrency';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
 const layoutProduct = () => {
