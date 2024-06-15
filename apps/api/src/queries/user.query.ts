@@ -78,7 +78,7 @@ const updateUserQuery = async (id: string, data: IUser) => {
         birthDate: data.birthDate ? new Date(data.birthDate) : null,
         role: {
           connect: {
-            name: data.role || 'customer'
+            name: data.role
           }
         }
       },

@@ -1,12 +1,36 @@
 import { PrismaClient, Category } from "@prisma/client";
-import { ICategory } from "../interfaces/category.interface";
+import { ICategory, IFilterCategory, IResultCategory } from "../interfaces/category.interface";
 
 const prisma = new PrismaClient();
 
-const getCategoriesQuery = async (): Promise<Category[]> => {
+const getCategoriesQuery = async (filters: IFilterCategory): Promise<IResultCategory> => {
   try {
-    const categories = await prisma.category.findMany({});
-    return categories;
+    const { keyword = "", page = 1, size = 10 } = filters;
+
+    const categories = await prisma.category.findMany({
+      where: {
+        name: {
+          contains: keyword
+        }
+      },
+      skip: Number(page) > 0 ? (Number(page) - 1) * Number(size) : 0,
+      take: Number(size),
+    });
+
+    const data = await prisma.category.aggregate({
+      _count: {
+        id: true
+      },
+      where: {
+        name: {
+          contains: keyword
+        }
+      },
+    });
+    const count = data._count.id;
+    const pages = Math.ceil(count / size);
+
+    return { categories, pages };
   } catch (err) {
     throw err;
   }

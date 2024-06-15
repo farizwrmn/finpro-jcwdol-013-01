@@ -3,8 +3,8 @@ import { createStoreAction, deleteStoreAction, getStoreByIDAction, getStoresActi
 
 const getStoresController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    // const filters = req.query;
-    const data = await getStoresAction();
+    const filters = req.query;
+    const data = await getStoresAction(filters);
 
     res.status(200).json({
       message: "Get stores success",
@@ -38,6 +38,8 @@ const createStoreController = async (req: Request, res: Response, next: NextFunc
       subdistrictId: Number(params.subdistrictId),
       cityId: Number(params.cityId),
       provinceId: Number(params.provinceId),
+      longitude: parseFloat(params.longitude),
+      latitude: parseFloat(params.latitude),
     });
 
     res.status(200).json({
@@ -59,6 +61,8 @@ const updateStoreController = async (req: Request, res: Response, next: NextFunc
       subdistrictId: Number(params.subdistrictId),
       cityId: Number(params.cityId),
       provinceId: Number(params.provinceId),
+      longitude: parseFloat(params.longitude),
+      latitude: parseFloat(params.latitude),
     });
 
     res.status(200).json({

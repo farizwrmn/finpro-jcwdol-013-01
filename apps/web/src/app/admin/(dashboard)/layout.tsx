@@ -1,6 +1,7 @@
 'use client';
 
 import React, { ReactNode } from 'react';
+import Link from "next/link";
 import {
   IconButton,
   Avatar,
@@ -11,7 +12,6 @@ import {
   VStack,
   Icon,
   useColorModeValue,
-  Link,
   Drawer,
   DrawerContent,
   Text,
@@ -42,9 +42,10 @@ interface LinkItemProps {
 }
 const LinkItems: Array<LinkItemProps> = [
   { name: 'Home', icon: FiHome, href: '/admin', key: 'Home' },
-  { name: 'User', icon: FiUser, href: '/admin/users', key: 'Home' },
-  { name: 'Store', icon: FaStore, href: '/admin/stores', key: 'Home' },
-  { name: 'Products', icon: FaIceCream, href: '/admin/products', key: 'Home' },
+  { name: 'User', icon: FiUser, href: '/admin/users', key: 'User' },
+  { name: 'Store', icon: FaStore, href: '/admin/stores', key: 'Store' },
+  { name: 'Category', icon: FaIceCream, href: '/admin/categories', key: 'Category' },
+  { name: 'Product', icon: FaIceCream, href: '/admin/products', key: 'Product' },
 ];
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
@@ -120,7 +121,6 @@ const NavItem = ({ icon, href, children, ...rest }: NavItemProps) => {
     <Link
       href={href}
       style={{ textDecoration: 'none' }}
-      _focus={{ boxShadow: 'none' }}
     >
       <Flex
         align="center"
