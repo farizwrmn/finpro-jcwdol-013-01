@@ -10,3 +10,15 @@ export interface IUser {
   longitude?: number;
   latitude?: number;
 }
+
+export interface IUpdateUser {
+  name?: string;
+  email?: string;
+  password?: string;
+  phone?: string;
+  image?: string;
+  gender?: string;
+  birthDate?: Date;
+  longitude?: number;
+  latitude?: number;
+}

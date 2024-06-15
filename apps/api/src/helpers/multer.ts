@@ -42,7 +42,7 @@ export const uploader = (filePrefix: string, folderName?: string) => {
       try {
         const extension = path.extname(file.originalname);
         console.log(extension);
-        if (extension !== '.png' && extension !== '.jpg') {
+        if (extension !== '.png' && extension !== '.jpg' && extension !== '.jpeg') {
           cb(new Error('Extension type is invalid'));
         }
         cb(null, true);

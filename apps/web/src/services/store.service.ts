@@ -1,3 +1,4 @@
+import { IFilterStore } from "@/interface/store.interface";
 import instance from "@/utils/axiosInstance";
 
 export const getProvinces = async () => {
@@ -30,9 +31,9 @@ export const getSubdistricts = async (cityId: string) => {
   }
 };
 
-export const getStores = async () => {
+export const getStores = async ({ keyword = "", page = 1, size = 10 }: IFilterStore) => {
   try {
-    const { data } = await instance.get('/stores');
+    const { data } = await instance.get(`/stores?keyword=${keyword}&page=${page}&size=${size}`);
     const stores = data?.data;
     return stores;
   } catch (err) {

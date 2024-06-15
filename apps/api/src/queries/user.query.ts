@@ -1,4 +1,4 @@
-import { IUser } from '@/interfaces/user.interface';
+import { IUpdateUser, IUser } from '@/interfaces/user.interface';
 import { PrismaClient, User } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -70,17 +70,12 @@ const createUserQuery = async (userData: IUser): Promise<User> => {
   }
 }
 
-const updateUserQuery = async (id: string, data: IUser) => {
+const updateUserQuery = async (id: string, data: IUpdateUser) => {
   try {
     const user = await prisma.user.update({
       data: {
         ...data,
         birthDate: data.birthDate ? new Date(data.birthDate) : null,
-        role: {
-          connect: {
-            name: data.role || 'customer'
-          }
-        }
       },
       where: {
         id,
