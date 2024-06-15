@@ -38,13 +38,14 @@ interface LinkItemProps {
   name: string;
   icon: IconType;
   href: string;
+  key: string;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Home', icon: FiHome, href: '/admin' },
-  { name: 'User', icon: FiUser, href: '/admin/users' },
-  { name: 'Store', icon: FaStore, href: '/admin/stores' },
-  { name: 'Category', icon: FaStore, href: '/admin/categories' },
-  { name: 'Products', icon: FaIceCream, href: '/admin/products' },
+  { name: 'Home', icon: FiHome, href: '/admin', key: 'Home' },
+  { name: 'User', icon: FiUser, href: '/admin/users', key: 'User' },
+  { name: 'Store', icon: FaStore, href: '/admin/stores', key: 'Store' },
+  { name: 'Category', icon: FaIceCream, href: '/admin/categories', key: 'Category' },
+  { name: 'Product', icon: FaIceCream, href: '/admin/products', key: 'Product' },
 ];
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
