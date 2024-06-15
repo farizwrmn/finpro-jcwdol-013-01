@@ -7,12 +7,8 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  Divider,
   Image,
   Stack,
-  Circle,
-  Grid,
-  AspectRatio,
   Button,
 } from '@chakra-ui/react';
 
