@@ -50,7 +50,7 @@
     "price": 5000,
     "imgUrl": "https://images.unsplash.com/photo-1517646458010-ea6bd9f4a75f?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8c2Vhc29uaW5nfGVufDB8fDB8fHww",
     "caption": "Bumbu instan nasi goreng",
-    "Url": "/",
+    "Url": "/slug/products",
     "brand": "Pulenisme",
     "stock": 100
   },
