@@ -1,11 +1,11 @@
 import { Product } from "@prisma/client";
 import { createProductQuery, deleteProductQuery, getProductByIDQuery, getProductBySlugOrNameQuery, getProductsQuery, updateProductQuery } from "../queries/product.query";
 import { HttpException } from "../exceptions/HttpException";
-import { IProduct } from "../interfaces/product.interface";
+import { IFilterProduct, IProduct, IResultProduct } from "../interfaces/product.interface";
 
-const getProductsAction = async (): Promise<Product[]> => {
+const getProductsAction = async (filters: IFilterProduct): Promise<IResultProduct> => {
   try {
-    const products = await getProductsQuery();
+    const products = await getProductsQuery(filters);
     return products;
   } catch (err) {
     throw err;

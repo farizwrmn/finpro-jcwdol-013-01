@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 const getStoresQuery = async (filters: IFilterStore): Promise<IResultStore> => {
   try {
-    const { keyword = "", page = 1, size = 10 } = filters;
+    const { keyword = "", page = 1, size = 1000 } = filters;
 
     const stores = await prisma.store.findMany({
       where: {

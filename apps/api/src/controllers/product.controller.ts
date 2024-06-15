@@ -3,7 +3,8 @@ import { createProductAction, deleteProductAction, getProductByIDAction, getProd
 
 const getProductsController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const data = await getProductsAction();
+    const filters = req.query;
+    const data = await getProductsAction(filters);
 
     res.status(200).json({
       message: "Get products success",
