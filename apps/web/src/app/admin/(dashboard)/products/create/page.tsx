@@ -16,48 +16,29 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { useRouter } from "next/navigation";
-import { createStore, getCities, getProvinces, getSubdistricts } from "@/services/store.service";
+import { createProduct } from "@/services/product.service";
+import { getCategories } from "@/services/category.service";
 
 const Page = () => {
-  const [provinces, setProvinces] = useState<any[]>([]);
-  const [cities, setCities] = useState<any[]>([]);
-  const [subdistricts, setSubdistricts] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
 
   const [formData, setFormData] = useState({
     name: '',
-    address: '',
-    provinceId: '',
-    provinceName: '',
-    cityId: '',
-    cityName: '',
-    subdistrictId: '',
-    subdistrictName: '',
-    longitude: '',
-    latitude: '',
+    slug: '',
+    description: '',
+    slicedPrice: '',
+    sellingPrice: '',
+    categoryId: '',
   });
 
   const router = useRouter();
 
   useEffect(() => {
     (async () => {
-      const data = await getProvinces();
-      setProvinces(data);
+      const data = await getCategories({});
+      setCategories(data?.categories);
     })();
   }, []);
-
-  useEffect(() => {
-    (async () => {
-      const data = await getCities(formData.provinceId);
-      setCities(data);
-    })();
-  }, [formData.provinceId]);
-
-  useEffect(() => {
-    (async () => {
-      const data = await getSubdistricts(formData.cityId);
-      setSubdistricts(data);
-    })();
-  }, [formData.cityId]);
 
   type ChangeEvent = (
     React.ChangeEvent<HTMLInputElement> |
@@ -72,69 +53,24 @@ const Page = () => {
     })
   }
 
-  const handleChangeProvince = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const provinceId = e.target.value
-    const provinceName = provinces.find(
-      (province) => province.province_id === provinceId
-    )?.province || '';
-
-    setFormData({
-      ...formData,
-      provinceId,
-      provinceName,
-      cityId: '',
-      cityName: '',
-      subdistrictId: '',
-      subdistrictName: ''
-    })
-  }
-
-  const handleChangeCity = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const cityId = e.target.value
-    const cityName = cities.find(
-      city => city.city_id === cityId
-    )?.city_name || ''
-
-    setFormData({
-      ...formData,
-      cityId,
-      cityName,
-      subdistrictId: '',
-      subdistrictName: ''
-    })
-  }
-
-  const handleChangeSubdistrict = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const subdistrictId = e.target.value
-    const subdistrictName = subdistricts.find(
-      subdistrict => subdistrict.subdistrict_id === subdistrictId
-    )?.subdistrict_name || ''
-
-    setFormData({
-      ...formData,
-      subdistrictId,
-      subdistrictName
-    })
-  }
-
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
-      const store = await createStore(formData);
-      if (!store) throw new Error("Create store failed!");
-      alert("Create store success");
-      router.push("/admin/stores")
+      const product = await createProduct(formData);
+      if (!product) throw new Error("Create product failed!");
+      alert("Create product success");
+      router.push("/admin/products")
     } catch (err) {
       console.error(err);
-      alert("Create store failed");
+      alert("Create product failed");
     }
   }
 
   return (
     <Box>
       <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-        Store Management
+        Product Management
       </Text>
       <Card my={10}>
         <CardBody>
@@ -148,7 +84,7 @@ const Page = () => {
                 my={6}
               >
                 <FormControl id="name" isRequired>
-                  <FormLabel>Store Name</FormLabel>
+                  <FormLabel>Product Name</FormLabel>
                   <Input
                     name="name"
                     placeholder="Name"
@@ -158,90 +94,70 @@ const Page = () => {
                     onChange={handleChange}
                   />
                 </FormControl>
-                <FormControl id="address" isRequired>
-                  <FormLabel>Address</FormLabel>
+                <FormControl id="slug" isRequired>
+                  <FormLabel>Slug</FormLabel>
+                  <Input
+                    name="slug"
+                    placeholder="Slug"
+                    _placeholder={{ color: 'gray.500' }}
+                    type="text"
+                    value={formData.slug}
+                    onChange={handleChange}
+                  />
+                </FormControl>
+                <FormControl id="description" isRequired>
+                  <FormLabel>Description</FormLabel>
                   <Textarea
-                    name="address"
-                    placeholder="Address"
+                    name="description"
+                    placeholder="Description"
                     _placeholder={{ color: 'gray.500' }}
-                    value={formData.address}
+                    value={formData.description}
                     onChange={handleChange}
                   />
                 </FormControl>
-                <FormControl id="province" isRequired>
-                  <FormLabel>Province</FormLabel>
-                  <Select
-                    width="auto"
-                    value={formData.provinceId}
-                    onChange={handleChangeProvince}
-                  >
-                    <option value=""></option>
-                    {provinces?.map((province: any) => (
-                      <option
-                        key={province.province_id}
-                        value={province.province_id}
-                      >{province.province}</option>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl id="city" isRequired>
-                  <FormLabel>City</FormLabel>
-                  <Select
-                    width="auto"
-                    value={formData.cityId}
-                    onChange={handleChangeCity}
-                  >
-                    <option value=""></option>
-                    {cities?.map(city => (
-                      <option
-                        key={city.city_id}
-                        value={city.city_id}
-                      >{`${city.type} ${city.city_name}`}</option>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl id="subdistrict" isRequired>
-                  <FormLabel>Subdistrict</FormLabel>
-                  <Select
-                    width="auto"
-                    value={formData.subdistrictId}
-                    onChange={handleChangeSubdistrict}
-                  >
-                    <option value=""></option>
-                    {subdistricts?.map(subdistrict => (
-                      <option
-                        key={subdistrict.subdistrict_id}
-                        value={subdistrict.subdistrict_id}
-                      >{subdistrict.subdistrict_name}</option>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl id="longitude">
-                  <FormLabel>Longitude</FormLabel>
+                <FormControl id="slicedPrice" isRequired>
+                  <FormLabel>Sliced Price</FormLabel>
                   <Input
-                    name="longitude"
-                    placeholder="Longitude"
+                    name="slicedPrice"
+                    placeholder="Sliced Price"
                     _placeholder={{ color: 'gray.500' }}
-                    type="text"
-                    value={formData.longitude}
+                    type="number"
+                    value={formData.slicedPrice}
                     onChange={handleChange}
                   />
                 </FormControl>
-                <FormControl id="latitude">
-                  <FormLabel>Latitude</FormLabel>
+                <FormControl id="sellingPrice" isRequired>
+                  <FormLabel>Selling Price</FormLabel>
                   <Input
-                    name="latitude"
-                    placeholder="Latitude"
+                    name="sellingPrice"
+                    placeholder="Selling Price"
                     _placeholder={{ color: 'gray.500' }}
-                    type="text"
-                    value={formData.latitude}
+                    type="number"
+                    value={formData.sellingPrice}
                     onChange={handleChange}
                   />
+                </FormControl>
+                <FormControl id="category" isRequired>
+                  <FormLabel>Category</FormLabel>
+                  <Select
+                    name="categoryId"
+                    width="auto"
+                    value={formData.categoryId}
+                    onChange={handleChange}
+                  >
+                    <option value=""></option>
+                    {categories?.map((category: any) => (
+                      <option
+                        key={category.id}
+                        value={category.id}
+                      >{category.name}</option>
+                    ))}
+                  </Select>
                 </FormControl>
                 <Stack spacing={6} direction={['column', 'row']}>
                   <Button
                     onClick={() => {
-                      router.push("/admin/stores");
+                      router.push("/admin/products");
                     }}
                     bg={'red.400'}
                     color={'white'}

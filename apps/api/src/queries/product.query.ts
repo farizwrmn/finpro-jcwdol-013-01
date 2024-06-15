@@ -8,6 +8,9 @@ const getProductsQuery = async (filters: IFilterProduct): Promise<IResultProduct
     const { keyword = "", page = 1, size = 1000 } = filters;
 
     const products = await prisma.product.findMany({
+      include: {
+        category: true
+      },
       where: {
         name: {
           contains: keyword
@@ -39,6 +42,9 @@ const getProductsQuery = async (filters: IFilterProduct): Promise<IResultProduct
 const getProductByIDQuery = async (id: string): Promise<Product | null> => {
   try {
     const product = await prisma.product.findUnique({
+      include: {
+        category: true
+      },
       where: {
         id
       }
