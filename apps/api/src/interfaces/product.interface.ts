@@ -1,3 +1,5 @@
+import { Product } from "@prisma/client";
+
 export interface IProduct {
   name: string;
   slug: string;
@@ -8,4 +10,15 @@ export interface IProduct {
   createdBy?: string;
   updatedBy?: string;
   categoryId: string;
+}
+
+export interface IFilterProduct {
+  keyword?: string;
+  page?: number;
+  size?: number;
+}
+
+export interface IResultProduct {
+  products: Product[];
+  pages: number;
 }

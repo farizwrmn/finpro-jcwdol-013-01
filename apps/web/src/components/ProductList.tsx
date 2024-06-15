@@ -17,7 +17,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import { FormatCurrency } from '@/utils/FormatCurrenct';
+import { FormatCurrency } from '@/utils/FormatCurrency';
 import { FaCartPlus } from 'react-icons/fa';
 import Link from 'next/link';
 
@@ -34,7 +34,7 @@ const ProductList = () => {
             {productItems.map((item) => (
               <Card maxW="xs" shadow={'xl'} w={'full'}>
                 <CardBody>
-                  <Link href={item.Url}>
+                  <Link href={`/products/${item.slug}`}>
                     <Image
                       src={item.imgUrl}
                       alt="Green double couch with wooden legs"

@@ -1,34 +1,76 @@
-import { PrismaClient, Product } from "@prisma/client";
-import { IProduct } from "../interfaces/product.interface";
+import { PrismaClient, Product } from '@prisma/client';
+import {
+  IFilterProduct,
+  IProduct,
+  IResultProduct,
+} from '../interfaces/product.interface';
 
 const prisma = new PrismaClient();
 
-const getProductsQuery = async (): Promise<Product[]> => {
+const getProductsQuery = async (
+  filters: IFilterProduct,
+): Promise<IResultProduct> => {
   try {
-    const products = await prisma.product.findMany({});
-    return products;
+    const { keyword = '', page = 1, size = 1000 } = filters;
+
+    const products = await prisma.product.findMany({
+      include: {
+        category: true,
+      },
+      where: {
+        name: {
+          contains: keyword,
+        },
+      },
+      skip: Number(page) > 0 ? (Number(page) - 1) * Number(size) : 0,
+      take: Number(size),
+    });
+
+    const data = await prisma.product.aggregate({
+      _count: {
+        id: true,
+      },
+      where: {
+        name: {
+          contains: keyword,
+        },
+      },
+    });
+    const count = data._count.id;
+    const pages = Math.ceil(count / size);
+
+    return { products, pages };
   } catch (err) {
     throw err;
   }
-}
+};
 
 const getProductByIDQuery = async (id: string): Promise<Product | null> => {
   try {
     const product = await prisma.product.findUnique({
+      include: {
+        category: true,
+      },
       where: {
-        id
-      }
+        id,
+      },
     });
 
     return product;
   } catch (err) {
     throw err;
   }
-}
+};
 
-const getProductBySlugOrNameQuery = async (slug: string, name: string): Promise<Product | null> => {
+const getProductBySlugOrNameQuery = async (
+  slug: string,
+  name: string,
+): Promise<Product | null> => {
   try {
     const product = await prisma.product.findFirst({
+      include: {
+        category: true,
+      },
       where: {
         OR: [
           {
@@ -38,14 +80,14 @@ const getProductBySlugOrNameQuery = async (slug: string, name: string): Promise<
             name,
           },
         ],
-      }
+      },
     });
 
     return product;
   } catch (err) {
     throw err;
   }
-}
+};
 
 const createProductQuery = async (productData: IProduct): Promise<Product> => {
   try {
@@ -54,7 +96,7 @@ const createProductQuery = async (productData: IProduct): Promise<Product> => {
         const product = await prisma.product.create({
           data: {
             ...productData,
-          }
+          },
         });
 
         return product;
@@ -67,11 +109,11 @@ const createProductQuery = async (productData: IProduct): Promise<Product> => {
   } catch (err) {
     throw err;
   }
-}
+};
 
 const updateProductQuery = async (
   id: string,
-  productData: IProduct
+  productData: IProduct,
 ): Promise<Product> => {
   try {
     const product = await prisma.product.update({
@@ -79,29 +121,29 @@ const updateProductQuery = async (
         ...productData,
       },
       where: {
-        id
-      }
+        id,
+      },
     });
 
     return product;
   } catch (err) {
     throw err;
   }
-}
+};
 
 const deleteProductQuery = async (id: string): Promise<Product> => {
   try {
     const product = await prisma.product.delete({
       where: {
-        id
-      }
+        id,
+      },
     });
 
     return product;
   } catch (err) {
     throw err;
   }
-}
+};
 
 export {
   getProductsQuery,
@@ -110,4 +152,4 @@ export {
   createProductQuery,
   updateProductQuery,
   deleteProductQuery,
-}
+};
