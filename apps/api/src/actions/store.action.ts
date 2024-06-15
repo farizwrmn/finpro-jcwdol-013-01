@@ -1,12 +1,12 @@
 import { Store } from "@prisma/client";
 import { createStoreQuery, deleteStoreQuery, getStoreByIDQuery, getStoreByNameQuery, getStoresQuery, updateStoreQuery } from "../queries/store.query";
 import { HttpException } from "../exceptions/HttpException";
-import { IStore } from "../interfaces/store.interface";
+import { IFilterStore, IResultStore, IStore } from "../interfaces/store.interface";
 
-const getStoresAction = async (): Promise<Store[]> => {
+const getStoresAction = async (filters: IFilterStore): Promise<IResultStore> => {
   try {
-    const stores = await getStoresQuery();
-    return stores;
+    const data = await getStoresQuery(filters);
+    return data;
   } catch (err) {
     throw err;
   }

@@ -22,12 +22,12 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { deleteStore, getStores } from "@/services/store.service";
+import { deleteCategory, getCategories } from "@/services/category.service";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const Page = () => {
   const [data, setData] = useState({
-    stores: [],
+    categories: [],
     pages: 1
   });
   const [filters, setFilters] = useState({
@@ -39,30 +39,30 @@ const Page = () => {
 
   useEffect(() => {
     (async () => {
-      const result = await getStores(filters);
+      const result = await getCategories(filters);
       setData(result);
     })();
   }, [filters]);
 
   const handleDelete = async (id: string, name: string) => {
-    if (!confirm(`Are you sure want to delete store ${name}?`) || !id) return;
+    if (!confirm(`Are you sure want to delete category ${name}?`) || !id) return;
     try {
-      const store = await deleteStore(id);
-      if (!store) throw new Error('Delete store failed');
-      alert('Delete store success');
+      const category = await deleteCategory(id);
+      if (!category) throw new Error('Delete category failed');
+      alert('Delete category success');
 
-      const result = await getStores(filters);
+      const result = await getCategories(filters);
       setData(result);
     } catch (err) {
       console.error(err);
-      alert('Delete store failed');
+      alert('Delete category failed');
     }
   };
 
   return (
     <Box>
       <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-        Store Management
+        Category Management
       </Text>
       <Card my={10}>
         <CardBody>
@@ -75,7 +75,7 @@ const Page = () => {
             <Button
               colorScheme="blue"
               onClick={() => {
-                router.push(`/admin/stores/create`);
+                router.push(`/admin/categories/create`);
               }}
             >
               Add
@@ -87,33 +87,29 @@ const Page = () => {
                 <Tr>
                   <Th>No.</Th>
                   <Th>Name</Th>
-                  <Th>Subdistrict</Th>
-                  <Th>City</Th>
-                  <Th>Province</Th>
+                  <Th>Slug</Th>
                   <Th>Action</Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {data.stores?.map((store: any, index: number) => (
-                  <Tr key={store.id}>
+                {data.categories?.map((category: any, index: number) => (
+                  <Tr key={category.id}>
                     <Td>{filters.size * (filters.page - 1) + index + 1}</Td>
-                    <Td>{store.name}</Td>
-                    <Td>{store.subdistrictName}</Td>
-                    <Td>{store.cityName}</Td>
-                    <Td>{store.provinceName}</Td>
+                    <Td>{category.name}</Td>
+                    <Td>{category.slug}</Td>
                     <Td>
                       <ButtonGroup>
                         <Button
                           colorScheme="blue"
                           onClick={() => {
-                            router.push(`/admin/stores/edit/${store.id}`);
+                            router.push(`/admin/categories/edit/${category.id}`);
                           }}
                         >
                           Edit
                         </Button>
                         <Button
                           colorScheme="red"
-                          onClick={() => handleDelete(store.id, store.name)}
+                          onClick={() => handleDelete(category.id, category.name)}
                         >
                           Delete
                         </Button>
