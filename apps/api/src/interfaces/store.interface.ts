@@ -1,3 +1,5 @@
+import { Store } from "@prisma/client";
+
 export interface IStore {
   name: string;
   address: string;
@@ -8,6 +10,17 @@ export interface IStore {
   provinceId: number;
   provinceName: string;
   postalCode?: string;
-  longitude?: string;
-  latitude?: string;
+  longitude?: number;
+  latitude?: number;
+}
+
+export interface IFilterStore {
+  keyword?: string;
+  page?: number;
+  size?: number;
+}
+
+export interface IResultStore {
+  stores: Store[];
+  pages: number;
 }

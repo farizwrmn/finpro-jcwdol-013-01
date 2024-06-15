@@ -24,7 +24,7 @@ const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
 const adminGuard = async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (
-      String(req.user?.role).toLowerCase() !== 'super_admin' ||
+      String(req.user?.role).toLowerCase() !== 'super_admin' &&
       String(req.user?.role).toLowerCase() !== 'store_admin'
     )
       throw new Error('Unauthorized');

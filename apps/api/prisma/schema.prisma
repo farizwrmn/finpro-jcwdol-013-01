@@ -119,8 +119,8 @@ model Store {
   provinceId      Int        @map(name: "province_id")
   provinceName    String     @map(name: "province_name")
   postalCode      String?    @map(name: "postal_code")
-  longitude       String?
-  latitude        String?
+  longitude       Float?
+  latitude        Float?
   createdDate     DateTime   @default(now()) @map(name: "created_date")
   updatedDate     DateTime   @updatedAt @map(name: "updated_date")
   stocks          Stock[]

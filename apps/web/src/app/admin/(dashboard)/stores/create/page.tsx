@@ -16,7 +16,7 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { useRouter } from "next/navigation";
-import { createStore, getCities, getProvinces, getSubdistricts } from "../services";
+import { createStore, getCities, getProvinces, getSubdistricts } from "@/services/store.service";
 
 const Page = () => {
   const [provinces, setProvinces] = useState<any[]>([]);
@@ -136,7 +136,7 @@ const Page = () => {
       <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
         Store Management
       </Text>
-      <Card mt={10}>
+      <Card my={10}>
         <CardBody>
           <TableContainer>
             <form onSubmit={handleSubmit}>
@@ -158,7 +158,7 @@ const Page = () => {
                     onChange={handleChange}
                   />
                 </FormControl>
-                <FormControl id="name" isRequired>
+                <FormControl id="address" isRequired>
                   <FormLabel>Address</FormLabel>
                   <Textarea
                     name="address"

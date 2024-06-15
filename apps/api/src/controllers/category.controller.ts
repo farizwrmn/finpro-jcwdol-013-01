@@ -3,7 +3,8 @@ import { createCategoryAction, deleteCategoryAction, getCategoryByIDAction, getC
 
 const getCategoriesController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const data = await getCategoriesAction();
+    const filters = req.query;
+    const data = await getCategoriesAction(filters);
 
     res.status(200).json({
       message: "Get categories success",

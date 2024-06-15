@@ -1,12 +1,12 @@
 import { Category } from "@prisma/client";
 import { createCategoryQuery, deleteCategoryQuery, getCategoryByIDQuery, getCategoryBySlugOrNameQuery, getCategoriesQuery, updateCategoryQuery } from "../queries/category.query";
 import { HttpException } from "../exceptions/HttpException";
-import { ICategory } from "../interfaces/category.interface";
+import { ICategory, IFilterCategory, IResultCategory } from "../interfaces/category.interface";
 
-const getCategoriesAction = async (): Promise<Category[]> => {
+const getCategoriesAction = async (filters: IFilterCategory): Promise<IResultCategory> => {
   try {
-    const categories = await getCategoriesQuery();
-    return categories;
+    const data = await getCategoriesQuery(filters);
+    return data;
   } catch (err) {
     throw err;
   }

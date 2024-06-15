@@ -1,6 +1,7 @@
 'use client';
 
 import React, { ReactNode } from 'react';
+import Link from "next/link";
 import {
   IconButton,
   Avatar,
@@ -11,7 +12,6 @@ import {
   VStack,
   Icon,
   useColorModeValue,
-  Link,
   Drawer,
   DrawerContent,
   Text,
@@ -43,6 +43,7 @@ const LinkItems: Array<LinkItemProps> = [
   { name: 'Home', icon: FiHome, href: '/admin' },
   { name: 'User', icon: FiUser, href: '/admin/users' },
   { name: 'Store', icon: FaStore, href: '/admin/stores' },
+  { name: 'Category', icon: FaStore, href: '/admin/categories' },
   { name: 'Products', icon: FaIceCream, href: '/admin/products' },
 ];
 
@@ -119,7 +120,6 @@ const NavItem = ({ icon, href, children, ...rest }: NavItemProps) => {
     <Link
       href={href}
       style={{ textDecoration: 'none' }}
-      _focus={{ boxShadow: 'none' }}
     >
       <Flex
         align="center"
