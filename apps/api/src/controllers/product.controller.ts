@@ -31,7 +31,12 @@ const getProductByIDController = async (req: Request, res: Response, next: NextF
 
 const createProductController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const data = await createProductAction(req.body);
+    const params = req.body;
+    const data = await createProductAction({
+      ...params,
+      slicedPrice: Number(params.slicedPrice),
+      sellingPrice: Number(params.sellingPrice),
+    });
 
     res.status(200).json({
       message: "Create product success",
@@ -45,7 +50,12 @@ const createProductController = async (req: Request, res: Response, next: NextFu
 const updateProductController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { id } = req.params;
-    const data = await updateProductAction(id, req.body);
+    const params = req.body;
+    const data = await updateProductAction(id, {
+      ...params,
+      slicedPrice: Number(params.slicedPrice),
+      sellingPrice: Number(params.sellingPrice),
+    });
 
     res.status(200).json({
       message: "Update product success",

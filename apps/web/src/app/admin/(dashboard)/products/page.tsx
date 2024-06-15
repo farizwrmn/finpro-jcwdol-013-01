@@ -87,9 +87,9 @@ const Page = () => {
                 <Tr>
                   <Th>No.</Th>
                   <Th>Name</Th>
-                  <Th>Subdistrict</Th>
-                  <Th>City</Th>
-                  <Th>Province</Th>
+                  <Th>Category</Th>
+                  <Th>Sliced Price</Th>
+                  <Th>Selling Price</Th>
                   <Th>Action</Th>
                 </Tr>
               </Thead>
@@ -98,9 +98,9 @@ const Page = () => {
                   <Tr key={product.id}>
                     <Td>{filters.size * (filters.page - 1) + index + 1}</Td>
                     <Td>{product.name}</Td>
-                    <Td>{product.subdistrictName}</Td>
-                    <Td>{product.cityName}</Td>
-                    <Td>{product.provinceName}</Td>
+                    <Td>{product.category.name}</Td>
+                    <Td>{product.slicedPrice}</Td>
+                    <Td>{product.sellingPrice}</Td>
                     <Td>
                       <ButtonGroup>
                         <Button
