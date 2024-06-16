@@ -22,18 +22,18 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { deleteProduct, getProducts } from "@/services/product.service";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { deleteProduct, getProducts } from '@/services/product.service';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 const Page = () => {
   const [data, setData] = useState({
     products: [],
-    pages: 1
+    pages: 1,
   });
   const [filters, setFilters] = useState({
     keyword: '',
     page: 1,
-    size: 10
+    size: 10,
   });
   const router = useRouter();
 
@@ -70,7 +70,9 @@ const Page = () => {
             <Input
               placeholder="Search..."
               value={filters.keyword}
-              onChange={(e) => setFilters({ ...filters, keyword: e.target.value, page: 1 })}
+              onChange={(e) =>
+                setFilters({ ...filters, keyword: e.target.value, page: 1 })
+              }
             />
             <Button
               colorScheme="blue"
@@ -106,6 +108,32 @@ const Page = () => {
                         <Button
                           colorScheme="blue"
                           onClick={() => {
+                            router.push(`/admin/products/image/${product.id}`);
+                          }}
+                        >
+                          Image
+                        </Button>
+                        <Button
+                          colorScheme="blue"
+                          onClick={() => {
+                            router.push(`/admin/products/stock/${product.id}`);
+                          }}
+                        >
+                          Stock
+                        </Button>
+                        <Button
+                          colorScheme="blue"
+                          onClick={() => {
+                            router.push(
+                              `/admin/products/discount/${product.id}`,
+                            );
+                          }}
+                        >
+                          Discount
+                        </Button>
+                        <Button
+                          colorScheme="blue"
+                          onClick={() => {
                             router.push(`/admin/products/edit/${product.id}`);
                           }}
                         >
@@ -128,7 +156,13 @@ const Page = () => {
             <Select
               width="auto"
               value={filters.size}
-              onChange={(e) => setFilters({ ...filters, size: parseInt(e.target.value), page: 1 })}
+              onChange={(e) =>
+                setFilters({
+                  ...filters,
+                  size: parseInt(e.target.value),
+                  page: 1,
+                })
+              }
             >
               <option value="5">5 per page</option>
               <option value="10">10 per page</option>
@@ -140,20 +174,24 @@ const Page = () => {
               <IconButton
                 aria-label="left"
                 icon={<Icon as={FiChevronLeft} />}
-                onClick={() => setFilters(prevFilters => ({
-                  ...prevFilters,
-                  page: Math.max(prevFilters.page - 1, 1)
-                }))}
+                onClick={() =>
+                  setFilters((prevFilters) => ({
+                    ...prevFilters,
+                    page: Math.max(prevFilters.page - 1, 1),
+                  }))
+                }
                 isDisabled={filters.page === 1}
               />
-              <Box p={2}>{filters.page} / {data.pages}</Box>
+              <Box p={2}>
+                {filters.page} / {data.pages}
+              </Box>
               <IconButton
                 aria-label="right"
                 icon={<Icon as={FiChevronRight} />}
                 onClick={() =>
-                  setFilters(prevFilters => ({
+                  setFilters((prevFilters) => ({
                     ...prevFilters,
-                    page: Math.min(prevFilters.page + 1, data.pages)
+                    page: Math.min(prevFilters.page + 1, data.pages),
                   }))
                 }
                 isDisabled={filters.page === data.pages}
