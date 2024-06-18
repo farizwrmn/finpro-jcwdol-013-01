@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import {
   Box,
@@ -12,46 +13,38 @@ import {
 } from '@chakra-ui/react';
 import { withFormik } from 'formik';
 import * as Yup from 'yup';
-import { FormValues, FormProps } from '@/types';
-import { IUsers } from '@/interface/user.interface';
-import InnerForm from './components/innerForm';
-import instance from '@/utils/axiosInstance';
+import { FormValues, FormProps } from './types';
+import InnerForm from './innerForm';
 import PageWrapper from '../pageWrapper';
+import { resetPassword } from "@/services/auth.service";
+import { toast } from "react-toastify";
 
-const RegisterSchema = Yup.object().shape({
-  email: Yup.string()
-    .email('Invalid email address format')
-    .required('Email is required'),
-  // password: Yup.string().required('Password is required'),
+const PasswordSchema = Yup.object().shape({
+  password: Yup.string().required('Password is required'),
 });
 
-const RegisterView = () => {
+const ResetPassword = () => {
+  const params = useSearchParams();
+  const token = params.toString().replace('token=', '');
   const router = useRouter();
 
-  const register = async ({ email }: IUsers) => {
-    try {
-      const form = new FormData();
-      form.append('email', email);
-      const { data } = await instance.post('/auth/register', form);
-      alert(data?.message);
-    } catch (err) {
-      console.error(err);
-      alert('Email already exist, please Sign in');
-    }
-  };
-
-  const RegisterForm = withFormik<FormProps, FormValues>({
+  const ResetPasswordForm = withFormik<FormProps, FormValues>({
     mapPropsToValues: (props) => ({
       email: props.initialEmail || '',
       password: props.initialPassword || '',
-      password1: props.initialPassword || '',
+      password1: props.initialPassword1 || '',
     }),
-    validationSchema: RegisterSchema,
+    validationSchema: PasswordSchema,
     enableReinitialize: true,
-    handleSubmit({ email, password }: FormValues, { resetForm }) {
-      register({ email, password });
-      resetForm();
-      router.push('/sign-in');
+    async handleSubmit({ password }: FormValues, { resetForm }) {
+      try {
+        const data = await resetPassword({ token, password });
+        resetForm();
+        toast.success(data.message);
+        router.push('/sign-in');
+      } catch (err: any) {
+        toast.error(err.message);
+      }
     },
   })(InnerForm);
 
@@ -66,7 +59,7 @@ const RegisterView = () => {
       >
         <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
           <Stack align={'center'}>
-            <Heading fontSize={'3xl'}>Sign Up</Heading>
+            <Heading fontSize={'3xl'}>Reset Password</Heading>
           </Stack>
           <Divider />
           <Box
@@ -80,7 +73,7 @@ const RegisterView = () => {
             }}
           >
             <Stack spacing={8}>
-              <RegisterForm />
+              <ResetPasswordForm />
             </Stack>
           </Box>
         </Stack>
@@ -89,4 +82,4 @@ const RegisterView = () => {
   );
 };
 
-export default RegisterView;
+export default ResetPassword;

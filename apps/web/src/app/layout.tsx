@@ -3,7 +3,8 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { ChakraProvider } from '@chakra-ui/react';
 import StoreProvider from './StoreProvider';
-import Auth from './Auth';
+import Auth from '@/components/auth/Auth';
+import { ToastContainer } from 'react-toastify'
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -22,7 +23,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <ChakraProvider>
           <StoreProvider>
-            <Auth>{children}</Auth>
+            <Auth>
+              {children}
+              <ToastContainer position='bottom-right' />
+            </Auth>
           </StoreProvider>
         </ChakraProvider>
       </body>

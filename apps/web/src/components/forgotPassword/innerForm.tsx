@@ -7,7 +7,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { FormikProps, Form, Field } from 'formik';
-import { FormValues } from '@/types';
+import { FormValues } from './types';
 import Link from 'next/link';
 
 export default function InnerForm(props: FormikProps<FormValues>) {
@@ -18,7 +18,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
     <Box>
       <Form onSubmit={handleSubmit}>
         <Stack spacing={4}>
-          <FormControl id="email">
+          <FormControl id="email" isRequired>
             <FormLabel htmlFor="email">Email </FormLabel>
             <Field
               name="email"
@@ -55,7 +55,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
               bg: 'green.500',
             }}
           >
-            Sign Up
+            Send Reset Link
           </Button>
           <Link href="/sign-in">
             <Text
@@ -63,7 +63,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
               textAlign={'center'}
               _hover={{ color: 'blue.500' }}
             >
-              Already have account?
+              Back to Login
             </Text>
           </Link>
         </Stack>

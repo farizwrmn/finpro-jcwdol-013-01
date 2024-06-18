@@ -133,12 +133,23 @@ export default function Navbar() {
                     </HStack>
                   </MenuButton>
                   <MenuList
-                    bg={useColorModeValue('white', 'gray.900')}
-                    borderColor={useColorModeValue('gray.200', 'gray.700')}
+                  // bg={useColorModeValue('white', 'gray.900')}
+                  // borderColor={useColorModeValue('gray.200', 'gray.700')}
                   >
-                    <MenuItem>Profile</MenuItem>
-                    <MenuItem>Settings</MenuItem>
-                    <MenuItem>Billing</MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        router.push('/users/profile');
+                      }}
+                    >
+                      Profile
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        router.push('/users/change-password');
+                      }}
+                    >
+                      Change Password
+                    </MenuItem>
                     <MenuDivider />
                     <MenuItem
                       onClick={() => {
