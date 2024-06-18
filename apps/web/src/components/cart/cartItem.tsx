@@ -1,3 +1,5 @@
+'use client';
+
 import {
   CloseButton,
   Flex,
@@ -15,26 +17,28 @@ type CartItemProps = {
   description: string;
   quantity: number;
   price: number;
-  currency: 'IDR';
+  currency: string;
   imageUrl: string;
   onChangeQuantity?: (quantity: number) => void;
   onClickGiftWrapping?: () => void;
   onClickDelete?: () => void;
 };
 
-const QuantitySelect = (props: SelectProps) => (
-  <Select
-    maxW="64px"
-    aria-label="Select quantity"
-    focusBorderColor={useColorModeValue('blue.500', 'blue.200')}
-    {...props}
-  >
-    <option value="1">1</option>
-    <option value="2">2</option>
-    <option value="3">3</option>
-    <option value="4">4</option>
-  </Select>
-);
+const QuantitySelect = (props: SelectProps) => {
+  return (
+    <Select
+      maxW="64px"
+      aria-label="Select quantity"
+      focusBorderColor={useColorModeValue('blue.500', 'blue.200')}
+      {...props}
+    >
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+    </Select>
+  );
+};
 
 export const CartItem = (props: CartItemProps) => {
   const {
