@@ -1,45 +1,105 @@
-import { Button, Stack } from '@chakra-ui/react';
-import { useShoppingCart } from '@/context/ShoppingCartContext';
-import productItems from '@/data/products.json';
-import { FormatCurrency } from '@/utils/FormatCurrency';
+import {
+  CloseButton,
+  Flex,
+  Link,
+  Select,
+  SelectProps,
+  useColorModeValue,
+} from '@chakra-ui/react';
+import { PriceTag } from './PriceTag';
+import { CartProductMeta } from './CartProductMeta';
 
 type CartItemProps = {
-  id: number;
+  isGiftWrapping?: boolean;
+  name: string;
+  description: string;
   quantity: number;
+  price: number;
+  currency: 'IDR';
+  imageUrl: string;
+  onChangeQuantity?: (quantity: number) => void;
+  onClickGiftWrapping?: () => void;
+  onClickDelete?: () => void;
 };
 
-export function CartItem({ id, quantity }: CartItemProps) {
-  const { removeFromCart } = useShoppingCart();
-  const item = productItems.find((i) => i.id === id);
-  if (item == null) return null;
+const QuantitySelect = (props: SelectProps) => (
+  <Select
+    maxW="64px"
+    aria-label="Select quantity"
+    focusBorderColor={useColorModeValue('blue.500', 'blue.200')}
+    {...props}
+  >
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+  </Select>
+);
+
+export const CartItem = (props: CartItemProps) => {
+  const {
+    isGiftWrapping,
+    name,
+    description,
+    quantity,
+    imageUrl,
+    currency,
+    price,
+    onChangeQuantity,
+    onClickDelete,
+  } = props;
 
   return (
-    <Stack direction="row" gap={2} className="d-flex align-items-center">
-      <img
-        src={item.imgUrl}
-        style={{ width: '125px', height: '75px', objectFit: 'cover' }}
+    <Flex
+      direction={{ base: 'column', md: 'row' }}
+      justify="space-between"
+      align="center"
+    >
+      <CartProductMeta
+        name={name}
+        description={description}
+        image={imageUrl}
+        isGiftWrapping={isGiftWrapping}
       />
-      <div className="me-auto">
-        <div>
-          {item.name}{' '}
-          {quantity > 1 && (
-            <span className="text-muted" style={{ fontSize: '.65rem' }}>
-              x{quantity}
-            </span>
-          )}
-        </div>
-        <div className="text-muted" style={{ fontSize: '.75rem' }}>
-          {FormatCurrency(item.price)}
-        </div>
-      </div>
-      <div> {FormatCurrency(item.price * quantity)}</div>
-      <Button
-        variant="outline-danger"
-        size="sm"
-        onClick={() => removeFromCart(item.id)}
+
+      {/* Desktop */}
+      <Flex
+        width="full"
+        justify="space-between"
+        display={{ base: 'none', md: 'flex' }}
       >
-        &times;
-      </Button>
-    </Stack>
+        <QuantitySelect
+          value={quantity}
+          onChange={(e) => {
+            onChangeQuantity?.(+e.currentTarget.value);
+          }}
+        />
+        <PriceTag price={price} currency={currency} />
+        <CloseButton
+          aria-label={`Delete ${name} from cart`}
+          onClick={onClickDelete}
+        />
+      </Flex>
+
+      {/* Mobile */}
+      <Flex
+        mt="4"
+        align="center"
+        width="full"
+        justify="space-between"
+        display={{ base: 'flex', md: 'none' }}
+      >
+        <Link fontSize="sm" textDecor="underline">
+          Delete
+        </Link>
+        <QuantitySelect
+          value={quantity}
+          onChange={(e) => {
+            onChangeQuantity?.(+e.currentTarget.value);
+          }}
+        />
+        <PriceTag price={price} currency={currency} />
+      </Flex>
+    </Flex>
   );
-}
+};

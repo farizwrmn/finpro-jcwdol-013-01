@@ -27,14 +27,6 @@ interface SalesData {
   // Add more properties as needed
 }
 
-const salesData: SalesData[] = [
-  // Replace with your actual sales data for each month
-  { month: 'January', revenue: 10000, expenses: 5000, profit: 5000 },
-  { month: 'February', revenue: 12000, expenses: 6000, profit: 6000 },
-  { month: 'March', revenue: 15000, expenses: 7000, profit: 8000 },
-  // ... data for remaining months
-];
-
 const DashboardSalesReport: React.FC = () => {
   const monthLabels = [
     'January',
@@ -168,24 +160,11 @@ const DashboardSalesReport: React.FC = () => {
 
       {/* Charts Section */}
       <Grid templateColumns="repeat(auto-fit,minmax(300px,1fr">
-        <Grid templateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={4}>
-          <GridItem colSpan={1}>
-            <Box w="full" mb={-150}>
-              <AspectRatio>
-                <BarChart
-                  title="Laporan Penjualan Per Bulan"
-                  labels={monthLabels}
-                  datasets={monthDatasets}
-                />
-              </AspectRatio>
-            </Box>
-          </GridItem>
-        </Grid>
         <GridItem colSpan={1}>
           <Box w="full" mb={-150}>
             <AspectRatio>
               <BarChart
-                title="Laporan Penjualan Per Kategori"
+                title="Laporan Stok Produk Pebulan"
                 labels={monthLabels}
                 datasets={categoryDatasets}
               />
@@ -206,33 +185,6 @@ const DashboardSalesReport: React.FC = () => {
       </Grid>
 
       {/* Additional Charts (optional) */}
-
-      <Grid templateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={4}>
-        <GridItem colSpan={1}>
-          <Box w="full" mb={8}>
-            <Text align="center" mb={5}>
-              Penjualan Per Kategori
-            </Text>{' '}
-            <AspectRatio ratio={1}>
-              <PieChart
-                labels={categoryLabels}
-                datasets={categoryPieDatasets}
-              />
-            </AspectRatio>
-          </Box>
-        </GridItem>
-
-        <GridItem colSpan={1}>
-          <Box w="full" mb={8}>
-            <Text align="center" mb={5}>
-              Penjualan Per Produk
-            </Text>
-            <AspectRatio ratio={1}>
-              <PieChart labels={productLabels} datasets={productPieDatasets} />
-            </AspectRatio>
-          </Box>
-        </GridItem>
-      </Grid>
     </Box>
   );
 };

@@ -84,7 +84,7 @@ const Page = () => {
             </Button>
           </Flex>
           <TableContainer>
-            <Table variant="striped">
+            <Table variant="striped" justifyContent={'center'}>
               <Thead>
                 <Tr>
                   <Th>No.</Th>
@@ -116,7 +116,7 @@ const Page = () => {
                         <Button
                           colorScheme="blue"
                           onClick={() => {
-                            router.push(`/admin/products/stock/${product.id}`);
+                            router.push(`/admin/products/stocks/${product.id}`);
                           }}
                         >
                           Stock
