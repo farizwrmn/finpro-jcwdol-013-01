@@ -41,9 +41,15 @@ export default function InnerForm(props: FormikProps<FormValues>) {
   return (
     <Box>
       <Form onSubmit={handleSubmit}>
-        <Stack spacing={4}>
+        <Stack
+          spacing={6}
+          w={'full'}
+          rounded={'xl'}
+          p={10}
+          my={6}
+        >
           <FormControl id="userName">
-            <Stack direction={['column', 'row']} spacing={6}>
+            <Stack spacing={4}>
               <Center>
                 <Avatar size="xl" src={`http://localhost:8000/public/avatar/${values.image}`}>
                   <AvatarBadge
@@ -73,7 +79,12 @@ export default function InnerForm(props: FormikProps<FormValues>) {
               name="name"
               type="text"
               placeholder="Name"
-              _placeholder={{ color: 'gray.500' }}
+              style={{
+                padding: '5px',
+                border: '0.5px solid grey',
+                borderRadius: '5px',
+                width: '100%'
+              }}
               onChange={handleChange}
               value={values.name}
             />
@@ -94,8 +105,13 @@ export default function InnerForm(props: FormikProps<FormValues>) {
             <Field
               name="email"
               type="email"
-              placeholder="your-email@example.com"
-              _placeholder={{ color: 'gray.500' }}
+              placeholder="Email"
+              style={{
+                padding: '5px',
+                border: '0.5px solid grey',
+                borderRadius: '5px',
+                width: '100%'
+              }}
               onChange={handleChange}
               value={values.email}
             />
@@ -116,8 +132,13 @@ export default function InnerForm(props: FormikProps<FormValues>) {
             <Field
               name="phone"
               type="tel"
-              placeholder="Enter your phone number"
-              _placeholder={{ color: 'gray.500' }}
+              placeholder="Phone number"
+              style={{
+                padding: '5px',
+                border: '0.5px solid grey',
+                borderRadius: '5px',
+                width: '100%'
+              }}
               onChange={handleChange}
               value={values.phone}
             />
@@ -137,8 +158,12 @@ export default function InnerForm(props: FormikProps<FormValues>) {
             <FormLabel>Gender</FormLabel>
             <Select
               name="gender"
-              placeholder="Select Gender"
-              _placeholder={{ color: 'gray.500' }}
+              style={{
+                padding: '5px',
+                border: '0.5px solid grey',
+                borderRadius: '5px',
+                width: '100%'
+              }}
               onChange={handleChange}
               value={values.gender}
             >
@@ -152,8 +177,12 @@ export default function InnerForm(props: FormikProps<FormValues>) {
             <Field
               name="birthDate"
               type="date"
-              placeholder="Enter your birth date"
-              _placeholder={{ color: 'gray.500' }}
+              style={{
+                padding: '5px',
+                border: '0.5px solid grey',
+                borderRadius: '5px',
+                width: '100%'
+              }}
               onChange={handleChange}
               value={values.birthDate}
             />
@@ -169,7 +198,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
               </Text>
             )}
           </FormControl>
-          <Stack spacing={6} direction={['column', 'row']}>
+          <Stack spacing={6} direction={['column', 'row']} mt={15}>
             <Button
               bg={'red.400'}
               color={'white'}

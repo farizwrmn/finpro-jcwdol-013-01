@@ -12,6 +12,11 @@ export interface IProduct {
   categoryId: string;
 }
 
+export interface IProductImage {
+  productId: string;
+  image: string;
+}
+
 export interface IFilterProduct {
   keyword?: string;
   page?: number;

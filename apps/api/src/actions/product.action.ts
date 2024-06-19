@@ -1,6 +1,8 @@
-import { Product } from '@prisma/client';
+import { Product, ProductImage } from '@prisma/client';
 import {
+  createProductImageQuery,
   createProductQuery,
+  deleteProductImageQuery,
   deleteProductQuery,
   getProductByIDQuery,
   getProductBySlugOrNameQuery,
@@ -11,6 +13,7 @@ import { HttpException } from '../exceptions/HttpException';
 import {
   IFilterProduct,
   IProduct,
+  IProductImage,
   IResultProduct,
 } from '../interfaces/product.interface';
 
@@ -86,6 +89,26 @@ const deleteProductAction = async (id: string): Promise<Product> => {
   }
 };
 
+const createProductImageAction = async (data: IProductImage): Promise<ProductImage> => {
+  try {
+    if (!data.image) throw new Error("Please upload image file");
+
+    const productImage = await createProductImageQuery(data);
+    return productImage;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const deleteProductImageAction = async (id: string): Promise<ProductImage> => {
+  try {
+    const productImage = await deleteProductImageQuery(id);
+    return productImage;
+  } catch (err) {
+    throw err;
+  }
+};
+
 export {
   getProductsAction,
   getProductByIDAction,
@@ -93,4 +116,6 @@ export {
   updateProductAction,
   deleteProductAction,
   getProductBySlugAction,
+  createProductImageAction,
+  deleteProductImageAction,
 };

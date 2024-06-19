@@ -1,5 +1,5 @@
 import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
-import { IUserProfile, IUsers } from '@/interface/user.interface';
+import { IUserPassword, IUserProfile, IUsers } from '@/interface/user.interface';
 import parseJWT from '@/utils/parseJwt';
 import instance from '@/utils/axiosInstance';
 
@@ -17,6 +17,7 @@ type User = {
 
 type Status = {
   isLogin: boolean;
+  error?: string;
 };
 
 interface Auth {
@@ -98,9 +99,11 @@ export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
 
     localStorage.setItem('token', data?.data.token);
     localStorage.setItem('user', JSON.stringify(user));
+
+    return true;
   } catch (err) {
-    console.log(err);
-    alert('Email atau Password salah');
+    console.error(err);
+    return false;
   }
 };
 
@@ -110,12 +113,14 @@ export const signOut = () => async (dispatch: Dispatch) => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
 export const checkToken = (token: string) => async (dispatch: Dispatch) => {
   try {
+    if (!token) throw new Error("Token not found");
+
     const { data } = await instance.get('/auth', {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -123,6 +128,8 @@ export const checkToken = (token: string) => async (dispatch: Dispatch) => {
     });
     const payload = await parseJWT(data?.data);
     const user = data?.data.user;
+
+    if (!user?.id) throw new Error("User not found");
 
     dispatch(
       tokenValidState({
@@ -140,8 +147,11 @@ export const checkToken = (token: string) => async (dispatch: Dispatch) => {
 
     localStorage.setItem('token', data?.data.token);
     localStorage.setItem('user', JSON.stringify(user));
+
+    return user;
   } catch (err) {
-    console.log(err);
+    console.error(err);
+    return false;
   }
 };
 

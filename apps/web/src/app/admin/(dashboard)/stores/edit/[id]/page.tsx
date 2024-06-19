@@ -16,7 +16,8 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { useRouter } from "next/navigation";
-import { getCities, getProvinces, getStoreByID, getSubdistricts, updateStore } from "@/services/store.service";
+import { getCities, getProvinces, getSubdistricts } from "@/services/shipping.service";
+import { getStoreByID, updateStore } from "@/services/store.service";
 
 type Props = { params: { id: string } };
 

@@ -10,3 +10,8 @@ export interface IUserProfile {
   gender?: string;
   birthDate?: string;
 }
+
+export interface IUserPassword {
+  currentPassword: string;
+  newPassword: string;
+}

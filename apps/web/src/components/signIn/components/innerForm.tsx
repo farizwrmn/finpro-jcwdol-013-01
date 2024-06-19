@@ -81,15 +81,6 @@ export default function InnerForm(props: FormikProps<FormValues>) {
               </Text>
             )}
           </FormControl>
-          <Link href="/sign-up">
-            <Text
-              color={'blue.400'}
-              textAlign={'center'}
-              _hover={{ color: 'blue.500' }}
-            >
-              {"Don't have account yet?"}
-            </Text>
-          </Link>
           <Button
             sx={{
               marginTop: '15px',
@@ -104,6 +95,24 @@ export default function InnerForm(props: FormikProps<FormValues>) {
           >
             Sign In
           </Button>
+          <Link href="/sign-up">
+            <Text
+              color={'blue.400'}
+              textAlign={'center'}
+              _hover={{ color: 'blue.500' }}
+            >
+              {"Don't have account yet?"}
+            </Text>
+          </Link>
+          <Link href="/forgot-password">
+            <Text
+              color={'blue.400'}
+              textAlign={'center'}
+              _hover={{ color: 'blue.500' }}
+            >
+              Forgot Password?
+            </Text>
+          </Link>
         </Stack>
       </Form>
     </Box>

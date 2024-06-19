@@ -1,7 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import {
   createProductAction,
+  createProductImageAction,
   deleteProductAction,
+  deleteProductImageAction,
   getProductByIDAction,
   getProductBySlugAction,
   getProductsAction,
@@ -124,6 +126,47 @@ const deleteProductController = async (
   }
 };
 
+const createProductImageController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { productId } = req.body;
+    const { file } = req;
+
+    const data = await createProductImageAction({
+      productId,
+      image: file?.filename as string,
+    });
+
+    res.status(200).json({
+      message: 'Upload product image success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const deleteProductImageController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const data = await deleteProductImageAction(id);
+
+    res.status(200).json({
+      message: 'Delete product image success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export {
   getProductsController,
   getProductByIDController,
@@ -131,4 +174,6 @@ export {
   updateProductController,
   deleteProductController,
   getProductBySlugController,
+  createProductImageController,
+  deleteProductImageController,
 };
