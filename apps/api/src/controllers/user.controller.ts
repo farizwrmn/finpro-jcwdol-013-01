@@ -4,6 +4,7 @@ import {
   deleteUserAction,
   getUserByIDAction,
   getUsersAction,
+  updateAvatarAction,
   updatePasswordAction,
   updateUserAction,
 } from '../actions/user.action';
@@ -106,9 +107,7 @@ const updateAvatarController = async (
     const { id } = req.params;
     const { file } = req;
 
-    const data = await updateUserAction(id, {
-      image: String(file?.filename),
-    });
+    const data = await updateAvatarAction(id, file?.filename as string);
 
     res.status(200).json({
       message: 'Update avatar success',

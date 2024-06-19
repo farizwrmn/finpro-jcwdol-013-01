@@ -3,9 +3,11 @@ import { API_PORT } from './config';
 
 import authRouter from './routes/auth.route';
 import userRouter from './routes/user.route';
+import addressRouter from './routes/address.route';
 import storeRouter from './routes/store.route';
 import categoryRouter from './routes/category.route';
 import productRouter from './routes/product.route';
+
 import { ErrorMiddleware } from './middlewares/error.middleware';
 import cors from 'cors';
 import path = require('path');
@@ -21,6 +23,7 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 // initialize endpoint
 app.use('/auth', authRouter);
 app.use('/users', userRouter);
+app.use('/addresses', addressRouter);
 app.use('/stores', storeRouter);
 app.use('/categories', categoryRouter);
 app.use('/products', productRouter);

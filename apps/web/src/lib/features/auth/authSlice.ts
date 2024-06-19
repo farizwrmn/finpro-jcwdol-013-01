@@ -148,7 +148,7 @@ export const checkToken = (token: string) => async (dispatch: Dispatch) => {
     localStorage.setItem('token', data?.data.token);
     localStorage.setItem('user', JSON.stringify(user));
 
-    return true;
+    return user;
   } catch (err) {
     console.error(err);
     return false;

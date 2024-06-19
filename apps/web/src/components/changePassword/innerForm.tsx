@@ -5,13 +5,16 @@ import {
   Button,
   Stack,
   Text,
+  Input,
 } from '@chakra-ui/react';
 import { FormikProps, Form, Field } from 'formik';
 import { FormValues } from './types';
+import { useRouter } from "next/navigation";
 
 export default function InnerForm(props: FormikProps<FormValues>) {
   const { values, errors, touched, handleChange, handleSubmit, isSubmitting } =
     props;
+  const router = useRouter();
 
   const validateConfirmPassword = (pass: string, value: string) => {
     let error = '';
@@ -26,7 +29,13 @@ export default function InnerForm(props: FormikProps<FormValues>) {
   return (
     <Box>
       <Form onSubmit={handleSubmit}>
-        <Stack spacing={4}>
+        <Stack
+          spacing={6}
+          w={'full'}
+          rounded={'xl'}
+          p={10}
+          my={6}
+        >
           <FormControl id="currentPassword" isRequired>
             <FormLabel htmlFor="currentPassword">Current Password </FormLabel>
             <Field
@@ -38,6 +47,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
                 padding: '5px',
                 border: '0.5px solid grey',
                 borderRadius: '5px',
+                width: '100%'
               }}
             />
             {touched.currentPassword && errors.currentPassword && (
@@ -63,6 +73,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
                 padding: '5px',
                 border: '0.5px solid grey',
                 borderRadius: '5px',
+                width: '100%'
               }}
             />
             {touched.newPassword && errors.newPassword && (
@@ -88,6 +99,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
                 padding: '5px',
                 border: '0.5px solid grey',
                 borderRadius: '5px',
+                width: '100%'
               }}
               validate={() =>
                 validateConfirmPassword(values.newPassword, values.confirmPassword)
@@ -99,35 +111,45 @@ export default function InnerForm(props: FormikProps<FormValues>) {
               </Text>
             )}
           </FormControl>
-          {errors.confirmPassword ? (
+          <Stack spacing={6} direction={['column', 'row']}>
             <Button
-              sx={{
-                marginTop: '15px',
+              onClick={() => {
+                router.push("/users");
               }}
-              type="submit"
-              disabled
-              bg={'gray.400'}
+              bg={'red.400'}
               color={'white'}
-              cursor={'not-allowed'}
-            >
-              Submit
-            </Button>
-          ) : (
-            <Button
-              sx={{
-                marginTop: '15px',
-              }}
-              type="submit"
-              disabled={isSubmitting}
-              bg={'green.400'}
-              color={'white'}
+              w="full"
               _hover={{
-                bg: 'green.500',
-              }}
-            >
-              Submit
+                bg: 'red.500',
+              }}>
+              Cancel
             </Button>
-          )}
+            {errors.confirmPassword ? (
+              <Button
+                type="submit"
+                disabled
+                bg={'gray.400'}
+                w="full"
+                color={'white'}
+                cursor={'not-allowed'}
+              >
+                Update
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                bg={'blue.400'}
+                w="full"
+                color={'white'}
+                _hover={{
+                  bg: 'blue.500',
+                }}
+              >
+                Update
+              </Button>
+            )}
+          </Stack>
         </Stack>
       </Form>
     </Box>

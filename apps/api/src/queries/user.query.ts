@@ -105,6 +105,23 @@ const updatePasswordQuery = async (id: string, password: string) => {
   }
 };
 
+const updateAvatarQuery = async (id: string, image: string) => {
+  try {
+    const user = await prisma.user.update({
+      data: {
+        image,
+      },
+      where: {
+        id,
+      },
+    });
+
+    return user;
+  } catch (err) {
+    throw err;
+  }
+};
+
 const deleteUserQuery = async (id: string): Promise<User> => {
   try {
     const user = await prisma.user.delete({
@@ -119,4 +136,4 @@ const deleteUserQuery = async (id: string): Promise<User> => {
   }
 }
 
-export { getUsersQuery, getUserByIDQuery, getUserByEmailQuery, createUserQuery, updateUserQuery, updatePasswordQuery, deleteUserQuery };
+export { getUsersQuery, getUserByIDQuery, getUserByEmailQuery, createUserQuery, updateUserQuery, updatePasswordQuery, updateAvatarQuery, deleteUserQuery };

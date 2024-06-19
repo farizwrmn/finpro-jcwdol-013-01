@@ -1,6 +1,7 @@
 'use client';
 
 import React, { ReactNode } from 'react';
+import AuthUser from "@/components/auth/AuthUser";
 import Link from 'next/link';
 import {
   IconButton,
@@ -33,7 +34,6 @@ import {
 } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
-import AuthAdmin from "@/components/auth/AuthAdmin";
 
 interface LinkItemProps {
   name: string;
@@ -42,33 +42,27 @@ interface LinkItemProps {
   key: string;
 }
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Home', icon: FiHome, href: '/admin', key: 'Home' },
-  { name: 'User', icon: FiUser, href: '/admin/users', key: 'User' },
-  { name: 'Store', icon: FaStore, href: '/admin/stores', key: 'Store' },
+  { name: 'Home', icon: FiHome, href: '/users', key: 'Home' },
+  { name: 'Profile', icon: FiUser, href: '/users/profile', key: 'Profile' },
+  { name: 'Change Password', icon: FaStore, href: '/users/change-password', key: 'Change Password' },
   {
-    name: 'Category',
+    name: 'Address',
     icon: FaIceCream,
-    href: '/admin/categories',
-    key: 'Category',
+    href: '/users/address',
+    key: 'Address',
   },
   {
-    name: 'Product',
+    name: 'Order',
     icon: FaIceCream,
-    href: '/admin/products',
-    key: 'Product',
-  },
-  {
-    name: 'Sales Report',
-    icon: FaIceCream,
-    href: '/admin/report/sales',
-    key: 'Sales Report',
+    href: '/users/orders',
+    key: 'Order',
   },
 ];
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <AuthAdmin>
+    <AuthUser>
       <Box>
         <SidebarContent
           onClose={() => onClose}
@@ -94,7 +88,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           {children}
         </Box>
       </Box>
-    </AuthAdmin>
+    </AuthUser>
   );
 }
 

@@ -78,3 +78,42 @@ export const deleteProduct = async (id: string) => {
     console.error(err);
   }
 };
+
+export const createProductImage = async (formData: any) => {
+  try {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    const { data } = await instance.post(
+      `/products/image`,
+      formData,
+      config,
+    );
+
+    const productImage = data?.data;
+    return productImage;
+  } catch (err) {
+    console.log(err);
+    alert('Upload product image failed');
+  }
+};
+
+export const deleteProductImage = async (id: string) => {
+  try {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    };
+    const { data } = await instance.delete(`/products/image/${id}`, config);
+    const productImage = data?.data;
+    return productImage;
+  } catch (err) {
+    console.error(err);
+  }
+};

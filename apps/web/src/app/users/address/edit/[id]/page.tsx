@@ -17,7 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from "next/navigation";
 import { getCities, getProvinces, getSubdistricts } from "@/services/shipping.service";
-import { getStoreByID, updateStore } from "@/services/store.service";
+import { getAddressByID, updateAddress } from "@/services/address.service";
 
 type Props = { params: { id: string } };
 
@@ -27,7 +27,7 @@ const Page = ({ params: { id } }: Props) => {
   const [subdistricts, setSubdistricts] = useState<any[]>([]);
 
   const [formData, setFormData] = useState({
-    name: '',
+    label: '',
     address: '',
     provinceId: '',
     provinceName: '',
@@ -35,17 +35,16 @@ const Page = ({ params: { id } }: Props) => {
     cityName: '',
     subdistrictId: '',
     subdistrictName: '',
-    longitude: '',
-    latitude: '',
+    postalCode: ''
   });
 
   const router = useRouter();
 
   useEffect(() => {
     (async () => {
-      const data = await getStoreByID(id);
+      const data = await getAddressByID(id);
       setFormData({
-        name: data.name,
+        label: data.label,
         address: data.address,
         provinceId: data.provinceId,
         provinceName: data.provinceName,
@@ -53,8 +52,7 @@ const Page = ({ params: { id } }: Props) => {
         cityName: data.cityName,
         subdistrictId: data.subdistrictId,
         subdistrictName: data.subdistrictName,
-        longitude: data.longitude,
-        latitude: data.latitude,
+        postalCode: data.postalCode
       })
     })();
   }, [id]);
@@ -142,20 +140,20 @@ const Page = ({ params: { id } }: Props) => {
     e.preventDefault();
 
     try {
-      const store = await updateStore(id, formData);
-      if (!store) throw new Error("Update store failed!");
-      alert("Update store success");
-      router.push("/admin/stores")
+      const address = await updateAddress(id, formData);
+      if (!address) throw new Error("Update address failed!");
+      alert("Update address success");
+      router.push("/users/address")
     } catch (err) {
       console.error(err);
-      alert("Update store failed");
+      alert("Update address failed");
     }
   }
 
   return (
     <Box>
       <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-        Store Management
+        Address Management
       </Text>
       <Card my={10}>
         <CardBody>
@@ -168,14 +166,14 @@ const Page = ({ params: { id } }: Props) => {
                 p={10}
                 my={6}
               >
-                <FormControl id="name" isRequired>
-                  <FormLabel>Store Name</FormLabel>
+                <FormControl id="label" isRequired>
+                  <FormLabel>Label</FormLabel>
                   <Input
-                    name="name"
-                    placeholder="Name"
+                    name="label"
+                    placeholder="Label"
                     _placeholder={{ color: 'gray.500' }}
                     type="text"
-                    value={formData.name}
+                    value={formData.label}
                     onChange={handleChange}
                   />
                 </FormControl>
@@ -237,32 +235,21 @@ const Page = ({ params: { id } }: Props) => {
                     ))}
                   </Select>
                 </FormControl>
-                <FormControl id="longitude">
-                  <FormLabel>Longitude</FormLabel>
+                <FormControl id="postalCode">
+                  <FormLabel>Postal Code</FormLabel>
                   <Input
-                    name="longitude"
-                    placeholder="Longitude"
+                    name="postalCode"
+                    placeholder="Postal Code"
                     _placeholder={{ color: 'gray.500' }}
                     type="text"
-                    value={formData.longitude}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-                <FormControl id="latitude">
-                  <FormLabel>Latitude</FormLabel>
-                  <Input
-                    name="latitude"
-                    placeholder="Latitude"
-                    _placeholder={{ color: 'gray.500' }}
-                    type="text"
-                    value={formData.latitude}
+                    value={formData.postalCode}
                     onChange={handleChange}
                   />
                 </FormControl>
                 <Stack spacing={6} direction={['column', 'row']}>
                   <Button
                     onClick={() => {
-                      router.push("/admin/stores");
+                      router.push("/users/address");
                     }}
                     bg={'red.400'}
                     color={'white'}

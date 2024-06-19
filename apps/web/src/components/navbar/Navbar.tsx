@@ -138,17 +138,10 @@ export default function Navbar() {
                   >
                     <MenuItem
                       onClick={() => {
-                        router.push('/users/profile');
+                        router.push(user.role === "super_admin" || user.role === "store_admin" ? '/admin' : "/users");
                       }}
                     >
-                      Profile
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => {
-                        router.push('/users/change-password');
-                      }}
-                    >
-                      Change Password
+                      Dashboard
                     </MenuItem>
                     <MenuDivider />
                     <MenuItem
