@@ -42,7 +42,10 @@ const updateStockQuery = async (
   stockData: IStock,
 ): Promise<Stock> => {
   try {
-    const stock = await prisma.stock.findUnique({
+    const stock = await prisma.stock.update({
+      data: {
+        ...stockData,
+      },
       where: {
         id,
       },
@@ -108,22 +111,22 @@ const getStocksByProductIDQuery = async (
   }
 };
 
-const addStockQuery = async (id: string, stockData: IStock): Promise<Stock> => {
-  try {
-    const stock = await prisma.stock.update({
-      data: {
-        ...stockData,
-      },
-      where: {
-        id,
-      },
-    });
+// const addStockQuery = async (id: string, stockData: IStock): Promise<Stock> => {
+//   try {
+//     const stock = await prisma.stock.update({
+//       data: {
+//         ...stockData,
+//       },
+//       where: {
+//         id,
+//       },
+//     });
 
-    return stock;
-  } catch (err) {
-    throw err;
-  }
-};
+//     return stock;
+//   } catch (err) {
+//     throw err;
+//   }
+// };
 
 const getStockByIDQuery = async (id: string): Promise<Stock | null> => {
   try {
@@ -143,6 +146,6 @@ export {
   createStockQuery,
   updateStockQuery,
   getStocksByProductIDQuery,
-  addStockQuery,
+  // addStockQuery,
   getStockByIDQuery,
 };
