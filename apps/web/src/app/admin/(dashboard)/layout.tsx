@@ -37,6 +37,7 @@ import {
 } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
+import AuthAdmin from "@/components/auth/AuthAdmin";
 
 interface LinkItemProps {
   name: string;
@@ -77,31 +78,33 @@ const LinkItems: Array<LinkItemProps> = [
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box>
-      <SidebarContent
-        onClose={() => onClose}
-        display={{ base: 'none', md: 'block' }}
-        zIndex={100}
-      />
-      <Drawer
-        autoFocus={false}
-        isOpen={isOpen}
-        placement="left"
-        onClose={onClose}
-        returnFocusOnClose={false}
-        onOverlayClick={onClose}
-        size="full"
-      >
-        <DrawerContent>
-          <SidebarContent onClose={onClose} />
-        </DrawerContent>
-      </Drawer>
-      {/* mobilenav */}
-      <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p={5}>
-        {children}
+    <AuthAdmin>
+      <Box>
+        <SidebarContent
+          onClose={() => onClose}
+          display={{ base: 'none', md: 'block' }}
+          zIndex={100}
+        />
+        <Drawer
+          autoFocus={false}
+          isOpen={isOpen}
+          placement="left"
+          onClose={onClose}
+          returnFocusOnClose={false}
+          onOverlayClick={onClose}
+          size="full"
+        >
+          <DrawerContent>
+            <SidebarContent onClose={onClose} />
+          </DrawerContent>
+        </Drawer>
+        {/* mobilenav */}
+        <MobileNav onOpen={onOpen} />
+        <Box ml={{ base: 0, md: 60 }} p={5}>
+          {children}
+        </Box>
       </Box>
-    </Box>
+    </AuthAdmin>
   );
 }
 
@@ -204,7 +207,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         fontFamily="monospace"
         fontWeight="bold"
       >
-        Logo
+        Dashboard
       </Text>
 
       <HStack spacing={{ base: '0', md: '6' }}>

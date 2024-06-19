@@ -26,6 +26,7 @@ import { FormValues, FormProps } from './types';
 import InnerForm from '../signIn/components/innerForm';
 import PageWrapper from '../pageWrapper';
 import { FcGoogle } from 'react-icons/fc';
+import { toast } from "react-toastify";
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -51,10 +52,16 @@ const LoginView = ({ callbackUrl, authError }: Props) => {
     }),
     validationSchema: LoginSchema,
     enableReinitialize: true,
-    handleSubmit({ email, password }: FormValues, { resetForm }) {
-      dispatch(signIn({ email, password }));
-      resetForm();
-      router.push('/');
+    async handleSubmit({ email, password }: FormValues, { resetForm }) {
+      try {
+        const result = await dispatch(signIn({ email, password }));
+        if (!result) throw new Error('Email atau Password salah');
+        resetForm();
+        router.push('/');
+      } catch (err: any) {
+        console.error(err);
+        toast.error(err.message);
+      }
     },
   })(InnerForm);
 

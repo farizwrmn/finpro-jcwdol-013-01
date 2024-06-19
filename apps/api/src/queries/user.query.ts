@@ -1,4 +1,4 @@
-import { IUpdateUser, IUser } from '@/interfaces/user.interface';
+import { IUpdatePassword, IUpdateUser, IUser } from '@/interfaces/user.interface';
 import { PrismaClient, User } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -88,6 +88,40 @@ const updateUserQuery = async (id: string, data: IUpdateUser) => {
   }
 };
 
+const updatePasswordQuery = async (id: string, password: string) => {
+  try {
+    const user = await prisma.user.update({
+      data: {
+        password,
+      },
+      where: {
+        id,
+      },
+    });
+
+    return user;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const updateAvatarQuery = async (id: string, image: string) => {
+  try {
+    const user = await prisma.user.update({
+      data: {
+        image,
+      },
+      where: {
+        id,
+      },
+    });
+
+    return user;
+  } catch (err) {
+    throw err;
+  }
+};
+
 const deleteUserQuery = async (id: string): Promise<User> => {
   try {
     const user = await prisma.user.delete({
@@ -102,4 +136,4 @@ const deleteUserQuery = async (id: string): Promise<User> => {
   }
 }
 
-export { getUsersQuery, getUserByIDQuery, getUserByEmailQuery, createUserQuery, updateUserQuery, deleteUserQuery };
+export { getUsersQuery, getUserByIDQuery, getUserByEmailQuery, createUserQuery, updateUserQuery, updatePasswordQuery, updateAvatarQuery, deleteUserQuery };

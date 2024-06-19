@@ -4,6 +4,8 @@ import {
   deleteUserAction,
   getUserByIDAction,
   getUsersAction,
+  updateAvatarAction,
+  updatePasswordAction,
   updateUserAction,
 } from '../actions/user.action';
 
@@ -78,6 +80,24 @@ const updateUserController = async (
   }
 };
 
+const updatePasswordController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const user = await updatePasswordAction(id, req.body);
+
+    res.status(200).json({
+      message: 'Update password success',
+      data: user,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 const updateAvatarController = async (
   req: Request,
   res: Response,
@@ -87,9 +107,7 @@ const updateAvatarController = async (
     const { id } = req.params;
     const { file } = req;
 
-    const data = await updateUserAction(id, {
-      image: String(file?.filename),
-    });
+    const data = await updateAvatarAction(id, file?.filename as string);
 
     res.status(200).json({
       message: 'Update avatar success',
@@ -123,6 +141,7 @@ export {
   getUserByIDController,
   createUserController,
   updateUserController,
+  updatePasswordController,
   updateAvatarController,
   deleteUserController,
 };

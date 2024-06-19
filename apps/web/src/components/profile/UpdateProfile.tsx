@@ -1,11 +1,10 @@
 'use client';
 
 import {
-  Button,
-  Flex,
-  Heading,
-  Stack,
-  useColorModeValue,
+  Box,
+  Card,
+  CardBody,
+  Text,
 } from '@chakra-ui/react';
 import { withFormik } from 'formik';
 import * as Yup from 'yup';
@@ -58,27 +57,15 @@ export default function UserProfileEdit(): JSX.Element {
   })(InnerForm);
 
   return (
-    <Flex
-      minH={'100vh'}
-      align={'center'}
-      justify={'center'}
-      bg={useColorModeValue('gray.50', 'gray.800')}
-    >
-      <Stack
-        spacing={4}
-        w={'full'}
-        maxW={'md'}
-        bg={useColorModeValue('white', 'gray.700')}
-        rounded={'xl'}
-        boxShadow={'lg'}
-        p={6}
-        my={12}
-      >
-        <Heading lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl' }}>
-          User Profile Edit
-        </Heading>
-        <UpdateProfileForm />
-      </Stack>
-    </Flex>
+    <Box>
+      <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
+        Profile
+      </Text>
+      <Card my={10}>
+        <CardBody>
+          <UpdateProfileForm />
+        </CardBody>
+      </Card>
+    </Box>
   );
 }

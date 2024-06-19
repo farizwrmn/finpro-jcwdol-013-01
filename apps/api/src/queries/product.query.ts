@@ -1,7 +1,8 @@
-import { PrismaClient, Product } from '@prisma/client';
+import { PrismaClient, Product, ProductImage } from '@prisma/client';
 import {
   IFilterProduct,
   IProduct,
+  IProductImage,
   IResultProduct,
 } from '../interfaces/product.interface';
 
@@ -50,6 +51,7 @@ const getProductByIDQuery = async (id: string): Promise<Product | null> => {
     const product = await prisma.product.findUnique({
       include: {
         category: true,
+        productImages: true,
       },
       where: {
         id,
@@ -145,6 +147,42 @@ const deleteProductQuery = async (id: string): Promise<Product> => {
   }
 };
 
+const createProductImageQuery = async (data: IProductImage): Promise<ProductImage> => {
+  try {
+    const trx = await prisma.$transaction(async (prisma) => {
+      try {
+        const productImage = await prisma.productImage.create({
+          data: {
+            ...data,
+          },
+        });
+
+        return productImage;
+      } catch (err) {
+        throw err;
+      }
+    });
+
+    return trx;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const deleteProductImageQuery = async (id: string): Promise<ProductImage> => {
+  try {
+    const productImage = await prisma.productImage.delete({
+      where: {
+        id,
+      },
+    });
+
+    return productImage;
+  } catch (err) {
+    throw err;
+  }
+};
+
 export {
   getProductsQuery,
   getProductByIDQuery,
@@ -152,4 +190,6 @@ export {
   createProductQuery,
   updateProductQuery,
   deleteProductQuery,
+  createProductImageQuery,
+  deleteProductImageQuery,
 };

@@ -16,7 +16,8 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import { useRouter } from "next/navigation";
-import { createStore, getCities, getProvinces, getSubdistricts } from "@/services/store.service";
+import { getCities, getProvinces, getSubdistricts } from "@/services/shipping.service";
+import { createStore } from "@/services/store.service";
 
 const Page = () => {
   const [provinces, setProvinces] = useState<any[]>([]);
