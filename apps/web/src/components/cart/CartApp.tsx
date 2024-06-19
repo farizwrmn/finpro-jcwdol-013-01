@@ -8,7 +8,7 @@ import {
   Stack,
   useColorModeValue as mode,
 } from '@chakra-ui/react';
-import { CartItem } from './CartItem';
+import { CartItem } from './cartItem';
 import { CartOrderSummary } from './CartOrderSummary';
 import { cartData } from '@/lib/cart/cart';
 

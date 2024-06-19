@@ -15,7 +15,7 @@ type CartItemProps = {
   description: string;
   quantity: number;
   price: number;
-  currency: 'IDR';
+  // currency: 'IDR';
   imageUrl: string;
   onChangeQuantity?: (quantity: number) => void;
   onClickGiftWrapping?: () => void;
@@ -43,7 +43,7 @@ export const CartItem = (props: CartItemProps) => {
     description,
     quantity,
     imageUrl,
-    currency,
+    // currency,
     price,
     onChangeQuantity,
     onClickDelete,
@@ -74,7 +74,7 @@ export const CartItem = (props: CartItemProps) => {
             onChangeQuantity?.(+e.currentTarget.value);
           }}
         />
-        <PriceTag price={price} currency={currency} />
+        <PriceTag price={price} currency="" />
         <CloseButton
           aria-label={`Delete ${name} from cart`}
           onClick={onClickDelete}
@@ -98,7 +98,7 @@ export const CartItem = (props: CartItemProps) => {
             onChangeQuantity?.(+e.currentTarget.value);
           }}
         />
-        <PriceTag price={price} currency={currency} />
+        <PriceTag price={price} currency={''} />
       </Flex>
     </Flex>
   );

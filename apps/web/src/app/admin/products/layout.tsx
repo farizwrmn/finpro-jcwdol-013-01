@@ -16,7 +16,7 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import DashboardLayout from '../(dashboard)/layout';
-import productItems from '@/data/products.json';
+// import productItems from '@/data/products.json';
 import { FormatCurrency } from '@/utils/FormatCurrency';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
@@ -45,7 +45,7 @@ const layoutProduct = () => {
           templateColumns={{ base: 'repeat(2, 1fr)', sm: 'repeat(3, 1fr)' }}
           ml={{ base: '0', sm: '290' }}
         >
-          {productItems.map((item) => (
+          {/* {productItems.map((item) => (
             <Card maxW="xs" shadow={'xl'} w={'full'}>
               <CardBody>
                 <Image
@@ -78,7 +78,7 @@ const layoutProduct = () => {
                 </ButtonGroup>
               </CardFooter>
             </Card>
-          ))}
+          ))} */}
         </SimpleGrid>
       </Box>
     </>
