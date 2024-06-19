@@ -1,7 +1,8 @@
 import { HttpException } from "@/exceptions/HttpException";
-import { createUserQuery, deleteUserQuery, getUserByEmailQuery, getUserByIDQuery, getUsersQuery, updateUserQuery } from "../queries/user.query";
-import { IUser } from '@/interfaces/user.interface';
+import { createUserQuery, deleteUserQuery, getUserByEmailQuery, getUserByIDQuery, getUsersQuery, updateAvatarQuery, updatePasswordQuery, updateUserQuery } from "../queries/user.query";
+import { IUpdatePassword, IUser } from '@/interfaces/user.interface';
 import { User } from '@prisma/client';
+import { genSalt, hash, compare } from 'bcrypt';
 
 const getUsersAction = async (): Promise<User[]> => {
   try {
@@ -46,6 +47,36 @@ const updateUserAction = async (id: string, data: IUser): Promise<User> => {
   }
 };
 
+const updatePasswordAction = async (id: string, data: IUpdatePassword): Promise<User> => {
+  try {
+    const user = await getUserByIDQuery(id);
+    if (!user) throw new Error('User doesnt exist');
+
+    const isValid = await compare(data.currentPassword, user.password || '');
+
+    if (!isValid) throw new Error('Current password is wrong');
+
+    const salt = await genSalt(10);
+    const hashPass = await hash(data.newPassword || '', salt);
+    const updatedUser = await updatePasswordQuery(id, hashPass);
+
+    return updatedUser;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const updateAvatarAction = async (id: string, image: string): Promise<User> => {
+  try {
+    if (!image) throw new Error("Please upload image file");
+
+    const user = await updateAvatarQuery(id, image);
+    return user;
+  } catch (err) {
+    throw err;
+  }
+};
+
 const deleteUserAction = async (id: string): Promise<User> => {
   try {
     const user = await deleteUserQuery(id);
@@ -60,5 +91,7 @@ export {
   getUserByIDAction,
   createUserAction,
   updateUserAction,
+  updatePasswordAction,
+  updateAvatarAction,
   deleteUserAction
 };

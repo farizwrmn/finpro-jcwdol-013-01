@@ -1,7 +1,7 @@
 import { User } from 'prisma/prisma-client';
 import { Auth, RegisterAuth } from '../interfaces/auth.interface';
 import { getUserByEmailQuery, updateUserQuery } from '../queries/user.query';
-import { loginQuery, registerQuery, verifyQuery } from '../queries/auth.query';
+import { forgotPasswordQuery, loginQuery, registerQuery, verifyQuery } from '../queries/auth.query';
 import { HttpException } from '../exceptions/HttpException';
 import { genSalt, hash, compare } from 'bcrypt';
 import { API_KEY } from '../config';
@@ -92,7 +92,7 @@ const refreshTokenAction = async (email: string) => {
 const verifyAction = async (data: Auth): Promise<void> => {
   try {
     const findUser = await getUserByEmailQuery(data.email);
-    if (!findUser) throw new Error('something went wrong');
+    if (!findUser) throw new Error('User does not exist');
     const salt = await genSalt(10);
 
     const hashPass = await hash(data.password || '', salt);
@@ -106,4 +106,17 @@ const verifyAction = async (data: Auth): Promise<void> => {
   }
 };
 
-export { registerAction, loginAction, verifyAction, refreshTokenAction };
+const forgotPasswordAction = async (email: string): Promise<User> => {
+  try {
+    const findUser = await getUserByEmailQuery(email);
+    if (!findUser) throw new Error('User does not exist');
+
+    const user = await forgotPasswordQuery(email);
+
+    return user;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export { registerAction, loginAction, verifyAction, refreshTokenAction, forgotPasswordAction };

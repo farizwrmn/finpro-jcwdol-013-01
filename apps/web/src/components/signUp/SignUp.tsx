@@ -40,7 +40,7 @@ const RegisterView = () => {
     }
   };
 
-  const LoginForm = withFormik<FormProps, FormValues>({
+  const RegisterForm = withFormik<FormProps, FormValues>({
     mapPropsToValues: (props) => ({
       email: props.initialEmail || '',
       password: props.initialPassword || '',
@@ -80,7 +80,7 @@ const RegisterView = () => {
             }}
           >
             <Stack spacing={8}>
-              <LoginForm />
+              <RegisterForm />
             </Stack>
           </Box>
         </Stack>

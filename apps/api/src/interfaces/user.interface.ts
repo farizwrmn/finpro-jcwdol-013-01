@@ -22,3 +22,8 @@ export interface IUpdateUser {
   longitude?: number;
   latitude?: number;
 }
+
+export interface IUpdatePassword {
+  currentPassword: string;
+  newPassword: string;
+}
