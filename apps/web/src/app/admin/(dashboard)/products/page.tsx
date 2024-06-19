@@ -84,7 +84,7 @@ const Page = () => {
             </Button>
           </Flex>
           <TableContainer>
-            <Table variant="striped">
+            <Table variant="striped" justifyContent={'center'}>
               <Thead>
                 <Tr>
                   <Th>No.</Th>
