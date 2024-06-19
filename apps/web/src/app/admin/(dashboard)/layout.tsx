@@ -26,8 +26,12 @@ import {
 } from '@chakra-ui/react';
 import { FiHome, FiMenu, FiBell, FiChevronDown, FiUser } from 'react-icons/fi';
 import {
+  FaBirthdayCake,
+  FaChartArea,
+  FaChartLine,
   FaIceCream,
   FaProductHunt,
+  FaShopify,
   FaStore,
   FaWolfPackBattalion,
 } from 'react-icons/fa';
@@ -53,15 +57,21 @@ const LinkItems: Array<LinkItemProps> = [
   },
   {
     name: 'Product',
-    icon: FaIceCream,
+    icon: FaShopify,
     href: '/admin/products',
     key: 'Product',
   },
   {
     name: 'Sales Report',
-    icon: FaIceCream,
+    icon: FaChartArea,
     href: '/admin/report/sales',
     key: 'Sales Report',
+  },
+  {
+    name: 'Stock Report',
+    icon: FaChartLine,
+    href: '/admin/report/stock',
+    key: 'Stock Report',
   },
 ];
 
