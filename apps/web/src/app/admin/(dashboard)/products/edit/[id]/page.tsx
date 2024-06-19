@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -15,9 +15,9 @@ import {
   Stack,
   Textarea,
 } from '@chakra-ui/react';
-import { useRouter } from "next/navigation";
-import { getProductByID, updateProduct } from "@/services/product.service";
-import { getCategories } from "@/services/category.service";
+import { useRouter } from 'next/navigation';
+import { getProductByID, updateProduct } from '@/services/product.service';
+import { getCategories } from '@/services/category.service';
 
 type Props = { params: { id: string } };
 
@@ -45,7 +45,7 @@ const Page = ({ params: { id } }: Props) => {
         slicedPrice: data.slicedPrice,
         sellingPrice: data.sellingPrice,
         categoryId: data.categoryId,
-      })
+      });
     })();
   }, [id]);
 
@@ -56,32 +56,31 @@ const Page = ({ params: { id } }: Props) => {
     })();
   }, []);
 
-  type ChangeEvent = (
-    React.ChangeEvent<HTMLInputElement> |
-    React.ChangeEvent<HTMLTextAreaElement> |
-    React.ChangeEvent<HTMLSelectElement>
-  )
+  type ChangeEvent =
+    | React.ChangeEvent<HTMLInputElement>
+    | React.ChangeEvent<HTMLTextAreaElement>
+    | React.ChangeEvent<HTMLSelectElement>;
 
   const handleChange = (e: ChangeEvent) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       const product = await updateProduct(id, formData);
-      if (!product) throw new Error("Update product failed!");
-      alert("Update product success");
-      router.push("/admin/products")
+      if (!product) throw new Error('Update product failed!');
+      alert('Update product success');
+      router.push('/admin/products');
     } catch (err) {
       console.error(err);
-      alert("Update product failed");
+      alert('Update product failed');
     }
-  }
+  };
 
   return (
     <Box>
@@ -92,13 +91,7 @@ const Page = ({ params: { id } }: Props) => {
         <CardBody>
           <TableContainer>
             <form onSubmit={handleSubmit}>
-              <Stack
-                spacing={6}
-                w={'full'}
-                rounded={'xl'}
-                p={10}
-                my={6}
-              >
+              <Stack spacing={6} w={'full'} rounded={'xl'} p={10} my={6}>
                 <FormControl id="name" isRequired>
                   <FormLabel>Product Name</FormLabel>
                   <Input
@@ -163,24 +156,24 @@ const Page = ({ params: { id } }: Props) => {
                   >
                     <option value=""></option>
                     {categories?.map((category: any) => (
-                      <option
-                        key={category.id}
-                        value={category.id}
-                      >{category.name}</option>
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
                     ))}
                   </Select>
                 </FormControl>
                 <Stack spacing={6} direction={['column', 'row']}>
                   <Button
                     onClick={() => {
-                      router.push("/admin/products");
+                      router.push('/admin/products');
                     }}
                     bg={'red.400'}
                     color={'white'}
                     w="full"
                     _hover={{
                       bg: 'red.500',
-                    }}>
+                    }}
+                  >
                     Cancel
                   </Button>
                   <Button
@@ -190,7 +183,8 @@ const Page = ({ params: { id } }: Props) => {
                     w="full"
                     _hover={{
                       bg: 'blue.500',
-                    }}>
+                    }}
+                  >
                     Update
                   </Button>
                 </Stack>

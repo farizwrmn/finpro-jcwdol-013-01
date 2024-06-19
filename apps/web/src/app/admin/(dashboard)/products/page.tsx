@@ -92,7 +92,7 @@ const Page = () => {
                   <Th>Category</Th>
                   <Th>Sliced Price</Th>
                   <Th>Selling Price</Th>
-                  <Th>Action</Th>
+                  <Th textAlign={'center'}>Actions</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -116,7 +116,7 @@ const Page = () => {
                         <Button
                           colorScheme="blue"
                           onClick={() => {
-                            router.push(`/admin/products/stock/${product.id}`);
+                            router.push(`/admin/products/stocks/${product.id}`);
                           }}
                         >
                           Stock
