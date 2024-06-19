@@ -3,8 +3,8 @@ import { IStock } from '@/interfaces/stock.interface';
 import {
   createStockQuery,
   getStocksByProductIDQuery,
-  addStockQuery,
   getStockByIDQuery,
+  updateStockQuery,
 } from '@/queries/stock.query';
 import { Stock } from '@prisma/client';
 
@@ -17,12 +17,12 @@ const createStockAction = async (stockData: IStock): Promise<Stock> => {
   }
 };
 
-const addStockAction = async (
+const updateStockAction = async (
   id: string,
   stockData: IStock,
 ): Promise<Stock> => {
   try {
-    const stock = await addStockQuery(id, stockData);
+    const stock = await updateStockQuery(id, stockData);
     return stock;
   } catch (err) {
     throw err;
@@ -57,7 +57,7 @@ const getStockByIDAction = async (id: string): Promise<Stock | null> => {
 
 export {
   createStockAction,
-  addStockAction,
+  updateStockAction,
   getStocksByProductIDAction,
   getStockByIDAction,
 };

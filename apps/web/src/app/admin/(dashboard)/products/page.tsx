@@ -84,7 +84,7 @@ const Page = () => {
             </Button>
           </Flex>
           <TableContainer>
-            <Table variant="striped" justifyContent={'center'}>
+            <Table variant="striped">
               <Thead>
                 <Tr>
                   <Th>No.</Th>
@@ -92,7 +92,7 @@ const Page = () => {
                   <Th>Category</Th>
                   <Th>Sliced Price</Th>
                   <Th>Selling Price</Th>
-                  <Th>Action</Th>
+                  <Th textAlign={'center'}>Actions</Th>
                 </Tr>
               </Thead>
               <Tbody>

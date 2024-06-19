@@ -67,7 +67,7 @@ const Page = ({ params: { id } }: Props) => {
       const product = await addStock(id, formData);
       if (!product) throw new Error('Update product failed!');
       alert('Update product success');
-      router.push('/admin/products');
+      router.push(`/admin/products/stocks/${id}`);
     } catch (err) {
       console.error(err);
       alert('Update product failed');
@@ -102,7 +102,7 @@ const Page = ({ params: { id } }: Props) => {
                   <Th>Base Stock</Th>
                   <Th>Used Stock</Th>
                   <Th>Remaining Stock</Th>
-                  <Th textAlign={'center'}>Action</Th>
+                  <Th textAlign={'start'}>Action</Th>
                 </Tr>
               </Thead>
               <Tbody alignContent={'center'}>
@@ -115,7 +115,14 @@ const Page = ({ params: { id } }: Props) => {
                     <Td>{stock.remainingStock}</Td>
                     <Td>
                       <ButtonGroup>
-                        <Button colorScheme="green">Add Stock</Button>
+                        <Button
+                          colorScheme="green"
+                          onClick={() => {
+                            router.push(`/admin/products/stocks/${id}/edit`);
+                          }}
+                        >
+                          Update Stock
+                        </Button>
                       </ButtonGroup>
                     </Td>
                   </Tr>

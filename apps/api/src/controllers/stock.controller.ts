@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import {
   createStockAction,
   getStocksByProductIDAction,
-  addStockAction,
+  updateStockAction,
   getStockByIDAction,
 } from '@/actions/stock.action';
 
@@ -31,7 +31,7 @@ const createStockController = async (
   }
 };
 
-const addStockController = async (
+const updateStockController = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -39,7 +39,7 @@ const addStockController = async (
   try {
     const { id } = req.params;
     const params = req.body;
-    const data = await addStockAction(id, {
+    const data = await updateStockAction(id, {
       ...params,
     });
 
@@ -89,7 +89,7 @@ const getStockByIDController = async (
 };
 export {
   createStockController,
-  addStockController,
+  updateStockController,
   getStocksByProductIDController,
   getStockByIDController,
 };

@@ -17,7 +17,7 @@ import {
 import { useRouter } from 'next/navigation';
 
 import { getStores } from '@/services/store.service';
-import { createStock, getStockById } from '@/services/stock.service';
+import { createStock, updateStock } from '@/services/stock.service';
 
 type Props = { params: { id: string } };
 
@@ -55,7 +55,7 @@ const Page = ({ params: { id: stockId } }: Props) => {
     e.preventDefault();
 
     try {
-      const product = await createStock(formData);
+      const product = await updateStock(stockId, formData);
       if (!product) throw new Error('Create stock failed!');
       alert('Create stock success');
       router.push(`/admin/products/stocks/${stockId}`);
@@ -68,7 +68,7 @@ const Page = ({ params: { id: stockId } }: Props) => {
   return (
     <Box>
       <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-        Stock Management
+        Update Stock
       </Text>
       <Card my={10}>
         <CardBody>
@@ -126,7 +126,7 @@ const Page = ({ params: { id: stockId } }: Props) => {
                       bg: 'blue.500',
                     }}
                   >
-                    Create
+                    Update
                   </Button>
                 </Stack>
               </Stack>

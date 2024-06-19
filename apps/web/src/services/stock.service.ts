@@ -63,3 +63,19 @@ export const getStockById = async (id: string) => {
     console.error(err);
   }
 };
+
+export const updateStock = async (id: string, formData: any) => {
+  try {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await instance.patch(`/stocks/${id}`, formData, config);
+    const stock = data?.data;
+    return stock;
+  } catch (err) {
+    console.error(err);
+  }
+};
