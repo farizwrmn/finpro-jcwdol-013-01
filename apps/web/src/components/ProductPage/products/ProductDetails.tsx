@@ -18,6 +18,10 @@ import {
   ListItem,
 } from '@chakra-ui/react';
 import { MdLocalShipping } from 'react-icons/md';
+import { CartItem } from '@/types/cart';
+import { useDispatch } from '@/lib/redux/store';
+import { addToCart } from '@/lib/redux/slices/cartSlice';
+import { toast } from 'react-toastify';
 
 type Props = {
   product: any;
@@ -26,6 +30,22 @@ type Props = {
 export default function ProductDetails({ product }: Props) {
   const textColor = useColorModeValue('gray.900', 'gray.400');
   const dividerColor = useColorModeValue('gray.200', 'gray.600');
+  const dispatch = useDispatch();
+
+  const handleAddToCart = () => {
+    const cartItem: CartItem = {
+      id: product.id,
+      name: product.name,
+      slug: product.slug,
+      image: product.image || '',
+      price: product.price,
+      isUseStock: product.isUseStock,
+      remainStock: product.remainStock,
+    };
+
+    dispatch(addToCart(cartItem));
+    toast.success(`Product “${product.name}” have been added to your cart`);
+  };
 
   return (
     <Container maxW={'7xl'}>
@@ -111,6 +131,7 @@ export default function ProductDetails({ product }: Props) {
             color={useColorModeValue('white', 'gray.900')}
             textTransform={'uppercase'}
             _hover={{ transform: 'translateY(2px)', boxShadow: 'lg' }}
+            onClick={handleAddToCart}
           >
             Add to cart
           </Button>

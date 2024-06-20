@@ -48,7 +48,10 @@ const ProductList = () => {
                 maxW="xs"
                 shadow={'xl'}
                 w={'full'}
-                _hover={{ bg: 'green.100' }}
+                _hover={{
+                  transform: 'translateY(5px)',
+                  boxShadow: 'lg',
+                }}
               >
                 <CardBody>
                   <Link href={`/products/${product.slug}`}>
