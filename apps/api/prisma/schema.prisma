@@ -85,6 +85,7 @@ model User {
   orders                Order[]
   accounts              Account[]
   sessions              Session[]
+  userStores            UserStore[]
 
   @@map(name: "users")
 }
@@ -109,26 +110,36 @@ model UserAddress {
 }
 
 model Store {
-  id              String     @id @default(uuid())
+  id              String      @id @default(uuid())
   name            String
   address         String
-  subdistrictId   Int        @map(name: "subdistrict_id")
-  subdistrictName String     @map(name: "subdistrict_name")
-  cityId          Int        @map(name: "city_id")
-  cityName        String     @map(name: "city_name")
-  provinceId      Int        @map(name: "province_id")
-  provinceName    String     @map(name: "province_name")
-  postalCode      String?    @map(name: "postal_code")
+  subdistrictId   Int         @map(name: "subdistrict_id")
+  subdistrictName String      @map(name: "subdistrict_name")
+  cityId          Int         @map(name: "city_id")
+  cityName        String      @map(name: "city_name")
+  provinceId      Int         @map(name: "province_id")
+  provinceName    String      @map(name: "province_name")
+  postalCode      String?     @map(name: "postal_code")
   longitude       Float?
   latitude        Float?
-  createdDate     DateTime   @default(now()) @map(name: "created_date")
-  updatedDate     DateTime   @updatedAt @map(name: "updated_date")
+  createdDate     DateTime    @default(now()) @map(name: "created_date")
+  updatedDate     DateTime    @updatedAt @map(name: "updated_date")
   stocks          Stock[]
   discounts       Discount[]
   carts           Cart[]
   orders          Order[]
 
   @@map(name: "stores")
+}
+
+model UserStore {
+  id      String @id @default(uuid())
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String @map(name: "user_id")
+  store   Store  @relation(fields: [storeId], references: [id])
+  storeId String @map(name: "store_id")
+
+  @@map(name: "user_stores")
 }
 
 model Category {

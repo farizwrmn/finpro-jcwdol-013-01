@@ -47,6 +47,7 @@ export default function ProductDetails({ product }: Props) {
 
     // dispatch(addToCart(cartItem));
     // toast.success(`Product “${product.name}” have been added to your cart`);
+
   };
 
   return (

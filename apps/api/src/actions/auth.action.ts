@@ -1,6 +1,7 @@
 import { User } from 'prisma/prisma-client';
 import { Auth, RegisterAuth } from '../interfaces/auth.interface';
 import { getUserByEmailQuery, updateUserQuery } from '../queries/user.query';
+import { forgotPasswordQuery, loginQuery, registerQuery, verifyQuery } from '../queries/auth.query';
 import {
   forgotPasswordQuery,
   loginQuery,
