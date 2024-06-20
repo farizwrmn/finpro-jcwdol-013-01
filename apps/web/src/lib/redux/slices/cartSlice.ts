@@ -1,107 +1,140 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { Cart, CartItem } from '@/types/cart';
-import { updateCart } from '@/utils/cart';
+// import { Dispatch, createSlice, type PayloadAction } from '@reduxjs/toolkit';
+// import { Cart, CartItem } from '@/interface/cart.interface';
+// import instance from '@/utils/axiosInstance';
+// import parseJWT from '@/utils/parseJwt';
 
-// export const shippingAddressState = {
-//   firstName: '',
-//   lastName: '',
-//   address: '',
-//   provinceId: '',
-//   province: '',
-//   cityId: '',
-//   city: '',
-//   subdistrictId: '',
-//   subdistrict: '',
-//   postalCode: '',
-//   phone: '',
-//   company: '',
-//   comments: ''
-// } as ShippingAddress
+// export const createCart = (params: Cart) => async (dispatch: Dispatch) => {
+//   try {
+//     const { cartItems, itemsPrice, totalPrice } = params;
+//     const { data } = await instance.post('/auth/login', {
+//     });
+//     const payload = await parseJWT(data?.data);
+//     const user = data?.data.user;
 
-// export const shippingMethodState = {
-//   courier: '',
-//   service: '',
-//   cost: 0
-// } as ShippingMethod
+//     // dispatch(
+//     //   loginState({
+//     //     id: user?.id,
+//     //     name: user?.name,
+//     //     email: user?.email,
+//     //     image: user?.image,
+//     //     phone: user?.phone,
+//     //     gender: user?.gender,
+//     //     birthDate: user?.birthDate,
+//     //     isVerified: user?.isVerified,
+//     //     role: user?.role.name,
+//     //   }),
+//     // );
 
-// export const paymentMethodState = {
-//   name: '',
-//   code: '',
-//   minimumAmount: 1
-// } as PaymentMethod
+//     localStorage.setItem('token', data?.data.token);
+//     localStorage.setItem('user', JSON.stringify(user));
 
-export const cartState = {
-  cartItems: [],
-  //   shippingAddress: shippingAddressState,
-  //   shippingMethod: shippingMethodState,
-  //   paymentMethod: paymentMethodState,
-  itemsPrice: 0,
-  shippingPrice: 0,
-  totalPrice: 0,
-} as Cart;
+//     return true;
+//   } catch (err) {
+//     console.error(err);
+//     return false;
+//   }
+// };
 
-const initialState = (
-  typeof window !== 'undefined' && localStorage.getItem('cart')
-    ? JSON.parse(localStorage.getItem('cart') || JSON.stringify(cartState))
-    : cartState
-) as Cart;
+// // export const shippingAddressState = {
+// //   firstName: '',
+// //   lastName: '',
+// //   address: '',
+// //   provinceId: '',
+// //   province: '',
+// //   cityId: '',
+// //   city: '',
+// //   subdistrictId: '',
+// //   subdistrict: '',
+// //   postalCode: '',
+// //   phone: '',
+// //   company: '',
+// //   comments: ''
+// // } as ShippingAddress
 
-const cartSlice = createSlice({
-  name: 'cart',
-  initialState,
-  reducers: {
-    addToCart: (state, action: PayloadAction<CartItem>) => {
-      const newItem = action.payload;
-      const existItem = state.cartItems.find((item) => item.id === newItem.id);
+// // export const shippingMethodState = {
+// //   courier: '',
+// //   service: '',
+// //   cost: 0
+// // } as ShippingMethod
 
-      if (existItem) {
-        state.cartItems = state.cartItems.map((item) =>
-          item.id === existItem.id ? newItem : item,
-        );
-      } else {
-        state.cartItems.push(newItem);
-      }
+// // export const paymentMethodState = {
+// //   name: '',
+// //   code: '',
+// //   minimumAmount: 1
+// // } as PaymentMethod
 
-      return updateCart(state);
-    },
-    removeFromCart: (state, action: PayloadAction<string>) => {
-      state.cartItems = state.cartItems.filter(
-        (item) => item.id !== action.payload,
-      );
-      return updateCart(state);
-    },
-    // saveShippingAddress: (state, action: PayloadAction<ShippingAddress>) => {
-    //   state.shippingAddress = action.payload;
-    //   return updateCart(state);
-    // },
-    // saveShippingMethod: (state, action: PayloadAction<ShippingMethod>) => {
-    //   state.shippingMethod = action.payload;
-    //   return updateCart(state);
-    // },
-    // savePaymentMethod: (state, action: PayloadAction<PaymentMethod>) => {
-    //   state.paymentMethod = action.payload;
-    //   return updateCart(state);
-    // },
-    clearCart: (state, action) => {
-      //   const shippingAddress = {
-      //     ...state.shippingAddress,
-      //     comments: '',
-      //   } as ShippingAddress;
-      state = cartState;
-      //   state.shippingAddress = shippingAddress;
+// export const cartState = {
+//   cartItems: [],
+//   //   shippingAddress: shippingAddressState,
+//   //   shippingMethod: shippingMethodState,
+//   //   paymentMethod: paymentMethodState,
+//   itemsPrice: 0,
+//   shippingPrice: 0,
+//   totalPrice: 0,
+// } as Cart;
 
-      return updateCart(state);
-    },
-  },
-});
+// const initialState = (
+//   typeof window !== 'undefined' && localStorage.getItem('cart')
+//     ? JSON.parse(localStorage.getItem('cart') || JSON.stringify(cartState))
+//     : cartState
+// ) as Cart;
 
-export const {
-  addToCart,
-  removeFromCart,
-  //   saveShippingAddress,
-  //   saveShippingMethod,
-  //   savePaymentMethod,
-  clearCart,
-} = cartSlice.actions;
+// // const cartSlice = createSlice({
+// //   name: 'cart',
+// //   initialState,
+// //   reducers: {
+// //     addToCart: (state, action: PayloadAction<CartItem>) => {
+// //       const newItem = action.payload;
+// //       const existItem = state.cartItems.find((item) => item.id === newItem.id);
 
-export default cartSlice.reducer;
+// //       if (existItem) {
+// //         state.cartItems = state.cartItems.map((item) =>
+// //           item.id === existItem.id ? newItem : item,
+// //         );
+// //       } else {
+// //         state.cartItems.push(newItem);
+// //       }
+
+// //       return updateCart(state);
+// //     },
+// //     removeFromCart: (state, action: PayloadAction<string>) => {
+// //       state.cartItems = state.cartItems.filter(
+// //         (item) => item.id !== action.payload,
+// //       );
+// //       return updateCart(state);
+// //     },
+//     // saveShippingAddress: (state, action: PayloadAction<ShippingAddress>) => {
+//     //   state.shippingAddress = action.payload;
+//     //   return updateCart(state);
+//     // },
+//     // saveShippingMethod: (state, action: PayloadAction<ShippingMethod>) => {
+//     //   state.shippingMethod = action.payload;
+//     //   return updateCart(state);
+//     // },
+//     // savePaymentMethod: (state, action: PayloadAction<PaymentMethod>) => {
+//     //   state.paymentMethod = action.payload;
+//     //   return updateCart(state);
+//     // },
+//     // clearCart: (state, action) => {
+//       //   const shippingAddress = {
+//       //     ...state.shippingAddress,
+//       //     comments: '',
+//       //   } as ShippingAddress;
+//       state = cartState;
+//       //   state.shippingAddress = shippingAddress;
+
+//       return updateCart(state);
+//     },
+//   },
+// });
+
+// export const {
+//   addToCart,
+//   removeFromCart,
+//   //   saveShippingAddress,
+//   //   saveShippingMethod,
+//   //   savePaymentMethod,
+//   clearCart,
+// } = cartSlice.actions;
+
+// export default cartSlice.reducer;

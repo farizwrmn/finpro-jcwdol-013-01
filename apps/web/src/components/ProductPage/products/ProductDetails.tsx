@@ -20,6 +20,10 @@ import {
 import { MdLocalShipping } from 'react-icons/md';
 import ProductSlider from '../slider/ProductSlider';
 import DummyStoreListPage from './DummyStore';
+import { useDispatch } from 'react-redux';
+import { CartItem } from '@/types/cart';
+import { addToCart } from '@/lib/redux/slices/cartSlice';
+import { toast } from 'react-toastify';
 
 type Props = {
   product: any;
@@ -47,7 +51,6 @@ export default function ProductDetails({ product }: Props) {
 
   return (
     <Container maxW={'7xl'}>
-      {/* <ProductSlider /> */}
       <SimpleGrid
         columns={{ base: 1, lg: 2 }}
         spacing={{ base: 8, md: 10 }}
@@ -55,15 +58,6 @@ export default function ProductDetails({ product }: Props) {
       >
         <Box>
           <ProductSlider />
-          {/* <Image
-            rounded={'md'}
-            alt={'product image'}
-            src={'/'}
-            fit={'cover'}
-            align={'center'}
-            w={'100%'}
-            h={{ base: '100%', sm: '400px', lg: '500px' }}
-          /> */}
         </Box>
 
         <Stack spacing={{ base: 6, md: 10 }}>
@@ -111,13 +105,12 @@ export default function ProductDetails({ product }: Props) {
                   {product.category.name}
                 </ListItem>
                 <ListItem></ListItem>
-                {/* Add more product details as needed */}
               </List>
             </Box>
           </Stack>
           <DummyStoreListPage />
           <Text as={'span'} fontWeight={'bold'}>
-            Stock:100 {/* Dummy */}
+            Stock: 100 {/* Dummy */}
           </Text>
           <Button
             rounded={'none'}

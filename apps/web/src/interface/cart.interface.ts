@@ -8,7 +8,7 @@ export type CartItem = {
   remainStock: number;
 };
 
-export type ICart = {
+export type Cart = {
   cartItems: CartItem[];
   itemsPrice: number;
   shippingPrice: number;

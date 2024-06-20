@@ -1,6 +1,7 @@
 'use client';
 import {
   Box,
+  Divider,
   Flex,
   HStack,
   Heading,
@@ -25,9 +26,10 @@ const CartApp = () => (
       spacing={{ base: '8', md: '16' }}
     >
       <Stack spacing={{ base: '8', md: '10' }} flex="2">
-        <Heading fontSize="2xl" fontWeight="extrabold">
-          Shopping Cart (3 items)
+        <Heading fontSize="3xl" fontWeight="extrabold" textAlign={'center'}>
+          Shopping Cart
         </Heading>
+        <Divider />
 
         <Stack spacing="6">
           {cartData.map((item) => (
@@ -36,7 +38,12 @@ const CartApp = () => (
         </Stack>
       </Stack>
 
-      <Flex direction="column" align="center" flex="1">
+      <Flex
+        direction="column"
+        align="center"
+        flex="1"
+        mt={{ base: 0, sm: 100 }}
+      >
         <CartOrderSummary />
         <HStack mt="6" fontWeight="semibold">
           <p>or</p>
