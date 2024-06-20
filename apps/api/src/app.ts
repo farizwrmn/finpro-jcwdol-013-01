@@ -8,6 +8,7 @@ import storeRouter from './routes/store.route';
 import categoryRouter from './routes/category.route';
 import productRouter from './routes/product.route';
 import stocksRouter from './routes/stock.route';
+import cartRouter from './routes/cart.route';
 import { ErrorMiddleware } from './middlewares/error.middleware';
 import cors from 'cors';
 import path = require('path');
@@ -28,6 +29,7 @@ app.use('/stores', storeRouter);
 app.use('/categories', categoryRouter);
 app.use('/products', productRouter);
 app.use('/stocks', stocksRouter);
+app.use('/cart', cartRouter);
 
 // initialize error middleware
 app.use(ErrorMiddleware);

@@ -1,11 +1,21 @@
 import { User } from 'prisma/prisma-client';
 import { Auth, RegisterAuth } from '../interfaces/auth.interface';
 import { getUserByEmailQuery, updateUserQuery } from '../queries/user.query';
+<<<<<<< HEAD
 import { forgotPasswordQuery, loginQuery, registerQuery, verifyQuery } from '../queries/auth.query';
+=======
+import {
+  forgotPasswordQuery,
+  loginQuery,
+  registerQuery,
+  verifyQuery,
+} from '../queries/auth.query';
+>>>>>>> 6f26af97adccfabcaecfd8ed84b52a0da1d5db43
 import { HttpException } from '../exceptions/HttpException';
 import { genSalt, hash, compare } from 'bcrypt';
 import { API_KEY } from '../config';
 import { sign } from 'jsonwebtoken';
+import { createCartQuery, getCartByUserIDQuery } from '@/queries/cart.query';
 
 const registerAction = async (data: RegisterAuth): Promise<User> => {
   try {
@@ -41,6 +51,13 @@ const loginAction = async (data: Auth) => {
       longitude: data.longitude,
       latitude: data.latitude,
     });
+
+    const cart = await getCartByUserIDQuery(user.id);
+    if (!cart)
+      await createCartQuery({
+        userId: user.id,
+        itemsPrice: 0,
+      });
 
     const payload = {
       id: user.id,
@@ -119,4 +136,10 @@ const forgotPasswordAction = async (email: string): Promise<User> => {
   }
 };
 
-export { registerAction, loginAction, verifyAction, refreshTokenAction, forgotPasswordAction };
+export {
+  registerAction,
+  loginAction,
+  verifyAction,
+  refreshTokenAction,
+  forgotPasswordAction,
+};
