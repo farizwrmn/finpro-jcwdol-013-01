@@ -1,16 +1,12 @@
 import { User } from 'prisma/prisma-client';
 import { Auth, RegisterAuth } from '../interfaces/auth.interface';
 import { getUserByEmailQuery, updateUserQuery } from '../queries/user.query';
-<<<<<<< HEAD
-import { forgotPasswordQuery, loginQuery, registerQuery, verifyQuery } from '../queries/auth.query';
-=======
 import {
   forgotPasswordQuery,
   loginQuery,
   registerQuery,
   verifyQuery,
 } from '../queries/auth.query';
->>>>>>> 6f26af97adccfabcaecfd8ed84b52a0da1d5db43
 import { HttpException } from '../exceptions/HttpException';
 import { genSalt, hash, compare } from 'bcrypt';
 import { API_KEY } from '../config';
