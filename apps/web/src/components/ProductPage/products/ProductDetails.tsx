@@ -18,10 +18,8 @@ import {
   ListItem,
 } from '@chakra-ui/react';
 import { MdLocalShipping } from 'react-icons/md';
-import { CartItem } from '@/types/cart';
-import { useDispatch } from '@/lib/redux/store';
-import { addToCart } from '@/lib/redux/slices/cartSlice';
-import { toast } from 'react-toastify';
+import ProductSlider from '../slider/ProductSlider';
+import DummyStoreListPage from './DummyStore';
 
 type Props = {
   product: any;
@@ -49,13 +47,15 @@ export default function ProductDetails({ product }: Props) {
 
   return (
     <Container maxW={'7xl'}>
+      {/* <ProductSlider /> */}
       <SimpleGrid
         columns={{ base: 1, lg: 2 }}
         spacing={{ base: 8, md: 10 }}
         py={{ base: 18, md: 24 }}
       >
-        <Flex>
-          <Image
+        <Box>
+          <ProductSlider />
+          {/* <Image
             rounded={'md'}
             alt={'product image'}
             src={'/'}
@@ -63,8 +63,9 @@ export default function ProductDetails({ product }: Props) {
             align={'center'}
             w={'100%'}
             h={{ base: '100%', sm: '400px', lg: '500px' }}
-          />
-        </Flex>
+          /> */}
+        </Box>
+
         <Stack spacing={{ base: 6, md: 10 }}>
           <Box as={'header'}>
             <Heading
@@ -78,7 +79,6 @@ export default function ProductDetails({ product }: Props) {
               {FormatCurrency(product.sellingPrice)}
             </Text>
           </Box>
-
           <Stack
             spacing={{ base: 4, sm: 6 }}
             direction={'column'}
@@ -103,7 +103,6 @@ export default function ProductDetails({ product }: Props) {
               >
                 Product Details
               </Text>
-
               <List spacing={2}>
                 <ListItem>
                   <Text as={'span'} fontWeight={'bold'}>
@@ -111,16 +110,15 @@ export default function ProductDetails({ product }: Props) {
                   </Text>{' '}
                   {product.category.name}
                 </ListItem>
-                <ListItem>
-                  <Text as={'span'} fontWeight={'bold'}>
-                    Stock:
-                  </Text>{' '}
-                  {100}
-                </ListItem>
+                <ListItem></ListItem>
                 {/* Add more product details as needed */}
               </List>
             </Box>
           </Stack>
+          <DummyStoreListPage />
+          <Text as={'span'} fontWeight={'bold'}>
+            Stock:100 {/* Dummy */}
+          </Text>
           <Button
             rounded={'none'}
             w={'full'}
@@ -135,7 +133,6 @@ export default function ProductDetails({ product }: Props) {
           >
             Add to cart
           </Button>
-
           <Stack direction="row" alignItems="center" justifyContent={'center'}>
             <MdLocalShipping />
             <Text>2-3 business days delivery</Text>
