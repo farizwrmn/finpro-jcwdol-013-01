@@ -15,3 +15,9 @@ export interface IUserPassword {
   currentPassword: string;
   newPassword: string;
 }
+
+export interface IFilterUser {
+  keyword?: string;
+  page?: number;
+  size?: number;
+}

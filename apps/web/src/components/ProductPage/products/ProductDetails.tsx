@@ -22,7 +22,7 @@ import ProductSlider from '../slider/ProductSlider';
 import DummyStoreListPage from './DummyStore';
 import { useDispatch } from 'react-redux';
 import { CartItem } from '@/types/cart';
-import { addToCart } from '@/lib/redux/slices/cartSlice';
+// import { addToCart } from '@/lib/redux/slices/cartSlice';
 import { toast } from 'react-toastify';
 
 type Props = {
@@ -45,8 +45,8 @@ export default function ProductDetails({ product }: Props) {
       remainStock: product.remainStock,
     };
 
-    dispatch(addToCart(cartItem));
-    toast.success(`Product “${product.name}” have been added to your cart`);
+    // dispatch(addToCart(cartItem));
+    // toast.success(`Product “${product.name}” have been added to your cart`);
   };
 
   return (

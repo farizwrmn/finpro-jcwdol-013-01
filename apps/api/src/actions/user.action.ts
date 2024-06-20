@@ -1,42 +1,56 @@
-import { HttpException } from "@/exceptions/HttpException";
-import { createUserQuery, deleteUserQuery, getUserByEmailQuery, getUserByIDQuery, getUsersQuery, updateAvatarQuery, updatePasswordQuery, updateUserQuery } from "../queries/user.query";
-import { IUpdatePassword, IUser } from '@/interfaces/user.interface';
+import { HttpException } from '@/exceptions/HttpException';
+import {
+  createUserQuery,
+  deleteUserQuery,
+  getUserByEmailQuery,
+  getUserByIDQuery,
+  getUsersQuery,
+  updateAvatarQuery,
+  updatePasswordQuery,
+  updateUserQuery,
+} from '../queries/user.query';
+import {
+  IFilterUser,
+  IResultUser,
+  IUpdatePassword,
+  IUser,
+} from '@/interfaces/user.interface';
 import { User } from '@prisma/client';
 import { genSalt, hash, compare } from 'bcrypt';
 
-const getUsersAction = async (): Promise<User[]> => {
+const getUsersAction = async (filters: IFilterUser): Promise<IResultUser> => {
   try {
-    const users = await getUsersQuery();
+    const users = await getUsersQuery(filters);
     return users;
   } catch (err) {
     throw err;
   }
-}
+};
 
 const getUserByIDAction = async (id: string): Promise<User | null> => {
   try {
     const user = await getUserByIDQuery(id);
 
-    if (!user) throw new HttpException(404, "Data not found");
+    if (!user) throw new HttpException(404, 'Data not found');
 
     return user;
   } catch (err) {
     throw err;
   }
-}
+};
 
 const createUserAction = async (userData: IUser): Promise<User> => {
   try {
     const existUser = await getUserByEmailQuery(userData.email as string);
 
-    if (existUser) throw new Error("User already exists");
+    if (existUser) throw new Error('User already exists');
 
     const user = await createUserQuery(userData);
     return user;
   } catch (err) {
     throw err;
   }
-}
+};
 
 const updateUserAction = async (id: string, data: IUser): Promise<User> => {
   try {
@@ -47,7 +61,10 @@ const updateUserAction = async (id: string, data: IUser): Promise<User> => {
   }
 };
 
-const updatePasswordAction = async (id: string, data: IUpdatePassword): Promise<User> => {
+const updatePasswordAction = async (
+  id: string,
+  data: IUpdatePassword,
+): Promise<User> => {
   try {
     const user = await getUserByIDQuery(id);
     if (!user) throw new Error('User doesnt exist');
@@ -68,7 +85,7 @@ const updatePasswordAction = async (id: string, data: IUpdatePassword): Promise<
 
 const updateAvatarAction = async (id: string, image: string): Promise<User> => {
   try {
-    if (!image) throw new Error("Please upload image file");
+    if (!image) throw new Error('Please upload image file');
 
     const user = await updateAvatarQuery(id, image);
     return user;
@@ -84,7 +101,7 @@ const deleteUserAction = async (id: string): Promise<User> => {
   } catch (err) {
     throw err;
   }
-}
+};
 
 export {
   getUsersAction,
@@ -93,5 +110,5 @@ export {
   updateUserAction,
   updatePasswordAction,
   updateAvatarAction,
-  deleteUserAction
+  deleteUserAction,
 };

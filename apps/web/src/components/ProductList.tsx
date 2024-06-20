@@ -56,7 +56,7 @@ const ProductList = () => {
                 <CardBody>
                   <Link href={`/products/${product.slug}`}>
                     <Image
-                      src={product.image}
+                      src={product.productImages}
                       alt="Green double couch with wooden legs"
                       borderRadius="lg"
                     />
