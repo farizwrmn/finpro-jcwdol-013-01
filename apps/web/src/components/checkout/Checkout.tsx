@@ -14,9 +14,15 @@ import {
   Link,
   Center,
   Stack,
+  Spacer,
+  SimpleGrid,
 } from '@chakra-ui/react';
 import ShippingMethod from './ShippingMethod';
-import PaymentMethod from './PaymentMethod';
+import PaymentMethod from './EwalletPaymentMethod';
+import Summary from './Summary';
+import EwalletPaymentMethod from './EwalletPaymentMethod';
+import BankPaymentMethod from './BankPaymentMethod';
+import RetailPaymentMethod from './RetailPaymentMethod';
 
 interface CheckoutForm {
   fullName: string;
@@ -74,100 +80,110 @@ export default function CheckoutFormPage() {
         Checkout
       </Heading>
 
-      <form onSubmit={handleSubmit}>
-        <Heading as="h2" fontSize="lg" mb={4}>
-          Shipping Address
-        </Heading>
+      <SimpleGrid
+        columns={{ base: 1, lg: 2 }}
+        spacing={{ base: 8, md: 10 }}
+        py={{ base: 5, md: 24 }}
+      >
+        <Box>
+          <form onSubmit={handleSubmit}>
+            <Heading as="h1" fontSize="3xl" mb={8}>
+              Shipping Address
+            </Heading>
 
-        <Flex mb={8} flexWrap="wrap" justifyContent="space-between">
-          <FormControl isRequired w="full" mb={4}>
-            <FormLabel htmlFor="streetAddress">Street Address</FormLabel>
-            <Input
-              name="streetAddress"
-              value={checkoutForm.streetAddress}
-              onChange={handleChange}
-              width={500}
-            />
-          </FormControl>
+            <Flex mb={8} flexWrap="wrap" justifyContent="space-between">
+              <FormControl isRequired w="full" mb={4}>
+                <FormLabel htmlFor="streetAddress">Street Address</FormLabel>
+                <Input
+                  name="streetAddress"
+                  value={checkoutForm.streetAddress}
+                  onChange={handleChange}
+                  width={500}
+                />
+              </FormControl>
 
-          <Flex w="full" mb={4}>
-            <FormControl mr={4} w="1/2">
-              <FormLabel htmlFor="apartmentSuite">
-                Apartment/Suite (Optional)
-              </FormLabel>
-              <Input
-                name="apartmentSuite"
-                value={checkoutForm.apartmentSuite}
-                onChange={handleChange}
-              />
-            </FormControl>
+              <Flex w="full" mb={4}>
+                <FormControl mr={4} w="1/2">
+                  <FormLabel htmlFor="apartmentSuite">
+                    Apartment/Suite (Optional)
+                  </FormLabel>
+                  <Input
+                    name="apartmentSuite"
+                    value={checkoutForm.apartmentSuite}
+                    onChange={handleChange}
+                  />
+                </FormControl>
 
-            <FormControl isRequired w="1/2">
-              <FormLabel htmlFor="zipCode">Zip Code</FormLabel>
-              <Input
-                name="zipCode"
-                value={checkoutForm.zipCode}
-                onChange={handleChange}
-                width={230}
-              />
-            </FormControl>
-          </Flex>
+                <FormControl isRequired w="1/2">
+                  <FormLabel htmlFor="zipCode">Zip Code</FormLabel>
+                  <Input
+                    name="zipCode"
+                    value={checkoutForm.zipCode}
+                    onChange={handleChange}
+                    width={230}
+                  />
+                </FormControl>
+              </Flex>
 
-          <FormControl isRequired w="full" mb={4}>
-            <FormLabel htmlFor="city">City</FormLabel>
-            <Input
-              name="city"
-              value={checkoutForm.city}
-              onChange={handleChange}
-              width={500}
-            />
-          </FormControl>
+              <FormControl isRequired w="full" mb={4}>
+                <FormLabel htmlFor="city">City</FormLabel>
+                <Input
+                  name="city"
+                  value={checkoutForm.city}
+                  onChange={handleChange}
+                  width={500}
+                />
+              </FormControl>
 
-          <Flex w="full" mb={4}>
-            <FormControl mr={4} w="1/2">
-              <FormLabel htmlFor="state">State</FormLabel>
-              <Input
-                name="state"
-                value={checkoutForm.state}
-                onChange={handleChange}
-              />
-            </FormControl>
+              <Flex w="full" mb={4}>
+                <FormControl mr={4} w="1/2">
+                  <FormLabel htmlFor="state">State</FormLabel>
+                  <Input
+                    name="state"
+                    value={checkoutForm.state}
+                    onChange={handleChange}
+                  />
+                </FormControl>
 
-            <FormControl isRequired w="1/2">
-              <FormLabel htmlFor="country">Country</FormLabel>
-              <Select
-                name="country"
-                value={checkoutForm.country}
-                onChange={handleChange}
-                width={230}
-              >
-                <option value="US">United States</option>
-                <option value="CA">Canada</option>
-                <option value="UK">United Kingdom</option>
-                <option value="...">Other</option>
-              </Select>
-            </FormControl>
-          </Flex>
+                <FormControl isRequired w="1/2">
+                  <FormLabel htmlFor="country">Country</FormLabel>
+                  <Select
+                    name="country"
+                    value={checkoutForm.country}
+                    onChange={handleChange}
+                    width={230}
+                  >
+                    <option value="US">United States</option>
+                    <option value="CA">Canada</option>
+                    <option value="UK">United Kingdom</option>
+                    <option value="...">Other</option>
+                  </Select>
+                </FormControl>
+              </Flex>
 
-          <FormControl isRequired w="full" mb={4}>
-            <FormLabel htmlFor="phoneNumber">Phone Number</FormLabel>
-            <Input
-              type="tel"
-              name="phoneNumber"
-              value={checkoutForm.phoneNumber}
-              onChange={handleChange}
-              width={500}
-            />
-          </FormControl>
-          <ShippingMethod />
-        </Flex>
-        <Stack mt={-10}>
-          <PaymentMethod />
-        </Stack>
-        <Button type="submit" colorScheme="teal" size="lg">
-          <Link href="/shipping-method">Place Order</Link>
-        </Button>
-      </form>
+              <FormControl isRequired w="full" mb={4}>
+                <FormLabel htmlFor="phoneNumber">Phone Number</FormLabel>
+                <Input
+                  type="tel"
+                  name="phoneNumber"
+                  value={checkoutForm.phoneNumber}
+                  onChange={handleChange}
+                  width={500}
+                />
+              </FormControl>
+              <ShippingMethod />
+            </Flex>
+            <Stack mt={-10}>
+              <EwalletPaymentMethod />
+              <BankPaymentMethod />
+              <RetailPaymentMethod />
+            </Stack>
+          </form>
+        </Box>
+        <Box>
+          <Summary />
+        </Box>
+      </SimpleGrid>
     </Box>
   );
 }

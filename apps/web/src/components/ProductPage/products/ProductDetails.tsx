@@ -47,11 +47,11 @@ export default function ProductDetails({ product }: Props) {
 
     // dispatch(addToCart(cartItem));
     // toast.success(`Product “${product.name}” have been added to your cart`);
-
   };
 
   return (
     <Container maxW={'7xl'}>
+      {/* <ProductSlider /> */}
       <SimpleGrid
         columns={{ base: 1, lg: 2 }}
         spacing={{ base: 8, md: 10 }}
