@@ -1,3 +1,5 @@
+import { User } from '@prisma/client';
+
 export interface IUser {
   name?: string;
   email?: string;
@@ -26,4 +28,15 @@ export interface IUpdateUser {
 export interface IUpdatePassword {
   currentPassword: string;
   newPassword: string;
+}
+
+export interface IFilterUser {
+  keyword?: string;
+  page?: number;
+  size?: number;
+}
+
+export interface IResultUser {
+  users: User[];
+  pages: number;
 }

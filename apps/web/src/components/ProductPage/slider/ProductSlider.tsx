@@ -1,17 +1,12 @@
 'use client';
 
-// Import React and required components
 import React, { useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Box, Flex } from '@chakra-ui/react';
-
-// Import Swiper styles (assuming they are bundled with Swiper)
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
-
-// Import required Swiper modules
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 
 const ProductSlider: React.FC = () => {
@@ -70,7 +65,6 @@ const ProductSlider: React.FC = () => {
             bgSize="cover"
           />
         </SwiperSlide>
-        {/* ... other slides */}
       </Swiper>
       <Swiper
         onSwiper={setThumbsSwiper}

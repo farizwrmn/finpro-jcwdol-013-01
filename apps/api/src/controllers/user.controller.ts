@@ -15,7 +15,9 @@ const getUsersController = async (
   next: NextFunction,
 ): Promise<void> => {
   try {
-    const data = await getUsersAction();
+    const filters = req.query;
+
+    const data = await getUsersAction(filters);
 
     res.status(200).json({
       message: 'Get users success',

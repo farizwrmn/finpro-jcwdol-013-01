@@ -29,7 +29,6 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { FiChevronDown, FiShoppingCart } from 'react-icons/fi';
 import { signOut } from '@/lib/features/auth/authSlice';
 import { useRouter } from 'next/navigation';
-import ShoppingCart from '../cart/ShoppingCart';
 
 export interface NavItem {
   label: string;
@@ -93,7 +92,7 @@ export default function Navbar() {
           {status.isLogin ? (
             <HStack spacing={{ base: '0', md: '6' }}>
               <Flex alignItems={'center'}>
-                <Link href={'/shopping-cart'}>
+                <Link href={'/cart'}>
                   <IconButton
                     size="lg"
                     variant="ghost"
@@ -138,7 +137,12 @@ export default function Navbar() {
                   >
                     <MenuItem
                       onClick={() => {
-                        router.push(user.role === "super_admin" || user.role === "store_admin" ? '/admin' : "/users");
+                        router.push(
+                          user.role === 'super_admin' ||
+                            user.role === 'store_admin'
+                            ? '/admin'
+                            : '/users',
+                        );
                       }}
                     >
                       Dashboard
