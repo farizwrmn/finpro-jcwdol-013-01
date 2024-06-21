@@ -47,7 +47,7 @@ export default function NotFoundPage() {
     <Flex
       className="not-found-page"
       minH="100vh"
-      bgImage="https://thumb.viva.co.id/media/frontend/thumbs3/2016/06/17/57637a9bcaabb-valak-the-conjuring-2_1265_711.jpg"
+      bgImage="https://i.pinimg.com/originals/ad/0f/37/ad0f3708164d87a96961fc9fd60947d1.jpg"
       bgSize="cover"
       bgPosition="center"
       overflow="hidden"
