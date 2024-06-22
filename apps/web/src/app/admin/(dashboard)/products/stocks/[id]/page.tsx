@@ -118,7 +118,9 @@ const Page = ({ params: { id } }: Props) => {
                         <Button
                           colorScheme="green"
                           onClick={() => {
-                            router.push(`/admin/products/stocks/${id}/edit`);
+                            router.push(
+                              `/admin/products/stocks/${stock.id}/edit`,
+                            );
                           }}
                         >
                           Update Stock

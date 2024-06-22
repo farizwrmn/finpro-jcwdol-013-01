@@ -9,6 +9,13 @@ export interface IStock {
   type: string;
 }
 
+export interface IUpdateStock {
+  baseStock: number;
+  usedStock?: number;
+  remainingStock: number;
+  type: string;
+}
+
 export interface IFilterStock {
   keyword?: string;
   page?: number;

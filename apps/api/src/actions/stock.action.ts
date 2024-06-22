@@ -1,5 +1,5 @@
 import { HttpException } from '@/exceptions/HttpException';
-import { IStock } from '@/interfaces/stock.interface';
+import { IStock, IUpdateStock } from '@/interfaces/stock.interface';
 import {
   createStockQuery,
   getStocksByProductIDQuery,
@@ -19,7 +19,7 @@ const createStockAction = async (stockData: IStock): Promise<Stock> => {
 
 const updateStockAction = async (
   id: string,
-  stockData: IStock,
+  stockData: IUpdateStock,
 ): Promise<Stock> => {
   try {
     const stock = await updateStockQuery(id, stockData);
