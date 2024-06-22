@@ -17,6 +17,7 @@ const getProductsQuery = async (
     const products = await prisma.product.findMany({
       include: {
         category: true,
+        productImages: true,
       },
       where: {
         name: {
@@ -72,6 +73,7 @@ const getProductBySlugOrNameQuery = async (
     const product = await prisma.product.findFirst({
       include: {
         category: true,
+        productImages: true,
       },
       where: {
         OR: [

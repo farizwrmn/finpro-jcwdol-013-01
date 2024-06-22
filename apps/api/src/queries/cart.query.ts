@@ -25,6 +25,9 @@ const getCartByUserIDQuery = async (userId: string): Promise<Cart | null> => {
 const getCartByIDQuery = async (id: string): Promise<Cart | null> => {
   try {
     const cart = await prisma.cart.findUnique({
+      include: {
+        cartItems: true,
+      },
       where: {
         id,
       },
@@ -169,6 +172,18 @@ const deleteCartItemQuery = async (id: string): Promise<CartItem> => {
   }
 };
 
+const resetCartItemsQuery = async (cartId: string) => {
+  try {
+    await prisma.cartItem.deleteMany({
+      where: {
+        cartId,
+      },
+    });
+  } catch (err) {
+    throw err;
+  }
+};
+
 export {
   updateCartItemQuery,
   deleteCartItemQuery,
@@ -179,4 +194,5 @@ export {
   updateCartQuery,
   deleteCartQuery,
   getCartItemByProductIDQuery,
+  resetCartItemsQuery,
 };

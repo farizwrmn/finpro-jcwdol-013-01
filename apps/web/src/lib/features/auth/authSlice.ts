@@ -13,6 +13,8 @@ type User = {
   birthDate?: string;
   isVerified?: boolean;
   role?: string;
+  longitude?: number;
+  latitude?: number;
 };
 
 type Status = {
@@ -36,6 +38,8 @@ const initialState: Auth = {
     birthDate: '',
     isVerified: false,
     role: '',
+    longitude: undefined,
+    latitude: undefined
   },
   status: {
     isLogin: false,
@@ -94,6 +98,8 @@ export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
         birthDate: user?.birthDate,
         isVerified: user?.isVerified,
         role: user?.role.name,
+        longitude: user?.longitude,
+        latitude: user?.latitude,
       }),
     );
 
@@ -142,6 +148,8 @@ export const checkToken = (token: string) => async (dispatch: Dispatch) => {
         birthDate: user?.birthDate,
         isVerified: user?.isVerified,
         role: user?.role.name,
+        longitude: user?.longitude,
+        latitude: user?.latitude,
       }),
     );
 

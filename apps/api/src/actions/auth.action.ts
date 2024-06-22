@@ -12,6 +12,8 @@ import { genSalt, hash, compare } from 'bcrypt';
 import { API_KEY } from '../config';
 import { sign } from 'jsonwebtoken';
 import { createCartQuery, getCartByUserIDQuery } from '@/queries/cart.query';
+import { getStoresQuery } from "@/queries/store.query";
+import { getNearestStores } from "@/utils/store.util";
 
 const registerAction = async (data: RegisterAuth): Promise<User> => {
   try {
@@ -34,26 +36,33 @@ const registerAction = async (data: RegisterAuth): Promise<User> => {
 const loginAction = async (data: Auth) => {
   try {
     const user = await getUserByEmailQuery(data.email);
-
     if (!user) throw new Error('email doesnt exist');
 
     // if (data.password === user.password)
 
     const isValid = await compare(data.password, user.password || '');
-
     if (!isValid) throw new Error('password is wrong');
 
-    await updateUserQuery(user.id, {
+    const userLocation = {
       longitude: data.longitude,
       latitude: data.latitude,
-    });
+    };
+
+    await updateUserQuery(user.id, userLocation);
 
     const cart = await getCartByUserIDQuery(user.id);
-    if (!cart)
+
+    if (!cart?.id) {
+      const { stores } = await getStoresQuery({});
+
+      const store = getNearestStores({ stores, userLocation });
+
       await createCartQuery({
         userId: user.id,
+        storeId: store?.id,
         itemsPrice: 0,
       });
+    }
 
     const payload = {
       id: user.id,

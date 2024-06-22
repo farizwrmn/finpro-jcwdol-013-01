@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { createStoreAction, deleteStoreAction, getStoreByIDAction, getStoresAction, updateStoreAction } from "../actions/store.action";
+import { createStoreAction, deleteStoreAction, getDistanceStoresAction, getStoreByIDAction, getStoresAction, updateStoreAction } from "../actions/store.action";
 
 const getStoresController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
@@ -22,6 +22,19 @@ const getStoreByIDController = async (req: Request, res: Response, next: NextFun
 
     res.status(200).json({
       message: "Get store success",
+      data
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
+const getDistanceStoresController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const data = await getDistanceStoresAction(req.body);
+
+    res.status(200).json({
+      message: "Get distance stores success",
       data
     });
   } catch (err) {
@@ -91,6 +104,7 @@ const deleteStoreController = async (req: Request, res: Response, next: NextFunc
 export {
   getStoresController,
   getStoreByIDController,
+  getDistanceStoresController,
   createStoreController,
   updateStoreController,
   deleteStoreController,
