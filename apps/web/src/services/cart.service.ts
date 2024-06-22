@@ -2,7 +2,13 @@ import instance from '@/utils/axiosInstance';
 
 export const getCartByUserID = async (id: string) => {
   try {
-    const { data } = await instance.get(`/cart/${id}`);
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await instance.get(`/cart/user/${id}`, config);
     const cart = data?.data;
     return cart;
   } catch (err) {
@@ -18,7 +24,23 @@ export const createCartItem = async (formData: any) => {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await instance.post('/cart', formData, config);
+    const { data } = await instance.post('/cart/item', formData, config);
+    const cartItem = data?.data;
+    return cartItem;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const updateCart = async (id: string, formData: any) => {
+  try {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await instance.patch(`/cart/${id}`, formData, config);
     const cart = data?.data;
     return cart;
   } catch (err) {
@@ -37,6 +59,21 @@ export const deleteCart = async (id: string) => {
     const { data } = await instance.delete(`/cart/${id}`, config);
     const cart = data?.data;
     return cart;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const resetCartItems = async (cartId: string) => {
+  try {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    await instance.delete(`/cart/items/${cartId}`, config);
+    return true;
   } catch (err) {
     console.error(err);
   }

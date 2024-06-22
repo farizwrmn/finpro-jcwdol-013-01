@@ -1,6 +1,7 @@
 import {
   IFilterUser,
   IResultUser,
+  IUpdatePassword,
   IUpdateUser,
   IUser,
 } from '@/interfaces/user.interface';

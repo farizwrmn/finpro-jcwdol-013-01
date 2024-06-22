@@ -1,7 +1,8 @@
 import { Store } from "@prisma/client";
 import { createStoreQuery, deleteStoreQuery, getStoreByIDQuery, getStoreByNameQuery, getStoresQuery, updateStoreQuery } from "../queries/store.query";
 import { HttpException } from "../exceptions/HttpException";
-import { IFilterStore, IResultStore, IStore } from "../interfaces/store.interface";
+import { IFilterStore, IUserLocation, IResultStore, IStore } from "../interfaces/store.interface";
+import haversine from "haversine";
 
 const getStoresAction = async (filters: IFilterStore): Promise<IResultStore> => {
   try {
@@ -19,6 +20,30 @@ const getStoreByIDAction = async (id: string): Promise<Store | null> => {
     if (!store) throw new HttpException(404, "Data not found");
 
     return store;
+  } catch (err) {
+    throw err;
+  }
+}
+
+const getDistanceStoresAction = async (userLocation: IUserLocation) => {
+  try {
+    const { stores } = await getStoresQuery({});
+
+    const distanceStores = stores.map(store => {
+      const distance =
+        (userLocation.longitude && userLocation.latitude && store.longitude && store.latitude)
+          ? haversine({
+            longitude: userLocation.longitude,
+            latitude: userLocation.latitude
+          }, {
+            longitude: store.longitude,
+            latitude: store.latitude
+          })
+          : null;
+      return { ...store, distance };
+    });
+
+    return distanceStores.sort((a, b) => (a.distance as number) - (b.distance as number));
   } catch (err) {
     throw err;
   }
@@ -61,6 +86,7 @@ const deleteStoreAction = async (id: string): Promise<Store> => {
 export {
   getStoresAction,
   getStoreByIDAction,
+  getDistanceStoresAction,
   createStoreAction,
   updateStoreAction,
   deleteStoreAction,

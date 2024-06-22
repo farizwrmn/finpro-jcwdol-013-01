@@ -3,3 +3,8 @@ export interface IFilterStore {
   page?: number;
   size?: number;
 }
+
+export interface IUserLocation {
+  longitude?: number;
+  latitude?: number;
+}
