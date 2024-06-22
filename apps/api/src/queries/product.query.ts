@@ -149,7 +149,9 @@ const deleteProductQuery = async (id: string): Promise<Product> => {
   }
 };
 
-const createProductImageQuery = async (data: IProductImage): Promise<ProductImage> => {
+const createProductImageQuery = async (
+  data: IProductImage,
+): Promise<ProductImage> => {
   try {
     const trx = await prisma.$transaction(async (prisma) => {
       try {
