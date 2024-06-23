@@ -73,7 +73,7 @@ export const resetCartItems = async (cartId: string) => {
       },
     };
     await instance.delete(`/cart/items/${cartId}`, config);
-    return true
+    return true;
   } catch (err) {
     console.error(err);
   }

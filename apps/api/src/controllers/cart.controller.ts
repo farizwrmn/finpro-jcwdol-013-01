@@ -25,19 +25,23 @@ const getCartByUserIDController = async (
   }
 };
 
-const updateCartController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+const updateCartController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
   try {
     const { id } = req.params;
     const data = await updateCartAction(id, req.body);
 
     res.status(200).json({
-      message: "Update cart success",
-      data
+      message: 'Update cart success',
+      data,
     });
   } catch (err) {
     next(err);
   }
-}
+};
 
 const createCartItemController = async (
   req: Request,
@@ -48,7 +52,7 @@ const createCartItemController = async (
     const params = req.body;
     const data = await createCartItemAction({
       ...params,
-      quantity: Number(params.quantity)
+      quantity: Number(params.quantity),
     });
 
     res.status(200).json({

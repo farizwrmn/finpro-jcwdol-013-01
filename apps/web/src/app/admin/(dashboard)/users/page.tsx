@@ -104,22 +104,24 @@ const Page = () => {
                     <Td>{user.role.name}</Td>
                     <Td>{user.createdDate}</Td>
                     <Td>
-                      <ButtonGroup>
-                        <Button
-                          colorScheme="blue"
-                          onClick={() => {
-                            router.push(`/admin/users/edit/${user.id}`);
-                          }}
-                        >
-                          Edit
-                        </Button>
-                        <Button
-                          colorScheme="red"
-                          onClick={() => handleDelete(user.id, user.email)}
-                        >
-                          Delete
-                        </Button>
-                      </ButtonGroup>
+                      {user.role.name === 'store_admin' && (
+                        <ButtonGroup>
+                          <Button
+                            colorScheme="blue"
+                            onClick={() => {
+                              router.push(`/admin/users/edit/${user.id}`);
+                            }}
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            colorScheme="red"
+                            onClick={() => handleDelete(user.id, user.email)}
+                          >
+                            Delete
+                          </Button>
+                        </ButtonGroup>
+                      )}
                     </Td>
                   </Tr>
                 ))}
