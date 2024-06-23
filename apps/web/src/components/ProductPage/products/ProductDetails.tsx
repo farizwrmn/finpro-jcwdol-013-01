@@ -22,11 +22,16 @@ import ImageSlider from './ImageSlider';
 // import { CartItem } from '@/types/cart';
 // import { addToCart } from '@/lib/redux/slices/cartSlice';
 import { toast } from 'react-toastify';
-import { getCartByUserID, createCartItem, resetCartItems, updateCart } from "@/services/cart.service";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { useEffect, useState } from "react";
-import { getDistanceStores } from "@/services/store.service";
-import { updateCartState } from "@/lib/features/cart/cartSlice";
+import {
+  getCartByUserID,
+  createCartItem,
+  resetCartItems,
+  updateCart,
+} from '@/services/cart.service';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { useEffect, useState } from 'react';
+import { getDistanceStores } from '@/services/store.service';
+import { updateCartState } from '@/lib/features/cart/cartSlice';
 
 type Props = {
   product: any;
@@ -55,12 +60,12 @@ export default function ProductDetails({ product }: Props) {
 
   useEffect(() => {
     (async () => {
-      if (!user.id || user.role !== "customer" || !user.isVerified) return;
+      if (!user.id || user.role !== 'customer' || !user.isVerified) return;
 
       const dataCart = await getCartByUserID(user.id);
       if (!dataCart.id) return;
 
-      setFormData(prevFormData => ({
+      setFormData((prevFormData) => ({
         ...prevFormData,
         cartId: dataCart.id,
       }));
@@ -68,7 +73,7 @@ export default function ProductDetails({ product }: Props) {
 
       const dataStores = await getDistanceStores({
         longitude: user.longitude,
-        latitude: user.latitude
+        latitude: user.latitude,
       });
 
       setStores(dataStores);
@@ -79,76 +84,83 @@ export default function ProductDetails({ product }: Props) {
     })();
   }, [user, storeId]);
 
-  type ChangeEvent = (
-    React.ChangeEvent<HTMLInputElement> |
-    React.ChangeEvent<HTMLTextAreaElement> |
-    React.ChangeEvent<HTMLSelectElement>
-  )
+  type ChangeEvent =
+    | React.ChangeEvent<HTMLInputElement>
+    | React.ChangeEvent<HTMLTextAreaElement>
+    | React.ChangeEvent<HTMLSelectElement>;
 
   const handleChange = (e: ChangeEvent) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleChangeStore = async (e: ChangeEvent) => {
-    const newStoreId = e.target.value
+    const newStoreId = e.target.value;
     if (!newStoreId) return;
-    if (!confirm(`Update store will remove all cart items, do you want to continue?`)) return;
+    if (
+      !confirm(
+        `Update store will remove all cart items, do you want to continue?`,
+      )
+    )
+      return;
 
     try {
-      const resultUpdate = await updateCart(formData.cartId, { storeId: newStoreId });
-      if (!resultUpdate) throw new Error("Update cart failed!");
+      const resultUpdate = await updateCart(formData.cartId, {
+        storeId: newStoreId,
+      });
+      if (!resultUpdate) throw new Error('Update cart failed!');
 
       const resultReset = await resetCartItems(formData.cartId);
-      if (!resultReset) throw new Error("Reset cart items failed!");
+      if (!resultReset) throw new Error('Reset cart items failed!');
 
       setStoreId(newStoreId);
-      toast.success("Update store success");
+      toast.success('Update store success');
     } catch (err) {
       console.error(err);
-      toast.error("Update store failed");
+      toast.error('Update store failed');
     }
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       const cartItem = await createCartItem(formData);
-      if (!cartItem) throw new Error("Add to cart failed!");
+      if (!cartItem) throw new Error('Add to cart failed!');
 
       if (user.id) {
         const dataCart = await getCartByUserID(user.id);
         const cartPayload = {
           itemsCount: dataCart.cartItems.length,
           itemsPrice: dataCart.itemsPrice,
-        }
+        };
         dispatch(updateCartState(cartPayload));
       }
 
-      setFormData(prevFormData => ({
+      setFormData((prevFormData) => ({
         ...prevFormData,
         quantity: 0,
       }));
-      toast.success("Add to cart success");
+      toast.success('Add to cart success');
     } catch (err) {
       console.error(err);
-      toast.error("Add to cart failed");
+      toast.error('Add to cart failed');
     }
-  }
+  };
 
   return (
     <Container maxW={'7xl'}>
-      {/* <ProductSlider /> */}
       <SimpleGrid
         columns={{ base: 1, lg: 2 }}
         spacing={{ base: 8, md: 10 }}
         py={{ base: 18, md: 24 }}
       >
         <Box>
-          <ImageSlider images={product.productImages?.map((item: any) => item.image)} />
+          <ImageSlider
+            images={product.productImages?.map((item: any) => item.image)}
+          />
         </Box>
 
         <form onSubmit={handleSubmit}>
@@ -162,11 +174,16 @@ export default function ProductDetails({ product }: Props) {
                 {product.name}
               </Heading>
             </Box>
-            <Flex direction={"row"} gap={5} alignItems={"center"}>
+            <Flex direction={'row'} gap={5} alignItems={'center'}>
               <Text color={textColor} fontWeight={500} fontSize={'2xl'}>
                 {FormatCurrency(product.sellingPrice)}
               </Text>
-              <Text color={textColor} fontWeight={400} fontSize={'xl'} textDecoration={"line-through"}>
+              <Text
+                color={textColor}
+                fontWeight={400}
+                fontSize={'xl'}
+                textDecoration={'line-through'}
+              >
                 {FormatCurrency(product.slicedPrice)}
               </Text>
             </Flex>
@@ -175,10 +192,7 @@ export default function ProductDetails({ product }: Props) {
               direction={'column'}
               divider={<StackDivider borderColor={dividerColor} />}
             >
-              <Text
-                fontSize={'xl'}
-                fontWeight={'300'}
-              >
+              <Text fontSize={'xl'} fontWeight={'300'}>
                 {product.description}
               </Text>
               {isAllow && (
@@ -203,14 +217,14 @@ export default function ProductDetails({ product }: Props) {
                     <Input
                       name="quantity"
                       placeholder="Quantity"
-                      width={"50%"}
+                      width={'50%'}
                       mr={5}
                       type="number"
                       value={formData.quantity}
                       onChange={handleChange}
                     />
-                    <FormLabel display={"inline"}>Stock:</FormLabel>
-                    <Text as={"span"}>100</Text>
+                    <FormLabel display={'inline'}>Stock:</FormLabel>
+                    <Text as={'span'}>100</Text>
                   </FormControl>
                 </Stack>
               )}
@@ -229,12 +243,14 @@ export default function ProductDetails({ product }: Props) {
                 type="submit"
               >
                 <FaCartPlus />
-                <Text as={"span"} ml={5}>Add to Cart</Text>
+                <Text as={'span'} ml={5}>
+                  Add to Cart
+                </Text>
               </Button>
             )}
             <FormControl id="quantity">
-              <FormLabel display={"inline"}>Category:</FormLabel>
-              <Text as={"span"}>{product.category.name}</Text>
+              <FormLabel display={'inline'}>Category:</FormLabel>
+              <Text as={'span'}>{product.category.name}</Text>
             </FormControl>
           </Stack>
         </form>

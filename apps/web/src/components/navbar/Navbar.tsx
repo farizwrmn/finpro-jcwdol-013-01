@@ -42,7 +42,7 @@ export interface NavItem {
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
   const { status, user } = useAppSelector((state) => state.auth);
-  const cart = useAppSelector(state => state.cart);
+  const cart = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -92,6 +92,19 @@ export default function Navbar() {
               <DesktopNav />
             </Flex>
           </Flex>
+          {user.role === 'customer' ? (
+            <Flex alignItems={'center'} mr={1}>
+              <Link href={'/cart'}>
+                <IconButton
+                  size="lg"
+                  variant="ghost"
+                  aria-label="open menu"
+                  icon={<FiShoppingCart />}
+                  ml={2}
+                />
+              </Link>
+            </Flex>
+          ) : null}
           {status.isLogin ? (
             <HStack spacing={{ base: '0', md: '6' }}>
               <Flex alignItems={'center'}>
@@ -105,7 +118,18 @@ export default function Navbar() {
                       ml={2}
                     />
                     {cart.itemsCount > 0 && (
-                      <Badge width={6} height={6} colorScheme='green' display="flex" justifyContent="center" alignItems="center" rounded="full" top="0" right="-5px" position="absolute">
+                      <Badge
+                        width={6}
+                        height={6}
+                        colorScheme="green"
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        rounded="full"
+                        top="0"
+                        right="-5px"
+                        position="absolute"
+                      >
                         {cart.itemsCount}
                       </Badge>
                     )}

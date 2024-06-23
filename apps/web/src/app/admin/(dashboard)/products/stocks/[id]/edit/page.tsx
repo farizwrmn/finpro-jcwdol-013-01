@@ -17,17 +17,23 @@ import {
 import { useRouter } from 'next/navigation';
 
 import { getStores } from '@/services/store.service';
-import { createStock, updateStock } from '@/services/stock.service';
+import {
+  createStock,
+  updateStock,
+  getStockByID,
+} from '@/services/stock.service';
 
 type Props = { params: { id: string } };
 
 const Page = ({ params: { id: stockId } }: Props) => {
   const [stores, setStores] = useState<any[]>([]);
+  const [stock, setStock] = useState<any>(null);
 
   const [formData, setFormData] = useState({
     stockId,
     storeId: '',
     stock: 0,
+    type: 'tambah',
   });
 
   const router = useRouter();
@@ -36,6 +42,9 @@ const Page = ({ params: { id: stockId } }: Props) => {
     (async () => {
       const data = await getStores({});
       setStores(data?.stores);
+
+      const stockData = await getStockByID(stockId);
+      setStock(stockData);
     })();
   }, []);
 
@@ -56,9 +65,9 @@ const Page = ({ params: { id: stockId } }: Props) => {
 
     try {
       const product = await updateStock(stockId, formData);
-      if (!product) throw new Error('Create stock failed!');
+      if (!product) throw new Error('Update stock failed!');
       alert('Create stock success');
-      router.push(`/admin/products/stocks/${stockId}`);
+      router.push(`/admin/products/stocks/${stock.productId}`);
     } catch (err) {
       console.error(err);
       alert('Create stock failed');
@@ -77,19 +86,7 @@ const Page = ({ params: { id: stockId } }: Props) => {
               <Stack spacing={6} w={'full'} rounded={'xl'} p={10} my={6}>
                 <FormControl id="category" isRequired>
                   <FormLabel>Store</FormLabel>
-                  <Select
-                    name="storeId"
-                    width="auto"
-                    value={formData.storeId}
-                    onChange={handleChange}
-                  >
-                    <option value=""></option>
-                    {stores?.map((store: any) => (
-                      <option key={store.id} value={store.id}>
-                        {store.name}
-                      </option>
-                    ))}
-                  </Select>
+                  <Text>{stock?.store?.name}</Text>
                 </FormControl>
                 <FormControl id="stock" isRequired>
                   <FormLabel>Stock</FormLabel>
@@ -126,7 +123,7 @@ const Page = ({ params: { id: stockId } }: Props) => {
                       bg: 'blue.500',
                     }}
                   >
-                    Update
+                    Add
                   </Button>
                 </Stack>
               </Stack>

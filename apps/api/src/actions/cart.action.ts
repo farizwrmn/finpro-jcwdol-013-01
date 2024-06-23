@@ -24,17 +24,14 @@ const getCartByUserIDAction = async (id: string): Promise<Cart | null> => {
   }
 };
 
-const updateCartAction = async (
-  id: string,
-  data: ICart
-): Promise<Cart> => {
+const updateCartAction = async (id: string, data: ICart): Promise<Cart> => {
   try {
     const cart = await updateCartQuery(id, data);
     return cart;
   } catch (err) {
     throw err;
   }
-}
+};
 
 const createCartItemAction = async (
   data: ICartItem,
@@ -81,5 +78,5 @@ export {
   deleteCartItemAction,
   createCartItemAction,
   getCartByUserIDAction,
-  resetCartItemsAction
+  resetCartItemsAction,
 };

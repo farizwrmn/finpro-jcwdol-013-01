@@ -1,7 +1,7 @@
 'use client';
 
 import React, { ReactNode } from 'react';
-import AuthUser from "@/components/auth/AuthUser";
+import AuthUser from '@/components/auth/AuthUser';
 import Link from 'next/link';
 import {
   IconButton,
@@ -26,14 +26,12 @@ import {
   MenuList,
 } from '@chakra-ui/react';
 import { FiHome, FiMenu, FiBell, FiChevronDown, FiUser } from 'react-icons/fi';
-import {
-  FaIceCream,
-  FaProductHunt,
-  FaStore,
-  FaWolfPackBattalion,
-} from 'react-icons/fa';
+import { FaIceCream, FaStore } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { signOut } from '@/lib/features/auth/authSlice';
+import { useRouter } from 'next/navigation';
 
 interface LinkItemProps {
   name: string;
@@ -44,7 +42,12 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
   { name: 'Home', icon: FiHome, href: '/users', key: 'Home' },
   { name: 'Profile', icon: FiUser, href: '/users/profile', key: 'Profile' },
-  { name: 'Change Password', icon: FaStore, href: '/users/change-password', key: 'Change Password' },
+  {
+    name: 'Change Password',
+    icon: FaStore,
+    href: '/users/change-password',
+    key: 'Change Password',
+  },
   {
     name: 'Address',
     icon: FaIceCream,
@@ -61,6 +64,7 @@ const LinkItems: Array<LinkItemProps> = [
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <AuthUser>
       <Box>
@@ -165,6 +169,10 @@ interface MobileProps extends FlexProps {
   onOpen: () => void;
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+  const { status, user } = useAppSelector((state) => state.auth);
+  const router = useRouter();
+  const dispatch = useAppDispatch();
+
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -210,10 +218,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             >
               <HStack>
                 <Avatar
-                  size={'sm'}
-                  src={
-                    'https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-                  }
+                  size={{ base: 'sm', sm: 'md' }}
+                  src={user.image}
+                  ml={2}
                 />
                 <VStack
                   display={{ base: 'none', md: 'flex' }}
@@ -221,9 +228,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Justina Clark</Text>
+                  <Text fontSize="sm">{user.email}</Text>
                   <Text fontSize="xs" color="gray.600">
-                    Admin
+                    {user.role}
                   </Text>
                 </VStack>
                 <Box display={{ base: 'none', md: 'flex' }}>
@@ -232,14 +239,29 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               </HStack>
             </MenuButton>
             <MenuList
-              bg={useColorModeValue('white', 'gray.900')}
-              borderColor={useColorModeValue('gray.200', 'gray.700')}
+            // bg={useColorModeValue('white', 'gray.900')}
+            // borderColor={useColorModeValue('gray.200', 'gray.700')}
             >
-              <MenuItem>Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
-              <MenuItem>Billing</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  router.push(
+                    user.role === 'super_admin' || user.role === 'store_admin'
+                      ? '/admin'
+                      : '/users',
+                  );
+                }}
+              >
+                Dashboard
+              </MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  dispatch(signOut());
+                  router.push('/');
+                }}
+              >
+                Sign out
+              </MenuItem>
             </MenuList>
           </Menu>
         </Flex>
