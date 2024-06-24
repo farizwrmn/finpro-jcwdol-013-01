@@ -14,6 +14,8 @@ import {
   FormLabel,
   Stack,
   Textarea,
+  GridItem,
+  SimpleGrid,
 } from '@chakra-ui/react';
 import { useRouter } from "next/navigation";
 import { useAppSelector } from '@/lib/hooks';
@@ -171,65 +173,75 @@ const Page = () => {
                     onChange={handleChange}
                   />
                 </FormControl>
-                <FormControl id="province" isRequired>
-                  <FormLabel>Province</FormLabel>
-                  <Select
-                    width="auto"
-                    value={formData.provinceId}
-                    onChange={handleChangeProvince}
-                  >
-                    <option value=""></option>
-                    {provinces?.map((province: any) => (
-                      <option
-                        key={province.province_id}
-                        value={province.province_id}
-                      >{province.province}</option>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl id="city" isRequired>
-                  <FormLabel>City</FormLabel>
-                  <Select
-                    width="auto"
-                    value={formData.cityId}
-                    onChange={handleChangeCity}
-                  >
-                    <option value=""></option>
-                    {cities?.map(city => (
-                      <option
-                        key={city.city_id}
-                        value={city.city_id}
-                      >{`${city.type} ${city.city_name}`}</option>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl id="subdistrict" isRequired>
-                  <FormLabel>Subdistrict</FormLabel>
-                  <Select
-                    width="auto"
-                    value={formData.subdistrictId}
-                    onChange={handleChangeSubdistrict}
-                  >
-                    <option value=""></option>
-                    {subdistricts?.map(subdistrict => (
-                      <option
-                        key={subdistrict.subdistrict_id}
-                        value={subdistrict.subdistrict_id}
-                      >{subdistrict.subdistrict_name}</option>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl id="postalCode">
-                  <FormLabel>Postal Code</FormLabel>
-                  <Input
-                    name="postalCode"
-                    placeholder="Postal Code"
-                    _placeholder={{ color: 'gray.500' }}
-                    type="text"
-                    value={formData.postalCode}
-                    onChange={handleChange}
-                  />
-                </FormControl>
+                <SimpleGrid
+                  columns={{ base: 1, lg: 2 }}
+                  spacing={{ base: 8, md: 10 }}
+                >
+                  <FormControl id="province" isRequired gridColumn="unset">
+                    <FormLabel>Province</FormLabel>
+                    <Select
+                      width="auto"
+                      value={formData.provinceId}
+                      onChange={handleChangeProvince}
+                    >
+                      <option value=""></option>
+                      {provinces?.map((province: any) => (
+                        <option
+                          key={province.province_id}
+                          value={province.province_id}
+                        >{province.province}</option>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <FormControl id="city" isRequired gridColumn="unset">
+                    <FormLabel>City</FormLabel>
+                    <Select
+                      width="auto"
+                      value={formData.cityId}
+                      onChange={handleChangeCity}
+                    >
+                      <option value=""></option>
+                      {cities?.map(city => (
+                        <option
+                          key={city.city_id}
+                          value={city.city_id}
+                        >{`${city.type} ${city.city_name}`}</option>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </SimpleGrid>
+                <SimpleGrid
+                  columns={{ base: 1, lg: 2 }}
+                  spacing={{ base: 8, md: 10 }}
+                >
+                  <FormControl id="subdistrict" isRequired gridColumn="unset">
+                    <FormLabel>Subdistrict</FormLabel>
+                    <Select
+                      width="auto"
+                      value={formData.subdistrictId}
+                      onChange={handleChangeSubdistrict}
+                    >
+                      <option value=""></option>
+                      {subdistricts?.map(subdistrict => (
+                        <option
+                          key={subdistrict.subdistrict_id}
+                          value={subdistrict.subdistrict_id}
+                        >{subdistrict.subdistrict_name}</option>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <FormControl id="postalCode" gridColumn="unset">
+                    <FormLabel>Postal Code</FormLabel>
+                    <Input
+                      name="postalCode"
+                      placeholder="Postal Code"
+                      _placeholder={{ color: 'gray.500' }}
+                      type="text"
+                      value={formData.postalCode}
+                      onChange={handleChange}
+                    />
+                  </FormControl>
+                </SimpleGrid>
                 <Stack spacing={6} direction={['column', 'row']}>
                   <Button
                     onClick={() => {

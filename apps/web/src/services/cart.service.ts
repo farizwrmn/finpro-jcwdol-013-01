@@ -1,6 +1,6 @@
 import instance from '@/utils/axiosInstance';
 
-export const getCartByUserID = async (id: string) => {
+export const getCartByID = async (id: string) => {
   try {
     const token = localStorage.getItem('token');
     const config = {
@@ -8,7 +8,23 @@ export const getCartByUserID = async (id: string) => {
         Authorization: `Bearer ${token}`,
       },
     };
-    const { data } = await instance.get(`/cart/user/${id}`, config);
+    const { data } = await instance.get(`/cart/${id}`, config);
+    const cart = data?.data;
+    return cart;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getCartByUserID = async (userId: string) => {
+  try {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await instance.get(`/cart/user/${userId}`, config);
     const cart = data?.data;
     return cart;
   } catch (err) {
@@ -25,6 +41,22 @@ export const createCartItem = async (formData: any) => {
       },
     };
     const { data } = await instance.post('/cart/item', formData, config);
+    const cartItem = data?.data;
+    return cartItem;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const deleteCartItem = async (id: string) => {
+  try {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await instance.delete(`/cart/item/${id}`, config);
     const cartItem = data?.data;
     return cartItem;
   } catch (err) {
