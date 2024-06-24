@@ -1,17 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Heading,
   Text,
   Flex,
-  Checkbox,
-  CheckboxGroup,
   Radio,
   RadioGroup,
-  Button,
   Stack,
-  Image,
 } from '@chakra-ui/react';
+import { FormatCurrency } from '@/utils/FormatCurrency';
 
 interface ShippingMethod {
   name: string;
@@ -19,71 +16,58 @@ interface ShippingMethod {
   price: number;
 }
 
-const shippingMethods: ShippingMethod[] = [
-  {
-    name: 'DHL Free',
-    deliveryTime: '10-12 business days',
-    price: 0,
-  },
-  {
-    name: 'DHL Express',
-    deliveryTime: '3-4 business days',
-    price: 5,
-  },
-  {
-    name: 'FedEx 2-3 Day',
-    deliveryTime: '2-3 business days',
-    price: 6,
-  },
-  {
-    name: 'UPS 2-3 Day',
-    deliveryTime: '2-3 business days',
-    price: 7,
-  },
-];
+type Props = {
+  couriers: any[];
+  setShippingCourier: (courier: string) => void;
+  setShippingService: (service: string) => void;
+  setShippingPrice: (cost: number) => void;
+};
 
-export default function ShippingMethodPage() {
-  const [selectedShippingMethod, setSelectedShippingMethod] =
-    useState<ShippingMethod>();
+export default function ShippingMethod({
+  couriers = [],
+  setShippingCourier,
+  setShippingService,
+  setShippingPrice,
+}: Props) {
+  const handleChange = (value: string) => {
+    const courier = value.split('|')[0] || '';
+    const service = value.split('|')[1] || '';
+    const cost = Number(value.split('|')[2]) || 0;
 
-  const handleMethodChange = (selectedMethod: any) => {
-    setSelectedShippingMethod(selectedMethod);
+    setShippingCourier(courier);
+    setShippingService(service);
+    setShippingPrice(cost);
   };
 
   return (
-    <Box p={6}>
-      <Heading as="h1" fontSize="3xl" mb={8}>
+    <Stack spacing={8}>
+      <Heading as="h1" fontSize="2xl">
         Shipping Method
       </Heading>
 
-      <RadioGroup
-        value={selectedShippingMethod?.name}
-        onChange={handleMethodChange}
-      >
-        {shippingMethods.map((method) => (
-          <Stack>
-            <Radio key={method.name} value={method.name}>
-              <Box flexDirection="column" mb={8}>
-                {' '}
-                {/* Increased spacing between options */}
-                <Stack direction="row" alignItems="center" spacing={4}>
-                  <Box>
-                    <Heading as="h4" fontSize="md">
-                      {method.name}
-                    </Heading>
-                    <Text fontSize="sm" color="gray.500">
-                      {method.deliveryTime}
-                    </Text>
-                  </Box>
-                </Stack>
-                <Text fontSize="lg" fontWeight="bold" mt={2}>
-                  ${method.price}
-                </Text>
-              </Box>
-            </Radio>
-          </Stack>
-        ))}
-      </RadioGroup>
-    </Box>
+      <Stack spacing={8} w={'full'}>
+        <RadioGroup onChange={handleChange}>
+          {couriers.map((courier, index) => (
+            <Box key={index} mb={6}>
+              <Heading as="h2" fontSize="lg" mb={4}>
+                {courier.name}
+              </Heading>
+              {courier.costs.map((service: any, index: number) => (
+                <Flex key={index} justifyContent="space-between" mb={2}>
+                  <Radio
+                    size="md"
+                    value={`${courier.code.toUpperCase()}|${service.service}|${service.cost[0].value}`}
+                    colorScheme="green"
+                  >
+                    {`${service.description} (${service.cost[0].etd} days)`}
+                  </Radio>
+                  <Text>{FormatCurrency(service.cost[0].value)}</Text>
+                </Flex>
+              ))}
+            </Box>
+          ))}
+        </RadioGroup>
+      </Stack>
+    </Stack>
   );
 }

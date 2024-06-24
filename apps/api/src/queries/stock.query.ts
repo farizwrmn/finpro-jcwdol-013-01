@@ -1,4 +1,4 @@
-import { IStock } from '@/interfaces/stock.interface';
+import { IStock, IUpdateStock } from '@/interfaces/stock.interface';
 import { Stock, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -9,7 +9,10 @@ const createStockQuery = async (stockData: IStock): Promise<Stock> => {
       try {
         const stock = await prisma.stock.create({
           data: {
-            ...stockData,
+            baseStock: stockData.baseStock,
+            remainingStock: stockData.remainingStock,
+            storeId: stockData.storeId,
+            productId: stockData.productId,
           },
         });
 
@@ -39,13 +42,10 @@ const createStockQuery = async (stockData: IStock): Promise<Stock> => {
 
 const updateStockQuery = async (
   id: string,
-  stockData: IStock,
+  stockData: IUpdateStock,
 ): Promise<Stock> => {
   try {
-    const stock = await prisma.stock.update({
-      data: {
-        ...stockData,
-      },
+    const stock = await prisma.stock.findUnique({
       where: {
         id,
       },
@@ -111,26 +111,12 @@ const getStocksByProductIDQuery = async (
   }
 };
 
-// const addStockQuery = async (id: string, stockData: IStock): Promise<Stock> => {
-//   try {
-//     const stock = await prisma.stock.update({
-//       data: {
-//         ...stockData,
-//       },
-//       where: {
-//         id,
-//       },
-//     });
-
-//     return stock;
-//   } catch (err) {
-//     throw err;
-//   }
-// };
-
 const getStockByIDQuery = async (id: string): Promise<Stock | null> => {
   try {
     const stock = await prisma.stock.findUnique({
+      include: {
+        store: true,
+      },
       where: {
         id,
       },

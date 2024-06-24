@@ -1,5 +1,5 @@
 import { PrismaClient, Cart, CartItem } from '@prisma/client';
-import { ICart, ICartItem } from '../interfaces/cart.interface';
+import { ICart, ICartItem, IUpdateCart } from '../interfaces/cart.interface';
 
 const prisma = new PrismaClient();
 
@@ -25,6 +25,9 @@ const getCartByUserIDQuery = async (userId: string): Promise<Cart | null> => {
 const getCartByIDQuery = async (id: string): Promise<Cart | null> => {
   try {
     const cart = await prisma.cart.findUnique({
+      include: {
+        cartItems: true,
+      },
       where: {
         id,
       },
@@ -58,7 +61,7 @@ const createCartQuery = async (data: ICart): Promise<Cart> => {
   }
 };
 
-const updateCartQuery = async (id: string, data: ICart): Promise<Cart> => {
+const updateCartQuery = async (id: string, data: IUpdateCart): Promise<Cart> => {
   try {
     const cart = await prisma.cart.update({
       data: {
@@ -115,21 +118,15 @@ const getCartItemByProductIDQuery = async (
 
 const createCartItemQuery = async (data: ICartItem): Promise<CartItem> => {
   try {
-    const trx = await prisma.$transaction(async (prisma) => {
-      try {
-        const cartItem = await prisma.cartItem.create({
-          data: {
-            ...data,
-          },
-        });
-
-        return cartItem;
-      } catch (err) {
-        throw err;
-      }
+    const cartItem = await prisma.cartItem.create({
+      data: {
+        ...data,
+      },
     });
 
-    return trx;
+    await updateCartItemsPriceQuery(data.cartId);
+
+    return cartItem;
   } catch (err) {
     throw err;
   }
@@ -149,6 +146,8 @@ const updateCartItemQuery = async (
       },
     });
 
+    await updateCartItemsPriceQuery(data.cartId);
+
     return cartItem;
   } catch (err) {
     throw err;
@@ -163,7 +162,46 @@ const deleteCartItemQuery = async (id: string): Promise<CartItem> => {
       },
     });
 
+    await updateCartItemsPriceQuery(cartItem.cartId);
+
     return cartItem;
+  } catch (err) {
+    throw err;
+  }
+};
+
+
+const updateCartItemsPriceQuery = async (id: string): Promise<Cart | null> => {
+  try {
+    const cart = await prisma.cart.findUnique({
+      include: {
+        cartItems: true,
+      },
+      where: {
+        id,
+      },
+    });
+
+    const itemsPrice = cart?.cartItems.reduce((acc, item) => acc + (item.quantity * item.sellingPrice), 0) || 0;
+
+    await updateCartQuery(id, { itemsPrice });
+
+    return cart;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const resetCartItemsQuery = async (cartId: string) => {
+  try {
+    await prisma.cartItem.deleteMany({
+      where: {
+        cartId,
+      },
+    });
+
+    await updateCartItemsPriceQuery(cartId);
+
   } catch (err) {
     throw err;
   }
@@ -179,4 +217,5 @@ export {
   updateCartQuery,
   deleteCartQuery,
   getCartItemByProductIDQuery,
+  resetCartItemsQuery,
 };

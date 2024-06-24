@@ -32,6 +32,22 @@ export const getStocksByProductID = async (id: string) => {
   }
 };
 
+export const getStockByID = async (id: string) => {
+  try {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await instance.get(`/stocks/${id}`, config);
+    const stock = data?.data;
+    return stock;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const addStock = async (id: string, formData: any) => {
   try {
     const token = localStorage.getItem('token');
@@ -41,22 +57,6 @@ export const addStock = async (id: string, formData: any) => {
       },
     };
     const { data } = await instance.patch(`/stocks/${id}`, formData, config);
-    const stock = data?.data;
-    return stock;
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-export const getStockById = async (id: string) => {
-  try {
-    const token = localStorage.getItem('token');
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    const { data } = await instance.get(`/stocks/product/${id}`, config);
     const stock = data?.data;
     return stock;
   } catch (err) {

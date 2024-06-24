@@ -17,6 +17,6 @@ router.get(
 );
 router.get('/:id', verifyToken, adminGuard, getStockByIDController);
 router.post('/', verifyToken, adminGuard, createStockController);
-router.patch('/', verifyToken, adminGuard, updateStockController);
+router.patch('/:id', verifyToken, adminGuard, updateStockController);
 
 export default router;

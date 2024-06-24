@@ -69,91 +69,96 @@ export default function PaymentMethodPage() {
   };
 
   return (
-    <Box p={6}>
-      <Heading as="h1" fontSize="3xl" mb={8}>
+    <Stack spacing={8}>
+      <Heading as="h1" fontSize="2xl">
         Payment Method
       </Heading>
 
-      <form onSubmit={handleSubmit}>
-        <RadioGroup onChange={handleMethodChange} value={selectedPaymentMethod}>
-          {paymentMethods.map((method) => (
-            <Stack key={method.name} mb={4}>
-              <Radio value={method.name}>
-                <Box display="flex" alignItems="center">
-                  {method.imageSrc && (
-                    <Image
-                      src={method.imageSrc}
-                      alt={method.name}
-                      width="40px"
-                      height="40px"
-                    />
-                  )}
-                  <Text fontSize="md">{method.name}</Text>
-                </Box>
-              </Radio>
-              {selectedPaymentMethod === method.name && (
-                <>
-                  <FormControl isInvalid={!cardNumber}>
-                    <FormLabel htmlFor="cardNumber">Card Number</FormLabel>
-                    <Input
-                      id="cardNumber"
-                      type="text"
-                      placeholder="**** **** **** ****"
-                      value={cardNumber}
-                      onChange={handleCardNumberChange}
-                    />
-                    {!cardNumber && (
-                      <FormErrorMessage>
-                        Card number is required
-                      </FormErrorMessage>
+      <Stack
+        spacing={8}
+        w={'full'}
+      >
+        <form onSubmit={handleSubmit}>
+          <RadioGroup onChange={handleMethodChange} value={selectedPaymentMethod}>
+            {paymentMethods.map((method) => (
+              <Stack key={method.name} mb={4}>
+                <Radio value={method.name}>
+                  <Box display="flex" alignItems="center">
+                    {method.imageSrc && (
+                      <Image
+                        src={method.imageSrc}
+                        alt={method.name}
+                        width="40px"
+                        height="40px"
+                      />
                     )}
-                  </FormControl>
-
-                  <Flex mt={4} justifyContent="space-between">
-                    <FormControl isInvalid={!securityCode}>
-                      <FormLabel htmlFor="securityCode">
-                        Security Code
-                      </FormLabel>
+                    <Text fontSize="md">{method.name}</Text>
+                  </Box>
+                </Radio>
+                {selectedPaymentMethod === method.name && (
+                  <>
+                    <FormControl isInvalid={!cardNumber}>
+                      <FormLabel htmlFor="cardNumber">Card Number</FormLabel>
                       <Input
-                        id="securityCode"
+                        id="cardNumber"
                         type="text"
-                        placeholder="***"
-                        maxLength={3}
-                        value={securityCode}
-                        onChange={handleSecurityCodeChange}
+                        placeholder="**** **** **** ****"
+                        value={cardNumber}
+                        onChange={handleCardNumberChange}
                       />
-                      {!securityCode && (
+                      {!cardNumber && (
                         <FormErrorMessage>
-                          Security code is required
+                          Card number is required
                         </FormErrorMessage>
                       )}
                     </FormControl>
 
-                    <FormControl isInvalid={!expiryDate}>
-                      <FormLabel htmlFor="expiryDate">
-                        Expiry Date (MM/YY)
-                      </FormLabel>
-                      <Input
-                        id="expiryDate"
-                        type="text"
-                        placeholder="MM/YY"
-                        maxLength={5}
-                        value={expiryDate}
-                        onChange={handleExpiryDateChange}
-                      />
-                      {!expiryDate && (
-                        <FormErrorMessage>
-                          Expiry date is required
-                        </FormErrorMessage>
-                      )}
-                    </FormControl>
-                  </Flex>
-                </>
-              )}
-            </Stack>
-          ))}
-        </RadioGroup>
-      </form>
-    </Box>
+                    <Flex mt={4} justifyContent="space-between">
+                      <FormControl isInvalid={!securityCode}>
+                        <FormLabel htmlFor="securityCode">
+                          Security Code
+                        </FormLabel>
+                        <Input
+                          id="securityCode"
+                          type="text"
+                          placeholder="***"
+                          maxLength={3}
+                          value={securityCode}
+                          onChange={handleSecurityCodeChange}
+                        />
+                        {!securityCode && (
+                          <FormErrorMessage>
+                            Security code is required
+                          </FormErrorMessage>
+                        )}
+                      </FormControl>
+
+                      <FormControl isInvalid={!expiryDate}>
+                        <FormLabel htmlFor="expiryDate">
+                          Expiry Date (MM/YY)
+                        </FormLabel>
+                        <Input
+                          id="expiryDate"
+                          type="text"
+                          placeholder="MM/YY"
+                          maxLength={5}
+                          value={expiryDate}
+                          onChange={handleExpiryDateChange}
+                        />
+                        {!expiryDate && (
+                          <FormErrorMessage>
+                            Expiry date is required
+                          </FormErrorMessage>
+                        )}
+                      </FormControl>
+                    </Flex>
+                  </>
+                )}
+              </Stack>
+            ))}
+          </RadioGroup>
+        </form>
+      </Stack>
+    </Stack>
   );
 }

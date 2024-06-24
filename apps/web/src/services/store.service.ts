@@ -1,4 +1,4 @@
-import { IFilterStore } from "@/interface/store.interface";
+import { IFilterStore, IUserLocation } from "@/interface/store.interface";
 import instance from "@/utils/axiosInstance";
 
 export const getStores = async ({ keyword = "", page = 1, size = 10 }: IFilterStore) => {
@@ -16,6 +16,22 @@ export const getStoreByID = async (id: string) => {
     const { data } = await instance.get(`/stores/${id}`);
     const store = data?.data;
     return store;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getDistanceStores = async (userLocation: IUserLocation) => {
+  try {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    };
+    const { data } = await instance.post(`/stores/distance`, userLocation, config);
+    const stores = data?.data;
+    return stores;
   } catch (err) {
     console.error(err);
   }

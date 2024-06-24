@@ -4,6 +4,11 @@ export interface ICart {
   storeId?: string;
 }
 
+export interface IUpdateCart {
+  itemsPrice?: number;
+  storeId?: string;
+}
+
 export interface ICartItem {
   cartId: string;
   productId: string;

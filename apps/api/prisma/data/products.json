@@ -1,0 +1,262 @@
+[
+  {
+    "name": "Sayur Bayam",
+    "slug": "sayur-bayam",
+    "description": "Bayam Sehat dari perkebunan sendiri",
+    "slicedPrice": 10000,
+    "sellingPrice": 7000,
+    "isActive": true,
+    "categorySlug": "sayur",
+    "images": [
+      "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHZlZ2V0YWJsZXxlbnwwfHwwfHx8MA%3D%3D",
+      "https://images.unsplash.com/photo-1580910365203-91ea9115a319?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8c3BpbmFjaHxlbnwwfHwwfHx8MA%3D%3D"
+    ]
+  },
+  {
+    "name": "Sayur Kangkung",
+    "slug": "sayur-kangkung",
+    "description": "Kangkung Hijau segar dari perkebunan sendiri",
+    "slicedPrice": 12000,
+    "sellingPrice": 6000,
+    "isActive": true,
+    "categorySlug": "sayur",
+    "images": [
+      "https://img.freepik.com/free-photo/chinese-kale-vegetable_1203-6811.jpg?t=st=1719034372~exp=1719037972~hmac=344dcc388e50dcace40f6d699b8dcf706a036145a901c3c349b010905201deb9&w=740",
+      "https://img.freepik.com/free-photo/water-convolvulus_1339-570.jpg?t=st=1719034453~exp=1719038053~hmac=5961ec5e77c24b4923620982de1453bec10ce4c0813b527023350c87b4615181&w=1380"
+    ]
+  },
+  {
+    "name": "Buah Jeruk California",
+    "slug": "jeruk-california",
+    "description": "Jeruk import dari California AS",
+    "slicedPrice": 10000,
+    "sellingPrice": 7000,
+    "isActive": true,
+    "categorySlug": "buah",
+    "images": [
+      "https://images.unsplash.com/photo-1557800636-894a64c1696f?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8b3JhbmdlfGVufDB8fDB8fHww",
+      "https://images.unsplash.com/photo-1580052614034-c55d20bfee3b?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8b3JhbmdlfGVufDB8fDB8fHww"
+    ]
+  },
+  {
+    "name": "Buah Apel Malang",
+    "slug": "apel-malang",
+    "description": "Buah Apel merah dari Malang",
+    "slicedPrice": 15000,
+    "sellingPrice": 14000,
+    "isActive": true,
+    "categorySlug": "buah",
+    "images": [
+      "https://images.unsplash.com/photo-1579613832125-5d34a13ffe2a?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YXBwbGV8ZW58MHx8MHx8fDA%3D",
+      "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YXBwbGV8ZW58MHx8MHx8fDA%3D"
+    ]
+  },
+  {
+    "name": "Daging Sapi",
+    "slug": "daging-sapi",
+    "description": "Dagin Sapi kaya protein dari New Zealand",
+    "slicedPrice": 60000,
+    "sellingPrice": 55000,
+    "isActive": true,
+    "categorySlug": "protein",
+    "images": [
+      "https://images.unsplash.com/photo-1595356161904-6708c97be89c?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y293JTIwbWVhdHxlbnwwfHwwfHx8MA%3D%3D",
+      "https://images.unsplash.com/photo-1448907503123-67254d59ca4f?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y293JTIwbWVhdHxlbnwwfHwwfHx8MA%3D%3D"
+    ]
+  },
+  {
+    "name": "Daging Ayam",
+    "slug": "daging-ayam",
+    "description": "Daging Ayam pilihan dari peternakan lokal",
+    "slicedPrice": 25000,
+    "sellingPrice": 24000,
+    "isActive": true,
+    "categorySlug": "protein",
+    "images": [
+      "https://images.unsplash.com/photo-1587593810167-a84920ea0781?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Y2hpY2tlbiUyMG1lYXR8ZW58MHx8MHx8fDA%3D",
+      "https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2hpY2tlbiUyMG1lYXR8ZW58MHx8MHx8fDA%3D"
+    ]
+  },
+  {
+    "name": "Mac n Cheese",
+    "slug": "mac-and-cheese",
+    "description": "Macaroni keju siap saji",
+    "slicedPrice": 15000,
+    "sellingPrice": 14000,
+    "isActive": true,
+    "categorySlug": "siap-saji",
+    "images": [
+      "https://images.unsplash.com/photo-1612892010343-983bfd063dc5?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bWFjJTIwbiUyMGNoZWVzZXxlbnwwfHwwfHx8MA%3D%3D",
+      "https://images.unsplash.com/photo-1592931919197-9a0e7ed89b80?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWFjJTIwbiUyMGNoZWVzZXxlbnwwfHwwfHx8MA%3D%3D"
+    ]
+  },
+  {
+    "name": "Nasi Goreng Spesial",
+    "slug": "nasi-goreng",
+    "description": "Nasi goreng spesial siap saji",
+    "slicedPrice": 22000,
+    "sellingPrice": 20000,
+    "isActive": true,
+    "categorySlug": "siap-saji",
+    "images": [
+      "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZnJpZWQlMjByaWNlfGVufDB8fDB8fHww",
+      "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZnJpZWQlMjByaWNlfGVufDB8fDB8fHww"
+    ]
+  },
+  {
+    "name": "Chitatoz",
+    "slug": "snack-chitatoz",
+    "description": "Makanan ringan dari kentang 100% asli",
+    "slicedPrice": 14000,
+    "sellingPrice": 9000,
+    "isActive": true,
+    "categorySlug": "makanan-ringan",
+    "images": [
+      "https://images.unsplash.com/photo-1699666397768-0126340e880a?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cG90YXRvJTIwc25hY2t8ZW58MHx8MHx8fDA%3D",
+      "https://images.unsplash.com/photo-1676363874221-9a20923b715d?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fHBvdGF0byUyMHNuYWNrfGVufDB8fDB8fHww"
+    ]
+  },
+  {
+    "name": "Basreng Pedas",
+    "slug": "basreng-pedas",
+    "description": "Basreng pedas asli dari Bandung",
+    "slicedPrice": 12000,
+    "sellingPrice": 9000,
+    "isActive": true,
+    "categorySlug": "makanan-ringan",
+    "images": [
+      "https://img.freepik.com/free-photo/beef-ball-fried-dark-wooden-surface_1150-43624.jpg?t=st=1719035058~exp=1719038658~hmac=03180f30cdb572202096cb42986b47c32a1fba40f943479877bf1350d7670599&w=1800",
+      "https://img.freepik.com/free-photo/deep-fried-fish-ball-dark-surface_1150-43600.jpg?t=st=1719035197~exp=1719038797~hmac=48f59e299f6083d98e2b48a1b04f7c2a3e589f0059fad66a83b467d5c3028df9&w=1800"
+    ]
+  },
+  {
+    "name": "Susu Formula",
+    "slug": "susu-formula",
+    "description": "Susu Formula untuk bayi import dari Finlandia",
+    "slicedPrice": 90000,
+    "sellingPrice": 89000,
+    "isActive": true,
+    "categorySlug": "ibu-dan-bayi",
+    "images": [
+      "https://images.unsplash.com/photo-1550583724-b2692b85b150?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGZvcm11bGElMjBtaWxrfGVufDB8fDB8fHww",
+      "https://images.unsplash.com/photo-1529567054786-fc5235fdd39e?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Zm9ybXVsYSUyMG1pbGt8ZW58MHx8MHx8fDA%3D"
+    ]
+  },
+  {
+    "name": "Dot Bayi",
+    "slug": "dot-bayi",
+    "description": "Dot Bayi dari plastik anti BPA",
+    "slicedPrice": 50000,
+    "sellingPrice": 45000,
+    "isActive": true,
+    "categorySlug": "ibu-dan-bayi",
+    "images": [
+      "https://images.unsplash.com/photo-1614367933133-858437a9acdc?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YmFieSUyMG1pbGt8ZW58MHx8MHx8fDA%3D",
+      "https://images.unsplash.com/flagged/photo-1570560558077-45ad028193e5?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8YmFieSUyMG1pbGt8ZW58MHx8MHx8fDA%3D"
+    ]
+  },
+  {
+    "name": "Bumbu racik sayur kangkung",
+    "slug": "bumbu-racik-kangkung",
+    "description": "Bumbu racik tumis kangkung",
+    "slicedPrice": 7000,
+    "sellingPrice": 4000,
+    "isActive": true,
+    "categorySlug": "bumbu",
+    "images": [
+      "https://images.unsplash.com/photo-1506368249639-73a05d6f6488?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c2Vhc29uaW5nfGVufDB8fDB8fHww",
+      "https://images.unsplash.com/photo-1517646458010-ea6bd9f4a75f?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8c2Vhc29uaW5nfGVufDB8fDB8fHww"
+    ]
+  },
+  {
+    "name": "Bumbu racik nasi goreng",
+    "slug": "bumbu-racik-nasi-goreng",
+    "description": "Bumbu racik nasi goreng ala Singapur",
+    "slicedPrice": 8000,
+    "sellingPrice": 7000,
+    "isActive": true,
+    "categorySlug": "bumbu",
+    "images": [
+      "https://images.unsplash.com/photo-1611255951322-7ba28f02b2d5?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8c2Vhc29uaW5nfGVufDB8fDB8fHww",
+      "https://images.unsplash.com/photo-1564149504298-00c351fd7f16?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8c2Vhc29uaW5nfGVufDB8fDB8fHww"
+    ]
+  },
+  {
+    "name": "Beras Pulen Petruk",
+    "slug": "beras-pulen-petruk",
+    "description": "Beras pulen Petruk asli dari Jawa Tengah",
+    "slicedPrice": 75000,
+    "sellingPrice": 73000,
+    "isActive": true,
+    "categorySlug": "beras",
+    "images": [
+      "https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cmljZXxlbnwwfHwwfHx8MA%3D%3D",
+      "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cmljZXxlbnwwfHwwfHx8MA%3D%3D"
+    ]
+  },
+  {
+    "name": "Beras Pera Mandalawangi",
+    "slug": "beras-pera-mandalawangi",
+    "description": "Beras Pera asli Jawa Barat",
+    "slicedPrice": 70000,
+    "sellingPrice": 65000,
+    "isActive": true,
+    "categorySlug": "beras",
+    "images": [
+      "https://images.unsplash.com/photo-1610663711502-35f870cfaea2?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHJpY2V8ZW58MHx8MHx8fDA%3D",
+      "https://images.unsplash.com/photo-1594813592981-5f97b07dd392?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fHJpY2V8ZW58MHx8MHx8fDA%3D"
+    ]
+  },
+  {
+    "name": "Cairan Pembersih Dapur",
+    "slug": "cairan-pembersih-dapur",
+    "description": "Cairan pembersih alat dapur",
+    "slicedPrice": 10000,
+    "sellingPrice": 7000,
+    "isActive": true,
+    "categorySlug": "peralatan-dapur",
+    "images": [
+      "https://images.unsplash.com/photo-1583907659441-addbe699e921?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8a2l0Y2hlbiUyMGNsZWFuaW5nfGVufDB8fDB8fHwwD",
+      "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8a2l0Y2hlbiUyMGNsZWFuaW5nfGVufDB8fDB8fHww"
+    ]
+  },
+  {
+    "name": "Sabun Cuci Piring",
+    "slug": "sabun-cuci-piring",
+    "description": "Sabun cuci untuk alat makan",
+    "slicedPrice": 4500,
+    "sellingPrice": 4000,
+    "isActive": true,
+    "categorySlug": "peralatan-dapur",
+    "images": [
+      "https://images.unsplash.com/photo-1590610994353-7b0e7546e681?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGtpdGNoZW4lMjBjbGVhbmluZ3xlbnwwfHwwfHx8MA%3D%3D",
+      "https://images.unsplash.com/photo-1550963295-019d8a8a61c5?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8a2l0Y2hlbiUyMGNsZWFuaW5nfGVufDB8fDB8fHww"
+    ]
+  },
+  {
+    "name": "Lem anti Tikus",
+    "slug": "lem-tikus",
+    "description": "Lem anti Tikus untuk perangkap tikus",
+    "slicedPrice": 15000,
+    "sellingPrice": 12000,
+    "isActive": true,
+    "categorySlug": "perawatan-rumah",
+    "images": [
+      "https://assets-global.website-files.com/625d0ebfa0be430d5ec78143/62a2cbfba4c53f4a033de1d3_lem-tikus-cobraA.png",
+      "https://cap-gajah.com/cfind/source/images/produk/lem-tikus-new.png"
+    ]
+  },
+  {
+    "name": "Semprotan Anti Rayap",
+    "slug": "semprotan-anti-rayap",
+    "description": "Semprotan anti Rayap untuk perabotan kayu dirumah anda",
+    "slicedPrice": 40000,
+    "sellingPrice": 39000,
+    "isActive": true,
+    "categorySlug": "perawatan-rumah",
+    "images": [
+      "https://aquaproof.co.id/storage/images/newsrooms/0zo9fxDUZUmtj2IrRlbpTywjeSNh8n2S5oHHepsV.jpg",
+      "https://images.tokopedia.net/img/cache/500-square/VqbcmM/2023/9/25/5cbc2ff3-4993-4ca0-8a1e-7397b66efb25.jpg?ect=4g"
+    ]
+  }
+]

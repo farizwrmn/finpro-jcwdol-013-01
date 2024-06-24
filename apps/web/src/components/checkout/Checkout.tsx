@@ -1,189 +1,126 @@
 'use client';
 
-import React, { useState } from 'react';
 import {
   Box,
-  Heading,
-  Text,
+  Divider,
   Flex,
   FormControl,
   FormLabel,
+  HStack,
+  Heading,
   Input,
-  Select,
-  Button,
-  Link,
-  Center,
   Stack,
-  Spacer,
-  SimpleGrid,
+  useColorModeValue as mode,
 } from '@chakra-ui/react';
-import ShippingMethod from './ShippingMethod';
+import { useEffect, useState } from 'react';
+import { CartOrderSummary } from '../cart/CartOrderSummary';
+import { deleteCartItem, getCartByUserID } from '@/services/cart.service';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import Link from 'next/link';
+import { refreshCart } from '@/lib/features/cart/cartSlice';
+import { toast } from 'react-toastify';
 import PaymentMethod from './EwalletPaymentMethod';
 import Summary from './Summary';
 import EwalletPaymentMethod from './EwalletPaymentMethod';
 import BankPaymentMethod from './BankPaymentMethod';
 import RetailPaymentMethod from './RetailPaymentMethod';
+import ShippingAddress from './ShippingAddress';
+import ShippingMethod from './ShippingMethod';
+import { getStoreByID } from '@/services/store.service';
+import { getCouriers } from '@/services/shipping.service';
 
-interface CheckoutForm {
-  fullName: string;
-  email: string;
-  streetAddress: string;
-  apartmentSuite: string; // Optional
-  zipCode: string;
-  city: string;
-  state: string;
-  country: string;
-  phoneNumber: string;
-  paymentType: string;
-  cardNumber: string;
-  expiryDate: string;
-  cardName: string;
-}
+const Checkout = () => {
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
 
-const initialCheckoutForm: CheckoutForm = {
-  fullName: '',
-  email: '',
-  streetAddress: '',
-  apartmentSuite: '',
-  zipCode: '',
-  city: '',
-  state: '',
-  country: '',
-  phoneNumber: '',
-  paymentType: '',
-  cardNumber: '',
-  expiryDate: '',
-  cardName: '',
-};
+  const [cart, setCart] = useState<any>(null);
+  const [store, setStore] = useState<any>(null);
+  const [userAddressId, setUserAddressId] = useState('');
+  const [origin, setOrigin] = useState('');
+  const [destination, setDestination] = useState('');
+  const [couriers, setCouriers] = useState<any[]>([]);
+  const [shippingCourier, setShippingCourier] = useState('');
+  const [shippingService, setShippingService] = useState('');
+  const [shippingPrice, setShippingPrice] = useState(0);
 
-export default function CheckoutFormPage() {
-  const [checkoutForm, setCheckoutForm] = useState(initialCheckoutForm);
+  useEffect(() => {
+    (async () => {
+      if (!user.id) return;
+      const dataCart = await getCartByUserID(user.id);
+      setCart(dataCart);
 
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    setCheckoutForm({
-      ...checkoutForm,
-      [event.target.name]: event.target.value,
-    });
-  };
+      const dataStore = await getStoreByID(dataCart?.storeId);
+      setStore(dataStore);
+      setOrigin(dataStore?.subdistrictId);
+    })();
+  }, [user]);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log('Checkout form submitted:', checkoutForm);
-    // Implement form submission logic here (e.g., send data to server)
-  };
+  useEffect(() => {
+    (async () => {
+      if (!origin || !destination) return;
+      const data = await getCouriers(origin, destination);
+      setCouriers(data);
+    })();
+  }, [origin, destination]);
 
   return (
-    <Box p={6}>
-      <Heading as="h1" fontSize="3xl" mb={8}>
-        Checkout
-      </Heading>
-
-      <SimpleGrid
-        columns={{ base: 1, lg: 2 }}
-        spacing={{ base: 8, md: 10 }}
-        py={{ base: 5, md: 24 }}
+    <Box
+      maxW={{ base: '3xl', lg: '7xl' }}
+      mx="auto"
+      px={{ base: '4', md: '8', lg: '12' }}
+      py={{ base: '6', md: '8', lg: '12' }}
+    >
+      <Stack
+        direction={{ base: 'column', lg: 'row' }}
+        align={{ lg: 'flex-start' }}
+        spacing={{ base: '8', md: '16' }}
       >
-        <Box>
-          <form onSubmit={handleSubmit}>
-            <Heading as="h1" fontSize="3xl" mb={8}>
-              Shipping Address
-            </Heading>
+        <Stack spacing={{ base: '8', md: '10' }} flex="2">
+          <Heading fontSize="3xl" fontWeight="extrabold" textAlign={'center'}>
+            Checkout
+          </Heading>
+          <Divider />
 
-            <Flex mb={8} flexWrap="wrap" justifyContent="space-between">
-              <FormControl isRequired w="full" mb={4}>
-                <FormLabel htmlFor="streetAddress">Street Address</FormLabel>
-                <Input
-                  name="streetAddress"
-                  value={checkoutForm.streetAddress}
-                  onChange={handleChange}
-                  width={500}
-                />
-              </FormControl>
-
-              <Flex w="full" mb={4}>
-                <FormControl mr={4} w="1/2">
-                  <FormLabel htmlFor="apartmentSuite">
-                    Apartment/Suite (Optional)
-                  </FormLabel>
-                  <Input
-                    name="apartmentSuite"
-                    value={checkoutForm.apartmentSuite}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-
-                <FormControl isRequired w="1/2">
-                  <FormLabel htmlFor="zipCode">Zip Code</FormLabel>
-                  <Input
-                    name="zipCode"
-                    value={checkoutForm.zipCode}
-                    onChange={handleChange}
-                    width={230}
-                  />
-                </FormControl>
-              </Flex>
-
-              <FormControl isRequired w="full" mb={4}>
-                <FormLabel htmlFor="city">City</FormLabel>
-                <Input
-                  name="city"
-                  value={checkoutForm.city}
-                  onChange={handleChange}
-                  width={500}
-                />
-              </FormControl>
-
-              <Flex w="full" mb={4}>
-                <FormControl mr={4} w="1/2">
-                  <FormLabel htmlFor="state">State</FormLabel>
-                  <Input
-                    name="state"
-                    value={checkoutForm.state}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-
-                <FormControl isRequired w="1/2">
-                  <FormLabel htmlFor="country">Country</FormLabel>
-                  <Select
-                    name="country"
-                    value={checkoutForm.country}
-                    onChange={handleChange}
-                    width={230}
-                  >
-                    <option value="US">United States</option>
-                    <option value="CA">Canada</option>
-                    <option value="UK">United Kingdom</option>
-                    <option value="...">Other</option>
-                  </Select>
-                </FormControl>
-              </Flex>
-
-              <FormControl isRequired w="full" mb={4}>
-                <FormLabel htmlFor="phoneNumber">Phone Number</FormLabel>
-                <Input
-                  type="tel"
-                  name="phoneNumber"
-                  value={checkoutForm.phoneNumber}
-                  onChange={handleChange}
-                  width={500}
-                />
-              </FormControl>
-              <ShippingMethod />
-            </Flex>
+          <Stack spacing={10}>
+            <ShippingAddress
+              store={store}
+              userAddressId={userAddressId}
+              setUserAddressId={setUserAddressId}
+              setDestination={setDestination}
+            />
+            <Divider />
+            <ShippingMethod
+              couriers={couriers}
+              setShippingCourier={setShippingCourier}
+              setShippingService={setShippingService}
+              setShippingPrice={setShippingPrice}
+            />
+            <Divider />
             <Stack mt={-10}>
               <EwalletPaymentMethod />
               <BankPaymentMethod />
               <RetailPaymentMethod />
             </Stack>
-          </form>
-        </Box>
-        <Box>
-          <Summary />
-        </Box>
-      </SimpleGrid>
+          </Stack>
+        </Stack>
+
+        <Flex
+          direction="column"
+          align="center"
+          flex="1"
+          mt={{ base: 0, sm: 100 }}
+        >
+          <CartOrderSummary />
+          <HStack mt="6" fontWeight="semibold">
+            <p>or</p>
+            <Link style={{ color: 'rgb(49, 130, 206)' }} href="/products">
+              Continue shopping
+            </Link>
+          </HStack>
+        </Flex>
+      </Stack>
     </Box>
   );
-}
+};
+
+export default Checkout;

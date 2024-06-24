@@ -40,7 +40,9 @@ const updateStockController = async (
     const { id } = req.params;
     const params = req.body;
     const data = await updateStockAction(id, {
-      ...params,
+      type: params.type,
+      baseStock: Number(params.stock),
+      remainingStock: Number(params.stock),
     });
 
     res.status(200).json({
