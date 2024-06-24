@@ -92,50 +92,39 @@ export default function Navbar() {
               <DesktopNav />
             </Flex>
           </Flex>
-          {user.role === 'customer' ? (
-            <Flex alignItems={'center'} mr={1}>
-              <Link href={'/cart'}>
-                <IconButton
-                  size="lg"
-                  variant="ghost"
-                  aria-label="open menu"
-                  icon={<FiShoppingCart />}
-                  ml={2}
-                />
-              </Link>
-            </Flex>
-          ) : null}
           {status.isLogin ? (
             <HStack spacing={{ base: '0', md: '6' }}>
-              <Flex alignItems={'center'}>
-                <Link href={'/cart'}>
-                  <Stack position="relative">
-                    <IconButton
-                      size="lg"
-                      variant="ghost"
-                      aria-label="open menu"
-                      icon={<FiShoppingCart />}
-                      ml={2}
-                    />
-                    {cart.itemsCount > 0 && (
-                      <Badge
-                        width={6}
-                        height={6}
-                        colorScheme="green"
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        rounded="full"
-                        top="0"
-                        right="-5px"
-                        position="absolute"
-                      >
-                        {cart.itemsCount}
-                      </Badge>
-                    )}
-                  </Stack>
-                </Link>
-              </Flex>
+              {user.role === 'customer' && (
+                <Flex alignItems={'center'} mr={1}>
+                  <Link href={'/cart'}>
+                    <Stack position="relative">
+                      <IconButton
+                        size="lg"
+                        variant="ghost"
+                        aria-label="open menu"
+                        icon={<FiShoppingCart />}
+                        ml={2}
+                      />
+                      {cart.itemsCount > 0 && (
+                        <Badge
+                          width={6}
+                          height={6}
+                          colorScheme="green"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          rounded="full"
+                          top="0"
+                          right="-5px"
+                          position="absolute"
+                        >
+                          {cart.itemsCount}
+                        </Badge>
+                      )}
+                    </Stack>
+                  </Link>
+                </Flex>
+              )}
               <Flex alignItems={'center'}>
                 <Menu>
                   <MenuButton

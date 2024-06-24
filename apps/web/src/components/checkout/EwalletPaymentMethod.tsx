@@ -42,26 +42,32 @@ export default function ShippingMethodPage() {
   };
 
   return (
-    <Box p={6}>
-      <Heading as="h1" fontSize="3xl" mb={8}>
-        Shipping Method
+    <Stack spacing={8}>
+      <Heading as="h1" fontSize="2xl">
+        Payment Method
       </Heading>
-      <Text fontSize={20}>E-Wallet</Text>
-      <RadioGroup
-        value={selectedShippingMethod?.imageSrc}
-        onChange={handleMethodChange}
+
+      <Stack
+        spacing={8}
+        w={'full'}
       >
-        {EwalletshippingMethods.map((method) => (
-          <Radio>
-            <Flex mb={4} alignItems="center" justifyContent="space-between">
-              <Stack direction="row" alignItems="center" spacing="4">
-                <Image src={method.imageSrc} m={10} />
-                <Box></Box>
-              </Stack>
-            </Flex>
-          </Radio>
-        ))}
-      </RadioGroup>
-    </Box>
+        <Text fontSize={20}>E-Wallet</Text>
+        <RadioGroup
+          value={selectedShippingMethod?.imageSrc}
+          onChange={handleMethodChange}
+        >
+          {EwalletshippingMethods.map((method, index) => (
+            <Radio key={index}>
+              <Flex mb={4} alignItems="center" justifyContent="space-between">
+                <Stack direction="row" alignItems="center" spacing="4">
+                  <Image src={method.imageSrc} m={10} />
+                  <Box></Box>
+                </Stack>
+              </Flex>
+            </Radio>
+          ))}
+        </RadioGroup>
+      </Stack>
+    </Stack>
   );
 }

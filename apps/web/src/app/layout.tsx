@@ -19,17 +19,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <ChakraProvider>
-          <StoreProvider>
-            <Auth>
+    <StoreProvider>
+      <html lang="en">
+        <body className={inter.className}>
+          <Auth>
+            <ChakraProvider>
               {children}
               <ToastContainer position='bottom-right' />
-            </Auth>
-          </StoreProvider>
-        </ChakraProvider>
-      </body>
-    </html>
+            </ChakraProvider>
+          </Auth>
+        </body>
+      </html>
+    </StoreProvider>
   );
 }

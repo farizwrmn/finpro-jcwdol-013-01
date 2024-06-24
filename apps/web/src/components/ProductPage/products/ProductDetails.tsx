@@ -19,8 +19,6 @@ import {
 } from '@chakra-ui/react';
 import { FaCartPlus } from 'react-icons/fa';
 import ImageSlider from './ImageSlider';
-// import { CartItem } from '@/types/cart';
-// import { addToCart } from '@/lib/redux/slices/cartSlice';
 import { toast } from 'react-toastify';
 import {
   getCartByUserID,
@@ -31,7 +29,7 @@ import {
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { useEffect, useState } from 'react';
 import { getDistanceStores } from '@/services/store.service';
-import { updateCartState } from '@/lib/features/cart/cartSlice';
+import { refreshCart } from '@/lib/features/cart/cartSlice';
 
 type Props = {
   product: any;
@@ -45,6 +43,7 @@ export default function ProductDetails({ product }: Props) {
   const [stores, setStores] = useState<any[]>([]);
   const [storeId, setStoreId] = useState('');
   const dispatch = useAppDispatch();
+  const itemsPrice = useAppSelector((state) => state.cart.itemsPrice);
 
   const [formData, setFormData] = useState({
     cartId: '',
@@ -136,7 +135,7 @@ export default function ProductDetails({ product }: Props) {
           itemsCount: dataCart.cartItems.length,
           itemsPrice: dataCart.itemsPrice,
         };
-        dispatch(updateCartState(cartPayload));
+        dispatch(refreshCart(cartPayload));
       }
 
       setFormData((prevFormData) => ({
