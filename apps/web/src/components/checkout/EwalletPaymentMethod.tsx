@@ -47,10 +47,7 @@ export default function ShippingMethodPage() {
         Payment Method
       </Heading>
 
-      <Stack
-        spacing={8}
-        w={'full'}
-      >
+      <Stack spacing={8} w={'full'}>
         <Text fontSize={20}>E-Wallet</Text>
         <RadioGroup
           value={selectedShippingMethod?.imageSrc}

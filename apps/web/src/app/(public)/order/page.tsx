@@ -1,4 +1,4 @@
-import Order from '@/components/checkout/Order';
+import Order from '@/components/order/Order';
 import React from 'react';
 
 const page = () => {

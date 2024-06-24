@@ -12,22 +12,22 @@ import {
   Stack,
   useColorModeValue as mode,
 } from '@chakra-ui/react';
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import { CartOrderSummary } from '../cart/CartOrderSummary';
-import { deleteCartItem, getCartByUserID } from "@/services/cart.service";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import Link from "next/link";
-import { refreshCart } from "@/lib/features/cart/cartSlice";
-import { toast } from "react-toastify";
+import { deleteCartItem, getCartByUserID } from '@/services/cart.service';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import Link from 'next/link';
+import { refreshCart } from '@/lib/features/cart/cartSlice';
+import { toast } from 'react-toastify';
 import PaymentMethod from './EwalletPaymentMethod';
 import Summary from './Summary';
 import EwalletPaymentMethod from './EwalletPaymentMethod';
 import BankPaymentMethod from './BankPaymentMethod';
 import RetailPaymentMethod from './RetailPaymentMethod';
-import ShippingAddress from "./ShippingAddress";
+import ShippingAddress from './ShippingAddress';
 import ShippingMethod from './ShippingMethod';
-import { getStoreByID } from "@/services/store.service";
-import { getCouriers } from "@/services/shipping.service";
+import { getStoreByID } from '@/services/store.service';
+import { getCouriers } from '@/services/shipping.service';
 
 const Checkout = () => {
   const dispatch = useAppDispatch();
@@ -52,7 +52,7 @@ const Checkout = () => {
       const dataStore = await getStoreByID(dataCart?.storeId);
       setStore(dataStore);
       setOrigin(dataStore?.subdistrictId);
-    })()
+    })();
   }, [user]);
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const Checkout = () => {
       if (!origin || !destination) return;
       const data = await getCouriers(origin, destination);
       setCouriers(data);
-    })()
+    })();
   }, [origin, destination]);
 
   return (
@@ -113,10 +113,7 @@ const Checkout = () => {
           <CartOrderSummary />
           <HStack mt="6" fontWeight="semibold">
             <p>or</p>
-            <Link
-              style={{ color: "rgb(49, 130, 206)" }}
-              href="/products"
-            >
+            <Link style={{ color: 'rgb(49, 130, 206)' }} href="/products">
               Continue shopping
             </Link>
           </HStack>
@@ -124,6 +121,6 @@ const Checkout = () => {
       </Stack>
     </Box>
   );
-}
+};
 
 export default Checkout;
