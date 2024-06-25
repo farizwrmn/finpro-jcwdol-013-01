@@ -5,13 +5,17 @@ const prisma = new PrismaClient();
 
 const getAddressesQuery = async (filters: IFilterAddress): Promise<IResultAddress> => {
   try {
-    const { keyword = "", page = 1, size = 1000 } = filters;
+    const { userId, keyword = "", page = 1, size = 1000 } = filters;
+    const conditions: any = {
+      label: {
+        contains: keyword
+      }
+    };
+    if (userId) conditions.userId = userId;
 
     const addresses = await prisma.userAddress.findMany({
       where: {
-        label: {
-          contains: keyword
-        }
+        ...conditions
       },
       skip: Number(page) > 0 ? (Number(page) - 1) * Number(size) : 0,
       take: Number(size),
@@ -22,9 +26,7 @@ const getAddressesQuery = async (filters: IFilterAddress): Promise<IResultAddres
         id: true
       },
       where: {
-        label: {
-          contains: keyword
-        }
+        ...conditions
       },
     });
     const count = data._count.id;

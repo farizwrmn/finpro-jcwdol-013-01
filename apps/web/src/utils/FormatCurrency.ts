@@ -1,5 +1,5 @@
 export function FormatCurrency(number: number) {
-  return number.toLocaleString('in-ID', {
+  return Number(number).toLocaleString('in-ID', {
     style: 'currency',
     currency: 'IDR',
     minimumFractionDigits: 0,

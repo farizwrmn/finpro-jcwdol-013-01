@@ -55,10 +55,10 @@ const LinkItems: Array<LinkItemProps> = [
     key: 'Address',
   },
   {
-    name: 'Order',
+    name: 'Orders',
     icon: FaIceCream,
     href: '/users/orders',
-    key: 'Order',
+    key: 'Orders',
   },
 ];
 

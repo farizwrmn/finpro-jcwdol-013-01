@@ -22,14 +22,15 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { deleteAddress, getAddresses } from "@/services/address.service";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { useAppSelector } from "@/lib/hooks";
+import { getOrders } from "@/services/order.service";
+import { FormatCurrency } from "@/utils/FormatCurrency";
 
 const Page = () => {
   const user = useAppSelector((state) => state.auth.user);
   const [data, setData] = useState({
-    addresses: [],
+    orders: [],
     pages: 1
   });
   const [filters, setFilters] = useState({
@@ -42,30 +43,15 @@ const Page = () => {
 
   useEffect(() => {
     (async () => {
-      const result = await getAddresses(filters);
+      const result = await getOrders(filters);
       setData(result);
     })();
   }, [filters]);
 
-  const handleDelete = async (id: string, label: string) => {
-    if (!confirm(`Are you sure want to delete address ${label}?`) || !id) return;
-    try {
-      const address = await deleteAddress(id);
-      if (!address) throw new Error('Delete address failed');
-      alert('Delete address success');
-
-      const result = await getAddresses(filters);
-      setData(result);
-    } catch (err) {
-      console.error(err);
-      alert('Delete address failed');
-    }
-  };
-
   return (
     <Box>
       <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-        Address Management
+        Orders
       </Text>
       <Card my={10}>
         <CardBody>
@@ -75,50 +61,50 @@ const Page = () => {
               value={filters.keyword}
               onChange={(e) => setFilters({ ...filters, keyword: e.target.value, page: 1 })}
             />
-            <Button
-              colorScheme="blue"
-              onClick={() => {
-                router.push(`/users/address/create`);
-              }}
-            >
-              Add
-            </Button>
           </Flex>
           <TableContainer>
             <Table variant="striped">
               <Thead>
                 <Tr>
                   <Th>No.</Th>
-                  <Th>Label</Th>
-                  <Th>Subdistrict</Th>
-                  <Th>City</Th>
-                  <Th>Province</Th>
+                  <Th>Order Number</Th>
+                  <Th>Order Date</Th>
+                  <Th>Store</Th>
+                  <Th>Items Price</Th>
+                  <Th>Shipping Price</Th>
+                  <Th>Discount Price</Th>
+                  <Th>Total Price</Th>
+                  <Th>Payment Method</Th>
+                  <Th>Payment Status</Th>
+                  <Th>Shipping Method</Th>
+                  <Th>Shipping Status</Th>
                   <Th>Action</Th>
                 </Tr>
               </Thead>
               <Tbody>
-                {data.addresses?.map((address: any, index: number) => (
-                  <Tr key={address.id}>
+                {data.orders?.map((order: any, index: number) => (
+                  <Tr key={order.id}>
                     <Td>{filters.size * (filters.page - 1) + index + 1}</Td>
-                    <Td>{address.label}</Td>
-                    <Td>{address.subdistrictName}</Td>
-                    <Td>{address.cityName}</Td>
-                    <Td>{address.provinceName}</Td>
+                    <Td>{order.orderNumber}</Td>
+                    <Td>{order.orderDate}</Td>
+                    <Td>{order.store.name}</Td>
+                    <Td>{FormatCurrency(order.itemsPrice)}</Td>
+                    <Td>{FormatCurrency(order.shippingPrice)}</Td>
+                    <Td>{FormatCurrency(-order.discountPrice)}</Td>
+                    <Td>{FormatCurrency(order.totalPrice)}</Td>
+                    <Td>{order.paymentMethod}</Td>
+                    <Td>{order.paymentStatus}</Td>
+                    <Td>{`${order.shippingCourier} - ${order.shippingService}`}</Td>
+                    <Td>{order.shippingStatus}</Td>
                     <Td>
                       <ButtonGroup>
                         <Button
                           colorScheme="blue"
                           onClick={() => {
-                            router.push(`/users/address/edit/${address.id}`);
+                            router.push(`/users/orders/${order.id}`);
                           }}
                         >
-                          Edit
-                        </Button>
-                        <Button
-                          colorScheme="red"
-                          onClick={() => handleDelete(address.id, address.label)}
-                        >
-                          Delete
+                          Detail
                         </Button>
                       </ButtonGroup>
                     </Td>

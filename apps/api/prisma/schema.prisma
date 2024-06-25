@@ -281,11 +281,11 @@ model Order {
   paymentMethod   String      @map(name: "payment_method")
   paymentStatus   String      @default("UNPAID") @map(name: "payment_status")
   paymentImage    String?     @map(name: "payment_image")
-  paymentDate     DateTime    @map(name: "payment_date")
+  paymentDate     DateTime?   @map(name: "payment_date")
   shippingCourier String      @map(name: "shipping_courier")
   shippingService String      @map(name: "shipping_service")
   shippingStatus  String      @default("UNDELIVERED") @map(name: "shipping_status")
-  shippingDate    DateTime    @map(name: "shipping_date")
+  shippingDate    DateTime?   @map(name: "shipping_date")
   orderItems      OrderItem[]
 
   @@map(name: "orders")
