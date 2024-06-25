@@ -11,7 +11,9 @@ import {
   Td,
   Image,
   Input,
+  Button,
 } from '@chakra-ui/react';
+import { FaArrowRight } from 'react-icons/fa';
 
 interface OrderItem {
   name: string;
@@ -21,50 +23,26 @@ interface OrderItem {
 }
 
 const orderItems: OrderItem[] = [
-  // Replace with your actual order items
-  { name: 'Item 1', image: 'image1.png', price: 10, quantity: 1 },
-  { name: 'Item 2', image: 'image2.png', price: 20, quantity: 2 },
+  {
+    name: 'Item 1',
+    image:
+      'https://sesa.id/cdn/shop/files/Bayam-Hijau-Organik-1-removebg-preview.png?v=1683175431',
+    price: 10,
+    quantity: 1,
+  },
+  {
+    name: 'Item 2',
+    image: 'https://gratisongkir-storage.com/products/900x900/FC6WmSRVFl6Z.jpg',
+    price: 20,
+    quantity: 2,
+  },
 ];
 
-const OrderPage: React.FC = () => {
+const OrderItems: React.FC = () => {
   return (
     <div>
-      {/* Header Section */}
-      <Box>
-        <HStack>
-          <Text>Your Store Logo</Text>
-          {/* Add user information here (optional) */}
-        </HStack>
-      </Box>
-
-      {/* Order Details Section */}
-      <Box mt={4} mb={4}>
-        <Text fontSize="xl">Order Details</Text>
-        <Text>Order ID: e70cebbf-a4d5-429b-a4da-7d62f867687c</Text>
-        <Text>Order Date: 2024-06-21</Text>
-        <Text color="green">Order Status: Processing</Text>{' '}
-        {/* Adjust color based on status */}
-      </Box>
-
-      {/* Billing Information Section */}
-      <Box mt={4} mb={4}>
-        <Text fontSize="xl">Billing Information</Text>
-        <Text>Name: Alex Joshua</Text>
-        <Text>Email: alexjoshua@gmail.com</Text>
-        <Text>Billing Address: 123 Main Street, Anytown, CA 12345</Text>
-      </Box>
-
-      {/* Shipping Information Section */}
-      <Box mt={4} mb={4}>
-        <Text fontSize="xl">Shipping Information</Text>
-        <Text>Name: Alex Joshua</Text>
-        <Text>Shipping Address: 123 Main Street, Anytown, CA 12345</Text>
-        <Text>Phone: (555) 555-5555 (optional)</Text> /
-      </Box>
-      {/* Add phone number if applicable */}
-
       {/* Order Items Section */}
-      <Box mt={4} mb={4}>
+      <Box mt={100} mb={4}>
         <Text fontSize="xl">Order Items</Text>
         <Table variant="simple">
           <Thead>
@@ -111,9 +89,17 @@ const OrderPage: React.FC = () => {
             .reduce((acc, item) => acc + item.price * item.quantity, 0)
             .toLocaleString('id-ID')}
         </Text>
+        <Button
+          colorScheme="blue"
+          size="lg"
+          fontSize="md"
+          rightIcon={<FaArrowRight />}
+        >
+          Checkout
+        </Button>
       </Box>
     </div>
   );
 };
 
-export default OrderPage;
+export default OrderItems;
