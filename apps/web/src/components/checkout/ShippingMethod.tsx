@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import {
   Box,
@@ -8,7 +10,9 @@ import {
   RadioGroup,
   Stack,
 } from '@chakra-ui/react';
-import { FormatCurrency } from '@/utils/FormatCurrency';
+import { FormatCurrency } from "@/utils/FormatCurrency";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { updateCartShippingState } from "@/lib/features/cart/cartSlice";
 
 interface ShippingMethod {
   name: string;
@@ -17,27 +21,24 @@ interface ShippingMethod {
 }
 
 type Props = {
-  couriers: any[];
-  setShippingCourier: (courier: string) => void;
-  setShippingService: (service: string) => void;
-  setShippingPrice: (cost: number) => void;
-};
+  couriers: any[],
+}
 
-export default function ShippingMethod({
-  couriers = [],
-  setShippingCourier,
-  setShippingService,
-  setShippingPrice,
-}: Props) {
+export default function ShippingMethod({ couriers = [] }: Props) {
+  const dispatch = useAppDispatch();
+  const cart = useAppSelector((state) => state.cart);
+
   const handleChange = (value: string) => {
-    const courier = value.split('|')[0] || '';
-    const service = value.split('|')[1] || '';
-    const cost = Number(value.split('|')[2]) || 0;
+    const shippingCourier = value.split('|')[0] || '';
+    const shippingService = value.split('|')[1] || '';
+    const shippingPrice = Number(value.split('|')[2]) || 0;
 
-    setShippingCourier(courier);
-    setShippingService(service);
-    setShippingPrice(cost);
-  };
+    dispatch(updateCartShippingState({
+      shippingCourier,
+      shippingService,
+      shippingPrice,
+    }));
+  }
 
   return (
     <Stack spacing={8}>
@@ -45,23 +46,32 @@ export default function ShippingMethod({
         Shipping Method
       </Heading>
 
-      <Stack spacing={8} w={'full'}>
+      <Stack
+        spacing={8}
+        w={'full'}
+      >
         <RadioGroup onChange={handleChange}>
           {couriers.map((courier, index) => (
             <Box key={index} mb={6}>
-              <Heading as="h2" fontSize="lg" mb={4}>
+              <Heading as="h3" fontSize="md" mb={4}>
                 {courier.name}
               </Heading>
               {courier.costs.map((service: any, index: number) => (
                 <Flex key={index} justifyContent="space-between" mb={2}>
                   <Radio
-                    size="md"
+                    size='md'
+                    colorScheme='green'
                     value={`${courier.code.toUpperCase()}|${service.service}|${service.cost[0].value}`}
-                    colorScheme="green"
+                    checked={
+                      cart.shippingCourier === courier.code.toUpperCase() &&
+                      cart.shippingService === service.service
+                    }
                   >
                     {`${service.description} (${service.cost[0].etd} days)`}
                   </Radio>
-                  <Text>{FormatCurrency(service.cost[0].value)}</Text>
+                  <Text>
+                    {FormatCurrency(service.cost[0].value)}
+                  </Text>
                 </Flex>
               ))}
             </Box>

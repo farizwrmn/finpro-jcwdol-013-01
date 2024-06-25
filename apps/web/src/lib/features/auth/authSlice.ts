@@ -2,6 +2,8 @@ import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
 import { IUserPassword, IUserProfile, IUsers } from '@/interface/user.interface';
 import parseJWT from '@/utils/parseJwt';
 import instance from '@/utils/axiosInstance';
+import { resetCartState, updateCartItemsState, updateCartStoreState } from "../cart/cartSlice";
+import { getCartByUserID } from "@/services/cart.service";
 
 type User = {
   id?: string;
@@ -106,6 +108,16 @@ export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
     localStorage.setItem('token', data?.data.token);
     localStorage.setItem('user', JSON.stringify(user));
 
+    const cart = await getCartByUserID(user.id);
+
+    dispatch(updateCartItemsState({
+      itemsCount: cart.cartItems.length,
+      itemsPrice: cart.itemsPrice,
+    }));
+    dispatch(updateCartStoreState({
+      storeId: cart.storeId
+    }));
+
     return true;
   } catch (err) {
     console.error(err);
@@ -115,6 +127,7 @@ export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
 
 export const signOut = () => async (dispatch: Dispatch) => {
   try {
+    dispatch(resetCartState());
     dispatch(logoutState());
     localStorage.removeItem('token');
     localStorage.removeItem('user');

@@ -1,5 +1,8 @@
 import express, { Application } from 'express';
 import { API_PORT } from './config';
+import { ErrorMiddleware } from './middlewares/error.middleware';
+import cors from 'cors';
+import path = require('path');
 
 import authRouter from './routes/auth.route';
 import userRouter from './routes/user.route';
@@ -10,9 +13,7 @@ import productRouter from './routes/product.route';
 import stocksRouter from './routes/stock.route';
 import cartRouter from './routes/cart.route';
 import shippingRouter from './routes/shipping.route';
-import { ErrorMiddleware } from './middlewares/error.middleware';
-import cors from 'cors';
-import path = require('path');
+import orderRouter from './routes/order.route';
 
 const PORT: number = Number(API_PORT) || 8000;
 
@@ -32,6 +33,7 @@ app.use('/products', productRouter);
 app.use('/stocks', stocksRouter);
 app.use('/cart', cartRouter);
 app.use('/shipping', shippingRouter);
+app.use('/orders', orderRouter);
 
 // initialize error middleware
 app.use(ErrorMiddleware);

@@ -4,69 +4,50 @@ import {
   Box,
   Divider,
   Flex,
-  FormControl,
-  FormLabel,
   HStack,
   Heading,
-  Input,
   Stack,
-  useColorModeValue as mode,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
-import { CartOrderSummary } from '../cart/CartOrderSummary';
-import { deleteCartItem, getCartByUserID } from '@/services/cart.service';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import Link from 'next/link';
-import { refreshCart } from '@/lib/features/cart/cartSlice';
-import { toast } from 'react-toastify';
-import PaymentMethod from './EwalletPaymentMethod';
-import Summary from './Summary';
-import EwalletPaymentMethod from './EwalletPaymentMethod';
-import BankPaymentMethod from './BankPaymentMethod';
-import RetailPaymentMethod from './RetailPaymentMethod';
-import ShippingAddress from './ShippingAddress';
+import { useEffect, useState } from "react";
+import { CheckoutSummary } from './CheckoutSummary';
+import { useAppSelector, useAppDispatch } from "@/lib/hooks";
+import Link from "next/link";
+import PaymentMethod from './PaymentMethod';
+import ShippingAddress from "./ShippingAddress";
 import ShippingMethod from './ShippingMethod';
-import { getStoreByID } from '@/services/store.service';
-import { getCouriers } from '@/services/shipping.service';
+import { getStoreByID } from "@/services/store.service";
+import { getCouriers } from "@/services/shipping.service";
+import { updateCartOriginState } from "@/lib/features/cart/cartSlice";
 
 const Checkout = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
-
-  const [cart, setCart] = useState<any>(null);
+  const cart = useAppSelector((state) => state.cart);
   const [store, setStore] = useState<any>(null);
-  const [userAddressId, setUserAddressId] = useState('');
-  const [origin, setOrigin] = useState('');
-  const [destination, setDestination] = useState('');
   const [couriers, setCouriers] = useState<any[]>([]);
-  const [shippingCourier, setShippingCourier] = useState('');
-  const [shippingService, setShippingService] = useState('');
-  const [shippingPrice, setShippingPrice] = useState(0);
 
   useEffect(() => {
     (async () => {
-      if (!user.id) return;
-      const dataCart = await getCartByUserID(user.id);
-      setCart(dataCart);
-
-      const dataStore = await getStoreByID(dataCart?.storeId);
-      setStore(dataStore);
-      setOrigin(dataStore?.subdistrictId);
-    })();
-  }, [user]);
+      if (!user.id || !cart.storeId) return;
+      const data = await getStoreByID(cart.storeId);
+      setStore(data);
+      dispatch(updateCartOriginState({ origin: data?.subdistrictId }));
+    })()
+  }, [dispatch, user.id, cart.storeId]);
 
   useEffect(() => {
     (async () => {
-      if (!origin || !destination) return;
-      const data = await getCouriers(origin, destination);
+      if (!cart.origin || !cart.destination) return;
+      const data = await getCouriers(cart.origin, cart.destination);
       setCouriers(data);
-    })();
-  }, [origin, destination]);
+    })()
+  }, [cart.origin, cart.destination]);
 
   return (
     <Box
       maxW={{ base: '3xl', lg: '7xl' }}
       mx="auto"
+      mb={20}
       px={{ base: '4', md: '8', lg: '12' }}
       py={{ base: '6', md: '8', lg: '12' }}
     >
@@ -81,26 +62,12 @@ const Checkout = () => {
           </Heading>
           <Divider />
 
-          <Stack spacing={10}>
-            <ShippingAddress
-              store={store}
-              userAddressId={userAddressId}
-              setUserAddressId={setUserAddressId}
-              setDestination={setDestination}
-            />
+          <Stack spacing={8}>
+            <ShippingAddress store={store} />
             <Divider />
-            <ShippingMethod
-              couriers={couriers}
-              setShippingCourier={setShippingCourier}
-              setShippingService={setShippingService}
-              setShippingPrice={setShippingPrice}
-            />
+            <ShippingMethod couriers={couriers} />
             <Divider />
-            <Stack mt={-10}>
-              <EwalletPaymentMethod />
-              <BankPaymentMethod />
-              <RetailPaymentMethod />
-            </Stack>
+            <PaymentMethod />
           </Stack>
         </Stack>
 
@@ -110,10 +77,13 @@ const Checkout = () => {
           flex="1"
           mt={{ base: 0, sm: 100 }}
         >
-          <CartOrderSummary />
+          <CheckoutSummary />
           <HStack mt="6" fontWeight="semibold">
             <p>or</p>
-            <Link style={{ color: 'rgb(49, 130, 206)' }} href="/products">
+            <Link
+              style={{ color: "rgb(49, 130, 206)" }}
+              href="/products"
+            >
               Continue shopping
             </Link>
           </HStack>
@@ -121,6 +91,6 @@ const Checkout = () => {
       </Stack>
     </Box>
   );
-};
+}
 
 export default Checkout;
