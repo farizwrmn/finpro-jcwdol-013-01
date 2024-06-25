@@ -4,33 +4,22 @@ import {
   Box,
   Divider,
   Flex,
-  FormControl,
-  FormLabel,
   HStack,
   Heading,
-  Input,
   Stack,
-  useColorModeValue as mode,
 } from '@chakra-ui/react';
 import { useEffect, useState } from "react";
-import { CartOrderSummary } from '../cart/CartOrderSummary';
-import { deleteCartItem, getCartByUserID } from "@/services/cart.service";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { CheckoutSummary } from './CheckoutSummary';
+import { getCartByUserID } from "@/services/cart.service";
+import { useAppSelector } from "@/lib/hooks";
 import Link from "next/link";
-import { refreshCart } from "@/lib/features/cart/cartSlice";
-import { toast } from "react-toastify";
-import PaymentMethod from './EwalletPaymentMethod';
-import Summary from './Summary';
-import EwalletPaymentMethod from './EwalletPaymentMethod';
-import BankPaymentMethod from './BankPaymentMethod';
-import RetailPaymentMethod from './RetailPaymentMethod';
+import PaymentMethod from './PaymentMethod';
 import ShippingAddress from "./ShippingAddress";
 import ShippingMethod from './ShippingMethod';
 import { getStoreByID } from "@/services/store.service";
 import { getCouriers } from "@/services/shipping.service";
 
 const Checkout = () => {
-  const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
 
   const [cart, setCart] = useState<any>(null);
@@ -42,6 +31,7 @@ const Checkout = () => {
   const [shippingCourier, setShippingCourier] = useState('');
   const [shippingService, setShippingService] = useState('');
   const [shippingPrice, setShippingPrice] = useState(0);
+  const [paymentMethod, setPaymentMethod] = useState('');
 
   useEffect(() => {
     (async () => {
@@ -67,6 +57,7 @@ const Checkout = () => {
     <Box
       maxW={{ base: '3xl', lg: '7xl' }}
       mx="auto"
+      mb={20}
       px={{ base: '4', md: '8', lg: '12' }}
       py={{ base: '6', md: '8', lg: '12' }}
     >
@@ -81,7 +72,7 @@ const Checkout = () => {
           </Heading>
           <Divider />
 
-          <Stack spacing={10}>
+          <Stack spacing={8}>
             <ShippingAddress
               store={store}
               userAddressId={userAddressId}
@@ -96,11 +87,10 @@ const Checkout = () => {
               setShippingPrice={setShippingPrice}
             />
             <Divider />
-            <Stack mt={-10}>
-              <EwalletPaymentMethod />
-              <BankPaymentMethod />
-              <RetailPaymentMethod />
-            </Stack>
+            <PaymentMethod
+              paymentMethod={paymentMethod}
+              setPaymentMethod={setPaymentMethod}
+            />
           </Stack>
         </Stack>
 
@@ -110,7 +100,7 @@ const Checkout = () => {
           flex="1"
           mt={{ base: 0, sm: 100 }}
         >
-          <CartOrderSummary />
+          <CheckoutSummary />
           <HStack mt="6" fontWeight="semibold">
             <p>or</p>
             <Link

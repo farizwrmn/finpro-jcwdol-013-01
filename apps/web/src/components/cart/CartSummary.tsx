@@ -33,7 +33,7 @@ const OrderSummaryItem = (props: OrderSummaryItemProps) => {
   );
 };
 
-export const CartOrderSummary = () => {
+export const CartSummary = () => {
   const cart = useAppSelector((state) => state.cart);
   const [isLoaded, setIsLoaded] = useState(false);
   const router = useRouter();

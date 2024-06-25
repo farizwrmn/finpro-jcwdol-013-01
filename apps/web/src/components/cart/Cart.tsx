@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from "react";
 import { CartItem } from './cartItem';
-import { CartOrderSummary } from './CartOrderSummary';
+import { CartSummary } from './CartSummary';
 import { deleteCartItem, getCartByUserID } from "@/services/cart.service";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Link from "next/link";
@@ -92,7 +92,7 @@ const Cart = () => {
           flex="1"
           mt={{ base: 0, sm: 100 }}
         >
-          <CartOrderSummary />
+          <CartSummary />
           <HStack mt="6" fontWeight="semibold">
             <p>or</p>
             <Link

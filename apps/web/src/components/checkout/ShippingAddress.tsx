@@ -76,11 +76,11 @@ const ShippingAddress = ({
         </FormControl>
         <FormControl id="address">
           <FormLabel>Customer Address</FormLabel>
-          <Text>{address?.address ? `${address?.address}, ${address?.subdistrictName}, ${address?.cityName}, ${address?.provinceName} ${address?.postalCode}` : '-'}</Text>
+          <Text>{address?.address ? `${address?.address}, ${address?.subdistrictName}, ${address?.cityName}, ${address?.provinceName} ${address?.postalCode || ''}` : '-'}</Text>
         </FormControl>
         <FormControl id="address">
           <FormLabel>Store Address</FormLabel>
-          <Text>{store?.address ? `${store?.address}, ${store?.subdistrictName}, ${store?.cityName}, ${store?.provinceName} ${store?.postalCode}` : '-'}</Text>
+          <Text>{store?.address ? `${store?.name}, ${store?.address}, ${store?.subdistrictName}, ${store?.cityName}, ${store?.provinceName} ${store?.postalCode || ''}` : '-'}</Text>
         </FormControl>
       </Stack>
     </Stack>

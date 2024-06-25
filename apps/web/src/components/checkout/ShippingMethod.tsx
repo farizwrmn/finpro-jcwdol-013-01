@@ -52,7 +52,7 @@ export default function ShippingMethod({
         <RadioGroup onChange={handleChange}>
           {couriers.map((courier, index) => (
             <Box key={index} mb={6}>
-              <Heading as="h2" fontSize="lg" mb={4}>
+              <Heading as="h3" fontSize="md" mb={4}>
                 {courier.name}
               </Heading>
               {courier.costs.map((service: any, index: number) => (
