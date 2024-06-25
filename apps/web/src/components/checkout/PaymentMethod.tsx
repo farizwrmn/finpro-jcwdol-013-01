@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Heading,
-  Text,
-  Flex,
   Radio,
   RadioGroup,
   Stack,
   Image,
   SimpleGrid,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionIcon,
+  AccordionPanel,
 } from '@chakra-ui/react';
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { updateCartPaymentState } from "@/lib/features/cart/cartSlice";
 
 interface IPaymentMethod {
   value: string;
@@ -18,19 +23,19 @@ interface IPaymentMethod {
 
 const ewallets: IPaymentMethod[] = [
   {
-    value: 'gopay',
+    value: 'GOPAY',
     image: 'https://shop.rehan.id/assets/images/payment-methods/gopay.png',
   },
   {
-    value: 'ovo',
+    value: 'OVO',
     image: 'https://shop.rehan.id/assets/images/payment-methods/ovo.png',
   },
   {
-    value: 'dana',
+    value: 'DANA',
     image: 'https://shop.rehan.id/assets/images/payment-methods/dana.png',
   },
   {
-    value: 'shopeepay',
+    value: 'SHOPEEPAY',
     image:
       'https://shop.rehan.id/assets/images/payment-methods/shopeepay.png',
   },
@@ -38,29 +43,29 @@ const ewallets: IPaymentMethod[] = [
 
 const virtualAccounts: IPaymentMethod[] = [
   {
-    value: 'bca',
+    value: 'BCA',
     image: 'https://shop.rehan.id/assets/images/payment-methods/bca.png',
   },
   {
-    value: 'bni',
+    value: 'BNI',
     image: 'https://shop.rehan.id/assets/images/payment-methods/bni.png',
   },
   {
-    value: 'bri',
+    value: 'BRI',
     image: 'https://shop.rehan.id/assets/images/payment-methods/bri.png',
   },
   {
-    value: 'bsi',
+    value: 'BSI',
     image:
       'https://shop.rehan.id/assets/images/payment-methods/bsi.png',
   },
   {
-    value: 'mandiri',
+    value: 'MANDIRI',
     image:
       'https://shop.rehan.id/assets/images/payment-methods/mandiri.png',
   },
   {
-    value: 'permata',
+    value: 'PERMATA',
     image:
       'https://shop.rehan.id/assets/images/payment-methods/permata.png',
   },
@@ -68,31 +73,30 @@ const virtualAccounts: IPaymentMethod[] = [
 
 const transferBanks: IPaymentMethod[] = [
   {
-    value: 'bank',
+    value: 'BANK',
     image: 'https://www.bankeka.co.id/assets/img/layanan/logo-atm-bersama.png',
   },
 ];
 
 const minimarkets: IPaymentMethod[] = [
   {
-    value: 'alfamart',
+    value: 'ALFAMART',
     image: 'https://shop.rehan.id/assets/images/payment-methods/alfamart.png',
   },
   {
-    value: 'indomaret',
+    value: 'INDOMARET',
     image: 'https://shop.rehan.id/assets/images/payment-methods/indomaret.png',
   },
 ];
 
-type Props = {
-  paymentMethod: string;
-  setPaymentMethod: (value: string) => void;
-}
+export default function PaymentMethod() {
+  const dispatch = useAppDispatch();
+  const cart = useAppSelector((state) => state.cart);
 
-export default function PaymentMethod({
-  paymentMethod,
-  setPaymentMethod
-}: Props) {
+  const handleChange = (paymentMethod: string) => {
+    dispatch(updateCartPaymentState({ paymentMethod }));
+  }
+
   return (
     <Stack spacing={8}>
       <Heading as="h1" fontSize="2xl">
@@ -103,46 +107,75 @@ export default function PaymentMethod({
         spacing={8}
         w={'full'}
       >
-        <RadioGroup value={paymentMethod} onChange={setPaymentMethod}>
-          <Stack spacing={8}>
-            <Heading as="h3" fontSize="md">E-Wallet</Heading>
-            <SimpleGrid columns={{ base: 2, md: 3 }} spacing={8}>
-              {ewallets.map((method, index) => (
-                <Radio key={index} value={method.value}>
-                  <Image src={method.image} alt={method.value} pl={2} />
-                </Radio>
-              ))}
-            </SimpleGrid>
+        <RadioGroup
+          value={cart.paymentMethod} onChange={handleChange}>
+          <Accordion defaultIndex={[0]} allowToggle>
+            <AccordionItem>
+              <AccordionButton>
+                <Heading as="h3" fontSize="md" flex='1' textAlign='left'>E-Wallet</Heading>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel p={8}>
+                <SimpleGrid columns={{ base: 2, md: 3 }} spacing={8}>
+                  {ewallets.map((method, index) => (
+                    <Radio key={index} value={method.value}>
+                      <Image src={method.image} alt={method.value} pl={2} />
+                    </Radio>
+                  ))}
+                </SimpleGrid>
+              </AccordionPanel>
+            </AccordionItem>
 
-            <Heading as="h3" fontSize="md">Virtual Account</Heading>
-            <SimpleGrid columns={{ base: 2, md: 3 }} spacing={8}>
-              {virtualAccounts.map((method, index) => (
-                <Radio key={index} value={method.value}>
-                  <Image src={method.image} alt={method.value} pl={2} />
-                </Radio>
-              ))}
-            </SimpleGrid>
+            <AccordionItem>
+              <AccordionButton>
+                <Heading as="h3" fontSize="md" flex='1' textAlign='left'>Virtual Account</Heading>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel p={8}>
+                <SimpleGrid columns={{ base: 2, md: 3 }} spacing={8}>
+                  {virtualAccounts.map((method, index) => (
+                    <Radio key={index} value={method.value}>
+                      <Image src={method.image} alt={method.value} pl={2} />
+                    </Radio>
+                  ))}
+                </SimpleGrid>
+              </AccordionPanel>
+            </AccordionItem>
 
-            <Heading as="h3" fontSize="md">Transfer Bank</Heading>
-            <SimpleGrid columns={{ base: 2, md: 3 }} spacing={8}>
-              {transferBanks.map((method, index) => (
-                <Radio key={index} value={method.value}>
-                  <Box pl={2}>
-                    <img width={90} height={25} src={method.image} alt={method.value} />
-                  </Box>
-                </Radio>
-              ))}
-            </SimpleGrid>
+            <AccordionItem>
+              <AccordionButton>
+                <Heading as="h3" fontSize="md" flex='1' textAlign='left'>Transfer Bank</Heading>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel p={8}>
+                <SimpleGrid columns={{ base: 2, md: 3 }} spacing={8}>
+                  {transferBanks.map((method, index) => (
+                    <Radio key={index} value={method.value}>
+                      <Box pl={2}>
+                        <img width={90} height={25} src={method.image} alt={method.value} />
+                      </Box>
+                    </Radio>
+                  ))}
+                </SimpleGrid>
+              </AccordionPanel>
+            </AccordionItem>
 
-            <Heading as="h3" fontSize="md">Minimarket</Heading>
-            <SimpleGrid columns={{ base: 2, md: 3 }} spacing={8}>
-              {minimarkets.map((method, index) => (
-                <Radio key={index} value={method.value}>
-                  <Image src={method.image} alt={method.value} pl={2} />
-                </Radio>
-              ))}
-            </SimpleGrid>
-          </Stack>
+            <AccordionItem>
+              <AccordionButton>
+                <Heading as="h3" fontSize="md" flex='1' textAlign='left'>Minimarket</Heading>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel p={8}>
+                <SimpleGrid columns={{ base: 2, md: 3 }} spacing={8}>
+                  {minimarkets.map((method, index) => (
+                    <Radio key={index} value={method.value}>
+                      <Image src={method.image} alt={method.value} pl={2} />
+                    </Radio>
+                  ))}
+                </SimpleGrid>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
         </RadioGroup>
       </Stack>
     </Stack>

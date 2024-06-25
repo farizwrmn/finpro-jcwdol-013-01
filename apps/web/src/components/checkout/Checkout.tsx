@@ -10,48 +10,38 @@ import {
 } from '@chakra-ui/react';
 import { useEffect, useState } from "react";
 import { CheckoutSummary } from './CheckoutSummary';
-import { getCartByUserID } from "@/services/cart.service";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppSelector, useAppDispatch } from "@/lib/hooks";
 import Link from "next/link";
 import PaymentMethod from './PaymentMethod';
 import ShippingAddress from "./ShippingAddress";
 import ShippingMethod from './ShippingMethod';
 import { getStoreByID } from "@/services/store.service";
 import { getCouriers } from "@/services/shipping.service";
+import { updateCartOriginState } from "@/lib/features/cart/cartSlice";
 
 const Checkout = () => {
+  const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
-
-  const [cart, setCart] = useState<any>(null);
+  const cart = useAppSelector((state) => state.cart);
   const [store, setStore] = useState<any>(null);
-  const [userAddressId, setUserAddressId] = useState('');
-  const [origin, setOrigin] = useState('');
-  const [destination, setDestination] = useState('');
   const [couriers, setCouriers] = useState<any[]>([]);
-  const [shippingCourier, setShippingCourier] = useState('');
-  const [shippingService, setShippingService] = useState('');
-  const [shippingPrice, setShippingPrice] = useState(0);
-  const [paymentMethod, setPaymentMethod] = useState('');
 
   useEffect(() => {
     (async () => {
-      if (!user.id) return;
-      const dataCart = await getCartByUserID(user.id);
-      setCart(dataCart);
-
-      const dataStore = await getStoreByID(dataCart?.storeId);
-      setStore(dataStore);
-      setOrigin(dataStore?.subdistrictId);
+      if (!user.id || !cart.storeId) return;
+      const data = await getStoreByID(cart.storeId);
+      setStore(data);
+      dispatch(updateCartOriginState({ origin: data?.subdistrictId }));
     })()
-  }, [user]);
+  }, [dispatch, user.id, cart.storeId]);
 
   useEffect(() => {
     (async () => {
-      if (!origin || !destination) return;
-      const data = await getCouriers(origin, destination);
+      if (!cart.origin || !cart.destination) return;
+      const data = await getCouriers(cart.origin, cart.destination);
       setCouriers(data);
     })()
-  }, [origin, destination]);
+  }, [cart.origin, cart.destination]);
 
   return (
     <Box
@@ -73,24 +63,11 @@ const Checkout = () => {
           <Divider />
 
           <Stack spacing={8}>
-            <ShippingAddress
-              store={store}
-              userAddressId={userAddressId}
-              setUserAddressId={setUserAddressId}
-              setDestination={setDestination}
-            />
+            <ShippingAddress store={store} />
             <Divider />
-            <ShippingMethod
-              couriers={couriers}
-              setShippingCourier={setShippingCourier}
-              setShippingService={setShippingService}
-              setShippingPrice={setShippingPrice}
-            />
+            <ShippingMethod couriers={couriers} />
             <Divider />
-            <PaymentMethod
-              paymentMethod={paymentMethod}
-              setPaymentMethod={setPaymentMethod}
-            />
+            <PaymentMethod />
           </Stack>
         </Stack>
 

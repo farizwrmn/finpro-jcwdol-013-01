@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import {
   Box,
@@ -9,6 +11,8 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { FormatCurrency } from "@/utils/FormatCurrency";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { updateCartShippingState } from "@/lib/features/cart/cartSlice";
 
 interface ShippingMethod {
   name: string;
@@ -18,25 +22,22 @@ interface ShippingMethod {
 
 type Props = {
   couriers: any[],
-  setShippingCourier: (courier: string) => void;
-  setShippingService: (service: string) => void;
-  setShippingPrice: (cost: number) => void;
 }
 
-export default function ShippingMethod({
-  couriers = [],
-  setShippingCourier,
-  setShippingService,
-  setShippingPrice,
-}: Props) {
-  const handleChange = (value: string) => {
-    const courier = value.split('|')[0] || ''
-    const service = value.split('|')[1] || ''
-    const cost = Number(value.split('|')[2]) || 0
+export default function ShippingMethod({ couriers = [] }: Props) {
+  const dispatch = useAppDispatch();
+  const cart = useAppSelector((state) => state.cart);
 
-    setShippingCourier(courier);
-    setShippingService(service);
-    setShippingPrice(cost);
+  const handleChange = (value: string) => {
+    const shippingCourier = value.split('|')[0] || '';
+    const shippingService = value.split('|')[1] || '';
+    const shippingPrice = Number(value.split('|')[2]) || 0;
+
+    dispatch(updateCartShippingState({
+      shippingCourier,
+      shippingService,
+      shippingPrice,
+    }));
   }
 
   return (
@@ -57,7 +58,15 @@ export default function ShippingMethod({
               </Heading>
               {courier.costs.map((service: any, index: number) => (
                 <Flex key={index} justifyContent="space-between" mb={2}>
-                  <Radio size='md' value={`${courier.code.toUpperCase()}|${service.service}|${service.cost[0].value}`} colorScheme='green'>
+                  <Radio
+                    size='md'
+                    colorScheme='green'
+                    value={`${courier.code.toUpperCase()}|${service.service}|${service.cost[0].value}`}
+                    checked={
+                      cart.shippingCourier === courier.code.toUpperCase() &&
+                      cart.shippingService === service.service
+                    }
+                  >
                     {`${service.description} (${service.cost[0].etd} days)`}
                   </Radio>
                   <Text>

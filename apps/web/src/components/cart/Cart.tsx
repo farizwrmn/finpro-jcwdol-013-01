@@ -15,7 +15,7 @@ import { CartSummary } from './CartSummary';
 import { deleteCartItem, getCartByUserID } from "@/services/cart.service";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import Link from "next/link";
-import { refreshCart } from "@/lib/features/cart/cartSlice";
+import { updateCartItemsState } from "@/lib/features/cart/cartSlice";
 import { toast } from "react-toastify";
 
 const Cart = () => {
@@ -42,12 +42,10 @@ const Cart = () => {
       if (user.id) {
         const dataCart = await getCartByUserID(user.id);
         setCart(dataCart);
-
-        const cartPayload = {
+        dispatch(updateCartItemsState({
           itemsCount: dataCart.cartItems.length,
           itemsPrice: dataCart.itemsPrice,
-        };
-        await dispatch(refreshCart(cartPayload));
+        }));
       }
 
       toast.success('Remove cart item success');

@@ -1,9 +1,15 @@
 import { IFilterAddress } from "@/interface/address.interface";
 import instance from "@/utils/axiosInstance";
 
-export const getAddresses = async ({ keyword = "", page = 1, size = 10 }: IFilterAddress) => {
+export const getAddresses = async ({ userId = "", keyword = "", page = 1, size = 10 }: IFilterAddress) => {
   try {
-    const { data } = await instance.get(`/addresses?keyword=${keyword}&page=${page}&size=${size}`);
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    };
+    const { data } = await instance.get(`/addresses?userId=${userId}&keyword=${keyword}&page=${page}&size=${size}`, config);
     const addresses = data?.data;
     return addresses;
   } catch (err) {
@@ -13,7 +19,13 @@ export const getAddresses = async ({ keyword = "", page = 1, size = 10 }: IFilte
 
 export const getAddressByID = async (id: string) => {
   try {
-    const { data } = await instance.get(`/addresses/${id}`);
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    };
+    const { data } = await instance.get(`/addresses/${id}`, config);
     const address = data?.data;
     return address;
   } catch (err) {
