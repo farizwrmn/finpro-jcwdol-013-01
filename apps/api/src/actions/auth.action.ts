@@ -12,8 +12,8 @@ import { genSalt, hash, compare } from 'bcrypt';
 import { API_KEY } from '../config';
 import { sign } from 'jsonwebtoken';
 import { createCartQuery, getCartByUserIDQuery } from '@/queries/cart.query';
-import { getStoresQuery } from "@/queries/store.query";
-import { getNearestStores } from "@/utils/store.util";
+import { getStoresQuery } from '@/queries/store.query';
+import { getNearestStores } from '@/utils/store.util';
 
 const registerAction = async (data: RegisterAuth): Promise<User> => {
   try {

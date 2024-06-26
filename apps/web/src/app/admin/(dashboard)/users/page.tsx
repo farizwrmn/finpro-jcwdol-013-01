@@ -88,6 +88,7 @@ const Page = () => {
               <Thead>
                 <Tr>
                   <Th>No.</Th>
+                  <Th>Name</Th>
                   <Th>Email</Th>
                   <Th>Phone</Th>
                   <Th>Role</Th>
@@ -99,6 +100,7 @@ const Page = () => {
                 {data.users?.map((user: any, index: number) => (
                   <Tr key={user.id}>
                     <Td>{filters.size * (filters.page - 1) + index + 1}</Td>
+                    <Td>{user.name}</Td>
                     <Td>{user.email}</Td>
                     <Td>{user.phone}</Td>
                     <Td>{user.role.name}</Td>

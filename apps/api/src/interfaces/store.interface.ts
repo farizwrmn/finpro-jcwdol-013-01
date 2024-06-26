@@ -1,4 +1,4 @@
-import { Store } from "@prisma/client";
+import { Store } from '@prisma/client';
 
 export interface IStore {
   name: string;
@@ -12,6 +12,11 @@ export interface IStore {
   postalCode?: string;
   longitude?: number;
   latitude?: number;
+}
+
+export interface IUserStore {
+  storeId: string;
+  userId: string;
 }
 
 export interface IUserLocation {
