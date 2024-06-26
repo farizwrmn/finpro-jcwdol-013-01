@@ -111,7 +111,7 @@ const Page = () => {
                             router.push(`/admin/products/image/${product.id}`);
                           }}
                         >
-                          Image
+                          Images
                         </Button>
                         <Button
                           colorScheme="blue"

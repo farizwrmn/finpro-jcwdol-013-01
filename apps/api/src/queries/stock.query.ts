@@ -132,6 +132,5 @@ export {
   createStockQuery,
   updateStockQuery,
   getStocksByProductIDQuery,
-  // addStockQuery,
   getStockByIDQuery,
 };

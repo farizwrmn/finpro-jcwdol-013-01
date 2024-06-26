@@ -12,6 +12,7 @@ import { API_KEY } from '@/config';
 import * as handlebars from 'handlebars';
 import fs from 'fs';
 import { transporter } from '../helpers/nodemailer';
+import { genSalt, hash } from 'bcrypt';
 
 const prisma = new PrismaClient();
 
@@ -24,9 +25,20 @@ const getUsersQuery = async (filters: IFilterUser): Promise<IResultUser> => {
         role: true,
       },
       where: {
-        email: {
-          contains: keyword,
-        },
+        OR: [
+          {
+            email: {
+              contains: keyword,
+            },
+          },
+          {
+            role: {
+              name: {
+                contains: keyword,
+              },
+            },
+          },
+        ],
       },
       skip: Number(page) > 0 ? (Number(page) - 1) * Number(size) : 0,
       take: Number(size),
@@ -86,42 +98,21 @@ const createUserQuery = async (userData: IUser): Promise<User> => {
   try {
     const trx = await prisma.$transaction(async (prisma) => {
       try {
+        const salt = await genSalt(10);
+        const hashPass = await hash(userData.password || '', salt);
+
         const user = await prisma.user.create({
           data: {
+            name: userData.name,
             email: userData.email,
-            isVerified: false,
+            password: hashPass,
+            isVerified: true,
             role: {
               connect: {
                 name: userData.role || 'store_admin',
               },
             },
           },
-        });
-
-        const templatePath = path.join(
-          __dirname,
-          '../templates',
-          'registrationEmail.hbs',
-        );
-        const payload = {
-          userId: user.id,
-          email: user.email,
-        };
-        const token = sign(payload, String(API_KEY), { expiresIn: '1h' });
-        const urlVerify = `http://localhost:3000/verify?token=${token}`;
-        const templateSource = fs.readFileSync(templatePath, 'utf-8');
-
-        const compiledTemplate = handlebars.compile(templateSource);
-        const html = compiledTemplate({
-          email: user.email,
-          url: urlVerify,
-        });
-
-        await transporter.sendMail({
-          from: 'sender address',
-          to: user.email || '',
-          subject: 'welcome to tokopedya',
-          html,
         });
 
         return user;
