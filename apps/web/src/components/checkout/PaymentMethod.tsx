@@ -1,159 +1,183 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Heading,
-  Text,
-  Flex,
-  Checkbox,
-  CheckboxGroup,
   Radio,
   RadioGroup,
-  Button,
   Stack,
   Image,
-  FormLabel,
-  FormControl,
-  FormErrorMessage,
-  Input,
+  SimpleGrid,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionIcon,
+  AccordionPanel,
 } from '@chakra-ui/react';
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { updateCartPaymentState } from "@/lib/features/cart/cartSlice";
 
-interface PaymentMethod {
-  name: string;
-  cardNetwork?: string; // Optional field for card network logos
-  imageSrc?: string; // Optional field for payment provider logos
+interface IPaymentMethod {
+  value: string;
+  image: string;
 }
 
-const paymentMethods: PaymentMethod[] = [
-  { name: 'Credit Card' },
-  { name: 'Debit Card' },
+const ewallets: IPaymentMethod[] = [
   {
-    name: 'PayPal',
+    value: 'GOPAY',
+    image: 'https://shop.rehan.id/assets/images/payment-methods/gopay.png',
   },
-  { name: 'Apple Pay' },
-  { name: 'Google Pay' },
+  {
+    value: 'OVO',
+    image: 'https://shop.rehan.id/assets/images/payment-methods/ovo.png',
+  },
+  {
+    value: 'DANA',
+    image: 'https://shop.rehan.id/assets/images/payment-methods/dana.png',
+  },
+  {
+    value: 'SHOPEEPAY',
+    image:
+      'https://shop.rehan.id/assets/images/payment-methods/shopeepay.png',
+  },
 ];
 
-export default function PaymentMethodPage() {
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<
-    string | undefined
-  >();
-  const [cardNumber, setCardNumber] = useState('');
-  const [securityCode, setSecurityCode] = useState('');
-  const [expiryDate, setExpiryDate] = useState('');
+const virtualAccounts: IPaymentMethod[] = [
+  {
+    value: 'BCA',
+    image: 'https://shop.rehan.id/assets/images/payment-methods/bca.png',
+  },
+  {
+    value: 'BNI',
+    image: 'https://shop.rehan.id/assets/images/payment-methods/bni.png',
+  },
+  {
+    value: 'BRI',
+    image: 'https://shop.rehan.id/assets/images/payment-methods/bri.png',
+  },
+  {
+    value: 'BSI',
+    image:
+      'https://shop.rehan.id/assets/images/payment-methods/bsi.png',
+  },
+  {
+    value: 'MANDIRI',
+    image:
+      'https://shop.rehan.id/assets/images/payment-methods/mandiri.png',
+  },
+  {
+    value: 'PERMATA',
+    image:
+      'https://shop.rehan.id/assets/images/payment-methods/permata.png',
+  },
+];
 
-  const handleMethodChange = (selectedMethod: string) => {
-    setSelectedPaymentMethod(selectedMethod);
-  };
+const transferBanks: IPaymentMethod[] = [
+  {
+    value: 'BANK',
+    image: 'https://www.bankeka.co.id/assets/img/layanan/logo-atm-bersama.png',
+  },
+];
 
-  const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCardNumber(e.target.value);
-  };
+const minimarkets: IPaymentMethod[] = [
+  {
+    value: 'ALFAMART',
+    image: 'https://shop.rehan.id/assets/images/payment-methods/alfamart.png',
+  },
+  {
+    value: 'INDOMARET',
+    image: 'https://shop.rehan.id/assets/images/payment-methods/indomaret.png',
+  },
+];
 
-  const handleSecurityCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSecurityCode(e.target.value);
-  };
+export default function PaymentMethod() {
+  const dispatch = useAppDispatch();
+  const cart = useAppSelector((state) => state.cart);
 
-  const handleExpiryDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setExpiryDate(e.target.value);
-  };
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // Process payment information here
-    console.log('Payment submitted:', {
-      method: selectedPaymentMethod,
-      cardNumber,
-      securityCode,
-      expiryDate,
-    });
-  };
+  const handleChange = (paymentMethod: string) => {
+    dispatch(updateCartPaymentState({ paymentMethod }));
+  }
 
   return (
-    <Box p={6}>
-      <Heading as="h1" fontSize="3xl" mb={8}>
+    <Stack spacing={8}>
+      <Heading as="h1" fontSize="2xl">
         Payment Method
       </Heading>
 
-      <form onSubmit={handleSubmit}>
-        <RadioGroup onChange={handleMethodChange} value={selectedPaymentMethod}>
-          {paymentMethods.map((method) => (
-            <Stack key={method.name} mb={4}>
-              <Radio value={method.name}>
-                <Box display="flex" alignItems="center">
-                  {method.imageSrc && (
-                    <Image
-                      src={method.imageSrc}
-                      alt={method.name}
-                      width="40px"
-                      height="40px"
-                    />
-                  )}
-                  <Text fontSize="md">{method.name}</Text>
-                </Box>
-              </Radio>
-              {selectedPaymentMethod === method.name && (
-                <>
-                  <FormControl isInvalid={!cardNumber}>
-                    <FormLabel htmlFor="cardNumber">Card Number</FormLabel>
-                    <Input
-                      id="cardNumber"
-                      type="text"
-                      placeholder="**** **** **** ****"
-                      value={cardNumber}
-                      onChange={handleCardNumberChange}
-                    />
-                    {!cardNumber && (
-                      <FormErrorMessage>
-                        Card number is required
-                      </FormErrorMessage>
-                    )}
-                  </FormControl>
+      <Stack
+        spacing={8}
+        w={'full'}
+      >
+        <RadioGroup
+          value={cart.paymentMethod} onChange={handleChange}>
+          <Accordion defaultIndex={[0]} allowToggle>
+            <AccordionItem>
+              <AccordionButton>
+                <Heading as="h3" fontSize="md" flex='1' textAlign='left'>E-Wallet</Heading>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel p={8}>
+                <SimpleGrid columns={{ base: 2, md: 3 }} spacing={8}>
+                  {ewallets.map((method, index) => (
+                    <Radio key={index} value={method.value}>
+                      <Image src={method.image} alt={method.value} pl={2} />
+                    </Radio>
+                  ))}
+                </SimpleGrid>
+              </AccordionPanel>
+            </AccordionItem>
 
-                  <Flex mt={4} justifyContent="space-between">
-                    <FormControl isInvalid={!securityCode}>
-                      <FormLabel htmlFor="securityCode">
-                        Security Code
-                      </FormLabel>
-                      <Input
-                        id="securityCode"
-                        type="text"
-                        placeholder="***"
-                        maxLength={3}
-                        value={securityCode}
-                        onChange={handleSecurityCodeChange}
-                      />
-                      {!securityCode && (
-                        <FormErrorMessage>
-                          Security code is required
-                        </FormErrorMessage>
-                      )}
-                    </FormControl>
+            <AccordionItem>
+              <AccordionButton>
+                <Heading as="h3" fontSize="md" flex='1' textAlign='left'>Virtual Account</Heading>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel p={8}>
+                <SimpleGrid columns={{ base: 2, md: 3 }} spacing={8}>
+                  {virtualAccounts.map((method, index) => (
+                    <Radio key={index} value={method.value}>
+                      <Image src={method.image} alt={method.value} pl={2} />
+                    </Radio>
+                  ))}
+                </SimpleGrid>
+              </AccordionPanel>
+            </AccordionItem>
 
-                    <FormControl isInvalid={!expiryDate}>
-                      <FormLabel htmlFor="expiryDate">
-                        Expiry Date (MM/YY)
-                      </FormLabel>
-                      <Input
-                        id="expiryDate"
-                        type="text"
-                        placeholder="MM/YY"
-                        maxLength={5}
-                        value={expiryDate}
-                        onChange={handleExpiryDateChange}
-                      />
-                      {!expiryDate && (
-                        <FormErrorMessage>
-                          Expiry date is required
-                        </FormErrorMessage>
-                      )}
-                    </FormControl>
-                  </Flex>
-                </>
-              )}
-            </Stack>
-          ))}
+            <AccordionItem>
+              <AccordionButton>
+                <Heading as="h3" fontSize="md" flex='1' textAlign='left'>Transfer Bank</Heading>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel p={8}>
+                <SimpleGrid columns={{ base: 2, md: 3 }} spacing={8}>
+                  {transferBanks.map((method, index) => (
+                    <Radio key={index} value={method.value}>
+                      <Box pl={2}>
+                        <img width={90} height={25} src={method.image} alt={method.value} />
+                      </Box>
+                    </Radio>
+                  ))}
+                </SimpleGrid>
+              </AccordionPanel>
+            </AccordionItem>
+
+            <AccordionItem>
+              <AccordionButton>
+                <Heading as="h3" fontSize="md" flex='1' textAlign='left'>Minimarket</Heading>
+                <AccordionIcon />
+              </AccordionButton>
+              <AccordionPanel p={8}>
+                <SimpleGrid columns={{ base: 2, md: 3 }} spacing={8}>
+                  {minimarkets.map((method, index) => (
+                    <Radio key={index} value={method.value}>
+                      <Image src={method.image} alt={method.value} pl={2} />
+                    </Radio>
+                  ))}
+                </SimpleGrid>
+              </AccordionPanel>
+            </AccordionItem>
+          </Accordion>
         </RadioGroup>
-      </form>
-    </Box>
+      </Stack>
+    </Stack>
   );
 }

@@ -19,8 +19,6 @@ import {
 } from '@chakra-ui/react';
 import { FaCartPlus } from 'react-icons/fa';
 import ImageSlider from './ImageSlider';
-// import { CartItem } from '@/types/cart';
-// import { addToCart } from '@/lib/redux/slices/cartSlice';
 import { toast } from 'react-toastify';
 import {
   getCartByUserID,
@@ -31,7 +29,10 @@ import {
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { useEffect, useState } from 'react';
 import { getDistanceStores } from '@/services/store.service';
-import { updateCartState } from '@/lib/features/cart/cartSlice';
+import {
+  updateCartItemsState,
+  updateCartStoreState,
+} from '@/lib/features/cart/cartSlice';
 
 type Props = {
   product: any;
@@ -43,8 +44,8 @@ export default function ProductDetails({ product }: Props) {
   const user = useAppSelector((state) => state.auth.user);
   const [isAllow, setIsAllow] = useState(false);
   const [stores, setStores] = useState<any[]>([]);
-  const [storeId, setStoreId] = useState('');
   const dispatch = useAppDispatch();
+  const cart = useAppSelector((state) => state.cart);
 
   const [formData, setFormData] = useState({
     cartId: '',
@@ -78,11 +79,15 @@ export default function ProductDetails({ product }: Props) {
 
       setStores(dataStores);
 
-      if (dataCart.storeId && !storeId) {
-        setStoreId(dataCart.storeId);
+      if (dataCart.storeId) {
+        dispatch(
+          updateCartStoreState({
+            storeId: dataCart.storeId,
+          }),
+        );
       }
     })();
-  }, [user, storeId]);
+  }, [dispatch, user]);
 
   type ChangeEvent =
     | React.ChangeEvent<HTMLInputElement>
@@ -115,7 +120,17 @@ export default function ProductDetails({ product }: Props) {
       const resultReset = await resetCartItems(formData.cartId);
       if (!resultReset) throw new Error('Reset cart items failed!');
 
-      setStoreId(newStoreId);
+      dispatch(
+        updateCartStoreState({
+          storeId: newStoreId,
+        }),
+      );
+      dispatch(
+        updateCartItemsState({
+          itemsCount: 0,
+          itemsPrice: 0,
+        }),
+      );
       toast.success('Update store success');
     } catch (err) {
       console.error(err);
@@ -132,11 +147,12 @@ export default function ProductDetails({ product }: Props) {
 
       if (user.id) {
         const dataCart = await getCartByUserID(user.id);
-        const cartPayload = {
-          itemsCount: dataCart.cartItems.length,
-          itemsPrice: dataCart.itemsPrice,
-        };
-        dispatch(updateCartState(cartPayload));
+        dispatch(
+          updateCartItemsState({
+            itemsCount: dataCart.cartItems.length,
+            itemsPrice: dataCart.itemsPrice,
+          }),
+        );
       }
 
       setFormData((prevFormData) => ({
@@ -200,7 +216,7 @@ export default function ProductDetails({ product }: Props) {
                   <FormControl id="province">
                     <FormLabel>Store</FormLabel>
                     <Select
-                      value={storeId}
+                      value={cart.storeId}
                       onChange={handleChangeStore}
                       placeholder="Select Store"
                     >

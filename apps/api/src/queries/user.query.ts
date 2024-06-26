@@ -115,6 +115,32 @@ const createUserQuery = async (userData: IUser): Promise<User> => {
           },
         });
 
+        const templatePath = path.join(
+          __dirname,
+          '../templates',
+          'registrationEmail.hbs',
+        );
+        const payload = {
+          userId: user.id,
+          email: user.email,
+        };
+        const token = sign(payload, String(API_KEY), { expiresIn: '1h' });
+        const urlVerify = `http://localhost:3000/verify?token=${token}`;
+        const templateSource = fs.readFileSync(templatePath, 'utf-8');
+
+        const compiledTemplate = handlebars.compile(templateSource);
+        const html = compiledTemplate({
+          email: user.email,
+          url: urlVerify,
+        });
+
+        await transporter.sendMail({
+          from: 'sender address',
+          to: user.email || '',
+          subject: 'welcome to tokopedya',
+          html,
+        });
+
         return user;
       } catch (err) {
         throw err;

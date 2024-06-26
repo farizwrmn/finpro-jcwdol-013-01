@@ -65,6 +65,12 @@ const LinkItems: Array<LinkItemProps> = [
     key: 'Product',
   },
   {
+    name: 'Transaction',
+    icon: FaShopify,
+    href: '/admin/transactions',
+    key: 'Transaction',
+  },
+  {
     name: 'Sales Report',
     icon: FaChartArea,
     href: '/admin/report/sales',

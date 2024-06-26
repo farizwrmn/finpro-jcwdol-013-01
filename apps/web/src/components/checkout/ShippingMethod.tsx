@@ -1,17 +1,18 @@
-import React, { useState } from 'react';
+"use client";
+
+import React from 'react';
 import {
   Box,
   Heading,
   Text,
   Flex,
-  Checkbox,
-  CheckboxGroup,
   Radio,
   RadioGroup,
-  Button,
   Stack,
-  Image,
 } from '@chakra-ui/react';
+import { FormatCurrency } from "@/utils/FormatCurrency";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { updateCartShippingState } from "@/lib/features/cart/cartSlice";
 
 interface ShippingMethod {
   name: string;
@@ -19,71 +20,64 @@ interface ShippingMethod {
   price: number;
 }
 
-const shippingMethods: ShippingMethod[] = [
-  {
-    name: 'DHL Free',
-    deliveryTime: '10-12 business days',
-    price: 0,
-  },
-  {
-    name: 'DHL Express',
-    deliveryTime: '3-4 business days',
-    price: 5,
-  },
-  {
-    name: 'FedEx 2-3 Day',
-    deliveryTime: '2-3 business days',
-    price: 6,
-  },
-  {
-    name: 'UPS 2-3 Day',
-    deliveryTime: '2-3 business days',
-    price: 7,
-  },
-];
+type Props = {
+  couriers: any[],
+}
 
-export default function ShippingMethodPage() {
-  const [selectedShippingMethod, setSelectedShippingMethod] =
-    useState<ShippingMethod>();
+export default function ShippingMethod({ couriers = [] }: Props) {
+  const dispatch = useAppDispatch();
+  const cart = useAppSelector((state) => state.cart);
 
-  const handleMethodChange = (selectedMethod: any) => {
-    setSelectedShippingMethod(selectedMethod);
-  };
+  const handleChange = (value: string) => {
+    const shippingCourier = value.split('|')[0] || '';
+    const shippingService = value.split('|')[1] || '';
+    const shippingPrice = Number(value.split('|')[2]) || 0;
+
+    dispatch(updateCartShippingState({
+      shippingCourier,
+      shippingService,
+      shippingPrice,
+    }));
+  }
 
   return (
-    <Box p={6}>
-      <Heading as="h1" fontSize="3xl" mb={8}>
+    <Stack spacing={8}>
+      <Heading as="h1" fontSize="2xl">
         Shipping Method
       </Heading>
 
-      <RadioGroup
-        value={selectedShippingMethod?.name}
-        onChange={handleMethodChange}
+      <Stack
+        spacing={8}
+        w={'full'}
       >
-        {shippingMethods.map((method) => (
-          <Stack>
-            <Radio key={method.name} value={method.name}>
-              <Box flexDirection="column" mb={8}>
-                {' '}
-                {/* Increased spacing between options */}
-                <Stack direction="row" alignItems="center" spacing={4}>
-                  <Box>
-                    <Heading as="h4" fontSize="md">
-                      {method.name}
-                    </Heading>
-                    <Text fontSize="sm" color="gray.500">
-                      {method.deliveryTime}
-                    </Text>
-                  </Box>
-                </Stack>
-                <Text fontSize="lg" fontWeight="bold" mt={2}>
-                  ${method.price}
-                </Text>
-              </Box>
-            </Radio>
-          </Stack>
-        ))}
-      </RadioGroup>
-    </Box>
+        <RadioGroup onChange={handleChange}>
+          {couriers.map((courier, index) => (
+            <Box key={index} mb={6}>
+              <Heading as="h3" fontSize="md" mb={4}>
+                {courier.name}
+              </Heading>
+              {courier.costs.map((service: any, index: number) => (
+                <Flex key={index} justifyContent="space-between" mb={2}>
+                  <Radio
+                    size='md'
+                    colorScheme='green'
+                    value={`${courier.code.toUpperCase()}|${service.service}|${service.cost[0].value}`}
+                    checked={
+                      cart.shippingCourier === courier.code.toUpperCase() &&
+                      cart.shippingService === service.service
+                    }
+                  >
+                    {`${service.description} (${service.cost[0].etd} days)`}
+                  </Radio>
+                  <Text>
+                    {FormatCurrency(service.cost[0].value)}
+                  </Text>
+                </Flex>
+              ))}
+            </Box>
+          ))}
+        </RadioGroup>
+      </Stack>
+    </Stack>
   );
 }
