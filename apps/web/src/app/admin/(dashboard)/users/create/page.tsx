@@ -87,7 +87,7 @@ const Page = () => {
                     onChange={handleChange}
                   />
                 </FormControl>
-                {/* <FormControl id="password" isRequired>
+                <FormControl id="password" isRequired>
                   <FormLabel>Password</FormLabel>
                   <InputGroup>
                     <Input
@@ -109,7 +109,7 @@ const Page = () => {
                       </Button>
                     </InputRightElement>
                   </InputGroup>
-                </FormControl> */}
+                </FormControl>
                 <Stack spacing={6} direction={['column', 'row']}>
                   <Button
                     onClick={() => {

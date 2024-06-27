@@ -1,3 +1,5 @@
+import { COURIERS, DESTINATION_TYPE, WEIGHT_IN_GRAMS } from "@/constants/shipping.constant";
+
 const getProvincesAction = async () => {
   try {
     const res = await fetch(`${process.env.RAJAONGKIR_API_URL}/province`, {
@@ -56,11 +58,11 @@ const getCouriersAction = async (origin: string, destination: string) => {
   try {
     const body = {
       origin: origin,
-      originType: "subdistrict",
+      originType: DESTINATION_TYPE,
       destination: destination,
-      destinationType: "subdistrict",
-      weight: 1000,
-      courier: "jne:pos:tiki:sicepat"
+      destinationType: DESTINATION_TYPE,
+      weight: WEIGHT_IN_GRAMS,
+      courier: COURIERS
     }
 
     const res = await fetch(`${process.env.RAJAONGKIR_API_URL}/cost`, {

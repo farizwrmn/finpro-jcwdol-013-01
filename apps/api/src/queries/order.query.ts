@@ -4,6 +4,7 @@ import {
   IFilterOrder,
   IResultOrder,
 } from '../interfaces/order.interface';
+import { getCartByUserIDQuery, resetCartItemsQuery } from './cart.query';
 
 const prisma = new PrismaClient();
 
@@ -28,6 +29,7 @@ const getOrdersQuery = async (filters: IFilterOrder): Promise<IResultOrder> => {
       include: {
         store: true,
         user: true,
+        userAddress: true,
       },
       where: {
         ...conditions,
@@ -59,6 +61,7 @@ const getOrderByIDQuery = async (id: string): Promise<Order | null> => {
       include: {
         store: true,
         user: true,
+        userAddress: true,
         orderItems: {
           include: {
             product: true,
@@ -76,27 +79,26 @@ const getOrderByIDQuery = async (id: string): Promise<Order | null> => {
   }
 };
 
-// const createOrderQuery = async (data: IOrder): Promise<Order> => {
-//   try {
-//     const order = await prisma.order.create({
-//       data: {
-//         ...data,
-//         orderItems: {
-//           createMany: {
-//             data: data.orderItems
-//           }
-//         }
-//       },
-//     });
+const createOrderQuery = async (data: IOrder): Promise<Order> => {
+  try {
+    const order = await prisma.order.create({
+      data: {
+        ...data,
+        orderItems: {
+          createMany: {
+            data: data.orderItems,
+          },
+        },
+      },
+    });
 
-//     return order;
-//   } catch (err) {
-//     throw err;
-//   }
-// };
+    const cart = await getCartByUserIDQuery(data.userId);
+    if (cart) await resetCartItemsQuery(cart.id);
 
-export {
-  getOrdersQuery,
-  getOrderByIDQuery,
-  // createOrderQuery,
+    return order;
+  } catch (err) {
+    throw err;
+  }
 };
+
+export { getOrdersQuery, getOrderByIDQuery, createOrderQuery };

@@ -5,7 +5,7 @@ import {
   IResultOrder,
 } from '@/interfaces/order.interface';
 import {
-  // createOrderQuery,
+  createOrderQuery,
   getOrderByIDQuery,
   getOrdersQuery,
 } from '@/queries/order.query';
@@ -33,19 +33,13 @@ const getOrderByIDAction = async (id: string): Promise<Order | null> => {
   }
 };
 
-// const createOrderAction = async (
-//   data: IOrder,
-// ): Promise<Order | null> => {
-//   try {
-//     const order = await createOrderQuery(data);
-//     return order;
-//   } catch (err) {
-//     throw err;
-//   }
-// };
-
-export {
-  getOrdersAction,
-  getOrderByIDAction,
-  // createOrderAction,
+const createOrderAction = async (data: IOrder): Promise<Order | null> => {
+  try {
+    const order = await createOrderQuery(data);
+    return order;
+  } catch (err) {
+    throw err;
+  }
 };
+
+export { getOrdersAction, getOrderByIDAction, createOrderAction };

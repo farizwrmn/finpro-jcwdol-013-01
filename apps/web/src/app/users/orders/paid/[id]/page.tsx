@@ -4,25 +4,17 @@ import React, { useState, useEffect } from 'react';
 import {
   Card,
   CardBody,
-  TableContainer,
   Box,
   Text,
-  Button,
   FormControl,
   FormLabel,
   Stack,
-  Table,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  Td,
+  Button,
 } from '@chakra-ui/react';
-import { useRouter } from "next/navigation";
 import { getOrderByID } from "@/services/order.service";
 import { FormatCurrency } from "@/utils/FormatCurrency";
-import { createPayment, updatePaymentStatus } from "@/services/payment.service";
-import { toast } from "react-toastify";
+import { updatePaymentStatus } from "@/services/payment.service";
+import { useRouter } from "next/navigation";
 
 type Props = { params: { id: string } };
 
@@ -32,34 +24,19 @@ const Page = ({ params: { id } }: Props) => {
 
   useEffect(() => {
     (async () => {
-      const data = await getOrderByID(id);
-      setOrder(data);
+      let data = await getOrderByID(id);
+
+      if (data.paymentStatus === "UNPAID") {
+        const formData = { paymentStatus: "PAID" };
+        await updatePaymentStatus(id, formData);
+
+        data = await getOrderByID(id);
+        setOrder(data);
+      } else {
+        router.push(`/users/orders/${id}`);
+      }
     })()
-  }, [id]);
-
-  const handlePay = async () => {
-    try {
-      const payment = await createPayment({ orderId: id });
-      if (!payment.url) throw new Error("Pay order failed");
-      router.push(payment.url);
-    } catch (err) {
-      toast.error("Pay order failed");
-    }
-  }
-
-  const handleCancel = async () => {
-    try {
-      const formData = { paymentStatus: "CANCELED" };
-      const order = await updatePaymentStatus(id, formData);
-      if (!order?.id) throw new Error("Cancel order failed");
-
-      const data = await getOrderByID(id);
-      setOrder(data);
-      toast.success("Cancel order success");
-    } catch (err) {
-      toast.error("Cancel order failed");
-    }
-  }
+  }, [id, router]);
 
   return (
     <Box>
@@ -123,55 +100,19 @@ const Page = ({ params: { id } }: Props) => {
               <FormLabel>Shipping Date</FormLabel>
               <Text>{order?.shippingDate}</Text>
             </FormControl>
-            {order?.paymentStatus && order?.paymentStatus === "UNPAID" && (
-              <Stack spacing={6} direction={['column', 'row']} mt={15}>
-                <Button
-                  onClick={handleCancel}
-                  bg={'red.400'}
-                  color={'white'}
-                  w="full"
-                  _hover={{
-                    bg: 'red.500',
-                  }}>
-                  Cancel Order
-                </Button>
-                <Button
-                  onClick={handlePay}
-                  bg={'blue.400'}
-                  color={'white'}
-                  w="full"
-                  _hover={{
-                    bg: 'blue.500',
-                  }}>
-                  Pay Order
-                </Button>
-              </Stack>
-            )}
+            <Button
+              onClick={() => {
+                router.push(`/users/orders/${id}`)
+              }}
+              bg={'blue.400'}
+              color={'white'}
+              w="full"
+              _hover={{
+                bg: 'blue.500',
+              }}>
+              Back
+            </Button>
           </Stack>
-          <TableContainer>
-            <Table variant="striped">
-              <Thead>
-                <Tr>
-                  <Th>No.</Th>
-                  <Th>Product Name</Th>
-                  <Th>Description</Th>
-                  <Th>Quantity</Th>
-                  <Th>Price</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {order?.orderItems?.map((item: any, index: number) => (
-                  <Tr key={item.id}>
-                    <Td>{index + 1}</Td>
-                    <Td>{item.name}</Td>
-                    <Td>{item.description}</Td>
-                    <Td>{item.quantity}</Td>
-                    <Td>{FormatCurrency(item.price)}</Td>
-                  </Tr>
-                ))}
-              </Tbody>
-            </Table>
-          </TableContainer>
         </CardBody>
       </Card>
     </Box>
