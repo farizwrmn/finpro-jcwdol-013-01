@@ -1,5 +1,6 @@
 import { PrismaClient, Order } from '@prisma/client';
 import { IOrder, IFilterOrder, IResultOrder } from '../interfaces/order.interface';
+import { getCartByUserIDQuery, resetCartItemsQuery } from "./cart.query";
 
 const prisma = new PrismaClient();
 
@@ -18,6 +19,7 @@ const getOrdersQuery = async (filters: IFilterOrder): Promise<IResultOrder> => {
       include: {
         store: true,
         user: true,
+        userAddress: true,
       },
       where: {
         ...conditions
@@ -49,6 +51,7 @@ const getOrderByIDQuery = async (id: string): Promise<Order | null> => {
       include: {
         store: true,
         user: true,
+        userAddress: true,
         orderItems: {
           include: {
             product: true
@@ -78,6 +81,9 @@ const createOrderQuery = async (data: IOrder): Promise<Order> => {
         }
       },
     });
+
+    const cart = await getCartByUserIDQuery(data.userId);
+    if (cart) await resetCartItemsQuery(cart.id);
 
     return order;
   } catch (err) {
