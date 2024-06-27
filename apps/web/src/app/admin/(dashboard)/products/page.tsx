@@ -125,7 +125,7 @@ const Page = () => {
                           colorScheme="blue"
                           onClick={() => {
                             router.push(
-                              `/admin/products/discount/${product.id}`,
+                              `/admin/products/discounts/${product.id}`,
                             );
                           }}
                         >
