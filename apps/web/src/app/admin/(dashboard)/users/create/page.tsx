@@ -7,7 +7,6 @@ import {
   TableContainer,
   Box,
   Input,
-  Select,
   Text,
   Button,
   FormControl,
@@ -23,6 +22,7 @@ const Page = () => {
   const [show, setShow] = useState(false);
   const handleClick = () => setShow(!show);
   const [formData, setFormData] = useState({
+    name: '',
     email: '',
     password: '',
   });
@@ -65,6 +65,17 @@ const Page = () => {
           <TableContainer>
             <form onSubmit={handleSubmit}>
               <Stack spacing={6} w={'full'} rounded={'xl'} p={10} my={6}>
+                <FormControl id="name" isRequired>
+                  <FormLabel>Name</FormLabel>
+                  <Input
+                    name="name"
+                    placeholder="Name"
+                    _placeholder={{ color: 'gray.500' }}
+                    type="text"
+                    value={formData.name}
+                    onChange={handleChange}
+                  />
+                </FormControl>
                 <FormControl id="email" isRequired>
                   <FormLabel>Email</FormLabel>
                   <Input
