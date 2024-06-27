@@ -14,9 +14,9 @@ import stocksRouter from './routes/stock.route';
 import cartRouter from './routes/cart.route';
 import shippingRouter from './routes/shipping.route';
 import orderRouter from './routes/order.route';
+import paymentRouter from './routes/payment.route';
 
 const PORT: number = Number(API_PORT) || 8000;
-
 const app: Application = express();
 
 app.use(cors());
@@ -34,6 +34,7 @@ app.use('/stocks', stocksRouter);
 app.use('/cart', cartRouter);
 app.use('/shipping', shippingRouter);
 app.use('/orders', orderRouter);
+app.use('/payment', paymentRouter);
 
 // initialize error middleware
 app.use(ErrorMiddleware);
