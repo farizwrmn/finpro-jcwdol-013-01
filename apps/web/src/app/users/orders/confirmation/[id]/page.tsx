@@ -25,8 +25,12 @@ const Page = ({ params: { id } }: Props) => {
 
   useEffect(() => {
     (async () => {
-      const data = await getOrderByID(id);
+      let data = await getOrderByID(id);
       setOrder(data);
+
+      if (data.paymentStatus && data.paymentStatus !== "UNPAID") {
+        router.push(`/users/orders/${id}`);
+      }
     })()
   }, [id, router]);
 

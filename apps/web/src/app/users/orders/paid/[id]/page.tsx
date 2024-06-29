@@ -33,7 +33,7 @@ const Page = ({ params: { id } }: Props) => {
         data = await getOrderByID(id);
         setOrder(data);
       } else {
-        router.push(`/users/orders/${id}`);
+        // router.push(`/users/orders/${id}`);
       }
     })()
   }, [id, router]);
