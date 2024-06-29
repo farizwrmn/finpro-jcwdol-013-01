@@ -137,7 +137,7 @@ const createUserQuery = async (userData: IUser): Promise<User> => {
         await transporter.sendMail({
           from: 'sender address',
           to: user.email || '',
-          subject: 'welcome to tokopedya',
+          subject: 'welcome to Mind Groceries',
           html,
         });
 

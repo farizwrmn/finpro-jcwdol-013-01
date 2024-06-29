@@ -61,7 +61,7 @@ export default function Footer() {
         align={{ base: 'center', md: 'center' }}
       >
         <Text textAlign={{ base: 'center', sm: 'start' }}>
-          © 2024 Tokopedya, &nbsp;All rights reserved.
+          © 2024 Mind Groceries, &nbsp;All rights reserved.
         </Text>
         <Stack direction={'row'} spacing={6}>
           <SocialButton label={'Twitter'} href={'#'}>
