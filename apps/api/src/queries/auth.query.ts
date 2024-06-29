@@ -50,7 +50,7 @@ const registerQuery = async (data: RegisterAuth): Promise<User> => {
         await transporter.sendMail({
           from: 'sender address',
           to: user.email || '',
-          subject: 'welcome to tokopedya',
+          subject: 'Welcome to Mind Groceries',
           html,
         });
 
@@ -114,7 +114,7 @@ const forgotPasswordQuery = async (email: string): Promise<User> => {
           where: { email: email },
         });
 
-        if (!user) throw new Error("User does not exist");
+        if (!user) throw new Error('User does not exist');
 
         const templatePath = path.join(
           __dirname,
