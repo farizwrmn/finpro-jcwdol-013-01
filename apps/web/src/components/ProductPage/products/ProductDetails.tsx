@@ -157,7 +157,6 @@ export default function ProductDetails({ product }: Props) {
 
   return (
     <Container maxW={'7xl'}>
-      {/* <ProductSlider /> */}
       <SimpleGrid
         columns={{ base: 1, lg: 2 }}
         spacing={{ base: 8, md: 10 }}

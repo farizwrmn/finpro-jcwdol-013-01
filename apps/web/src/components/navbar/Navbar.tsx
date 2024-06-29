@@ -92,6 +92,19 @@ export default function Navbar() {
               <DesktopNav />
             </Flex>
           </Flex>
+          {user.role === 'customer' ? (
+            <Flex alignItems={'center'} mr={1}>
+              <Link href={'/cart'}>
+                <IconButton
+                  size="lg"
+                  variant="ghost"
+                  aria-label="open menu"
+                  icon={<FiShoppingCart />}
+                  ml={2}
+                />
+              </Link>
+            </Flex>
+          ) : null}
           {status.isLogin ? (
             <HStack spacing={{ base: '0', md: '6' }}>
               {user.role === 'customer' && (

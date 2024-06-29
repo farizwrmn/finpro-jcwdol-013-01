@@ -1,6 +1,6 @@
 'use client';
 
-import { useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { FormatCurrency } from '@/utils/FormatCurrency';
 import {
   Button,
@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import { getCartByID, getCartByUserID } from "@/services/cart.service";
 import { toast } from "react-toastify";
 import { createOrder } from "@/services/order.service";
+import { resetCartState, updateCartStoreState } from "@/lib/features/cart/cartSlice";
 
 type OrderSummaryItemProps = {
   label: string;
@@ -41,6 +42,7 @@ export const CheckoutSummary = () => {
   const cart = useAppSelector((state) => state.cart);
   const [isLoaded, setIsLoaded] = useState(false);
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     setIsLoaded(true);
@@ -78,6 +80,11 @@ export const CheckoutSummary = () => {
 
       const order = await createOrder(formData);
       if (!order) throw new Error("Create order failed");
+
+      dispatch(resetCartState());
+      dispatch(updateCartStoreState({
+        storeId: dataCart.storeId
+      }));
 
       router.push(`/users/orders/${order.id}`);
       toast.success("Create order success");
