@@ -225,10 +225,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         icon={<FiMenu />}
       />
 
-      <Link href="/">
-        <Image src="/assets/images/logo.png" alt="logo" w={150} />
-      </Link>
-
       <HStack spacing={{ base: '0', md: '6' }}>
         <IconButton
           size="lg"
