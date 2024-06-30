@@ -15,8 +15,8 @@ import 'swiper/css/thumbs';
 import { FreeMode, Navigation, Thumbs } from 'swiper/modules';
 
 type Props = {
-  images: string[]
-}
+  images: string[];
+};
 
 const ImageSlider = ({ images = [] }: Props) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
@@ -35,7 +35,11 @@ const ImageSlider = ({ images = [] }: Props) => {
             <Box
               mt={2}
               h="400px"
-              bgImage={`http://localhost:8000/public/products/${image}`}
+              bgImage={
+                image.includes('http')
+                  ? image
+                  : `http://localhost:8000/public/products/${image}}`
+              }
               bgPos="center"
               bgSize="cover"
             />
@@ -55,7 +59,11 @@ const ImageSlider = ({ images = [] }: Props) => {
           <SwiperSlide key={index}>
             <Box
               h="100px"
-              bgImage={`http://localhost:8000/public/products/${image}`}
+              bgImage={
+                image.includes('http')
+                  ? image
+                  : `http://localhost:8000/public/products/${image}}`
+              }
               bgPos="center"
               bgSize="cover"
             />

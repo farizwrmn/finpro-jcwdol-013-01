@@ -29,7 +29,10 @@ import {
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { useEffect, useState } from 'react';
 import { getDistanceStores } from '@/services/store.service';
-import { updateCartItemsState, updateCartStoreState } from '@/lib/features/cart/cartSlice';
+import {
+  updateCartItemsState,
+  updateCartStoreState,
+} from '@/lib/features/cart/cartSlice';
 
 type Props = {
   product: any;
@@ -77,9 +80,11 @@ export default function ProductDetails({ product }: Props) {
       setStores(dataStores);
 
       if (dataCart.storeId) {
-        dispatch(updateCartStoreState({
-          storeId: dataCart.storeId
-        }));
+        dispatch(
+          updateCartStoreState({
+            storeId: dataCart.storeId,
+          }),
+        );
       }
     })();
   }, [dispatch, user]);
@@ -115,13 +120,17 @@ export default function ProductDetails({ product }: Props) {
       const resultReset = await resetCartItems(formData.cartId);
       if (!resultReset) throw new Error('Reset cart items failed!');
 
-      dispatch(updateCartStoreState({
-        storeId: newStoreId
-      }));
-      dispatch(updateCartItemsState({
-        itemsCount: 0,
-        itemsPrice: 0
-      }));
+      dispatch(
+        updateCartStoreState({
+          storeId: newStoreId,
+        }),
+      );
+      dispatch(
+        updateCartItemsState({
+          itemsCount: 0,
+          itemsPrice: 0,
+        }),
+      );
       toast.success('Update store success');
     } catch (err) {
       console.error(err);
@@ -138,10 +147,12 @@ export default function ProductDetails({ product }: Props) {
 
       if (user.id) {
         const dataCart = await getCartByUserID(user.id);
-        dispatch(updateCartItemsState({
-          itemsCount: dataCart.cartItems.length,
-          itemsPrice: dataCart.itemsPrice,
-        }));
+        dispatch(
+          updateCartItemsState({
+            itemsCount: dataCart.cartItems.length,
+            itemsPrice: dataCart.itemsPrice,
+          }),
+        );
       }
 
       setFormData((prevFormData) => ({

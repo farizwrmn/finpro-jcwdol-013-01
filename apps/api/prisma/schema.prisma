@@ -219,16 +219,16 @@ model StockHistory {
 }
 
 model Discount {
-  id              String  @id @default(uuid())
+  id              String   @id @default(uuid())
   type            String
-  amount          Float   @default(0)
-  unit            String
-  minimumPrice    Float   @default(0) @map(name: "minimum_price")
-  maximumDiscount Float   @default(0) @map(name: "maximum_discount")
-  store           Store   @relation(fields: [storeId], references: [id])
-  storeId         String  @map(name: "store_id")
-  product         Product @relation(fields: [productId], references: [id])
-  productId       String  @map(name: "product_id")
+  amount          Float?   @default(0)
+  unit            String?
+  minimumPrice    Float?   @default(0) @map(name: "minimum_price")
+  maximumDiscount Float?   @default(0) @map(name: "maximum_discount")
+  store           Store    @relation(fields: [storeId], references: [id])
+  storeId         String   @map(name: "store_id")
+  product         Product? @relation(fields: [productId], references: [id])
+  productId       String?  @map(name: "product_id")
 
   @@map(name: "discounts")
 }
