@@ -79,8 +79,27 @@ const updatePaymentStatusQuery = async (orderId: string, paymentStatus: string):
   }
 };
 
+const confirmPaymentQuery = async (orderId: string, paymentImage: string): Promise<Order> => {
+  try {
+    const order = await prisma.order.update({
+      data: {
+        paymentStatus: "WAITING",
+        paymentImage
+      },
+      where: {
+        id: orderId
+      }
+    });
+
+    return order;
+  } catch (err) {
+    throw err;
+  }
+};
+
 export {
   createXenditInvoiceQuery,
   createMidtransTransactionQuery,
   updatePaymentStatusQuery,
+  confirmPaymentQuery,
 }

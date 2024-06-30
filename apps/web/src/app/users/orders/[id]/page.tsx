@@ -123,7 +123,13 @@ const Page = ({ params: { id } }: Props) => {
               <FormLabel>Shipping Date</FormLabel>
               <Text>{order?.shippingDate}</Text>
             </FormControl>
-            {order?.paymentStatus && order?.paymentStatus === "UNPAID" && (
+            {order?.paymentMethod === "BANK" && order?.paymentStatus === "WAITING" && order?.paymentImage && (
+              <FormControl id="paymentStatus">
+                <FormLabel>Payment Proof</FormLabel>
+                <img src={`http://localhost:8000/public/confirmation/${order?.paymentImage}`} style={{ height: 300 }} />
+              </FormControl>
+            )}
+            {order?.paymentStatus && order?.paymentStatus === "UNPAID" ? (
               <Stack spacing={6} direction={['column', 'row']} mt={15}>
                 <Button
                   onClick={handleCancel}
@@ -144,6 +150,21 @@ const Page = ({ params: { id } }: Props) => {
                     bg: 'blue.500',
                   }}>
                   Pay Order
+                </Button>
+              </Stack>
+            ) : (
+              <Stack spacing={6} direction={['column', 'row']} mt={15}>
+                <Button
+                  onClick={() => {
+                    router.push(`/users/orders`)
+                  }}
+                  bg={'blue.400'}
+                  color={'white'}
+                  w="full"
+                  _hover={{
+                    bg: 'blue.500',
+                  }}>
+                  Back
                 </Button>
               </Stack>
             )}
