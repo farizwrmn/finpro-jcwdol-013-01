@@ -47,7 +47,7 @@ const Page = () => {
     try {
       const user = await createUser(formData);
       if (!user) throw new Error('Create user failed!');
-      alert('Create user success, please open email to verify');
+      alert('Create user success');
       router.push('/admin/users');
     } catch (err) {
       console.error(err);
@@ -87,7 +87,7 @@ const Page = () => {
                     onChange={handleChange}
                   />
                 </FormControl>
-                {/* <FormControl id="password" isRequired>
+                <FormControl id="password" isRequired>
                   <FormLabel>Password</FormLabel>
                   <InputGroup>
                     <Input
@@ -109,7 +109,7 @@ const Page = () => {
                       </Button>
                     </InputRightElement>
                   </InputGroup>
-                </FormControl> */}
+                </FormControl>
                 <Stack spacing={6} direction={['column', 'row']}>
                   <Button
                     onClick={() => {

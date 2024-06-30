@@ -1,16 +1,26 @@
 import { PrismaClient, Order } from '@prisma/client';
-import { IOrder, IFilterOrder, IResultOrder } from '../interfaces/order.interface';
-import { getCartByUserIDQuery, resetCartItemsQuery } from "./cart.query";
+import {
+  IOrder,
+  IFilterOrder,
+  IResultOrder,
+} from '../interfaces/order.interface';
+import { getCartByUserIDQuery, resetCartItemsQuery } from './cart.query';
 
 const prisma = new PrismaClient();
 
 const getOrdersQuery = async (filters: IFilterOrder): Promise<IResultOrder> => {
   try {
-    const { userId = "", storeId = "", keyword = "", page = 1, size = 1000 } = filters;
+    const {
+      userId = '',
+      storeId = '',
+      keyword = '',
+      page = 1,
+      size = 1000,
+    } = filters;
     const conditions: any = {
       orderNumber: {
-        contains: keyword
-      }
+        contains: keyword,
+      },
     };
     if (userId) conditions.userId = userId;
     if (storeId) conditions.storeId = storeId;
@@ -22,7 +32,7 @@ const getOrdersQuery = async (filters: IFilterOrder): Promise<IResultOrder> => {
         userAddress: true,
       },
       where: {
-        ...conditions
+        ...conditions,
       },
       skip: Number(page) > 0 ? (Number(page) - 1) * Number(size) : 0,
       take: Number(size),
@@ -30,7 +40,7 @@ const getOrdersQuery = async (filters: IFilterOrder): Promise<IResultOrder> => {
 
     const data = await prisma.order.aggregate({
       _count: {
-        id: true
+        id: true,
       },
       where: {
         ...conditions,
@@ -43,7 +53,7 @@ const getOrdersQuery = async (filters: IFilterOrder): Promise<IResultOrder> => {
   } catch (err) {
     throw err;
   }
-}
+};
 
 const getOrderByIDQuery = async (id: string): Promise<Order | null> => {
   try {
@@ -54,20 +64,20 @@ const getOrderByIDQuery = async (id: string): Promise<Order | null> => {
         userAddress: true,
         orderItems: {
           include: {
-            product: true
-          }
-        }
+            product: true,
+          },
+        },
       },
       where: {
-        id
-      }
+        id,
+      },
     });
 
     return order;
   } catch (err) {
     throw err;
   }
-}
+};
 
 const createOrderQuery = async (data: IOrder): Promise<Order> => {
   try {
@@ -76,9 +86,9 @@ const createOrderQuery = async (data: IOrder): Promise<Order> => {
         ...data,
         orderItems: {
           createMany: {
-            data: data.orderItems
-          }
-        }
+            data: data.orderItems,
+          },
+        },
       },
     });
 
@@ -91,8 +101,4 @@ const createOrderQuery = async (data: IOrder): Promise<Order> => {
   }
 };
 
-export {
-  getOrdersQuery,
-  getOrderByIDQuery,
-  createOrderQuery,
-};
+export { getOrdersQuery, getOrderByIDQuery, createOrderQuery };
