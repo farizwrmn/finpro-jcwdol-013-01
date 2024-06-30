@@ -54,8 +54,7 @@ export default function ProductDetails({ product }: Props) {
     slug: product.slug,
     image: product.productImages[0]?.image,
     description: product.description,
-    slicedPrice: product.slicedPrice,
-    sellingPrice: product.sellingPrice,
+    price: product.price,
     quantity: 0,
   });
 
@@ -192,16 +191,16 @@ export default function ProductDetails({ product }: Props) {
             </Box>
             <Flex direction={'row'} gap={5} alignItems={'center'}>
               <Text color={textColor} fontWeight={500} fontSize={'2xl'}>
-                {FormatCurrency(product.sellingPrice)}
+                {FormatCurrency(product.price)}
               </Text>
-              <Text
+              {/* <Text
                 color={textColor}
                 fontWeight={400}
                 fontSize={'xl'}
                 textDecoration={'line-through'}
               >
                 {FormatCurrency(product.slicedPrice)}
-              </Text>
+              </Text> */}
             </Flex>
             <Stack
               spacing={{ base: 4, sm: 6 }}

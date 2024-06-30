@@ -2,7 +2,7 @@ import Xendit from "xendit-node";
 import { MidtransClient } from 'midtrans-node-client';
 import { CURRENCY, FAILURE_REDIRECT_URL, PAYMENT_DESCRIPTION, PAYMENT_PRODUCTION, SHOULD_SEND_EMAIL, SUCCESS_REDIRECT_URL } from "@/constants/payment.constant";
 import { PrismaClient, Order } from "@prisma/client";
-import { IPaymentStatus } from "@/interfaces/payment.interface";
+import { ORDER_STATUS } from "@/constants/order.constant";
 
 const prisma = new PrismaClient();
 
@@ -21,8 +21,8 @@ const createXenditInvoiceQuery = async (order: any) => {
     description: PAYMENT_DESCRIPTION,
     amount: order.totalPrice,
     shouldSendEmail: SHOULD_SEND_EMAIL,
-    successRedirectURL: `${SUCCESS_REDIRECT_URL}/paid/${order.id}`,
-    failureRedirectURL: `${FAILURE_REDIRECT_URL}/failed/${order.id}`,
+    successRedirectURL: `${SUCCESS_REDIRECT_URL}/${order.id}`,
+    failureRedirectURL: `${FAILURE_REDIRECT_URL}/${order.id}`,
     paymentMethods: [String(order.paymentMethod).toUpperCase()],
     currency: CURRENCY
   };
@@ -61,12 +61,12 @@ const createMidtransTransactionQuery = async (order: any) => {
   return { redirectURL };
 }
 
-const updatePaymentStatusQuery = async (orderId: string, paymentStatus: string): Promise<Order> => {
+const updatePaymentStatusQuery = async (orderId: string, orderStatus: string): Promise<Order> => {
   try {
     const order = await prisma.order.update({
       data: {
-        paymentStatus,
-        paymentDate: paymentStatus === "PAID" ? new Date() : null,
+        orderStatus,
+        paymentDate: orderStatus === ORDER_STATUS.diproses ? new Date() : null,
       },
       where: {
         id: orderId
@@ -83,8 +83,9 @@ const confirmPaymentQuery = async (orderId: string, paymentImage: string): Promi
   try {
     const order = await prisma.order.update({
       data: {
-        paymentStatus: "WAITING",
-        paymentImage
+        orderStatus: ORDER_STATUS.menungguKonfirmasiPembayaran,
+        paymentImage,
+        paymentDate: new Date(),
       },
       where: {
         id: orderId

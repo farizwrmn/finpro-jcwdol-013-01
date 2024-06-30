@@ -72,8 +72,7 @@ const createProductController = async (
     const params = req.body;
     const data = await createProductAction({
       ...params,
-      slicedPrice: Number(params.slicedPrice),
-      sellingPrice: Number(params.sellingPrice),
+      price: Number(params.price),
     });
 
     res.status(200).json({
@@ -95,8 +94,7 @@ const updateProductController = async (
     const params = req.body;
     const data = await updateProductAction(id, {
       ...params,
-      slicedPrice: Number(params.slicedPrice),
-      sellingPrice: Number(params.sellingPrice),
+      price: Number(params.price),
     });
 
     res.status(200).json({

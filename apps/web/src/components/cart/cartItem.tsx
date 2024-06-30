@@ -82,7 +82,7 @@ export const CartItem = ({ item, handleRemoveCartItem }: Props) => {
             // onChangeQuantity?.(+e.currentTarget.value);
           }}
         />
-        <PriceTag price={item.sellingPrice} currency="" />
+        <PriceTag price={item.price} currency="" />
         <CloseButton
           aria-label={`Delete ${name} from cart`}
           onClick={() => {
@@ -108,7 +108,7 @@ export const CartItem = ({ item, handleRemoveCartItem }: Props) => {
             // onChangeQuantity?.(+e.currentTarget.value);
           }}
         />
-        <PriceTag price={item.sellingPrice} currency={''} />
+        <PriceTag price={item.price} currency={''} />
       </Flex>
     </Flex>
   );

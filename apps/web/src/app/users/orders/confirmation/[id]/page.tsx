@@ -17,6 +17,7 @@ import { FormatCurrency } from "@/utils/FormatCurrency";
 import { confirmPayment, updatePaymentStatus } from "@/services/payment.service";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { ORDER_STATUS } from "@/constants/order.constant";
 
 type Props = { params: { id: string } };
 
@@ -29,7 +30,7 @@ const Page = ({ params: { id } }: Props) => {
       let data = await getOrderByID(id);
       setOrder(data);
 
-      if (data.paymentStatus && data.paymentStatus !== "UNPAID") {
+      if (data.orderStatus && data.orderStatus !== ORDER_STATUS.menungguPembayaran) {
         router.push(`/users/orders/${id}`);
       }
     })()
@@ -83,7 +84,7 @@ const Page = ({ params: { id } }: Props) => {
                 type="file"
               />
             </FormControl>
-            {order?.paymentStatus && order?.paymentStatus === "UNPAID" && (
+            {order?.orderStatus && order?.orderStatus === ORDER_STATUS.menungguPembayaran && (
               <Stack spacing={6} direction={['column', 'row']} mt={15}>
                 <Button
                   onClick={() => {
