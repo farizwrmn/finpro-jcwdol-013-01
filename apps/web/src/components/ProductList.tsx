@@ -43,8 +43,9 @@ const ProductList = () => {
       <Box flex={'1'} gap={5} mb={10} h={{ base: '550px', sm: '600px' }}>
         <SimpleGrid overflowX={'scroll'} pb={10} pt={5}>
           <Stack flex={'row'} direction={'row'} h={'full'}>
-            {data.products?.map((product: any) => (
+            {data.products?.map((product: any, index: number) => (
               <Card
+                key={index}
                 maxW="xs"
                 shadow={'xl'}
                 w={'full'}
@@ -69,16 +70,16 @@ const ProductList = () => {
                         mt={5}
                         textAlign={'center'}
                       >
-                        {FormatCurrency(product.sellingPrice)}
+                        {FormatCurrency(product.price)}
                       </Text>
-                      <Text
+                      {/* <Text
                         color="red.600"
                         fontSize="lg"
                         textAlign={'center'}
                         as={'s'}
                       >
                         {FormatCurrency(product.slicedPrice)}
-                      </Text>
+                      </Text> */}
                     </Stack>
                   </Link>
                 </CardBody>

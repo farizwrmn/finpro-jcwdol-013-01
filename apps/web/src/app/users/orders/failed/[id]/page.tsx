@@ -15,6 +15,7 @@ import { getOrderByID } from "@/services/order.service";
 import { FormatCurrency } from "@/utils/FormatCurrency";
 import { updatePaymentStatus } from "@/services/payment.service";
 import { useRouter } from "next/navigation";
+import { ORDER_STATUS } from "@/constants/order.constant";
 
 type Props = { params: { id: string } };
 
@@ -26,8 +27,8 @@ const Page = ({ params: { id } }: Props) => {
     (async () => {
       let data = await getOrderByID(id);
 
-      if (data.paymentStatus === "UNPAID") {
-        const formData = { paymentStatus: "CANCELED" };
+      if (data.orderStatus === ORDER_STATUS.menungguPembayaran) {
+        const formData = { orderStatus: ORDER_STATUS.pembayaranGagal };
         await updatePaymentStatus(id, formData);
 
         data = await getOrderByID(id);
@@ -80,9 +81,9 @@ const Page = ({ params: { id } }: Props) => {
               <FormLabel>Payment Method</FormLabel>
               <Text>{order?.paymentMethod}</Text>
             </FormControl>
-            <FormControl id="paymentStatus">
+            <FormControl id="orderStatus">
               <FormLabel>Payment Status</FormLabel>
-              <Text>{order?.paymentStatus}</Text>
+              <Text>{order?.orderStatus}</Text>
             </FormControl>
             <FormControl id="paymentDate">
               <FormLabel>Payment Date</FormLabel>

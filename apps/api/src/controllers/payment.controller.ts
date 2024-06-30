@@ -22,8 +22,8 @@ const createPaymentController = async (
 const updatePaymentStatusController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { id } = req.params;
-    const { paymentStatus } = req.body;
-    const data = await updatePaymentStatusAction(id, paymentStatus);
+    const { orderStatus } = req.body;
+    const data = await updatePaymentStatusAction(id, orderStatus);
 
     res.status(200).json({
       message: "Update payment status success",

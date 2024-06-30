@@ -24,6 +24,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { deleteProduct, getProducts } from '@/services/product.service';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { FormatCurrency } from "@/utils/FormatCurrency";
 
 const Page = () => {
   const [data, setData] = useState({
@@ -90,8 +91,7 @@ const Page = () => {
                   <Th>No.</Th>
                   <Th>Name</Th>
                   <Th>Category</Th>
-                  <Th>Sliced Price</Th>
-                  <Th>Selling Price</Th>
+                  <Th>Price</Th>
                   <Th textAlign={'center'}>Actions</Th>
                 </Tr>
               </Thead>
@@ -101,8 +101,7 @@ const Page = () => {
                     <Td>{filters.size * (filters.page - 1) + index + 1}</Td>
                     <Td>{product.name}</Td>
                     <Td>{product.category.name}</Td>
-                    <Td>{product.slicedPrice}</Td>
-                    <Td>{product.sellingPrice}</Td>
+                    <Td>{FormatCurrency(product.price)}</Td>
                     <Td>
                       <ButtonGroup>
                         <Button

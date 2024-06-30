@@ -29,10 +29,10 @@ const createPaymentAction = async (orderId: string) => {
 
 const updatePaymentStatusAction = async (
   orderId: string,
-  paymentStatus: string
+  orderStatus: string
 ): Promise<Order> => {
   try {
-    const order = await updatePaymentStatusQuery(orderId, paymentStatus);
+    const order = await updatePaymentStatusQuery(orderId, orderStatus);
     return order;
   } catch (err) {
     throw err;

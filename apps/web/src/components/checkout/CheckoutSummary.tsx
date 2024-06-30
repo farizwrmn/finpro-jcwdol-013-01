@@ -54,13 +54,16 @@ export const CheckoutSummary = () => {
       const cartItems = dataCart.cartItems;
 
       const formData = {
-        orderNumber: crypto.randomUUID(),
+        orderNumber: "MIND-" + crypto.randomUUID().split("-")[0],
         userId: user.id,
         userAddressId: cart.userAddressId,
         storeId: cart.storeId,
         itemsPrice: cart.itemsPrice,
         shippingPrice: cart.shippingPrice,
-        discountPrice: cart.discountPrice,
+        itemsDiscount: cart.itemsDiscount,
+        shippingDiscount: cart.shippingDiscount,
+        voucherDiscount: cart.voucherDiscount,
+        referralDiscount: cart.referralDiscount,
         totalPrice: cart.totalPrice,
         paymentMethod: cart.paymentMethod,
         shippingCourier: cart.shippingCourier,
@@ -73,7 +76,7 @@ export const CheckoutSummary = () => {
             description: item.description,
             image: item.image,
             quantity: item.quantity,
-            price: item.sellingPrice
+            price: item.price
           }
         }),
       }
@@ -100,9 +103,20 @@ export const CheckoutSummary = () => {
       <Heading size="md">Order Summary</Heading>
 
       <Stack spacing="4">
-        <OrderSummaryItem label="Subtotal" value={FormatCurrency(cart.itemsPrice!)} />
-        <OrderSummaryItem label="Shipping" value={FormatCurrency(cart.shippingPrice!)} />
-        <OrderSummaryItem label="Discount" value={FormatCurrency(-cart.discountPrice!)} />
+        <OrderSummaryItem label="Product Subtotal" value={FormatCurrency(cart.itemsPrice!)} />
+        <OrderSummaryItem label="Shipping Subtotal" value={FormatCurrency(cart.shippingPrice!)} />
+        {cart.itemsDiscount && (
+          <OrderSummaryItem label="Product Discount" value={FormatCurrency(-cart.itemsDiscount!)} />
+        )}
+        {cart.shippingDiscount && (
+          <OrderSummaryItem label="Shipping Discount" value={FormatCurrency(-cart.shippingDiscount!)} />
+        )}
+        {cart.voucherDiscount && (
+          <OrderSummaryItem label="Voucher Discount" value={FormatCurrency(-cart.voucherDiscount!)} />
+        )}
+        {cart.referralDiscount && (
+          <OrderSummaryItem label="Referral Discount" value={FormatCurrency(-cart.referralDiscount!)} />
+        )}
         <Flex justify="space-between">
           <Text fontSize="lg" fontWeight="semibold">
             Total

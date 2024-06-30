@@ -2,32 +2,38 @@ import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
 
 interface Cart {
   itemsCount: number,
-  itemsPrice: number,
   storeId: string,
   userAddressId: string,
   origin: string,
   destination: string,
+  itemsPrice: number,
+  itemsDiscount: number,
+  shippingDiscount: number,
+  voucherDiscount: number,
+  referralDiscount: number,
+  totalPrice: number,
   shippingCourier: string,
   shippingService: string,
   shippingPrice: number,
   paymentMethod: string,
-  discountPrice: number,
-  totalPrice: number
 }
 
 const cartState = {
   itemsCount: 0,
-  itemsPrice: 0,
   storeId: '',
   userAddressId: '',
   origin: '',
   destination: '',
+  itemsPrice: 0,
+  itemsDiscount: 0,
+  shippingDiscount: 0,
+  voucherDiscount: 0,
+  referralDiscount: 0,
+  totalPrice: 0,
   shippingCourier: '',
   shippingService: '',
   shippingPrice: 0,
   paymentMethod: '',
-  discountPrice: 0,
-  totalPrice: 0
 } as Cart;
 
 const initialState = (
@@ -76,7 +82,13 @@ export const cartSlice = createSlice({
 });
 
 const updateCart = (state: Cart) => {
-  state.totalPrice = Number(state.itemsPrice) + Number(state.shippingPrice) - Number(state.discountPrice);
+  state.totalPrice = Number(state.itemsPrice)
+    + Number(state.shippingPrice)
+    - Number(state.itemsDiscount)
+    - Number(state.shippingDiscount)
+    - Number(state.voucherDiscount)
+    - Number(state.referralDiscount);
+
   localStorage.setItem("cart", JSON.stringify(state));
   return state;
 }
