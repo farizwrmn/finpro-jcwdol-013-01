@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Avatar,
   Box,
@@ -10,9 +12,15 @@ import {
   Text,
 } from '@chakra-ui/react';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
+import { getCategories } from '@/services/category.service';
 
 const Category = () => {
+  const [data, setData] = useState({
+    categories: [],
+    pages: 1,
+  });
+
   return (
     <>
       <Heading textAlign={'center'} mt={{ base: '5', sm: '-20' }} p={5}>
