@@ -24,9 +24,16 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  Image,
 } from '@chakra-ui/react';
 import { FiHome, FiMenu, FiBell, FiChevronDown, FiUser } from 'react-icons/fi';
-import { FaIceCream, FaStore } from 'react-icons/fa';
+import {
+  FaAddressBook,
+  FaAtlas,
+  FaIceCream,
+  FaPager,
+  FaStore,
+} from 'react-icons/fa';
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -44,19 +51,19 @@ const LinkItems: Array<LinkItemProps> = [
   { name: 'Profile', icon: FiUser, href: '/users/profile', key: 'Profile' },
   {
     name: 'Change Password',
-    icon: FaStore,
+    icon: FaPager,
     href: '/users/change-password',
     key: 'Change Password',
   },
   {
     name: 'Address',
-    icon: FaIceCream,
+    icon: FaAddressBook,
     href: '/users/address',
     key: 'Address',
   },
   {
     name: 'Orders',
-    icon: FaIceCream,
+    icon: FaAtlas,
     href: '/users/orders',
     key: 'Orders',
   },
@@ -113,10 +120,17 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       // pt={10}
       {...rest}
     >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Dashboard
-        </Text>
+      <Flex
+        h="20"
+        alignItems="center"
+        mx="8"
+        mb={10}
+        mt={5}
+        justifyContent="space-between"
+      >
+        <Link href="/">
+          <Image src="/assets/images/logo.png" alt="logo" w={150} />
+        </Link>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
@@ -193,14 +207,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         icon={<FiMenu />}
       />
 
-      <Text
-        display={{ base: 'flex', md: 'none' }}
-        fontSize="2xl"
-        fontFamily="monospace"
-        fontWeight="bold"
-      >
-        Dashboard
-      </Text>
+      <Link href="/">
+        <Image src="/assets/images/logo.png" alt="logo" w={150} />
+      </Link>
 
       <HStack spacing={{ base: '0', md: '6' }}>
         <IconButton

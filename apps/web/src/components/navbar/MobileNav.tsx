@@ -66,10 +66,16 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
           borderStyle={'solid'}
           borderColor={useColorModeValue('gray.200', 'gray.700')}
           align={'start'}
+          alignItems="center"
         >
           {children &&
             children.map((child) => (
-              <Link key={child.label} py={2} href={child.href}>
+              <Link
+                key={child.label}
+                py={2}
+                alignItems="center"
+                href={child.href}
+              >
                 {child.label}
               </Link>
             ))}
