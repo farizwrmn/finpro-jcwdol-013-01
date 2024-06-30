@@ -23,10 +23,14 @@ import {
   MenuDivider,
   MenuItem,
   MenuList,
+  Image,
 } from '@chakra-ui/react';
 import { FiHome, FiMenu, FiBell, FiChevronDown, FiUser } from 'react-icons/fi';
 import {
+  FaApplePay,
   FaBirthdayCake,
+  FaCashRegister,
+  FaCcDiscover,
   FaChartArea,
   FaChartLine,
   FaIceCream,
@@ -54,7 +58,7 @@ const LinkItems: Array<LinkItemProps> = [
   { name: 'Store', icon: FaStore, href: '/admin/stores', key: 'Store' },
   {
     name: 'Category',
-    icon: FaIceCream,
+    icon: FaCcDiscover,
     href: '/admin/categories',
     key: 'Category',
   },
@@ -66,7 +70,7 @@ const LinkItems: Array<LinkItemProps> = [
   },
   {
     name: 'Transaction',
-    icon: FaShopify,
+    icon: FaCashRegister,
     href: '/admin/transactions',
     key: 'Transaction',
   },
@@ -134,10 +138,17 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       // pt={10}
       {...rest}
     >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Dashboard
-        </Text>
+      <Flex
+        h="20"
+        alignItems="center"
+        mb={10}
+        mt={5}
+        mx="8"
+        justifyContent="space-between"
+      >
+        <Link href="/">
+          <Image src="/assets/images/logo.png" alt="logo" w={150} />
+        </Link>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
@@ -214,14 +225,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         icon={<FiMenu />}
       />
 
-      <Text
-        display={{ base: 'flex', md: 'none' }}
-        fontSize="2xl"
-        fontFamily="monospace"
-        fontWeight="bold"
-      >
-        Dashboard
-      </Text>
+      <Link href="/">
+        <Image src="/assets/images/logo.png" alt="logo" w={150} />
+      </Link>
 
       <HStack spacing={{ base: '0', md: '6' }}>
         <IconButton
