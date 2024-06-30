@@ -124,16 +124,6 @@ const Page = () => {
                         <Button
                           colorScheme="blue"
                           onClick={() => {
-                            router.push(
-                              `/admin/products/discounts/${product.id}`,
-                            );
-                          }}
-                        >
-                          Discount
-                        </Button>
-                        <Button
-                          colorScheme="blue"
-                          onClick={() => {
                             router.push(`/admin/products/edit/${product.id}`);
                           }}
                         >

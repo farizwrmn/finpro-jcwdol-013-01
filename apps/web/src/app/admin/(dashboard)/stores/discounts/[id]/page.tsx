@@ -20,12 +20,18 @@ import {
 import { useRouter } from 'next/navigation';
 import { addStock, getStocksByProductID } from '@/services/stock.service';
 import { getProductByID } from '@/services/product.service';
+import { getStoreByID } from '@/services/store.service';
+import {
+  getDiscounts,
+  getDiscountsByStoreID,
+} from '@/services/discount.service';
+import { FormatCurrency } from '@/utils/FormatCurrency';
 
 type Props = { params: { id: string } };
 
 const Page = ({ params: { id } }: Props) => {
-  const [stocks, setStocks] = useState<any[]>([]);
-  const [product, setProduct] = useState<any>();
+  const [discounts, setDiscounts] = useState<any[]>([]);
+  const [store, setStore] = useState<any>();
 
   const [formData, setFormData] = useState({
     initialStock: '',
@@ -34,17 +40,12 @@ const Page = ({ params: { id } }: Props) => {
 
   useEffect(() => {
     (async () => {
-      const resultProduct = await getProductByID(id);
-      setProduct(resultProduct);
+      const resultStore = await getStoreByID(id);
+      setStore(resultStore);
+      const resultDiscounts = await getDiscountsByStoreID(id);
+      setDiscounts(resultDiscounts);
     })();
   }, [id]);
-
-  useEffect(() => {
-    async () => {
-      const data = await getStocksByProductID(id);
-      setFormData(data);
-    };
-  });
 
   type ChangeEvent =
     | React.ChangeEvent<HTMLInputElement>
@@ -76,7 +77,7 @@ const Page = ({ params: { id } }: Props) => {
   return (
     <Box>
       <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-        Discount for Product "{product?.name}"
+        Discount for Store "{store?.name}"
       </Text>
       <Card my={10}>
         <CardBody>
@@ -84,10 +85,10 @@ const Page = ({ params: { id } }: Props) => {
             <Button
               colorScheme="blue"
               onClick={() => {
-                router.push(`/admin/products/discounts/${id}/create`);
+                router.push(`/admin/stores/discounts/${id}/create`);
               }}
             >
-              Add product
+              Add Discount
             </Button>
           </Flex>
           <TableContainer>
@@ -95,35 +96,43 @@ const Page = ({ params: { id } }: Props) => {
               <Thead>
                 <Tr>
                   <Th>No.</Th>
-                  <Th>Product Name</Th>
-                  <Th>Base Discount</Th>
-                  <Th>Used Discount</Th>
-                  <Th>Remaining Discount</Th>
+                  <Th>Discount Type</Th>
+                  <Th>Amount</Th>
+                  <Th>Unit</Th>
+                  <Th>Minimum Price</Th>
+                  <Th>Maximum Discount</Th>
+                  <Th>Product</Th>
                   <Th textAlign={'start'}>Action</Th>
                 </Tr>
               </Thead>
               <Tbody alignContent={'center'}>
-                {/* {product?.map((product: any, index: number) => ( */}
-                {/* <Tr key={product.id}> */}
-                {/* <Td>{index + 1}</Td> */}
-                {/* <Td>{product.name}</Td> */}
-                {/* <Td>{product.baseStock}</Td> */}
-                {/* <Td>{product.usedStock}</Td> */}
-                {/* <Td>{product.remainingStock}</Td> */}
-                {/* <Td>
+                {discounts?.map((discount: any, index: number) => (
+                  <Tr key={discount.id}>
+                    <Td>{index + 1}</Td>
+                    <Td>{discount.type}</Td>
+                    <Td>
+                      {discount.unit === 'Amount'
+                        ? FormatCurrency(discount.amount)
+                        : discount.amount + '%'}
+                    </Td>
+                    <Td>{discount.unit}</Td>
+                    <Td>{FormatCurrency(discount.minimumPrice)}</Td>
+                    <Td>{FormatCurrency(discount.maximumDiscount)}</Td>
+                    <Td>{discount.product?.name}</Td>
+                    <Td>
                       <ButtonGroup>
                         <Button
                           colorScheme="green"
                           onClick={() => {
-                            router.push(`/admin/products/discounts`);
+                            router.push(`/admin/stores/discounts`);
                           }}
                         >
-                          Update Stock
+                          Edit
                         </Button>
                       </ButtonGroup>
                     </Td>
                   </Tr>
-                ))} */}
+                ))}
               </Tbody>
             </Table>
           </TableContainer>

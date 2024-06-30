@@ -47,7 +47,7 @@ const Page = () => {
     try {
       const user = await createUser(formData);
       if (!user) throw new Error('Create user failed!');
-      alert('Create user success, please open email to verify');
+      alert('Create user success');
       router.push('/admin/users');
     } catch (err) {
       console.error(err);

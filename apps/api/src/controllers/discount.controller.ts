@@ -1,4 +1,8 @@
-import createDiscountAction from '@/actions/discount.action';
+import {
+  createDiscountAction,
+  getDiscountAction,
+  getDiscountsByStoreIDAction,
+} from '@/actions/discount.action';
 import { Request, Response, NextFunction } from 'express';
 
 const createDiscountController = async (
@@ -10,10 +14,10 @@ const createDiscountController = async (
     const params = req.body;
     const data = await createDiscountAction({
       type: params.type,
-      amount: params.amount,
+      amount: Number(params.amount),
       unit: params.unit,
-      minimumPrice: params.minimumPrice,
-      maximumDiscount: params.maximumDiscount,
+      minimumPrice: Number(params.minimumPrice),
+      maximumDiscount: Number(params.maximumDiscount),
       storeId: params.storeId,
       productId: params.productId,
     });
@@ -27,4 +31,44 @@ const createDiscountController = async (
   }
 };
 
-export default createDiscountController;
+const getDiscountController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const filters = req.query;
+    const data = await getDiscountAction(filters);
+
+    res.status(200).json({
+      message: 'Get discount success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getDiscountsByStoreIDController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { storeId } = req.params;
+    const data = await getDiscountsByStoreIDAction(storeId);
+
+    res.status(200).json({
+      message: 'Get discounts success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export {
+  createDiscountController,
+  getDiscountController,
+  getDiscountsByStoreIDController,
+};
