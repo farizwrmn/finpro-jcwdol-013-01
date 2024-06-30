@@ -81,12 +81,7 @@ export default function Navbar() {
           </Flex>
           <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
             <Link href="/">
-              <Image
-                src="/assets/images/tokpedy.png"
-                alt="logo"
-                w={170}
-                mt={2}
-              />
+              <Image src="/assets/images/logo.png" alt="logo" w={170} mt={2} />
             </Link>
             <Flex display={{ base: 'none', md: 'flex' }} m={'auto'}>
               <DesktopNav />
