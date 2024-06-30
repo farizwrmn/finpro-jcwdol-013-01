@@ -17,6 +17,5 @@ export interface ICartItem {
   description: string;
   image?: string;
   quantity: number;
-  slicedPrice: number;
-  sellingPrice: number;
+  price: number;
 }

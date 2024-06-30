@@ -4,5 +4,5 @@ export interface IPayment {
 
 export interface IPaymentStatus {
   orderId: string;
-  paymentStatus: string;
+  orderStatus: string;
 }

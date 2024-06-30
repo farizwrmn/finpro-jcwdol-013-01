@@ -72,6 +72,7 @@ model User {
   emailVerified         DateTime?      @map("email_verified")
   longitude             Float?
   latitude              Float?
+  referralCode          String?        @map("referral_code")
   createdDate           DateTime       @default(now()) @map(name: "created_date")
   updatedDate           DateTime       @updatedAt @map(name: "updated_date")
   roleId                String         @map(name: "role_id")
@@ -86,6 +87,7 @@ model User {
   accounts              Account[]
   sessions              Session[]
   userStores            UserStore[]
+  userVouchers          UserVoucher[]
 
   @@map(name: "users")
 }
@@ -159,8 +161,7 @@ model Product {
   slug          String         @unique
   description   String
   image         String?        @db.VarChar(1000)
-  slicedPrice   Float          @default(0) @map(name: "sliced_price")
-  sellingPrice  Float          @default(0) @map(name: "selling_price")
+  price         Float          @default(0)
   isActive      Boolean        @default(true) @map(name: "is_active")
   createdByUser User?          @relation("CreatedProducts", fields: [createdBy], references: [id])
   createdBy     String?        @map(name: "created_by")
@@ -219,18 +220,35 @@ model StockHistory {
 }
 
 model Discount {
-  id              String   @id @default(uuid())
+  id              String        @id @default(uuid())
   type            String
-  amount          Float?   @default(0)
+  amount          Float?        @default(0)
   unit            String?
-  minimumPrice    Float?   @default(0) @map(name: "minimum_price")
-  maximumDiscount Float?   @default(0) @map(name: "maximum_discount")
-  store           Store    @relation(fields: [storeId], references: [id])
-  storeId         String   @map(name: "store_id")
-  product         Product? @relation(fields: [productId], references: [id])
-  productId       String?  @map(name: "product_id")
+  minimumPrice    Float?        @default(0) @map(name: "minimum_price")
+  maximumDiscount Float?        @default(0) @map(name: "maximum_discount")
+  minimumOrders   Float?        @default(0) @map(name: "minimum_orders")
+  store           Store         @relation(fields: [storeId], references: [id])
+  storeId         String        @map(name: "store_id")
+  product         Product?      @relation(fields: [productId], references: [id])
+  productId       String?       @map(name: "product_id")
+  userVouchers    UserVoucher[]
 
   @@map(name: "discounts")
+}
+
+model UserVoucher {
+  id          String    @id @default(uuid())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String    @map(name: "user_id")
+  discount    Discount  @relation(fields: [discountId], references: [id])
+  discountId  String    @map(name: "discount_id")
+  order       Order?    @relation(fields: [orderId], references: [id])
+  orderId     String?   @map(name: "order_id")
+  isUsed      Boolean   @default(false) @map(name: "is_used")
+  createdDate DateTime  @default(now()) @map(name: "created_date")
+  expiredDate DateTime? @map(name: "expired_date")
+
+  @@map(name: "user_vouchers")
 }
 
 model Cart {
@@ -248,61 +266,65 @@ model Cart {
 }
 
 model CartItem {
-  id           String  @id @default(uuid())
-  name         String
-  slug         String
-  description  String
-  image        String? @db.VarChar(1000)
-  quantity     Float   @default(0)
-  slicedPrice  Float   @default(0) @map(name: "sliced_price")
-  sellingPrice Float   @default(0) @map(name: "selling_price")
-  cart         Cart    @relation(fields: [cartId], references: [id])
-  cartId       String  @map(name: "cart_id")
-  product      Product @relation(fields: [productId], references: [id])
-  productId    String  @map(name: "product_id")
-
-  @@map(name: "cart_items")
-}
-
-model Order {
-  id              String      @id @default(uuid())
-  orderNumber     String      @map(name: "order_number")
-  orderDate       DateTime    @default(now()) @map(name: "order_date")
-  user            User        @relation(fields: [userId], references: [id])
-  userId          String      @map(name: "user_id")
-  userAddress     UserAddress @relation(fields: [userAddressId], references: [id])
-  userAddressId   String      @map(name: "user_address_id")
-  store           Store       @relation(fields: [storeId], references: [id])
-  storeId         String      @map(name: "store_id")
-  itemsPrice      Float       @default(0) @map(name: "items_price")
-  shippingPrice   Float       @default(0) @map(name: "shipping_price")
-  discountPrice   Float       @default(0) @map(name: "discount_price")
-  totalPrice      Float       @default(0) @map(name: "total_price")
-  paymentMethod   String      @map(name: "payment_method")
-  paymentStatus   String      @default("UNPAID") @map(name: "payment_status")
-  paymentImage    String?     @map(name: "payment_image")
-  paymentDate     DateTime?   @map(name: "payment_date")
-  shippingCourier String      @map(name: "shipping_courier")
-  shippingService String      @map(name: "shipping_service")
-  shippingStatus  String      @default("UNDELIVERED") @map(name: "shipping_status")
-  shippingDate    DateTime?   @map(name: "shipping_date")
-  orderItems      OrderItem[]
-
-  @@map(name: "orders")
-}
-
-model OrderItem {
   id          String  @id @default(uuid())
   name        String
   slug        String
   description String
   image       String? @db.VarChar(1000)
   quantity    Float   @default(0)
-  price       Float   @default(0) @map(name: "price")
-  order       Order   @relation(fields: [orderId], references: [id])
-  orderId     String  @map(name: "order_id")
+  price       Float   @default(0)
+  cart        Cart    @relation(fields: [cartId], references: [id])
+  cartId      String  @map(name: "cart_id")
   product     Product @relation(fields: [productId], references: [id])
   productId   String  @map(name: "product_id")
+
+  @@map(name: "cart_items")
+}
+
+model Order {
+  id               String        @id @default(uuid())
+  orderNumber      String        @map(name: "order_number")
+  orderDate        DateTime      @default(now()) @map(name: "order_date")
+  user             User          @relation(fields: [userId], references: [id])
+  userId           String        @map(name: "user_id")
+  userAddress      UserAddress   @relation(fields: [userAddressId], references: [id])
+  userAddressId    String        @map(name: "user_address_id")
+  store            Store         @relation(fields: [storeId], references: [id])
+  storeId          String        @map(name: "store_id")
+  itemsPrice       Float         @default(0) @map(name: "items_price")
+  shippingPrice    Float         @default(0) @map(name: "shipping_price")
+  itemsDiscount    Float         @default(0) @map(name: "itemsDiscount")
+  shippingDiscount Float         @default(0) @map(name: "shippingDiscount")
+  voucherDiscount  Float         @default(0) @map(name: "voucherDiscount")
+  referralDiscount Float         @default(0) @map(name: "referralDiscount")
+  totalPrice       Float         @default(0) @map(name: "total_price")
+  orderStatus      String        @default("Menunggu Pembayaran") @map(name: "order_status")
+  paymentMethod    String        @map(name: "payment_method")
+  paymentImage     String?       @map(name: "payment_image")
+  paymentDate      DateTime?     @map(name: "payment_date")
+  shippingCourier  String        @map(name: "shipping_courier")
+  shippingService  String        @map(name: "shipping_service")
+  shippingDate     DateTime?     @map(name: "shipping_date")
+  orderItems       OrderItem[]
+  userVouchers     UserVoucher[]
+
+  @@map(name: "orders")
+}
+
+model OrderItem {
+  id            String  @id @default(uuid())
+  name          String
+  slug          String
+  description   String
+  image         String? @db.VarChar(1000)
+  quantity      Float   @default(0)
+  bonusQuantity Float   @default(0) @map(name: "bonus_quantity")
+  price         Float   @default(0)
+  discount      Float   @default(0)
+  order         Order   @relation(fields: [orderId], references: [id])
+  orderId       String  @map(name: "order_id")
+  product       Product @relation(fields: [productId], references: [id])
+  productId     String  @map(name: "product_id")
 
   @@map(name: "order_items")
 }

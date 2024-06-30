@@ -26,8 +26,7 @@ const Page = () => {
     name: '',
     slug: '',
     description: '',
-    slicedPrice: '',
-    sellingPrice: '',
+    price: 0,
     categoryId: '',
   });
 
@@ -115,25 +114,14 @@ const Page = () => {
                     onChange={handleChange}
                   />
                 </FormControl>
-                <FormControl id="slicedPrice" isRequired>
-                  <FormLabel>Sliced Price</FormLabel>
+                <FormControl id="price" isRequired>
+                  <FormLabel>Price</FormLabel>
                   <Input
-                    name="slicedPrice"
-                    placeholder="Sliced Price"
+                    name="price"
+                    placeholder="Price"
                     _placeholder={{ color: 'gray.500' }}
                     type="number"
-                    value={formData.slicedPrice}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-                <FormControl id="sellingPrice" isRequired>
-                  <FormLabel>Selling Price</FormLabel>
-                  <Input
-                    name="sellingPrice"
-                    placeholder="Selling Price"
-                    _placeholder={{ color: 'gray.500' }}
-                    type="number"
-                    value={formData.sellingPrice}
+                    value={formData.price}
                     onChange={handleChange}
                   />
                 </FormControl>

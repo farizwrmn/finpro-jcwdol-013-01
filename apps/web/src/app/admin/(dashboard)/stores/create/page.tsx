@@ -18,6 +18,7 @@ import {
 import { useRouter } from "next/navigation";
 import { getCities, getProvinces, getSubdistricts } from "@/services/shipping.service";
 import { createStore } from "@/services/store.service";
+import Map from "@/components/stores/Map";
 
 const Page = () => {
   const [provinces, setProvinces] = useState<any[]>([]);
@@ -33,8 +34,8 @@ const Page = () => {
     cityName: '',
     subdistrictId: '',
     subdistrictName: '',
-    longitude: '',
-    latitude: '',
+    longitude: 0,
+    latitude: 0,
   });
 
   const router = useRouter();
@@ -71,6 +72,14 @@ const Page = () => {
       ...formData,
       [e.target.name]: e.target.value
     })
+  }
+
+  const handleChangeLonglat = (longitude: number, latitude: number) => {
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      longitude,
+      latitude
+    }))
   }
 
   const handleChangeProvince = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -217,6 +226,9 @@ const Page = () => {
                     ))}
                   </Select>
                 </FormControl>
+                <Map
+                  handleChangeLonglat={handleChangeLonglat}
+                />
                 <FormControl id="longitude">
                   <FormLabel>Longitude</FormLabel>
                   <Input
@@ -225,7 +237,7 @@ const Page = () => {
                     _placeholder={{ color: 'gray.500' }}
                     type="text"
                     value={formData.longitude}
-                    onChange={handleChange}
+                    readOnly
                   />
                 </FormControl>
                 <FormControl id="latitude">
@@ -236,7 +248,7 @@ const Page = () => {
                     _placeholder={{ color: 'gray.500' }}
                     type="text"
                     value={formData.latitude}
-                    onChange={handleChange}
+                    readOnly
                   />
                 </FormControl>
                 <Stack spacing={6} direction={['column', 'row']}>

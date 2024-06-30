@@ -18,6 +18,7 @@ import {
 import { useRouter } from "next/navigation";
 import { getCities, getProvinces, getSubdistricts } from "@/services/shipping.service";
 import { getStoreByID, updateStore } from "@/services/store.service";
+import Map from "@/components/stores/Map";
 
 type Props = { params: { id: string } };
 
@@ -35,8 +36,8 @@ const Page = ({ params: { id } }: Props) => {
     cityName: '',
     subdistrictId: '',
     subdistrictName: '',
-    longitude: '',
-    latitude: '',
+    longitude: 0,
+    latitude: 0,
   });
 
   const router = useRouter();
@@ -91,6 +92,14 @@ const Page = ({ params: { id } }: Props) => {
       ...formData,
       [e.target.name]: e.target.value
     })
+  }
+
+  const handleChangeLonglat = (longitude: number, latitude: number) => {
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      longitude,
+      latitude
+    }))
   }
 
   const handleChangeProvince = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -237,6 +246,9 @@ const Page = ({ params: { id } }: Props) => {
                     ))}
                   </Select>
                 </FormControl>
+                <Map
+                  handleChangeLonglat={handleChangeLonglat}
+                />
                 <FormControl id="longitude">
                   <FormLabel>Longitude</FormLabel>
                   <Input

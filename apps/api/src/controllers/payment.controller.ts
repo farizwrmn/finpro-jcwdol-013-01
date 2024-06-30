@@ -1,4 +1,4 @@
-import { createPaymentAction, updatePaymentStatusAction } from "@/actions/payment.action";
+import { confirmPaymentAction, createPaymentAction, updatePaymentStatusAction } from "@/actions/payment.action";
 import { Request, Response, NextFunction } from 'express';
 
 const createPaymentController = async (
@@ -22,8 +22,8 @@ const createPaymentController = async (
 const updatePaymentStatusController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { id } = req.params;
-    const { paymentStatus } = req.body;
-    const data = await updatePaymentStatusAction(id, paymentStatus);
+    const { orderStatus } = req.body;
+    const data = await updatePaymentStatusAction(id, orderStatus);
 
     res.status(200).json({
       message: "Update payment status success",
@@ -34,7 +34,23 @@ const updatePaymentStatusController = async (req: Request, res: Response, next: 
   }
 }
 
+const confirmPaymentController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const { file } = req;
+    const data = await confirmPaymentAction(id, file?.filename as string);
+
+    res.status(200).json({
+      message: "Confirm payment success",
+      data
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
 export {
   createPaymentController,
   updatePaymentStatusController,
+  confirmPaymentController,
 };

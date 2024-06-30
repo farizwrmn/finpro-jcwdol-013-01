@@ -14,8 +14,10 @@ import {
 } from '@chakra-ui/react';
 import { getOrderByID } from "@/services/order.service";
 import { FormatCurrency } from "@/utils/FormatCurrency";
-import { updatePaymentStatus } from "@/services/payment.service";
+import { confirmPayment, updatePaymentStatus } from "@/services/payment.service";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { ORDER_STATUS } from "@/constants/order.constant";
 
 type Props = { params: { id: string } };
 
@@ -25,13 +27,27 @@ const Page = ({ params: { id } }: Props) => {
 
   useEffect(() => {
     (async () => {
-      const data = await getOrderByID(id);
+      let data = await getOrderByID(id);
       setOrder(data);
+
+      if (data.orderStatus && data.orderStatus !== ORDER_STATUS.menungguPembayaran) {
+        router.push(`/users/orders/${id}`);
+      }
     })()
   }, [id, router]);
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
+    try {
+      const formData = new FormData();
+      const inputFile = document.getElementById("paymentImage") as HTMLInputElement;
+      formData.append("paymentImage", inputFile?.files?.item(0) as File);
 
+      await confirmPayment(id, formData);
+      toast.success("Confirmation Payment Success");
+      router.push(`/users/orders/${id}`);
+    } catch (err) {
+      toast.error("Confirmation Payment Failed");
+    }
   }
 
   return (
@@ -68,7 +84,7 @@ const Page = ({ params: { id } }: Props) => {
                 type="file"
               />
             </FormControl>
-            {order?.paymentStatus && order?.paymentStatus === "UNPAID" && (
+            {order?.orderStatus && order?.orderStatus === ORDER_STATUS.menungguPembayaran && (
               <Stack spacing={6} direction={['column', 'row']} mt={15}>
                 <Button
                   onClick={() => {
