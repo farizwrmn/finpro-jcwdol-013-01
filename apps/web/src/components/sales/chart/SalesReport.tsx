@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import BarChart from './BarChart';
 import LineChart from './LineChart';
 import PieChart from './PieChart';
@@ -17,6 +17,7 @@ import {
 } from '@chakra-ui/react';
 import DropDownYear from './DropDownYear';
 import DropDownStore from './DropDownStore';
+import { getSalesReportPerMonth } from '@/services/report.service';
 
 // Sales Data Interface (replace with your actual data structure)
 interface SalesData {
@@ -36,6 +37,8 @@ const salesData: SalesData[] = [
 ];
 
 const DashboardSalesReport: React.FC = () => {
+  const [monthData, setMonthData] = useState<any[]>([]);
+
   const monthLabels = [
     'January',
     'February',
@@ -54,7 +57,7 @@ const DashboardSalesReport: React.FC = () => {
   const monthDatasets = [
     {
       label: 'Penjualan',
-      data: monthLabels.map(() => 100),
+      data: monthData,
       backgroundColor: 'rgba(255, 99, 132, 0.5)',
     },
   ];
@@ -152,6 +155,13 @@ const DashboardSalesReport: React.FC = () => {
       borderWidth: 1,
     },
   ];
+
+  useEffect(() => {
+    (async () => {
+      const dataMonth = await getSalesReportPerMonth({});
+      setMonthData(dataMonth);
+    })();
+  }, []);
 
   return (
     <Box>
