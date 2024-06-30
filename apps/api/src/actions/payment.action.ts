@@ -1,6 +1,6 @@
 import { IPayment } from "@/interfaces/payment.interface";
 import { getOrderByIDQuery } from "@/queries/order.query";
-import { createMidtransTransactionQuery, createXenditInvoiceQuery, updatePaymentStatusQuery } from "@/queries/payment.query";
+import { confirmPaymentQuery, createMidtransTransactionQuery, createXenditInvoiceQuery, updatePaymentStatusQuery } from "@/queries/payment.query";
 import { Order } from "@prisma/client";
 
 const createPaymentAction = async (orderId: string) => {
@@ -28,11 +28,25 @@ const createPaymentAction = async (orderId: string) => {
 };
 
 const updatePaymentStatusAction = async (
-  id: string,
+  orderId: string,
   paymentStatus: string
 ): Promise<Order> => {
   try {
-    const order = await updatePaymentStatusQuery(id, paymentStatus);
+    const order = await updatePaymentStatusQuery(orderId, paymentStatus);
+    return order;
+  } catch (err) {
+    throw err;
+  }
+}
+
+const confirmPaymentAction = async (
+  orderId: string,
+  paymentImage: string
+): Promise<Order> => {
+  try {
+    if (!paymentImage) throw new Error('Please upload payment proof');
+
+    const order = await confirmPaymentQuery(orderId, paymentImage);
     return order;
   } catch (err) {
     throw err;
@@ -42,4 +56,5 @@ const updatePaymentStatusAction = async (
 export {
   createPaymentAction,
   updatePaymentStatusAction,
+  confirmPaymentAction,
 };

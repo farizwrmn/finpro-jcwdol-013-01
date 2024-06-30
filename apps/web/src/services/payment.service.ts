@@ -31,3 +31,25 @@ export const updatePaymentStatus = async (orderId: string, formData: any) => {
     console.error(err);
   }
 };
+
+export const confirmPayment = async (orderId: string, formData: FormData) => {
+  try {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    const { data } = await instance.patch(
+      `/payment/confirm/${orderId}`,
+      formData,
+      config,
+    );
+    const order = data?.data;
+    return order;
+  } catch (err) {
+    console.log(err);
+    alert('Update avatar failed');
+  }
+};
