@@ -16,8 +16,7 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 
-import { getStoreByID, getStores } from '@/services/store.service';
-import { createStock } from '@/services/stock.service';
+import { getStoreByID } from '@/services/store.service';
 import { createDiscount, getDiscounts } from '@/services/discount.service';
 import { getProducts } from '@/services/product.service';
 
@@ -35,6 +34,7 @@ const Page = ({ params: { id: storeId } }: Props) => {
     minimumPrice: 0,
     maximumDiscount: 0,
     productId: '',
+    freeShipping: 0,
   });
 
   const router = useRouter();
@@ -99,6 +99,8 @@ const Page = ({ params: { id: storeId } }: Props) => {
                     <option value="Product Discount">Product Discount</option>
                     <option value="Minimum Purchase">Minimum Purchase</option>
                     <option value="Buy 1 Get 1">Buy 1 Get 1</option>
+                    <option value="Free Shipping">Free Shipping</option>
+                    <option value="Referral Code">Referral Code</option>
                   </Select>
                 </FormControl>
                 {(formData.type === 'Product Discount' ||
@@ -156,6 +158,22 @@ const Page = ({ params: { id: storeId } }: Props) => {
                         />
                       </FormControl>
                     )}
+                  </>
+                )}
+
+                {formData.type === 'Free Shipping' && (
+                  <>
+                    <FormControl id="freeShipping" isRequired>
+                      <FormLabel>Minimum Order</FormLabel>
+                      <Input
+                        name="freeShipping"
+                        placeholder="Minimum Order"
+                        _placeholder={{ color: 'gray.500' }}
+                        type="number"
+                        value={formData.freeShipping}
+                        onChange={handleChange}
+                      />
+                    </FormControl>
                   </>
                 )}
 
