@@ -23,6 +23,7 @@ import { getOrderByID } from "@/services/order.service";
 import { FormatCurrency } from "@/utils/FormatCurrency";
 import { createPayment, updatePaymentStatus } from "@/services/payment.service";
 import { toast } from "react-toastify";
+import { ORDER_STATUS } from "@/constants/order.constant";
 
 type Props = { params: { id: string } };
 
@@ -49,7 +50,7 @@ const Page = ({ params: { id } }: Props) => {
 
   const handleCancel = async () => {
     try {
-      const formData = { paymentStatus: "CANCELED" };
+      const formData = { orderStatus: ORDER_STATUS.dibatalkan };
       const order = await updatePaymentStatus(id, formData);
       if (!order?.id) throw new Error("Cancel order failed");
 
@@ -103,9 +104,9 @@ const Page = ({ params: { id } }: Props) => {
               <FormLabel>Payment Method</FormLabel>
               <Text>{order?.paymentMethod}</Text>
             </FormControl>
-            <FormControl id="paymentStatus">
+            <FormControl id="orderStatus">
               <FormLabel>Payment Status</FormLabel>
-              <Text>{order?.paymentStatus}</Text>
+              <Text>{order?.orderStatus}</Text>
             </FormControl>
             <FormControl id="paymentDate">
               <FormLabel>Payment Date</FormLabel>
@@ -123,7 +124,19 @@ const Page = ({ params: { id } }: Props) => {
               <FormLabel>Shipping Date</FormLabel>
               <Text>{order?.shippingDate}</Text>
             </FormControl>
-            {order?.paymentStatus && order?.paymentStatus === "UNPAID" && (
+            {order?.paymentMethod === "BANK" &&
+              order?.orderStatus === ORDER_STATUS.menungguKonfirmasiPembayaran &&
+              order?.paymentImage && (
+                <FormControl id="orderStatus">
+                  <FormLabel>Payment Proof</FormLabel>
+                  <img
+                    src={`http://localhost:8000/public/confirmation/${order?.paymentImage}`}
+                    style={{ height: 300 }}
+                    alt="Payment Proof"
+                  />
+                </FormControl>
+              )}
+            {order?.orderStatus && order?.orderStatus === ORDER_STATUS.menungguPembayaran ? (
               <Stack spacing={6} direction={['column', 'row']} mt={15}>
                 <Button
                   onClick={handleCancel}
@@ -144,6 +157,21 @@ const Page = ({ params: { id } }: Props) => {
                     bg: 'blue.500',
                   }}>
                   Pay Order
+                </Button>
+              </Stack>
+            ) : (
+              <Stack spacing={6} direction={['column', 'row']} mt={15}>
+                <Button
+                  onClick={() => {
+                    router.push(`/users/orders`)
+                  }}
+                  bg={'blue.400'}
+                  color={'white'}
+                  w="full"
+                  _hover={{
+                    bg: 'blue.500',
+                  }}>
+                  Back
                 </Button>
               </Stack>
             )}

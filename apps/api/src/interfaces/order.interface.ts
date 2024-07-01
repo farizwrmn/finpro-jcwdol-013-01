@@ -7,7 +7,10 @@ export interface IOrder {
   storeId: string;
   itemsPrice: number;
   shippingPrice: number;
-  discountPrice: number;
+  itemsDiscount: number;
+  shippingDiscount: number;
+  voucherDiscount: number;
+  referralDiscount: number;
   totalPrice: number;
   paymentMethod: string;
   shippingCourier: string;

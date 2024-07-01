@@ -5,8 +5,7 @@ export interface IProduct {
   slug: string;
   description: string;
   image?: string;
-  slicedPrice: number;
-  sellingPrice: number;
+  price: number;
   createdBy?: string;
   updatedBy?: string;
   categoryId: string;

@@ -16,6 +16,7 @@ import shippingRouter from './routes/shipping.route';
 import orderRouter from './routes/order.route';
 import paymentRouter from './routes/payment.route';
 import discountsRouter from './routes/discount.route';
+import reportRouter from './routes/report.route';
 
 const PORT: number = Number(API_PORT) || 8000;
 const app: Application = express();
@@ -37,6 +38,7 @@ app.use('/shipping', shippingRouter);
 app.use('/orders', orderRouter);
 app.use('/payment', paymentRouter);
 app.use('/discounts', discountsRouter);
+app.use('/report', reportRouter);
 
 // initialize error middleware
 app.use(ErrorMiddleware);

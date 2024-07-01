@@ -72,7 +72,10 @@ const Page = () => {
                   <Th>Store</Th>
                   <Th>Items Price</Th>
                   <Th>Shipping Price</Th>
-                  <Th>Discount Price</Th>
+                  <Th>Items Discount</Th>
+                  <Th>Shipping Discount</Th>
+                  <Th>Voucher Discount</Th>
+                  <Th>Referral Discount</Th>
                   <Th>Total Price</Th>
                   <Th>Payment Method</Th>
                   <Th>Payment Status</Th>
@@ -91,10 +94,13 @@ const Page = () => {
                     <Td>{order.store.name}</Td>
                     <Td>{FormatCurrency(order.itemsPrice)}</Td>
                     <Td>{FormatCurrency(order.shippingPrice)}</Td>
-                    <Td>{FormatCurrency(-order.discountPrice)}</Td>
+                    <Td>{FormatCurrency(-order.itemsDiscount)}</Td>
+                    <Td>{FormatCurrency(-order.shippingDiscount)}</Td>
+                    <Td>{FormatCurrency(-order.voucherDiscount)}</Td>
+                    <Td>{FormatCurrency(-order.referralDiscount)}</Td>
                     <Td>{FormatCurrency(order.totalPrice)}</Td>
                     <Td>{order.paymentMethod}</Td>
-                    <Td>{order.paymentStatus}</Td>
+                    <Td>{order.orderStatus}</Td>
                     <Td>{`${order.shippingCourier} - ${order.shippingService}`}</Td>
                     <Td>{order.shippingStatus}</Td>
                     <Td>

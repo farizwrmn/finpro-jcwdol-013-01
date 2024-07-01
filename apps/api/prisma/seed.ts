@@ -89,8 +89,7 @@ const seedProducts = async () => {
         name: product.name,
         slug: product.slug,
         description: product.description,
-        slicedPrice: product.slicedPrice,
-        sellingPrice: product.sellingPrice,
+        price: product.price,
         productImages: {
           createMany: {
             data: product.images.map((image) => {

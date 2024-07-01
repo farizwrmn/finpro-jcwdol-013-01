@@ -182,7 +182,7 @@ const updateCartItemsPriceQuery = async (id: string): Promise<Cart | null> => {
       },
     });
 
-    const itemsPrice = cart?.cartItems.reduce((acc, item) => acc + (item.quantity * item.sellingPrice), 0) || 0;
+    const itemsPrice = cart?.cartItems.reduce((acc, item) => acc + (item.quantity * item.price), 0) || 0;
 
     await updateCartQuery(id, { itemsPrice });
 
