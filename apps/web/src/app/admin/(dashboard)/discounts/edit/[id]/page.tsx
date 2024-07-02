@@ -17,36 +17,59 @@ import {
 import { useRouter } from 'next/navigation';
 
 import { getStoreByID } from '@/services/store.service';
-import { createDiscount, getDiscounts } from '@/services/discount.service';
+import {
+  createDiscount,
+  getDiscountByID,
+  updateDiscount,
+} from '@/services/discount.service';
 import { getProducts } from '@/services/product.service';
+import { useAppSelector } from '@/lib/hooks';
 
 type Props = { params: { id: string } };
 
-const Page = ({ params: { id: storeId } }: Props) => {
+const Page = ({ params: { id: discountId } }: Props) => {
   const [store, setStore] = useState<any>(null);
   const [products, setProducts] = useState<any[]>([]);
+  const user = useAppSelector((state) => state.auth.user);
 
   const [formData, setFormData] = useState({
-    storeId,
+    storeId: user.storeId,
     type: 'Product Discount',
     amount: 0,
     unit: '',
     minimumPrice: 0,
     maximumDiscount: 0,
     productId: '',
-    freeShipping: 0,
+    minimumOrders: 0,
   });
 
   const router = useRouter();
 
   useEffect(() => {
     (async () => {
+      if (!user.storeId) return;
       const data = await getProducts({});
       setProducts(data?.products);
-      const dataStore = await getStoreByID(storeId);
+      const dataStore = await getStoreByID(user.storeId);
       setStore(dataStore);
     })();
-  }, []);
+  }, [user.storeId]);
+
+  useEffect(() => {
+    (async () => {
+      const data = await getDiscountByID(discountId);
+      setFormData({
+        storeId: data.storeId,
+        type: data.type,
+        amount: data.amount,
+        unit: data.unit,
+        minimumPrice: data.minimumPrice,
+        maximumDiscount: data.maximumDiscount,
+        productId: data.productId,
+        minimumOrders: data.minimumOrders,
+      });
+    })();
+  }, [discountId]);
 
   type ChangeEvent =
     | React.ChangeEvent<HTMLInputElement>
@@ -64,13 +87,14 @@ const Page = ({ params: { id: storeId } }: Props) => {
     e.preventDefault();
 
     try {
-      const product = await createDiscount(formData);
-      if (!product) throw new Error('Create discount failed!');
-      alert('Create discount success');
-      router.push(`/admin/stores/discounts/${storeId}`);
+      if (!user.storeId) return;
+      const product = await updateDiscount(discountId, formData);
+      if (!product) throw new Error('Update discount failed!');
+      alert('Update discount success');
+      router.push(`/admin/discounts`);
     } catch (err) {
       console.error(err);
-      alert('Create discount failed');
+      alert('Update discount failed');
     }
   };
 
@@ -103,6 +127,7 @@ const Page = ({ params: { id: storeId } }: Props) => {
                     <option value="Referral Code">Referral Code</option>
                   </Select>
                 </FormControl>
+
                 {(formData.type === 'Product Discount' ||
                   formData.type === 'Minimum Purchase') && (
                   <>
@@ -132,6 +157,36 @@ const Page = ({ params: { id: storeId } }: Props) => {
                     </FormControl>
                   </>
                 )}
+
+                {formData.type === 'Referral Code' && (
+                  <>
+                    <FormControl id="amount" isRequired>
+                      <FormLabel>Amount</FormLabel>
+                      <Input
+                        name="amount"
+                        placeholder="Amount"
+                        _placeholder={{ color: 'gray.500' }}
+                        type="number"
+                        value={formData.amount}
+                        onChange={handleChange}
+                      />
+                    </FormControl>
+                    <FormControl id="unit" isRequired>
+                      <FormLabel>Unit</FormLabel>
+                      <Select
+                        name="unit"
+                        width="auto"
+                        value={formData.unit}
+                        onChange={handleChange}
+                      >
+                        <option value=""></option>
+                        <option value="Amount">Amount</option>
+                        <option value="Percentage">Percentage</option>
+                      </Select>
+                    </FormControl>
+                  </>
+                )}
+
                 {formData.type === 'Minimum Purchase' && (
                   <>
                     <FormControl id="minimumPrice" isRequired>
@@ -163,14 +218,14 @@ const Page = ({ params: { id: storeId } }: Props) => {
 
                 {formData.type === 'Free Shipping' && (
                   <>
-                    <FormControl id="freeShipping" isRequired>
+                    <FormControl id="minimumOrders" isRequired>
                       <FormLabel>Minimum Order</FormLabel>
                       <Input
-                        name="freeShipping"
+                        name="minimumOrders"
                         placeholder="Minimum Order"
                         _placeholder={{ color: 'gray.500' }}
                         type="number"
-                        value={formData.freeShipping}
+                        value={formData.minimumOrders}
                         onChange={handleChange}
                       />
                     </FormControl>
@@ -202,7 +257,7 @@ const Page = ({ params: { id: storeId } }: Props) => {
                 <Stack spacing={6} direction={['column', 'row']}>
                   <Button
                     onClick={() => {
-                      router.push(`/admin/stores/discounts/${storeId}`);
+                      router.push(`/admin/discounts`);
                     }}
                     bg={'red.400'}
                     color={'white'}
@@ -222,7 +277,7 @@ const Page = ({ params: { id: storeId } }: Props) => {
                       bg: 'blue.500',
                     }}
                   >
-                    Create
+                    Update
                   </Button>
                 </Stack>
               </Stack>

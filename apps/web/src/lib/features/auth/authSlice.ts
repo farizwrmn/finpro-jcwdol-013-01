@@ -1,9 +1,17 @@
 import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
-import { IUserPassword, IUserProfile, IUsers } from '@/interface/user.interface';
+import {
+  IUserPassword,
+  IUserProfile,
+  IUsers,
+} from '@/interface/user.interface';
 import parseJWT from '@/utils/parseJwt';
 import instance from '@/utils/axiosInstance';
-import { resetCartState, updateCartItemsState, updateCartStoreState } from "../cart/cartSlice";
-import { getCartByUserID } from "@/services/cart.service";
+import {
+  resetCartState,
+  updateCartItemsState,
+  updateCartStoreState,
+} from '../cart/cartSlice';
+import { getCartByUserID } from '@/services/cart.service';
 
 type User = {
   id?: string;
@@ -17,6 +25,7 @@ type User = {
   role?: string;
   longitude?: number;
   latitude?: number;
+  storeId?: string;
 };
 
 type Status = {
@@ -41,7 +50,8 @@ const initialState: Auth = {
     isVerified: false,
     role: '',
     longitude: undefined,
-    latitude: undefined
+    latitude: undefined,
+    storeId: '',
   },
   status: {
     isLogin: false,
@@ -88,7 +98,7 @@ export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
     });
     const payload = await parseJWT(data?.data);
     const user = data?.data.user;
-
+    console.log(user);
     dispatch(
       loginState({
         id: user?.id,
@@ -102,6 +112,7 @@ export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
         role: user?.role.name,
         longitude: user?.longitude,
         latitude: user?.latitude,
+        storeId: user?.userStores[0]?.storeId,
       }),
     );
 
@@ -110,13 +121,17 @@ export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
 
     const cart = await getCartByUserID(user.id);
 
-    dispatch(updateCartItemsState({
-      itemsCount: cart.cartItems.length,
-      itemsPrice: cart.itemsPrice,
-    }));
-    dispatch(updateCartStoreState({
-      storeId: cart.storeId
-    }));
+    dispatch(
+      updateCartItemsState({
+        itemsCount: cart.cartItems.length,
+        itemsPrice: cart.itemsPrice,
+      }),
+    );
+    dispatch(
+      updateCartStoreState({
+        storeId: cart.storeId,
+      }),
+    );
 
     return true;
   } catch (err) {
@@ -138,7 +153,7 @@ export const signOut = () => async (dispatch: Dispatch) => {
 
 export const checkToken = (token: string) => async (dispatch: Dispatch) => {
   try {
-    if (!token) throw new Error("Token not found");
+    if (!token) throw new Error('Token not found');
 
     const { data } = await instance.get('/auth', {
       headers: {
@@ -148,7 +163,7 @@ export const checkToken = (token: string) => async (dispatch: Dispatch) => {
     const payload = await parseJWT(data?.data);
     const user = data?.data.user;
 
-    if (!user?.id) throw new Error("User not found");
+    if (!user?.id) throw new Error('User not found');
 
     dispatch(
       tokenValidState({
@@ -163,6 +178,7 @@ export const checkToken = (token: string) => async (dispatch: Dispatch) => {
         role: user?.role.name,
         longitude: user?.longitude,
         latitude: user?.latitude,
+        storeId: user?.userStores[0]?.storeId,
       }),
     );
 
@@ -185,7 +201,11 @@ export const updateProfile =
           Authorization: `Bearer ${token}`,
         },
       };
-      const { data } = await instance.patch(`/users/${id}`, { ...params }, config);
+      const { data } = await instance.patch(
+        `/users/${id}`,
+        { ...params },
+        config,
+      );
 
       dispatch(updateProfileState({ ...params }));
       localStorage.setItem('user', JSON.stringify(data?.data));

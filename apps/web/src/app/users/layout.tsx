@@ -33,6 +33,7 @@ import {
   FaIceCream,
   FaPager,
   FaStore,
+  FaTicketAlt,
 } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
@@ -66,6 +67,12 @@ const LinkItems: Array<LinkItemProps> = [
     icon: FaAtlas,
     href: '/users/orders',
     key: 'Orders',
+  },
+  {
+    name: 'Vouchers',
+    icon: FaTicketAlt,
+    href: '/users/vouchers',
+    key: 'Vouchers',
   },
 ];
 
