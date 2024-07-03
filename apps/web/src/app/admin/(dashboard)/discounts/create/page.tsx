@@ -103,6 +103,8 @@ const Page = () => {
                     <option value="Buy 1 Get 1">Buy 1 Get 1</option>
                     <option value="Free Shipping">Free Shipping</option>
                     <option value="Referral Code">Referral Code</option>
+                    <option value="Free Shipping">Free Shipping</option>
+                    <option value="Referral Code">Referral Code</option>
                   </Select>
                 </FormControl>
 
