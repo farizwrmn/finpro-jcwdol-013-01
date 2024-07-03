@@ -20,6 +20,7 @@ type Props = {
 
 const ImageSlider = ({ images = [] }: Props) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
+  console.log(images);
 
   return (
     <>
@@ -35,11 +36,7 @@ const ImageSlider = ({ images = [] }: Props) => {
             <Box
               mt={2}
               h="400px"
-              bgImage={
-                image.includes('http')
-                  ? image
-                  : `http://localhost:8000/public/products/${image}}`
-              }
+              bgImage={`http://localhost:8000/public/products/${image}`}
               bgPos="center"
               bgSize="cover"
             />
@@ -59,11 +56,7 @@ const ImageSlider = ({ images = [] }: Props) => {
           <SwiperSlide key={index}>
             <Box
               h="100px"
-              bgImage={
-                image.includes('http')
-                  ? image
-                  : `http://localhost:8000/public/products/${image}}`
-              }
+              bgImage={`http://localhost:8000/public/products/${image}`}
               bgPos="center"
               bgSize="cover"
             />

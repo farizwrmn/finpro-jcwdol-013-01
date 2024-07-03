@@ -8,8 +8,18 @@ const Page = () => {
       <Text fontSize="3xl" fontFamily="monospace" fontWeight="bold">
         User Dashboard
       </Text>
-      <Stack flex={'1'} flexDirection={'row'} mt={5}>
-        <Link href="/">Homepage</Link>
+      <Stack flex={'1'} flexDirection={'row'} mt={5} align={'center'}>
+        <Link href="/">
+          <Button
+            variant={'none'}
+            color={'teal'}
+            size={'md'}
+            _hover={{ textDecoration: 'underline' }}
+            mr={-4}
+          >
+            Homepage
+          </Button>
+        </Link>
         <Text>/</Text>
         <Text as={'b'} decoration={'underline'}>
           {' '}

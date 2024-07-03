@@ -18,6 +18,7 @@ const registerQuery = async (data: RegisterAuth): Promise<User> => {
           data: {
             email: data.email,
             isVerified: false,
+            referralCode: crypto.randomUUID().split('-')[0],
             role: {
               connect: {
                 name: 'customer',

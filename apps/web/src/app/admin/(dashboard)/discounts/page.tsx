@@ -26,12 +26,12 @@ import {
   getDiscountsByStoreID,
 } from '@/services/discount.service';
 import { FormatCurrency } from '@/utils/FormatCurrency';
+import { useAppSelector } from '@/lib/hooks';
 
-type Props = { params: { id: string } };
-
-const Page = ({ params: { id } }: Props) => {
+const Page = () => {
   const [discounts, setDiscounts] = useState<any[]>([]);
   const [store, setStore] = useState<any>();
+  const user = useAppSelector((state) => state.auth.user);
 
   const [formData, setFormData] = useState({
     initialStock: '',
@@ -40,12 +40,13 @@ const Page = ({ params: { id } }: Props) => {
 
   useEffect(() => {
     (async () => {
-      const resultStore = await getStoreByID(id);
+      if (!user.storeId) return;
+      const resultStore = await getStoreByID(user.storeId);
       setStore(resultStore);
-      const resultDiscounts = await getDiscountsByStoreID(id);
+      const resultDiscounts = await getDiscountsByStoreID(user.storeId);
       setDiscounts(resultDiscounts);
     })();
-  }, [id]);
+  }, [user.storeId]);
 
   type ChangeEvent =
     | React.ChangeEvent<HTMLInputElement>
@@ -62,10 +63,11 @@ const Page = ({ params: { id } }: Props) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const product = await addStock(id, formData);
+      if (!user.storeId) return;
+      const product = await addStock(user.storeId, formData);
       if (!product) throw new Error('Update product failed!');
       alert('Update product success');
-      router.push(`/admin/products/stocks/${id}`);
+      router.push(`/admin/products/stocks/${user.storeId}`);
     } catch (err) {
       console.error(err);
       alert('Update product failed');
@@ -85,7 +87,7 @@ const Page = ({ params: { id } }: Props) => {
             <Button
               colorScheme="blue"
               onClick={() => {
-                router.push(`/admin/stores/discounts/${id}/create`);
+                router.push(`/admin/discounts/create`);
               }}
             >
               Add Discount

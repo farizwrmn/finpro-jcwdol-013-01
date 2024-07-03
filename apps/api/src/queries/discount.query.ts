@@ -55,6 +55,7 @@ const createDiscountQuery = async (
             unit: discountData.unit,
             minimumPrice: discountData.minimumPrice,
             maximumDiscount: discountData.maximumDiscount,
+            minimumOrders: discountData.minimumOrders,
             storeId: discountData.storeId,
             productId: discountData.productId,
           },
@@ -91,4 +92,59 @@ const getDiscountsByStoreIDQuery = async (
   }
 };
 
-export { createDiscountQuery, getDiscountQuery, getDiscountsByStoreIDQuery };
+const getDiscountByIDQuery = async (id: string): Promise<Discount | null> => {
+  try {
+    const discount = await prisma.discount.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    return discount;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const updateDiscountQuery = async (
+  id: string,
+  discountData: IDiscount,
+): Promise<Discount> => {
+  try {
+    const trx = await prisma.$transaction(async (prisma) => {
+      try {
+        const discount = await prisma.discount.update({
+          data: {
+            type: discountData.type,
+            amount: discountData.amount,
+            unit: discountData.unit,
+            minimumPrice: discountData.minimumPrice,
+            maximumDiscount: discountData.maximumDiscount,
+            minimumOrders: discountData.minimumOrders,
+            storeId: discountData.storeId,
+            productId: discountData.productId,
+          },
+          where: {
+            id,
+          },
+        });
+
+        return discount;
+      } catch (err) {
+        throw err;
+      }
+    });
+
+    return trx;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export {
+  updateDiscountQuery,
+  getDiscountByIDQuery,
+  createDiscountQuery,
+  getDiscountQuery,
+  getDiscountsByStoreIDQuery,
+};
