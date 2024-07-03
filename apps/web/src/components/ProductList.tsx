@@ -57,7 +57,7 @@ const ProductList = () => {
                 <CardBody>
                   <Link href={`/products/${product.slug}`}>
                     <Image
-                      src={product.images}
+                      src={`http://localhost:8000/public/products/${product.productImages[0]?.image}`}
                       alt="Green double couch with wooden legs"
                       borderRadius="lg"
                     />
@@ -72,14 +72,6 @@ const ProductList = () => {
                       >
                         {FormatCurrency(product.price)}
                       </Text>
-                      {/* <Text
-                        color="red.600"
-                        fontSize="lg"
-                        textAlign={'center'}
-                        as={'s'}
-                      >
-                        {FormatCurrency(product.slicedPrice)}
-                      </Text> */}
                     </Stack>
                   </Link>
                 </CardBody>

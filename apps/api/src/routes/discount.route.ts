@@ -2,8 +2,10 @@ import express from 'express';
 import { adminGuard, verifyToken } from '@/middlewares/auth.middleware';
 import {
   createDiscountController,
+  getDiscountByIDController,
   getDiscountController,
   getDiscountsByStoreIDController,
+  updateDiscountController,
 } from '@/controllers/discount.controller';
 
 const router = express.Router();
@@ -16,5 +18,7 @@ router.get(
   adminGuard,
   getDiscountsByStoreIDController,
 );
+router.get('/:id', verifyToken, adminGuard, getDiscountByIDController);
+router.patch('/:id', verifyToken, adminGuard, updateDiscountController);
 
 export default router;

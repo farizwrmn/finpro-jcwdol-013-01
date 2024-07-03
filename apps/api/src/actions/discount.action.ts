@@ -6,8 +6,10 @@ import {
 } from '@/interfaces/discount.interface';
 import {
   createDiscountQuery,
+  getDiscountByIDQuery,
   getDiscountQuery,
   getDiscountsByStoreIDQuery,
+  updateDiscountQuery,
 } from '@/queries/discount.query';
 import { Discount } from '@prisma/client';
 
@@ -47,4 +49,34 @@ const getDiscountsByStoreIDAction = async (
   }
 };
 
-export { createDiscountAction, getDiscountAction, getDiscountsByStoreIDAction };
+const getDiscountByIDAction = async (id: string): Promise<Discount | null> => {
+  try {
+    const discounts = await getDiscountByIDQuery(id);
+
+    if (!discounts) throw new HttpException(404, 'Data not found');
+
+    return discounts;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const updateDiscountAction = async (
+  id: string,
+  discountData: IDiscount,
+): Promise<Discount> => {
+  try {
+    const discount = await updateDiscountQuery(id, discountData);
+    return discount;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export {
+  updateDiscountAction,
+  getDiscountByIDAction,
+  createDiscountAction,
+  getDiscountAction,
+  getDiscountsByStoreIDAction,
+};
