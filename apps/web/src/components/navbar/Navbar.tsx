@@ -81,7 +81,11 @@ export default function Navbar() {
           </Flex>
           <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
             <Link href="/">
-              <Image src="/assets/images/logo.png" alt="logo" w={140} />
+              <Image
+                src="/assets/images/logo.png"
+                alt="logo"
+                w={{ base: 20, sm: 120 }}
+              />
             </Link>
             <Flex display={{ base: 'none', md: 'flex' }} m={'auto'}>
               <DesktopNav />
@@ -130,9 +134,11 @@ export default function Navbar() {
                     <HStack>
                       <Avatar
                         size={{ base: 'sm', sm: 'md' }}
-                        src={user.image}
+                        src={`http://localhost:8000/public/avatar/${user.image}`}
                         ml={2}
-                      />
+                      >
+                        <AvatarBadge boxSize="1.25em" bg="green.500" />
+                      </Avatar>
                       <VStack
                         display={{ base: 'none', md: 'flex' }}
                         alignItems="flex-start"
