@@ -106,7 +106,7 @@ const Page = ({ params: { id } }: Props) => {
                   _hover={{
                     bg: 'blue.500',
                   }}>
-                  Confirm Order
+                  Confirm Payment
                 </Button>
               </Stack>
             )}
