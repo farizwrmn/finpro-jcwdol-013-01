@@ -77,10 +77,8 @@ const Page = () => {
                   <Th>Voucher Discount</Th>
                   <Th>Referral Discount</Th>
                   <Th>Total Price</Th>
-                  <Th>Payment Method</Th>
-                  <Th>Payment Status</Th>
+                  <Th>Order Status</Th>
                   <Th>Shipping Method</Th>
-                  <Th>Shipping Status</Th>
                   <Th>Action</Th>
                 </Tr>
               </Thead>
@@ -98,10 +96,9 @@ const Page = () => {
                     <Td>{FormatCurrency(-order.voucherDiscount)}</Td>
                     <Td>{FormatCurrency(-order.referralDiscount)}</Td>
                     <Td>{FormatCurrency(order.totalPrice)}</Td>
-                    <Td>{order.paymentMethod}</Td>
                     <Td>{order.orderStatus}</Td>
+                    <Td>{order.paymentMethod}</Td>
                     <Td>{`${order.shippingCourier} - ${order.shippingService}`}</Td>
-                    <Td>{order.shippingStatus}</Td>
                     <Td>
                       <ButtonGroup>
                         <Button

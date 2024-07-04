@@ -10,6 +10,9 @@ import {
   FormLabel,
   Stack,
   Button,
+  Heading,
+  Flex,
+  Image,
 } from '@chakra-ui/react';
 import { getOrderByID } from "@/services/order.service";
 import { FormatCurrency } from "@/utils/FormatCurrency";
@@ -52,67 +55,54 @@ const Page = ({ params: { id } }: Props) => {
             rounded={'xl'}
             p={10}
             my={6}
+            textAlign={'center'}
           >
-            <FormControl id="name">
-              <FormLabel>Name</FormLabel>
-              <Text>{order?.user.name}</Text>
-            </FormControl>
-            <FormControl id="email">
-              <FormLabel>Email</FormLabel>
-              <Text>{order?.user.email}</Text>
-            </FormControl>
-            <FormControl id="phone">
-              <FormLabel>Phone</FormLabel>
-              <Text>{order?.user.phone}</Text>
-            </FormControl>
-            <FormControl id="address">
-              <FormLabel>Address</FormLabel>
-              <Text>{`${order?.userAddress.address}, ${order?.userAddress.subdistrictName}, ${order?.userAddress.cityName}, ${order?.userAddress.provinceName} ${order?.userAddress.postalCode || ''}`}</Text>
-            </FormControl>
-            <FormControl id="orderDate">
-              <FormLabel>Order Date</FormLabel>
-              <Text>{order?.orderDate}</Text>
-            </FormControl>
-            <FormControl id="totalPrice">
-              <FormLabel>Total Price</FormLabel>
-              <Text>{FormatCurrency(order?.totalPrice)}</Text>
-            </FormControl>
-            <FormControl id="paymentMethod">
-              <FormLabel>Payment Method</FormLabel>
-              <Text>{order?.paymentMethod}</Text>
-            </FormControl>
-            <FormControl id="orderStatus">
-              <FormLabel>Payment Status</FormLabel>
-              <Text>{order?.orderStatus}</Text>
-            </FormControl>
-            <FormControl id="paymentDate">
-              <FormLabel>Payment Date</FormLabel>
-              <Text>{order?.paymentDate}</Text>
-            </FormControl>
-            <FormControl id="shippingCourier">
-              <FormLabel>Shipping Method</FormLabel>
-              <Text>{`${order?.shippingCourier} - ${order?.shippingService}`}</Text>
-            </FormControl>
-            <FormControl id="shippingStatus">
-              <FormLabel>Shipping Status</FormLabel>
-              <Text>{order?.shippingStatus}</Text>
-            </FormControl>
-            <FormControl id="shippingDate">
-              <FormLabel>Shipping Date</FormLabel>
-              <Text>{order?.shippingDate}</Text>
-            </FormControl>
-            <Button
-              onClick={() => {
-                router.push(`/users/orders/${id}`)
-              }}
-              bg={'blue.400'}
-              color={'white'}
-              w="full"
-              _hover={{
-                bg: 'blue.500',
-              }}>
-              Back
-            </Button>
+            <Heading
+              fontWeight={600}
+              fontSize={{ base: 'xl', sm: '2xl', md: '3xl' }}
+              lineHeight={'110%'}
+            >
+              Dear {order?.user.name || order?.user.email}
+              <Text color={'red.400'} pt={4}>
+                Your Payment is Failed!
+              </Text>
+              <Flex alignContent="center" justifyContent="center">
+                <Image
+                  rounded={'md'}
+                  alt={'feature image'}
+                  src={
+                    'https://cdni.iconscout.com/illustration/premium/thumb/businessman-online-payment-got-failed-10103579-8181451.png?f=webp'
+                  }
+                  width={250}
+                />
+              </Flex>
+            </Heading>
+            <Text color={'gray.500'}>
+              <p>Sorry your payment was failed to process.</p>
+              <p>We can not process your order further.</p>
+            </Text>
+            <Stack
+              direction={'column'}
+              spacing={3}
+              align={'center'}
+              alignSelf={'center'}
+              position={'relative'}
+            >
+              <Button
+                onClick={() => {
+                  router.push(`/users/orders`)
+                }}
+                colorScheme={'green'}
+                bg={'green.400'}
+                rounded={'full'}
+                px={6}
+                _hover={{
+                  bg: 'green.500',
+                }}
+              >
+                Back
+              </Button>
+            </Stack>
           </Stack>
         </CardBody>
       </Card>

@@ -17,12 +17,12 @@ export default function AuthAdmin({ children }: { children: React.ReactNode }) {
         if (!token) return router.push('/');
 
         const result = await dispatch(checkToken(token));
-        if (!result) {
+        if (!result?.role) {
           dispatch(signOut());
           router.push('/');
         }
 
-        if (result.role.name !== "super_admin" && result.role.name !== "store_admin") {
+        if (result?.role?.name !== "super_admin" && result?.role?.name !== "store_admin") {
           router.push('/');
         } else {
           setIsLoading(false);
