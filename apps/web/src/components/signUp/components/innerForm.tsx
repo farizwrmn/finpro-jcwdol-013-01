@@ -5,6 +5,7 @@ import {
   Button,
   Stack,
   Text,
+  Divider,
 } from '@chakra-ui/react';
 import { FormikProps, Form, Field } from 'formik';
 import { FormValues } from '@/types';
@@ -66,6 +67,16 @@ export default function InnerForm(props: FormikProps<FormValues>) {
               Already have account?
             </Text>
           </Link>
+          <Divider />
+          <Button variant={'none'}>
+            <Text
+              color={'blue.400'}
+              textAlign={'center'}
+              _hover={{ color: 'blue.500' }}
+            >
+              Redeem referral code
+            </Text>
+          </Button>
         </Stack>
       </Form>
     </Box>

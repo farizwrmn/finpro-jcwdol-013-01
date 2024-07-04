@@ -6,6 +6,7 @@ export interface IDiscount {
   unit: string;
   minimumPrice: number;
   maximumDiscount: number;
+  minimumOrders: number;
   storeId: string;
   productId: string;
 }
