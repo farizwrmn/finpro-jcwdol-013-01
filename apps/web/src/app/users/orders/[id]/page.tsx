@@ -100,13 +100,13 @@ const Page = ({ params: { id } }: Props) => {
               <FormLabel>Total Price</FormLabel>
               <Text>{FormatCurrency(order?.totalPrice)}</Text>
             </FormControl>
+            <FormControl id="orderStatus">
+              <FormLabel>Order Status</FormLabel>
+              <Text>{order?.orderStatus}</Text>
+            </FormControl>
             <FormControl id="paymentMethod">
               <FormLabel>Payment Method</FormLabel>
               <Text>{order?.paymentMethod}</Text>
-            </FormControl>
-            <FormControl id="orderStatus">
-              <FormLabel>Payment Status</FormLabel>
-              <Text>{order?.orderStatus}</Text>
             </FormControl>
             <FormControl id="paymentDate">
               <FormLabel>Payment Date</FormLabel>
