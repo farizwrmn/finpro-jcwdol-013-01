@@ -39,33 +39,37 @@ const Page = ({ params: { id } }: Props) => {
     })()
   }, [id]);
 
-  const handlePay = async () => {
+  const handleVerify = async () => {
     try {
-      const payment = await createPayment({ orderId: id });
-      if (!payment.url) throw new Error("Pay order failed");
-      router.push(payment.url);
-    } catch (err) {
-      toast.error("Pay order failed");
-    }
-  }
-
-  const handleConfirmDelivery = async () => {
-    try {
-      const formData = { orderStatus: ORDER_STATUS.pesananDikonfirmasi };
+      const formData = { orderStatus: ORDER_STATUS.diproses };
       const order = await updatePaymentStatus(id, formData);
-      if (!order?.id) throw new Error("Confirm delivery failed");
+      if (!order?.id) throw new Error("Verify order failed");
 
       const data = await getOrderByID(id);
       setOrder(data);
-      toast.success("Confirm delivery success");
+      toast.success("Verify order success");
     } catch (err) {
-      toast.error("Confirm delivery failed");
+      toast.error("Verify order failed");
+    }
+  }
+
+  const handleSend = async () => {
+    try {
+      const formData = { orderStatus: ORDER_STATUS.dikirim };
+      const order = await updatePaymentStatus(id, formData);
+      if (!order?.id) throw new Error("Send order failed");
+
+      const data = await getOrderByID(id);
+      setOrder(data);
+      toast.success("Send order success");
+    } catch (err) {
+      toast.error("Send order failed");
     }
   }
 
   const handleCancel = async () => {
     try {
-      const formData = { orderStatus: ORDER_STATUS.dibatalkan };
+      const formData = { orderStatus: ORDER_STATUS.menungguPembayaran };
       const order = await updatePaymentStatus(id, formData);
       if (!order?.id) throw new Error("Cancel order failed");
 
@@ -137,7 +141,8 @@ const Page = ({ params: { id } }: Props) => {
                 </SimpleGrid>
               </FormControl>
             )}
-            {order?.orderStatus && order?.orderStatus === ORDER_STATUS.menungguPembayaran ? (
+
+            {order?.orderStatus && order?.orderStatus === ORDER_STATUS.menungguKonfirmasiPembayaran ? (
               <Stack spacing={6} direction={['column', 'row']} mt={15}>
                 <Button
                   onClick={handleCancel}
@@ -150,21 +155,21 @@ const Page = ({ params: { id } }: Props) => {
                   Cancel Order
                 </Button>
                 <Button
-                  onClick={handlePay}
+                  onClick={handleVerify}
                   bg={'blue.400'}
                   color={'white'}
                   w="full"
                   _hover={{
                     bg: 'blue.500',
                   }}>
-                  {order?.paymentMethod === "BANK" ? "Confirm Payment" : "Pay Order"}
+                  Verify Order
                 </Button>
               </Stack>
-            ) : order?.orderStatus === ORDER_STATUS.dikirim ? (
+            ) : order?.orderStatus === ORDER_STATUS.diproses ? (
               <Stack spacing={6} direction={['column', 'row']} mt={15}>
                 <Button
                   onClick={() => {
-                    router.push(`/users/orders`)
+                    router.push(`/admin/transactions`)
                   }}
                   bg={'blue.400'}
                   color={'white'}
@@ -175,21 +180,21 @@ const Page = ({ params: { id } }: Props) => {
                   Back
                 </Button>
                 <Button
-                  onClick={handleConfirmDelivery}
+                  onClick={handleSend}
                   bg={'blue.400'}
                   color={'white'}
                   w="full"
                   _hover={{
                     bg: 'blue.500',
                   }}>
-                  Confirm Delivery
+                  Send Order
                 </Button>
               </Stack>
             ) : (
               <Stack spacing={6} direction={['column', 'row']} mt={15}>
                 <Button
                   onClick={() => {
-                    router.push(`/users/orders`)
+                    router.push(`/admin/transactions`)
                   }}
                   bg={'blue.400'}
                   color={'white'}

@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
-import { getSalesReportPerMonthAction } from '@/actions/report.action';
+import {
+  getSalesReportPerMonthAction,
+  getSalesReportPerProductAction,
+} from '@/actions/report.action';
 
 const getSalesReportPerMonthController = async (
   req: Request,
@@ -19,4 +22,22 @@ const getSalesReportPerMonthController = async (
   }
 };
 
-export { getSalesReportPerMonthController };
+const getSalesReportPerProductController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const filters = req.query;
+    const data = await getSalesReportPerProductAction(filters);
+
+    res.status(200).json({
+      message: 'Get sales report per product success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export { getSalesReportPerMonthController, getSalesReportPerProductController };
