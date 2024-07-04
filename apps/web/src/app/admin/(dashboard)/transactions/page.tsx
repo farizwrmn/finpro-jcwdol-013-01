@@ -70,17 +70,12 @@ const Page = () => {
                   <Th>Order Date</Th>
                   <Th>User</Th>
                   <Th>Store</Th>
-                  <Th>Items Price</Th>
-                  <Th>Shipping Price</Th>
-                  <Th>Items Discount</Th>
-                  <Th>Shipping Discount</Th>
-                  <Th>Voucher Discount</Th>
-                  <Th>Referral Discount</Th>
                   <Th>Total Price</Th>
+                  <Th>Order Status</Th>
                   <Th>Payment Method</Th>
-                  <Th>Payment Status</Th>
+                  <Th>Payment Date</Th>
                   <Th>Shipping Method</Th>
-                  <Th>Shipping Status</Th>
+                  <Th>Shipping Date</Th>
                   <Th>Action</Th>
                 </Tr>
               </Thead>
@@ -92,23 +87,18 @@ const Page = () => {
                     <Td>{order.orderDate}</Td>
                     <Td>{order.user.email}</Td>
                     <Td>{order.store.name}</Td>
-                    <Td>{FormatCurrency(order.itemsPrice)}</Td>
-                    <Td>{FormatCurrency(order.shippingPrice)}</Td>
-                    <Td>{FormatCurrency(-order.itemsDiscount)}</Td>
-                    <Td>{FormatCurrency(-order.shippingDiscount)}</Td>
-                    <Td>{FormatCurrency(-order.voucherDiscount)}</Td>
-                    <Td>{FormatCurrency(-order.referralDiscount)}</Td>
                     <Td>{FormatCurrency(order.totalPrice)}</Td>
-                    <Td>{order.paymentMethod}</Td>
                     <Td>{order.orderStatus}</Td>
+                    <Td>{order.paymentMethod}</Td>
+                    <Td>{order.paymentDate}</Td>
                     <Td>{`${order.shippingCourier} - ${order.shippingService}`}</Td>
-                    <Td>{order.shippingStatus}</Td>
+                    <Td>{order.shippingDate}</Td>
                     <Td>
                       <ButtonGroup>
                         <Button
                           colorScheme="blue"
                           onClick={() => {
-                            router.push(`/users/orders/${order.id}`);
+                            router.push(`/admin/transactions/${order.id}`);
                           }}
                         >
                           Detail
