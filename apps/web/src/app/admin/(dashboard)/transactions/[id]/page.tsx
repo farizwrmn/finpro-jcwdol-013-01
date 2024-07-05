@@ -67,7 +67,7 @@ const Page = ({ params: { id } }: Props) => {
     }
   }
 
-  const handleCancel = async () => {
+  const handleReject = async () => {
     try {
       const formData = { orderStatus: ORDER_STATUS.menungguPembayaran };
       const order = await updatePaymentStatus(id, formData);
@@ -145,14 +145,14 @@ const Page = ({ params: { id } }: Props) => {
             {order?.orderStatus && order?.orderStatus === ORDER_STATUS.menungguKonfirmasiPembayaran ? (
               <Stack spacing={6} direction={['column', 'row']} mt={15}>
                 <Button
-                  onClick={handleCancel}
+                  onClick={handleReject}
                   bg={'red.400'}
                   color={'white'}
                   w="full"
                   _hover={{
                     bg: 'red.500',
                   }}>
-                  Cancel Order
+                  Reject Order
                 </Button>
                 <Button
                   onClick={handleVerify}
