@@ -46,7 +46,7 @@ const ShippingAddress = ({ store }: Props) => {
         w={'full'}
       >
         <FormControl id="label">
-          <FormLabel>Label</FormLabel>
+          <FormLabel>Label Address</FormLabel>
           <Flex gap={4}>
             <Select
               width="auto"

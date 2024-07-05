@@ -5,7 +5,7 @@ import { useAppDispatch } from '@/lib/hooks';
 import { checkToken, signOut } from '@/lib/features/auth/authSlice';
 import { useRouter } from 'next/navigation';
 
-export default function AuthAdmin({ children }: { children: React.ReactNode }) {
+export default function AuthCustomer({ children }: { children: React.ReactNode }) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -22,7 +22,7 @@ export default function AuthAdmin({ children }: { children: React.ReactNode }) {
           router.push('/');
         }
 
-        if (result?.role?.name !== "super_admin" && result?.role?.name !== "store_admin") {
+        if (!(result?.role?.name === "customer" && !result?.isVerified)) {
           router.push('/');
         } else {
           setIsLoading(false);

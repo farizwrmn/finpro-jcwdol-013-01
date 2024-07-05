@@ -36,7 +36,7 @@ const ImageSlider = ({ images = [] }: Props) => {
             <Box
               mt={2}
               h="400px"
-              bgImage={`http://localhost:8000/public/products/${image}`}
+              bgImage={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/products/${image}`}
               bgPos="center"
               bgSize="cover"
             />
@@ -56,7 +56,7 @@ const ImageSlider = ({ images = [] }: Props) => {
           <SwiperSlide key={index}>
             <Box
               h="100px"
-              bgImage={`http://localhost:8000/public/products/${image}`}
+              bgImage={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/products/${image}`}
               bgPos="center"
               bgSize="cover"
             />

@@ -1,7 +1,6 @@
 'use client';
 
 import React, { ReactNode } from 'react';
-import AuthUser from '@/components/auth/AuthUser';
 import Link from 'next/link';
 import {
   IconButton,
@@ -40,6 +39,7 @@ import { ReactText } from 'react';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { signOut } from '@/lib/features/auth/authSlice';
 import { useRouter } from 'next/navigation';
+import AuthCustomer from "@/components/auth/AuthCustomer";
 
 interface LinkItemProps {
   name: string;
@@ -80,7 +80,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <AuthUser>
+    <AuthCustomer>
       <Box>
         <SidebarContent
           onClose={() => onClose}
@@ -106,7 +106,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           {children}
         </Box>
       </Box>
-    </AuthUser>
+    </AuthCustomer>
   );
 }
 
@@ -215,12 +215,6 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       />
 
       <HStack spacing={{ base: '0', md: '6' }}>
-        <IconButton
-          size="lg"
-          variant="ghost"
-          aria-label="open menu"
-          icon={<FiBell />}
-        />
         <Flex alignItems={'center'}>
           <Menu>
             <MenuButton
