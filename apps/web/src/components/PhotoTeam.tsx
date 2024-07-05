@@ -114,21 +114,21 @@ export default function PhotoTeam() {
         >
           <Testimonial>
             <TestimonialAvatar
-              src={'http://localhost:8000/public/about-us/fariz.jpeg'}
+              src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/about-us/fariz.jpeg`}
               name={'Muhammad Fariz Warman'}
               title={'Team Leads'}
             />
           </Testimonial>
           <Testimonial>
             <TestimonialAvatar
-              src={'http://localhost:8000/public/about-us/rehan.jpeg'}
+              src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/about-us/rehan.jpeg`}
               name={'Rehan Adi Purwana'}
               title={'Vice Leads'}
             />
           </Testimonial>
           <Testimonial>
             <TestimonialAvatar
-              src={'http://localhost:8000/public/about-us/alex.jpeg'}
+              src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/about-us/alex.jpeg`}
               name={'Alex Jhosua Virdo Manurung'}
               title={'Operation'}
             />

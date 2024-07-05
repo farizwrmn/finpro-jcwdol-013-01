@@ -22,7 +22,7 @@ export default function AuthCustomer({ children }: { children: React.ReactNode }
           router.push('/');
         }
 
-        if (!(result?.role?.name === "customer" && !result?.isVerified)) {
+        if (!(result?.role?.name === "customer" && result?.isVerified)) {
           router.push('/');
         } else {
           setIsLoading(false);

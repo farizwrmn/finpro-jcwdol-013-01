@@ -272,7 +272,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <HStack>
                 <Avatar
                   size={{ base: 'sm', sm: 'md' }}
-                  src={`http://localhost:8000/public/avatar/${user.image}`}
+                  src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/avatar/${user.image}`}
                   ml={2}
                 >
                   <AvatarBadge boxSize="1.25em" bg="green.500" />

@@ -48,6 +48,22 @@ export const getStockByID = async (id: string) => {
   }
 };
 
+export const getStockByProductIdAndStoreId = async (productId: string, storeId: string) => {
+  try {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await instance.get(`/stocks/product/${productId}/store/${storeId}`, config);
+    const stock = data?.data;
+    return stock;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const addStock = async (id: string, formData: any) => {
   try {
     const token = localStorage.getItem('token');

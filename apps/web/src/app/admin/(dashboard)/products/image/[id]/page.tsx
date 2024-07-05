@@ -93,11 +93,7 @@ const Page = ({ params: { id } }: Props) => {
             <Grid templateColumns="repeat(4, 1fr)" gap={6}>
               {product?.productImages.map((item: any) => (
                 <img
-                  src={
-                    item.image.includes('http')
-                      ? item.image
-                      : `http://localhost:8000/public/products/${item.image}}`
-                  }
+                  src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/products/${item.image}}`}
                   alt=""
                   key={item.id}
                 />

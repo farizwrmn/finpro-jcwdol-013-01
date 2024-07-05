@@ -1,8 +1,11 @@
+import AuthCustomer from "@/components/auth/AuthCustomer";
 import Cart from '@/components/cart/Cart';
 
 const page = () => {
   return (
-    <Cart />
+    <AuthCustomer>
+      <Cart />
+    </AuthCustomer>
   );
 };
 

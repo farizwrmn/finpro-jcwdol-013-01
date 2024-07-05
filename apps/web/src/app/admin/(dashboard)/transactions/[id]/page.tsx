@@ -134,7 +134,7 @@ const Page = ({ params: { id } }: Props) => {
                 >
                   <FormLabel>Payment Proof</FormLabel>
                   <img
-                    src={`http://localhost:8000/public/confirmation/${order?.paymentImage}`}
+                    src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/confirmation/${order?.paymentImage}`}
                     style={{ height: 300 }}
                     alt="Payment Proof"
                   />

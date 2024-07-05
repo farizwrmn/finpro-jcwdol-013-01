@@ -5,6 +5,7 @@ import {
   getStocksByProductIDQuery,
   getStockByIDQuery,
   updateStockQuery,
+  getStockByProductIdAndStoreIdQuery,
 } from '@/queries/stock.query';
 import { Stock } from '@prisma/client';
 
@@ -55,9 +56,23 @@ const getStockByIDAction = async (id: string): Promise<Stock | null> => {
   }
 };
 
+const getStockByProductIdAndStoreIdAction = async (productId: string, storeId: string): Promise<Stock | null> => {
+  try {
+    if (!productId || !storeId) throw new Error("Please fill product ID and store ID");
+
+    const stock = await getStockByProductIdAndStoreIdQuery(productId, storeId);
+    if (!stock) throw new HttpException(404, 'Data not found');
+
+    return stock;
+  } catch (err) {
+    throw err;
+  }
+};
+
 export {
   createStockAction,
   updateStockAction,
   getStocksByProductIDAction,
   getStockByIDAction,
+  getStockByProductIdAndStoreIdAction,
 };

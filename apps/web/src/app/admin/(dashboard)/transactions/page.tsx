@@ -34,6 +34,7 @@ const Page = () => {
     pages: 1
   });
   const [filters, setFilters] = useState({
+    storeId: user.storeId as string,
     keyword: '',
     page: 1,
     size: 10

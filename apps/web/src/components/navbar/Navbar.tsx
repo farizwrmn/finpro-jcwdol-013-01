@@ -31,6 +31,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { FiChevronDown, FiShoppingCart } from 'react-icons/fi';
 import { signOut } from '@/lib/features/auth/authSlice';
 import { useRouter } from 'next/navigation';
+import { USER_ROLE } from "@/constants/user.constant";
 
 export interface NavItem {
   label: string;
@@ -134,7 +135,7 @@ export default function Navbar() {
                     <HStack>
                       <Avatar
                         size={{ base: 'sm', sm: 'md' }}
-                        src={`http://localhost:8000/public/avatar/${user.image}`}
+                        src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/avatar/${user.image}`}
                         ml={2}
                       >
                         <AvatarBadge boxSize="1.25em" bg="green.500" />
@@ -145,9 +146,9 @@ export default function Navbar() {
                         spacing="1px"
                         ml="2"
                       >
-                        <Text fontSize="sm">{user.email}</Text>
+                        <Text fontSize="sm">{user?.name || user?.email}</Text>
                         <Text fontSize="xs" color="gray.600">
-                          {user.role}
+                          {USER_ROLE[user?.role as string]}
                         </Text>
                       </VStack>
                       <Box display={{ base: 'none', md: 'flex' }}>
@@ -156,8 +157,9 @@ export default function Navbar() {
                     </HStack>
                   </MenuButton>
                   <MenuList
-                  // bg={useColorModeValue('white', 'gray.900')}
-                  // borderColor={useColorModeValue('gray.200', 'gray.700')}
+                    // bg={useColorModeValue('white', 'gray.900')}
+                    // borderColor={useColorModeValue('gray.200', 'gray.700')}
+                    zIndex={10}
                   >
                     <MenuItem
                       onClick={() => {

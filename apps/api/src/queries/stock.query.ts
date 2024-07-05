@@ -128,9 +128,25 @@ const getStockByIDQuery = async (id: string): Promise<Stock | null> => {
   }
 };
 
+const getStockByProductIdAndStoreIdQuery = async (productId: string, storeId: string): Promise<Stock | null> => {
+  try {
+    const stock = await prisma.stock.findFirst({
+      where: {
+        productId,
+        storeId,
+      },
+    });
+
+    return stock;
+  } catch (err) {
+    throw err;
+  }
+};
+
 export {
   createStockQuery,
   updateStockQuery,
   getStocksByProductIDQuery,
   getStockByIDQuery,
+  getStockByProductIdAndStoreIdQuery,
 };
