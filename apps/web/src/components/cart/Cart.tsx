@@ -35,7 +35,6 @@ const Cart = () => {
     if (!confirm(`Are you sure want to remove cart item?`) || !id) return;
 
     try {
-      console.log("masuk1");
       const cartItem = await deleteCartItem(id);
       if (!cartItem) throw new Error('Remove from cart failed!');
 

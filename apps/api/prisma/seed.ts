@@ -59,7 +59,10 @@ const seedCategories = async () => {
 
   await prisma.stockHistory.deleteMany();
   await prisma.stock.deleteMany();
+  await prisma.discount.deleteMany();
   await prisma.productImage.deleteMany();
+  await prisma.orderItem.deleteMany();
+  await prisma.order.deleteMany();
   await prisma.cartItem.deleteMany();
   await prisma.cart.deleteMany();
   await prisma.product.deleteMany();
@@ -149,7 +152,7 @@ const main = async () => {
   // await seedUsers();
   await seedCategories();
   await seedProducts();
-  await seedStores();
+  // await seedStores();
 };
 
 main()

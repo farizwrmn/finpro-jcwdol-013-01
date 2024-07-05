@@ -1,4 +1,4 @@
-import { IStock, IUpdateStock } from '@/interfaces/stock.interface';
+import { IFilterStock, IResultStock, IStock, IUpdateStock } from '@/interfaces/stock.interface';
 import { Stock, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -92,6 +92,55 @@ const updateStockQuery = async (
   }
 };
 
+const getStocksQuery = async (filters: IFilterStock): Promise<IResultStock> => {
+  try {
+    const {
+      storeId = '',
+      productId = '',
+      keyword = '',
+      page = 1,
+      size = 1000,
+    } = filters;
+
+    const conditions: any = {
+      store: {
+        name: {
+          contains: keyword,
+        }
+      }
+    };
+
+    if (storeId) conditions.storeId = storeId;
+    if (productId) conditions.productId = productId;
+
+    const stocks = await prisma.stock.findMany({
+      include: {
+        store: true,
+      },
+      where: {
+        ...conditions
+      },
+      skip: Number(page) > 0 ? (Number(page) - 1) * Number(size) : 0,
+      take: Number(size),
+    });
+
+    const data = await prisma.stock.aggregate({
+      _count: {
+        id: true,
+      },
+      where: {
+        ...conditions,
+      },
+    });
+    const count = data._count.id;
+    const pages = Math.ceil(count / size);
+
+    return { stocks, pages };
+  } catch (err) {
+    throw err;
+  }
+};
+
 const getStocksByProductIDQuery = async (
   productId: string,
 ): Promise<Stock[] | null> => {
@@ -128,9 +177,26 @@ const getStockByIDQuery = async (id: string): Promise<Stock | null> => {
   }
 };
 
+const getStockByProductIdAndStoreIdQuery = async (productId: string, storeId: string): Promise<Stock | null> => {
+  try {
+    const stock = await prisma.stock.findFirst({
+      where: {
+        productId,
+        storeId,
+      },
+    });
+
+    return stock;
+  } catch (err) {
+    throw err;
+  }
+};
+
 export {
   createStockQuery,
   updateStockQuery,
+  getStocksQuery,
   getStocksByProductIDQuery,
   getStockByIDQuery,
+  getStockByProductIdAndStoreIdQuery,
 };

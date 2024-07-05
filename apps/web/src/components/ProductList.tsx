@@ -60,13 +60,14 @@ const ProductList = () => {
           gap={6}
         >
           {data.products?.map((product: any, index: number) => (
-            <GridItem w={'full'} flexDirection={'column'} p={5}>
+            <GridItem w={'full'} flexDirection={'column'} p={5} key={index}>
               <Card
                 h={'100%'}
                 key={index}
                 maxW="xl"
                 shadow={'xl'}
                 w={'full'}
+                transition={'0.25s all ease-in-out'}
                 _hover={{
                   transform: 'translateY(-15px)',
                   boxShadow: 'lg',
@@ -76,7 +77,7 @@ const ProductList = () => {
                 <CardBody>
                   <Link href={`/products/${product.slug}`}>
                     <Image
-                      src={`http://localhost:8000/public/products/${product.productImages[0]?.image}`}
+                      src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/products/${product.productImages[0]?.image}`}
                       alt="Green double couch with wooden legs"
                       borderRadius="2xl"
                       width={'500px'}

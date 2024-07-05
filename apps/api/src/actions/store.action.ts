@@ -22,6 +22,7 @@ import {
   IUserStore,
 } from '../interfaces/store.interface';
 import haversine from 'haversine';
+import { MAX_STORE_DISTANCE_IN_KM } from "@/constants/store.constant";
 
 const getStoresAction = async (
   filters: IFilterStore,
@@ -50,29 +51,33 @@ const getDistanceStoresAction = async (userLocation: IUserLocation) => {
   try {
     const { stores } = await getStoresQuery({});
 
-    const distanceStores = stores.map((store) => {
+    let distanceStores = stores.map(store => {
       const distance =
         userLocation.longitude &&
-        userLocation.latitude &&
-        store.longitude &&
-        store.latitude
+          userLocation.latitude &&
+          store.longitude &&
+          store.latitude
           ? haversine(
-              {
-                longitude: userLocation.longitude,
-                latitude: userLocation.latitude,
-              },
-              {
-                longitude: store.longitude,
-                latitude: store.latitude,
-              },
-            )
+            {
+              longitude: userLocation.longitude,
+              latitude: userLocation.latitude,
+            },
+            {
+              longitude: store.longitude,
+              latitude: store.latitude,
+            },
+          )
           : null;
       return { ...store, distance };
     });
 
-    return distanceStores.sort(
+    distanceStores = distanceStores.filter(store => store.distance && store.distance <= MAX_STORE_DISTANCE_IN_KM);
+
+    distanceStores = distanceStores.sort(
       (a, b) => (a.distance as number) - (b.distance as number),
     );
+
+    return distanceStores;
   } catch (err) {
     throw err;
   }
@@ -94,7 +99,6 @@ const createStoreAction = async (storeData: IStore): Promise<Store> => {
 const createUserStoreAction = async (data: IUserStore): Promise<UserStore> => {
   try {
     // const existUserStore = await getUnassignedUsersByStoreIDQuery(data.storeId);
-
     // if (existUserStore) throw new Error('User Store already exists');
 
     const userStore = await createUserStoreQuery(data);
@@ -130,7 +134,6 @@ const getUnassignedUsersByStoreIDAction = async (
 ): Promise<User[]> => {
   try {
     const unassigned = await getUnassignedUsersByStoreIDQuery(storeId);
-
     if (!unassigned) throw new HttpException(404, 'Data not found');
 
     return unassigned;

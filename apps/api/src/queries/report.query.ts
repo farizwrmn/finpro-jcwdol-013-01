@@ -59,7 +59,7 @@ const getSalesReportPerProductQuery = async (filters: IFilterReport) => {
             SELECT '12' month
         ), 
         master_total AS (
-            SELECT DATE_FORMAT(a.order_date, '%m') AS month, b.name product_name, SUM(1) AS total 
+            SELECT DATE_FORMAT(a.order_date, '%m') AS month, b.name product_name, SUM(b.quantity + b.bonus_quantity) AS total 
             FROM orders a, order_items b
             WHERE a.id = b.order_id
             GROUP BY DATE_FORMAT(a.order_date, '%m'), b.name

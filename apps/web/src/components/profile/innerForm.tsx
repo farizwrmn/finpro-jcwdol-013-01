@@ -51,7 +51,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
           <FormControl id="userName">
             <Stack spacing={4}>
               <Center>
-                <Avatar size="xl" src={`http://localhost:8000/public/avatar/${values.image}`}>
+                <Avatar size="xl" src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/avatar/${values.image}`}>
                   <AvatarBadge
                     as={IconButton}
                     size="sm"
