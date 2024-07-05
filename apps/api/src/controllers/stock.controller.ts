@@ -6,6 +6,7 @@ import {
   updateStockAction,
   getStockByIDAction,
   getStockByProductIdAndStoreIdAction,
+  getStocksAction,
 } from '@/actions/stock.action';
 
 const createStockController = async (
@@ -48,6 +49,24 @@ const updateStockController = async (
 
     res.status(200).json({
       message: 'Add stock success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getStocksController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const filters = req.query;
+    const data = await getStocksAction(filters);
+
+    res.status(200).json({
+      message: 'Get stocks success',
       data,
     });
   } catch (err) {
@@ -112,6 +131,7 @@ const getStockByProductIdAndStoreIdController = async (
 export {
   createStockController,
   updateStockController,
+  getStocksController,
   getStocksByProductIDController,
   getStockByIDController,
   getStockByProductIdAndStoreIdController,
