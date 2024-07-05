@@ -1,15 +1,14 @@
-import { Text, Image } from '@chakra-ui/react';
+import { Text, Image, Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 
 const Page = () => {
   return (
-    <div>
-      <Text fontSize="3xl" fontFamily="monospace" fontWeight="bold">
-        Admin Dashboard
+    <Flex justifyContent="center" alignItems="center" flexDirection="column">
+      <Text fontSize="5xl" fontFamily="monospace" fontWeight="bold">
+        Welcome to Admin Dashboard
       </Text>
-      <Text fontSize="5xl" fontFamily="monospace" fontWeight="bold"></Text>
-      <Image src="/assets/images/welcome.jpg" alt="welcome" w={300} />
-    </div>
+      <Image src="/assets/images/admindashboard.jpg" alt="welcome" w={500} />
+    </Flex>
   );
 };
 
