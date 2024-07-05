@@ -4,7 +4,7 @@ import instance from '@/utils/axiosInstance';
 export const getStores = async ({
   keyword = '',
   page = 1,
-  size = 10,
+  size = 1000,
 }: IFilterStore) => {
   try {
     const { data } = await instance.get(

@@ -11,19 +11,6 @@ import {
 import { PriceTag } from './PriceTag';
 import { CartProductMeta } from './CartProductMeta';
 
-type CartItemProps = {
-  isGiftWrapping?: boolean;
-  name: string;
-  description: string;
-  quantity: number;
-  price: number;
-  // currency: 'IDR';
-  imageUrl: string;
-  onChangeQuantity?: (quantity: number) => void;
-  onClickGiftWrapping?: () => void;
-  onClickDelete?: () => void;
-};
-
 const QuantitySelect = (props: SelectProps) => (
   <Select
     maxW="64px"
@@ -44,19 +31,6 @@ type Props = {
 }
 
 export const CartItem = ({ item, handleRemoveCartItem }: Props) => {
-
-  // const {
-  //   isGiftWrapping,
-  //   name,
-  //   description,
-  //   quantity,
-  //   imageUrl,
-  //   // currency,
-  //   price,
-  //   onChangeQuantity,
-  //   onClickDelete,
-  // } = props;
-
   return (
     <Flex
       direction={{ base: 'column', md: 'row' }}
@@ -65,9 +39,9 @@ export const CartItem = ({ item, handleRemoveCartItem }: Props) => {
     >
       <CartProductMeta
         name={item.name}
+        slug={item.slug}
         description={item.description}
-        image={`http://localhost:8000/public/products/${item.image}`}
-        isGiftWrapping={false}
+        image={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/products/${item.image}`}
       />
 
       {/* Desktop */}

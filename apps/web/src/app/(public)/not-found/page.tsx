@@ -28,7 +28,7 @@ export default function NotFoundPage() {
           Uh, Ohh
         </Heading>
         <Text fontSize="2em" color="white">
-          Sorry we can't find what you are looking for 'cuz it's so dark in here
+          Sorry we can not find what you are looking for cuz its so dark in here
         </Text>
       </Box>
       <Button>

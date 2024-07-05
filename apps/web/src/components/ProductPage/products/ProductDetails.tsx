@@ -16,6 +16,8 @@ import {
   FormLabel,
   Select,
   Input,
+  IconButton,
+  Icon,
 } from '@chakra-ui/react';
 import { FaCartPlus } from 'react-icons/fa';
 import ImageSlider from './ImageSlider';
@@ -33,6 +35,8 @@ import {
   updateCartItemsState,
   updateCartStoreState,
 } from '@/lib/features/cart/cartSlice';
+import { getStockByProductIdAndStoreId } from "@/services/stock.service";
+import { FiMinus, FiPlus } from "react-icons/fi";
 
 type Props = {
   product: any;
@@ -41,12 +45,13 @@ type Props = {
 export default function ProductDetails({ product }: Props) {
   const textColor = useColorModeValue('gray.900', 'gray.400');
   const dividerColor = useColorModeValue('gray.200', 'gray.600');
-  const user = useAppSelector((state) => state.auth.user);
-  const [isAllow, setIsAllow] = useState(false);
-  const [stores, setStores] = useState<any[]>([]);
   const dispatch = useAppDispatch();
   const cart = useAppSelector((state) => state.cart);
+  const user = useAppSelector((state) => state.auth.user);
 
+  const [isAllow, setIsAllow] = useState(false);
+  const [stores, setStores] = useState<any[]>([]);
+  const [stock, setStock] = useState<any>(null);
   const [formData, setFormData] = useState({
     cartId: '',
     productId: product.id,
@@ -88,10 +93,58 @@ export default function ProductDetails({ product }: Props) {
     })();
   }, [dispatch, user]);
 
+  useEffect(() => {
+    (async () => {
+      if (!product.id || !cart.storeId) return;
+
+      const dataStock = await getStockByProductIdAndStoreId(product.id, cart.storeId);
+      setStock(dataStock);
+    })();
+  }, [product.id, cart.storeId]);
+
   type ChangeEvent =
     | React.ChangeEvent<HTMLInputElement>
     | React.ChangeEvent<HTMLTextAreaElement>
     | React.ChangeEvent<HTMLSelectElement>;
+
+  const resetQuantity = () => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      quantity: 0,
+    }));
+  }
+
+  const validateQuantity = () => {
+    if (formData.quantity < 1) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        quantity: 1,
+      }));
+    } else if (formData.quantity > stock.remainingStock) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        quantity: stock.remainingStock,
+      }));
+    }
+  }
+
+  const decrementQuantity = () => {
+    if (formData.quantity > 1) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        quantity: prevFormData.quantity - 1,
+      }));
+    }
+  }
+
+  const incrementQuantity = () => {
+    if (formData.quantity < stock.remainingStock) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        quantity: prevFormData.quantity + 1,
+      }));
+    }
+  }
 
   const handleChange = (e: ChangeEvent) => {
     setFormData({
@@ -130,6 +183,8 @@ export default function ProductDetails({ product }: Props) {
           itemsPrice: 0,
         }),
       );
+
+      resetQuantity();
       toast.success('Update store success');
     } catch (err) {
       console.error(err);
@@ -154,10 +209,7 @@ export default function ProductDetails({ product }: Props) {
         );
       }
 
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        quantity: 0,
-      }));
+      resetQuantity();
       toast.success('Add to cart success');
     } catch (err) {
       console.error(err);
@@ -229,17 +281,41 @@ export default function ProductDetails({ product }: Props) {
                   </FormControl>
                   <FormControl id="quantity">
                     <FormLabel>Quantity</FormLabel>
-                    <Input
-                      name="quantity"
-                      placeholder="Quantity"
-                      width={'50%'}
-                      mr={5}
-                      type="number"
-                      value={formData.quantity}
-                      onChange={handleChange}
-                    />
-                    <FormLabel display={'inline'}>Stock:</FormLabel>
-                    <Text as={'span'}>100</Text>
+                    <Box display="inline-flex" mr={5}>
+                      <IconButton
+                        aria-label="left"
+                        icon={<Icon as={FiMinus} />}
+                        borderRightRadius={0}
+                        onClick={decrementQuantity}
+                        isDisabled={!formData.quantity}
+                      />
+                      <Input
+                        name="quantity"
+                        placeholder="Quantity"
+                        width={'50%'}
+                        type="number"
+                        borderRadius={0}
+                        value={formData.quantity}
+                        onChange={handleChange}
+                        onBlur={validateQuantity}
+                        isDisabled={!stock?.remainingStock}
+                      />
+                      <IconButton
+                        aria-label="right"
+                        icon={<Icon as={FiPlus} />}
+                        borderLeftRadius={0}
+                        onClick={incrementQuantity}
+                        isDisabled={formData.quantity === stock?.remainingStock}
+                      />
+                    </Box>
+                    {stock?.remainingStock > 0 ? (
+                      <>
+                        <FormLabel display={'inline'}>Stock:</FormLabel>
+                        <Text as={'span'}>{stock.remainingStock}</Text>
+                      </>
+                    ) : (
+                      <Text as={'span'} color={'red.500'}>Stock is empty</Text>
+                    )}
                   </FormControl>
                 </Stack>
               )}
@@ -256,6 +332,7 @@ export default function ProductDetails({ product }: Props) {
                 textTransform={'uppercase'}
                 _hover={{ transform: 'translateY(2px)', boxShadow: 'lg' }}
                 type="submit"
+                isDisabled={!formData.quantity}
               >
                 <FaCartPlus />
                 <Text as={'span'} ml={5}>
@@ -263,7 +340,7 @@ export default function ProductDetails({ product }: Props) {
                 </Text>
               </Button>
             )}
-            <FormControl id="quantity">
+            <FormControl id="category">
               <FormLabel display={'inline'}>Category:</FormLabel>
               <Text as={'span'}>{product.category.name}</Text>
             </FormControl>

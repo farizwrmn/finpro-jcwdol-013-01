@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  Avatar,
   Box,
   Container,
   Divider,
@@ -21,8 +20,6 @@ const Category = () => {
     categories: [],
     pages: 1,
   });
-
-  console.log(data);
 
   const [filters, setFilters] = useState({
     keyword: '',
@@ -57,11 +54,12 @@ const Category = () => {
               textAlign={'center'}
             >
               {data.categories?.map((category: any, index: number) => (
-                <GridItem>
+                <GridItem key={index}>
                   <Link href={'/'}>
                     <Image
                       key={index}
-                      src={`http://localhost:8000/public/categories/${category.image}`}
+                      src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/categories/${category.image}`}
+                      transition={'0.25s all ease-in-out'}
                       _hover={{
                         transform: 'translateY(-5px)',
                         boxShadow: 'lg',
@@ -70,6 +68,8 @@ const Category = () => {
                       width={'120px'}
                       height={'80px'}
                       borderRadius={'xl'}
+                      alt={category.name}
+                      mb={2}
                     />
                     <Text
                       _hover={{ color: 'green' }}

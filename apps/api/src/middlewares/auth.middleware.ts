@@ -50,4 +50,34 @@ const superAdminGuard = async (
   }
 };
 
-export { verifyToken, adminGuard, superAdminGuard };
+const storeAdminGuard = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    if (String(req.user?.role).toLowerCase() !== 'store_admin')
+      throw new Error('Unauthorized');
+
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
+
+const customerGuard = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    if (String(req.user?.role).toLowerCase() !== 'customer')
+      throw new Error('Unauthorized');
+
+    next();
+  } catch (err) {
+    next(err);
+  }
+};
+
+export { verifyToken, adminGuard, superAdminGuard, storeAdminGuard, customerGuard };

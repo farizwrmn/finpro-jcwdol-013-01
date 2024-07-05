@@ -20,7 +20,6 @@ type Props = {
 
 const ImageSlider = ({ images = [] }: Props) => {
   const [thumbsSwiper, setThumbsSwiper] = useState<any>(null);
-  console.log(images);
 
   return (
     <>
