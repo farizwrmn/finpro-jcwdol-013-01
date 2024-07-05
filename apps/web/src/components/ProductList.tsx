@@ -6,15 +6,19 @@ import {
   Card,
   CardBody,
   Divider,
+  Grid,
+  GridItem,
   Heading,
+  Icon,
+  IconButton,
   Image,
-  SimpleGrid,
   Stack,
   Text,
 } from '@chakra-ui/react';
 import { FormatCurrency } from '@/utils/FormatCurrency';
 import Link from 'next/link';
 import { getProducts } from '@/services/product.service';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 const ProductList = () => {
   const [data, setData] = useState({
@@ -24,7 +28,7 @@ const ProductList = () => {
   const [filters, setFilters] = useState({
     keyword: '',
     page: 1,
-    size: 10,
+    size: 8,
   });
 
   useEffect(() => {
@@ -36,50 +40,94 @@ const ProductList = () => {
 
   return (
     <>
-      <Heading textAlign={'center'} mt={{ base: '10', sm: '10' }} mb={5}>
+      <Heading
+        textAlign={'center'}
+        mt={{ base: '10', sm: '10' }}
+        mb={5}
+        fontFamily={'monospace'}
+      >
         Groceries Near You
       </Heading>
-      <Divider />
-      <Box flex={'1'} gap={5} mb={10} h={{ base: '550px', sm: '600px' }}>
-        <SimpleGrid overflowX={'scroll'} pb={10} pt={5}>
-          <Stack flex={'row'} direction={'row'} h={'full'}>
-            {data.products?.map((product: any, index: number) => (
+      <Divider mb={10} />
+      <Stack
+        pb={10}
+        pt={5}
+        bg={'teal'}
+        bgGradient={'linear(to-r, teal.200, green.500)'}
+      >
+        <Grid
+          templateColumns={{ base: 'repeat(1, 2fr)', sm: 'repeat(4, 2fr)' }}
+          gap={6}
+        >
+          {data.products?.map((product: any, index: number) => (
+            <GridItem w={'full'} flexDirection={'column'} p={5}>
               <Card
+                h={'100%'}
                 key={index}
-                maxW="xs"
+                maxW="xl"
                 shadow={'xl'}
                 w={'full'}
                 _hover={{
-                  transform: 'translateY(5px)',
+                  transform: 'translateY(-15px)',
                   boxShadow: 'lg',
                 }}
+                borderRadius={'2xl'}
               >
                 <CardBody>
                   <Link href={`/products/${product.slug}`}>
                     <Image
                       src={`http://localhost:8000/public/products/${product.productImages[0]?.image}`}
                       alt="Green double couch with wooden legs"
-                      borderRadius="lg"
+                      borderRadius="2xl"
+                      width={'500px'}
+                      height={'200px'}
+                      fit={'cover'}
                     />
-                    <Stack mt="3" spacing="3">
-                      <Heading size="md">{product.name}</Heading>
-                      <Text noOfLines={4}>{product.description}</Text>
-                      <Text
-                        color="blue.600"
-                        fontSize="lg"
-                        mt={5}
-                        textAlign={'center'}
-                      >
+                    <Stack mt="3" spacing="3" textAlign={'center'}>
+                      <Heading size="md" noOfLines={4}>
+                        {product.name}
+                      </Heading>
+                      <Text>{product.category.name}</Text>
+                      <Text color="blue.600" fontSize="lg" mt={5} as={'b'}>
                         {FormatCurrency(product.price)}
                       </Text>
                     </Stack>
                   </Link>
                 </CardBody>
               </Card>
-            ))}
-          </Stack>
-        </SimpleGrid>
-      </Box>
+            </GridItem>
+          ))}
+        </Grid>
+        <Box pt={4} display="flex" justifyContent="center">
+          <Box display="flex">
+            <IconButton
+              aria-label="left"
+              icon={<Icon as={FiChevronLeft} />}
+              onClick={() =>
+                setFilters((prevFilters) => ({
+                  ...prevFilters,
+                  page: Math.max(prevFilters.page - 1, 1),
+                }))
+              }
+              isDisabled={filters.page === 1}
+            />
+            <Box p={2}>
+              {filters.page} / {data.pages}
+            </Box>
+            <IconButton
+              aria-label="right"
+              icon={<Icon as={FiChevronRight} />}
+              onClick={() =>
+                setFilters((prevFilters) => ({
+                  ...prevFilters,
+                  page: Math.min(prevFilters.page + 1, data.pages),
+                }))
+              }
+              isDisabled={filters.page === data.pages}
+            />
+          </Box>
+        </Box>
+      </Stack>
     </>
   );
 };

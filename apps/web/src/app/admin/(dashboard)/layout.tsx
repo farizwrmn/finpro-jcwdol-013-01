@@ -24,6 +24,7 @@ import {
   MenuItem,
   MenuList,
   Image,
+  AvatarBadge,
 } from '@chakra-ui/react';
 import { FiHome, FiMenu, FiBell, FiChevronDown, FiUser } from 'react-icons/fi';
 import {
@@ -271,9 +272,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               <HStack>
                 <Avatar
                   size={{ base: 'sm', sm: 'md' }}
-                  src={user.image}
+                  src={`http://localhost:8000/public/avatar/${user.image}`}
                   ml={2}
-                />
+                >
+                  <AvatarBadge boxSize="1.25em" bg="green.500" />
+                </Avatar>
                 <VStack
                   display={{ base: 'none', md: 'flex' }}
                   alignItems="flex-start"
