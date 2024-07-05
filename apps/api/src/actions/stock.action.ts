@@ -1,11 +1,12 @@
 import { HttpException } from '@/exceptions/HttpException';
-import { IStock, IUpdateStock } from '@/interfaces/stock.interface';
+import { IFilterStock, IResultStock, IStock, IUpdateStock } from '@/interfaces/stock.interface';
 import {
   createStockQuery,
   getStocksByProductIDQuery,
   getStockByIDQuery,
   updateStockQuery,
   getStockByProductIdAndStoreIdQuery,
+  getStocksQuery,
 } from '@/queries/stock.query';
 import { Stock } from '@prisma/client';
 
@@ -25,6 +26,17 @@ const updateStockAction = async (
   try {
     const stock = await updateStockQuery(id, stockData);
     return stock;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const getStocksAction = async (
+  filters: IFilterStock,
+): Promise<IResultStock> => {
+  try {
+    const data = await getStocksQuery(filters);
+    return data;
   } catch (err) {
     throw err;
   }
@@ -72,6 +84,7 @@ const getStockByProductIdAndStoreIdAction = async (productId: string, storeId: s
 export {
   createStockAction,
   updateStockAction,
+  getStocksAction,
   getStocksByProductIDAction,
   getStockByIDAction,
   getStockByProductIdAndStoreIdAction,

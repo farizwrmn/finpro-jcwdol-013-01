@@ -5,11 +5,13 @@ import {
   updateStockController,
   getStockByIDController,
   getStockByProductIdAndStoreIdController,
+  getStocksController,
 } from '@/controllers/stock.controller';
 import { adminGuard, verifyToken } from '@/middlewares/auth.middleware';
 
 const router = express.Router();
 
+router.get("/", verifyToken, getStocksController);
 router.get(
   '/product/:id',
   verifyToken,

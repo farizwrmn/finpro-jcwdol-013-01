@@ -5,7 +5,12 @@ import { useAppDispatch } from '@/lib/hooks';
 import { checkToken, signOut } from '@/lib/features/auth/authSlice';
 import { useRouter } from 'next/navigation';
 
-export default function AuthUser({ children }: { children: React.ReactNode }) {
+type Props = {
+  children: React.ReactNode;
+  url?: string;
+}
+
+export default function AuthUser({ children, url = '/' }: Props) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -14,18 +19,16 @@ export default function AuthUser({ children }: { children: React.ReactNode }) {
     (async () => {
       if (typeof window !== undefined) {
         const token = localStorage.getItem('token');
-        if (!token) return router.push('/');
 
-        const result = await dispatch(checkToken(token));
-        if (!result) {
-          dispatch(signOut());
-          router.push('/');
+        const result = await dispatch(checkToken(token as string));
+        if (result?.role) {
+          router.push(url);
         }
 
         setIsLoading(false);
       }
     })();
-  }, [dispatch, router]);
+  }, [dispatch, router, url]);
 
   if (isLoading) return <></>;
 

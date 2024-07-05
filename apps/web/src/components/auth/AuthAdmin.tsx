@@ -5,7 +5,12 @@ import { useAppDispatch } from '@/lib/hooks';
 import { checkToken, signOut } from '@/lib/features/auth/authSlice';
 import { useRouter } from 'next/navigation';
 
-export default function AuthAdmin({ children }: { children: React.ReactNode }) {
+type Props = {
+  children: React.ReactNode;
+  url?: string;
+}
+
+export default function AuthAdmin({ children, url = '/' }: Props) {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -14,22 +19,22 @@ export default function AuthAdmin({ children }: { children: React.ReactNode }) {
     (async () => {
       if (typeof window !== undefined) {
         const token = localStorage.getItem('token');
-        if (!token) return router.push('/');
+        if (!token) return router.push(url);
 
         const result = await dispatch(checkToken(token));
         if (!result?.role) {
           dispatch(signOut());
-          router.push('/');
+          router.push(url);
         }
 
         if (result?.role?.name !== "super_admin" && result?.role?.name !== "store_admin") {
-          router.push('/');
+          router.push(url);
         } else {
           setIsLoading(false);
         }
       }
     })();
-  }, [dispatch, router]);
+  }, [dispatch, router, url]);
 
   if (isLoading) return <></>;
 
