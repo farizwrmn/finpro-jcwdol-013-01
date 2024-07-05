@@ -21,21 +21,21 @@ const aboutUs = [
     role: 'Team Leads',
     content:
       'Mind Groceries has significantly streamlined our e-commerce operations. The user-friendly interface has improved team productivity, allowing us to focus on other crucial areas.',
-    avatar: 'http://localhost:8000/public/about-us/fariz.jpeg',
+    avatar: `${process.env.NEXT_PUBLIC_BASE_API_URL}/public/about-us/fariz.jpeg`,
   },
   {
     name: 'Rehan Adi Purwana.',
     role: 'Vice Leads',
     content:
       'As a website, Mind Groceries will help you to find what you need with friendly interface',
-    avatar: 'http://localhost:8000/public/about-us/rehan.jpeg',
+    avatar: `${process.env.NEXT_PUBLIC_BASE_API_URL}/public/about-us/rehan.jpeg`,
   },
   {
     name: 'Alex Jhosua Virdo Manurung',
     role: 'Operations',
     content:
       'Our Dream is to make a friendly user interface website, and hopefully Mind Groceries can provide that dream',
-    avatar: 'http://localhost:8000/public/about-us/alex.jpeg',
+    avatar: `${process.env.NEXT_PUBLIC_BASE_API_URL}/public/about-us/alex.jpeg`,
   },
 ];
 

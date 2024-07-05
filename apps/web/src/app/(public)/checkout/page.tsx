@@ -1,8 +1,12 @@
+import AuthCustomer from "@/components/auth/AuthCustomer";
 import Checkout from '@/components/checkout/Checkout';
-import React from 'react';
 
 const page = () => {
-  return <Checkout />;
+  return (
+    <AuthCustomer>
+      <Checkout />
+    </AuthCustomer>
+  );
 };
 
 export default page;
