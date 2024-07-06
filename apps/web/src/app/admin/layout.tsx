@@ -1,52 +1,20 @@
 'use client';
 
 import React, { ReactNode, useEffect, useState } from 'react';
-import Link from 'next/link';
+import { Box, Drawer, DrawerContent, useDisclosure } from '@chakra-ui/react';
+import { FiHome, FiUser } from 'react-icons/fi';
 import {
-  IconButton,
-  Avatar,
-  Box,
-  CloseButton,
-  Flex,
-  HStack,
-  VStack,
-  Icon,
-  useColorModeValue,
-  Drawer,
-  DrawerContent,
-  Text,
-  useDisclosure,
-  BoxProps,
-  FlexProps,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
-  Image,
-  AvatarBadge,
-} from '@chakra-ui/react';
-import { FiHome, FiMenu, FiBell, FiChevronDown, FiUser } from 'react-icons/fi';
-import {
-  FaApplePay,
-  FaBirthdayCake,
   FaCashRegister,
   FaCcDiscover,
   FaChartArea,
   FaChartLine,
-  FaIceCream,
-  FaProductHunt,
   FaShopify,
   FaStore,
   FaTicketAlt,
-  FaWolfPackBattalion,
 } from 'react-icons/fa';
 import { IconType } from 'react-icons';
-import { ReactText } from 'react';
 import AuthAdmin from '@/components/auth/AuthAdmin';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { signOut } from '@/lib/features/auth/authSlice';
-import { useRouter } from 'next/navigation';
+import { useAppSelector } from '@/lib/hooks';
 import SidebarAdmin from '@/components/navbar/admin/SidebarAdmin';
 import MobileNavAdmin from '@/components/navbar/admin/MobileNavAdmin';
 

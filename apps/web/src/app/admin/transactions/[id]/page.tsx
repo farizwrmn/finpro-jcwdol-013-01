@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -19,13 +19,14 @@ import {
   Td,
   SimpleGrid,
 } from '@chakra-ui/react';
-import { useRouter } from "next/navigation";
-import { getOrderByID } from "@/services/order.service";
-import { FormatCurrency } from "@/utils/FormatCurrency";
-import { createPayment, updatePaymentStatus } from "@/services/payment.service";
-import { toast } from "react-toastify";
-import { ORDER_STATUS } from "@/constants/order.constant";
-import { sendOrder } from "@/services/shipping.service";
+import { useRouter } from 'next/navigation';
+import { getOrderByID } from '@/services/order.service';
+import { FormatCurrency } from '@/utils/FormatCurrency';
+import { createPayment, updatePaymentStatus } from '@/services/payment.service';
+import { toast } from 'react-toastify';
+import { ORDER_STATUS } from '@/constants/order.constant';
+import { sendOrder } from '@/services/shipping.service';
+import { formatDate } from '@/utils/date';
 
 type Props = { params: { id: string } };
 
@@ -37,72 +38,82 @@ const Page = ({ params: { id } }: Props) => {
     (async () => {
       const data = await getOrderByID(id);
       setOrder(data);
-    })()
+    })();
   }, [id]);
 
   const handleVerify = async () => {
     try {
       const formData = { orderStatus: ORDER_STATUS.diproses };
       const order = await updatePaymentStatus(id, formData);
-      if (!order?.id) throw new Error("Verify order failed");
+      if (!order?.id) throw new Error('Verify order failed');
 
       const data = await getOrderByID(id);
       setOrder(data);
-      toast.success("Verify order success");
+      toast.success('Verify order success');
     } catch (err) {
-      toast.error("Verify order failed");
+      toast.error('Verify order failed');
     }
-  }
+  };
 
   const handleSend = async () => {
     try {
       const order = await sendOrder(id);
-      if (!order?.id) throw new Error("Send order failed");
+      if (!order?.id) throw new Error('Send order failed');
 
       const data = await getOrderByID(id);
       setOrder(data);
-      toast.success("Send order success");
+      toast.success('Send order success');
     } catch (err) {
-      toast.error("Send order failed");
+      toast.error('Send order failed');
     }
-  }
+  };
 
   const handleReject = async () => {
     try {
       const formData = { orderStatus: ORDER_STATUS.menungguPembayaran };
       const order = await updatePaymentStatus(id, formData);
-      if (!order?.id) throw new Error("Reject order failed");
+      if (!order?.id) throw new Error('Reject order failed');
 
       const data = await getOrderByID(id);
       setOrder(data);
-      toast.success("Reject order success");
+      toast.success('Reject order success');
     } catch (err) {
-      toast.error("Reject order failed");
+      toast.error('Reject order failed');
     }
-  }
+  };
 
   const handleCancel = async () => {
     try {
       const formData = { orderStatus: ORDER_STATUS.dibatalkan };
       const order = await updatePaymentStatus(id, formData);
-      if (!order?.id) throw new Error("Cancel order failed");
+      if (!order?.id) throw new Error('Cancel order failed');
 
       const data = await getOrderByID(id);
       setOrder(data);
-      toast.success("Cancel order success");
+      toast.success('Cancel order success');
     } catch (err) {
-      toast.error("Cancel order failed");
+      toast.error('Cancel order failed');
     }
-  }
+  };
 
-  const OrderContent = ({ id, label, value }: { id?: string, label?: string, value?: string }) => (
+  const OrderContent = ({
+    id,
+    label,
+    value,
+  }: {
+    id?: string;
+    label?: string;
+    value?: string;
+  }) => (
     <FormControl id={id}>
       <SimpleGrid
         columns={{ base: 1, sm: 1, md: 3 }}
         spacing={{ base: 0, sm: 0, md: 10 }}
       >
         <FormLabel>{label}</FormLabel>
-        <Text gridColumn={{ base: "unset", sm: "unset", md: "2/-1" }}>{value}</Text>
+        <Text gridColumn={{ base: 'unset', sm: 'unset', md: '2/-1' }}>
+          {value}
+        </Text>
       </SimpleGrid>
     </FormControl>
   );
@@ -114,41 +125,103 @@ const Page = ({ params: { id } }: Props) => {
       </Text>
       <Card my={10}>
         <CardBody>
-          <Stack
-            spacing={4}
-            w={'full'}
-            rounded={'xl'}
-            p={10}
-            my={6}
-          >
-            <OrderContent id="name" label="Name" value={order?.user.name || '-'} />
+          <Stack spacing={4} w={'full'} rounded={'xl'} p={10} my={6}>
+            <OrderContent
+              id="name"
+              label="Name"
+              value={order?.user.name || '-'}
+            />
             <OrderContent id="email" label="Email" value={order?.user.email} />
-            <OrderContent id="phone" label="Phone" value={order?.user.phone || '-'} />
-            <OrderContent id="address" label="Address" value={`${order?.userAddress.address}, ${order?.userAddress.subdistrictName}, ${order?.userAddress.cityName}, ${order?.userAddress.provinceName} ${order?.userAddress.postalCode || ''}`} />
-            <OrderContent id="store" label="Store" value={order?.store.name || '-'} />
-            <OrderContent id="itemsPrice" label="Product Subtotal" value={FormatCurrency(order?.itemsPrice)} />
-            <OrderContent id="shippingPrice" label="Shipping Subtotal" value={FormatCurrency(order?.shippingPrice)} />
+            <OrderContent
+              id="phone"
+              label="Phone"
+              value={order?.user.phone || '-'}
+            />
+            <OrderContent
+              id="address"
+              label="Address"
+              value={`${order?.userAddress.address}, ${order?.userAddress.subdistrictName}, ${order?.userAddress.cityName}, ${order?.userAddress.provinceName} ${order?.userAddress.postalCode || ''}`}
+            />
+            <OrderContent
+              id="store"
+              label="Store"
+              value={order?.store.name || '-'}
+            />
+            <OrderContent
+              id="itemsPrice"
+              label="Product Subtotal"
+              value={FormatCurrency(order?.itemsPrice)}
+            />
+            <OrderContent
+              id="shippingPrice"
+              label="Shipping Subtotal"
+              value={FormatCurrency(order?.shippingPrice)}
+            />
             {order?.itemsDiscount && (
-              <OrderContent id="itemsDiscount" label="Product Discount" value={FormatCurrency(-order?.itemsDiscount)} />
+              <OrderContent
+                id="itemsDiscount"
+                label="Product Discount"
+                value={FormatCurrency(-order?.itemsDiscount)}
+              />
             )}
             {order?.shippingDiscount && (
-              <OrderContent id="shippingDiscount" label="Shipping Discount" value={FormatCurrency(-order?.shippingDiscount)} />
+              <OrderContent
+                id="shippingDiscount"
+                label="Shipping Discount"
+                value={FormatCurrency(-order?.shippingDiscount)}
+              />
             )}
             {order?.voucherDiscount && (
-              <OrderContent id="voucherDiscount" label="Voucher Discount" value={FormatCurrency(-order?.voucherDiscount)} />
+              <OrderContent
+                id="voucherDiscount"
+                label="Voucher Discount"
+                value={FormatCurrency(-order?.voucherDiscount)}
+              />
             )}
             {order?.referralDiscount && (
-              <OrderContent id="referralDiscount" label="Referral Discount" value={FormatCurrency(-order?.referralDiscount)} />
+              <OrderContent
+                id="referralDiscount"
+                label="Referral Discount"
+                value={FormatCurrency(-order?.referralDiscount)}
+              />
             )}
-            <OrderContent id="totalPrice" label="Total Price" value={FormatCurrency(order?.totalPrice)} />
-            <OrderContent id="orderStatus" label="Order Status" value={order?.orderStatus} />
-            <OrderContent id="orderDate" label="Order Date" value={order?.orderDate} />
-            <OrderContent id="paymentMethod" label="Payment Method" value={order?.paymentMethod} />
-            <OrderContent id="paymentDate" label="Payment Date" value={order?.paymentDate || '-'} />
-            <OrderContent id="shippingMethod" label="Shipping Method" value={`${order?.shippingCourier} - ${order?.shippingService}`} />
-            <OrderContent id="shippingDate" label="Shipping Date" value={order?.shippingDate || '-'} />
+            <OrderContent
+              id="totalPrice"
+              label="Total Price"
+              value={FormatCurrency(order?.totalPrice)}
+            />
+            <OrderContent
+              id="orderStatus"
+              label="Order Status"
+              value={order?.orderStatus}
+            />
+            <OrderContent
+              id="orderDate"
+              label="Order Date"
+              value={formatDate(order?.orderDate)}
+            />
+            <OrderContent
+              id="paymentMethod"
+              label="Payment Method"
+              value={order?.paymentMethod}
+            />
+            <OrderContent
+              id="paymentDate"
+              label="Payment Date"
+              value={formatDate(order?.paymentDate) || '-'}
+            />
+            <OrderContent
+              id="shippingMethod"
+              label="Shipping Method"
+              value={`${order?.shippingCourier} - ${order?.shippingService}`}
+            />
+            <OrderContent
+              id="shippingDate"
+              label="Shipping Date"
+              value={formatDate(order?.shippingDate) || '-'}
+            />
 
-            {order?.paymentMethod === "BANK" && order?.paymentImage && (
+            {order?.paymentMethod === 'BANK' && order?.paymentImage && (
               <FormControl id="orderStatus">
                 <SimpleGrid
                   columns={{ base: 1, sm: 1, md: 3 }}
@@ -164,7 +237,8 @@ const Page = ({ params: { id } }: Props) => {
               </FormControl>
             )}
 
-            {order?.orderStatus && order?.orderStatus === ORDER_STATUS.menungguKonfirmasiPembayaran ? (
+            {order?.orderStatus &&
+            order?.orderStatus === ORDER_STATUS.menungguKonfirmasiPembayaran ? (
               <Stack spacing={6} direction={['column', 'row']} mt={15}>
                 <Button
                   onClick={handleReject}
@@ -173,7 +247,8 @@ const Page = ({ params: { id } }: Props) => {
                   w="full"
                   _hover={{
                     bg: 'red.500',
-                  }}>
+                  }}
+                >
                   Reject Order
                 </Button>
                 <Button
@@ -183,7 +258,8 @@ const Page = ({ params: { id } }: Props) => {
                   w="full"
                   _hover={{
                     bg: 'blue.500',
-                  }}>
+                  }}
+                >
                   Verify Order
                 </Button>
               </Stack>
@@ -191,14 +267,15 @@ const Page = ({ params: { id } }: Props) => {
               <Stack spacing={6} direction={['column', 'row']} mt={15}>
                 <Button
                   onClick={() => {
-                    router.push(`/admin/transactions`)
+                    router.push(`/admin/transactions`);
                   }}
                   bg={'blue.400'}
                   color={'white'}
                   w="full"
                   _hover={{
                     bg: 'blue.500',
-                  }}>
+                  }}
+                >
                   Back
                 </Button>
                 <Button
@@ -208,7 +285,8 @@ const Page = ({ params: { id } }: Props) => {
                   w="full"
                   _hover={{
                     bg: 'red.500',
-                  }}>
+                  }}
+                >
                   Cancel Order
                 </Button>
                 <Button
@@ -218,7 +296,8 @@ const Page = ({ params: { id } }: Props) => {
                   w="full"
                   _hover={{
                     bg: 'blue.500',
-                  }}>
+                  }}
+                >
                   Send Order
                 </Button>
               </Stack>
@@ -226,14 +305,15 @@ const Page = ({ params: { id } }: Props) => {
               <Stack spacing={6} direction={['column', 'row']} mt={15}>
                 <Button
                   onClick={() => {
-                    router.push(`/admin/transactions`)
+                    router.push(`/admin/transactions`);
                   }}
                   bg={'blue.400'}
                   color={'white'}
                   w="full"
                   _hover={{
                     bg: 'blue.500',
-                  }}>
+                  }}
+                >
                   Back
                 </Button>
               </Stack>

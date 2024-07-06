@@ -22,22 +22,23 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import { useAppSelector } from "@/lib/hooks";
-import { getOrders } from "@/services/order.service";
-import { FormatCurrency } from "@/utils/FormatCurrency";
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { useAppSelector } from '@/lib/hooks';
+import { getOrders } from '@/services/order.service';
+import { FormatCurrency } from '@/utils/FormatCurrency';
+import { formatDate } from '@/utils/date';
 
 const Page = () => {
   const user = useAppSelector((state) => state.auth.user);
   const [data, setData] = useState({
     orders: [],
-    pages: 1
+    pages: 1,
   });
   const [filters, setFilters] = useState({
     userId: user.id as string,
     keyword: '',
     page: 1,
-    size: 10
+    size: 10,
   });
   const router = useRouter();
 
@@ -59,7 +60,9 @@ const Page = () => {
             <Input
               placeholder="Search..."
               value={filters.keyword}
-              onChange={(e) => setFilters({ ...filters, keyword: e.target.value, page: 1 })}
+              onChange={(e) =>
+                setFilters({ ...filters, keyword: e.target.value, page: 1 })
+              }
             />
           </Flex>
           <TableContainer>
@@ -84,14 +87,14 @@ const Page = () => {
                   <Tr key={order.id}>
                     <Td>{filters.size * (filters.page - 1) + index + 1}</Td>
                     <Td>{order.orderNumber}</Td>
-                    <Td>{order.orderDate}</Td>
+                    <Td>{formatDate(order.orderDate)}</Td>
                     <Td>{order.store.name}</Td>
                     <Td>{FormatCurrency(order.totalPrice)}</Td>
                     <Td>{order.orderStatus}</Td>
                     <Td>{order.paymentMethod}</Td>
-                    <Td>{order.paymentDate}</Td>
+                    <Td>{formatDate(order.paymentDate)}</Td>
                     <Td>{`${order.shippingCourier} - ${order.shippingService}`}</Td>
-                    <Td>{order.shippingDate}</Td>
+                    <Td>{formatDate(order.shippingDate)}</Td>
                     <Td>
                       <ButtonGroup>
                         <Button
@@ -113,7 +116,13 @@ const Page = () => {
             <Select
               width="auto"
               value={filters.size}
-              onChange={(e) => setFilters({ ...filters, size: parseInt(e.target.value), page: 1 })}
+              onChange={(e) =>
+                setFilters({
+                  ...filters,
+                  size: parseInt(e.target.value),
+                  page: 1,
+                })
+              }
             >
               <option value="5">5 per page</option>
               <option value="10">10 per page</option>
@@ -125,20 +134,24 @@ const Page = () => {
               <IconButton
                 aria-label="left"
                 icon={<Icon as={FiChevronLeft} />}
-                onClick={() => setFilters(prevFilters => ({
-                  ...prevFilters,
-                  page: Math.max(prevFilters.page - 1, 1)
-                }))}
+                onClick={() =>
+                  setFilters((prevFilters) => ({
+                    ...prevFilters,
+                    page: Math.max(prevFilters.page - 1, 1),
+                  }))
+                }
                 isDisabled={filters.page === 1}
               />
-              <Box p={2}>{filters.page} / {data.pages}</Box>
+              <Box p={2}>
+                {filters.page} / {data.pages}
+              </Box>
               <IconButton
                 aria-label="right"
                 icon={<Icon as={FiChevronRight} />}
                 onClick={() =>
-                  setFilters(prevFilters => ({
+                  setFilters((prevFilters) => ({
                     ...prevFilters,
-                    page: Math.min(prevFilters.page + 1, data.pages)
+                    page: Math.min(prevFilters.page + 1, data.pages),
                   }))
                 }
                 isDisabled={filters.page === data.pages}

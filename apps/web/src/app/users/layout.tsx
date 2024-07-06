@@ -1,44 +1,11 @@
 'use client';
 
 import React, { ReactNode } from 'react';
-import Link from 'next/link';
-import {
-  IconButton,
-  Avatar,
-  Box,
-  CloseButton,
-  Flex,
-  HStack,
-  VStack,
-  Icon,
-  useColorModeValue,
-  Drawer,
-  DrawerContent,
-  Text,
-  useDisclosure,
-  BoxProps,
-  FlexProps,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
-  Image,
-} from '@chakra-ui/react';
-import { FiHome, FiMenu, FiBell, FiChevronDown, FiUser } from 'react-icons/fi';
-import {
-  FaAddressBook,
-  FaAtlas,
-  FaIceCream,
-  FaPager,
-  FaStore,
-  FaTicketAlt,
-} from 'react-icons/fa';
+import { Box, Drawer, DrawerContent, useDisclosure } from '@chakra-ui/react';
+import { FiHome, FiUser } from 'react-icons/fi';
+import { FaAddressBook, FaAtlas, FaPager, FaTicketAlt } from 'react-icons/fa';
 import { IconType } from 'react-icons';
-import { ReactText } from 'react';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { signOut } from '@/lib/features/auth/authSlice';
-import { useRouter } from 'next/navigation';
+
 import AuthCustomer from '@/components/auth/AuthCustomer';
 import MobileNavUser from '@/components/navbar/users/MobileNavUser';
 import SidebarUser from '@/components/navbar/users/SidebarUser';
