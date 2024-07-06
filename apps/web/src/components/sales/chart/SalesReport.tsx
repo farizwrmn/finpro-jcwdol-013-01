@@ -18,6 +18,7 @@ import {
 import DropDownYear from './DropDownYear';
 import DropDownStore from './DropDownStore';
 import { getSalesReportPerMonth } from '@/services/report.service';
+import TableChart from './TableChart';
 
 // Sales Data Interface (replace with your actual data structure)
 interface SalesData {
@@ -243,6 +244,7 @@ const DashboardSalesReport: React.FC = () => {
           </Box>
         </GridItem>
       </Grid>
+      <TableChart />
     </Box>
   );
 };

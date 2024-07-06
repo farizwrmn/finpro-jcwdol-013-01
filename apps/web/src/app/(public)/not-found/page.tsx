@@ -13,7 +13,7 @@ export default function NotFoundPage() {
     <Flex
       className="not-found-page"
       minH="100vh"
-      bgImage="https://i.pinimg.com/originals/ad/0f/37/ad0f3708164d87a96961fc9fd60947d1.jpg"
+      bgImage="https://i.pinimg.com/564x/db/e2/fa/dbe2fa41cb1b2b92371a0d46dc056204.jpg"
       bgSize="cover"
       bgPosition="center"
       overflow="hidden"
@@ -21,10 +21,10 @@ export default function NotFoundPage() {
       justifyContent="center"
     >
       <Box bg="blackAlpha.600" p={12} rounded="lg" textAlign="center">
-        <Heading as="h1" fontSize="15em" color="#00000" mb={8}>
+        <Heading as="h1" fontSize="15em" color="white" mb={8}>
           404
         </Heading>
-        <Heading as="h2" fontSize="5em" color="black" mb={6}>
+        <Heading as="h2" fontSize="5em" color="white" mb={6}>
           Uh, Ohh
         </Heading>
         <Text fontSize="2em" color="white">
