@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { IFilterReport } from '@/interfaces/report.interface';
-import { COLORS } from "@/constants/color.constant";
+import { COLORS } from '@/constants/color.constant';
 
 const prisma = new PrismaClient();
 
@@ -43,9 +43,8 @@ const getSalesReportPerMonthQuery = async (filters: IFilterReport) => {
       {
         label: 'Penjualan',
         data: report.map((item) => Number(item?.total)),
-        borderColor: COLORS[0].borderColor,
         backgroundColor: COLORS[0].backgroundColor,
-      }
+      },
     ];
   } catch (err) {
     throw err;
@@ -113,10 +112,13 @@ const getSalesReportPerProductQuery = async (filters: IFilterReport) => {
     return report.map((item, index) => {
       return {
         label: item.product_name,
-        data: String(item.total).split("|"),
-        borderColor: COLORS[index].borderColor || COLORS[0].borderColor,
-        backgroundColor: COLORS[index].backgroundColor || COLORS[0].backgroundColor,
-      }
+        data: String(item.total)
+          .split('|')
+          .map((item) => Number(item)),
+        borderColor: COLORS[index].backgroundColor || COLORS[0].backgroundColor,
+        backgroundColor:
+          COLORS[index].backgroundColor || COLORS[0].backgroundColor,
+      };
     });
   } catch (err) {
     throw err;
@@ -185,14 +187,20 @@ const getSalesReportPerCategoryQuery = async (filters: IFilterReport) => {
     return report.map((item, index) => {
       return {
         label: item.category_name,
-        data: String(item.total).split("|"),
-        borderColor: COLORS[index].borderColor || COLORS[0].borderColor,
-        backgroundColor: COLORS[index].backgroundColor || COLORS[0].backgroundColor,
-      }
+        data: String(item.total)
+          .split('|')
+          .map((item) => Number(item)),
+        backgroundColor:
+          COLORS[index].backgroundColor || COLORS[0].backgroundColor,
+      };
     });
   } catch (err) {
     throw err;
   }
 };
 
-export { getSalesReportPerMonthQuery, getSalesReportPerProductQuery, getSalesReportPerCategoryQuery };
+export {
+  getSalesReportPerMonthQuery,
+  getSalesReportPerProductQuery,
+  getSalesReportPerCategoryQuery,
+};

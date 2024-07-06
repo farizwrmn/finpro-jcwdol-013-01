@@ -27,6 +27,7 @@ import {
 } from '@/services/discount.service';
 import { FormatCurrency } from '@/utils/FormatCurrency';
 import { useAppSelector } from '@/lib/hooks';
+import { toast } from 'react-toastify';
 
 const Page = () => {
   const [discounts, setDiscounts] = useState<any[]>([]);
@@ -66,11 +67,11 @@ const Page = () => {
       if (!user.storeId) return;
       const product = await addStock(user.storeId, formData);
       if (!product) throw new Error('Update product failed!');
-      alert('Update product success');
+      toast.success('Update product success');
       router.push(`/admin/products/stocks/${user.storeId}`);
     } catch (err) {
       console.error(err);
-      alert('Update product failed');
+      toast.error('Update product failed');
     }
   };
 

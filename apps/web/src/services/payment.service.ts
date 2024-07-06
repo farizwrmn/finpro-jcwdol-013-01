@@ -1,4 +1,5 @@
 import instance from '@/utils/axiosInstance';
+import { toast } from 'react-toastify';
 
 export const createPayment = async (formData: any) => {
   try {
@@ -22,9 +23,13 @@ export const updatePaymentStatus = async (orderId: string, formData: any) => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
-      }
+      },
     };
-    const { data } = await instance.patch(`/payment/status/${orderId}`, formData, config);
+    const { data } = await instance.patch(
+      `/payment/status/${orderId}`,
+      formData,
+      config,
+    );
     const order = data?.data;
     return order;
   } catch (err) {
@@ -50,6 +55,6 @@ export const confirmPayment = async (orderId: string, formData: FormData) => {
     return order;
   } catch (err) {
     console.log(err);
-    alert('Confirm payment failed');
+    toast.error('Confirm payment failed');
   }
 };

@@ -1,4 +1,5 @@
 import instance from "@/utils/axiosInstance";
+import { toast } from "react-toastify";
 
 export const getProvinces = async () => {
   try {
@@ -57,6 +58,6 @@ export const sendOrder = async (orderId: string) => {
     return order;
   } catch (err) {
     console.log(err);
-    alert('Confirm delivery failed');
+    toast.error('Send order failed');
   }
 };

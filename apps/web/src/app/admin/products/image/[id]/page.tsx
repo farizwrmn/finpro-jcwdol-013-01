@@ -19,7 +19,8 @@ import {
 import { useRouter } from 'next/navigation';
 import { createProductImage, getProductByID } from '@/services/product.service';
 import Image from 'next/image';
-import AuthSuperAdmin from "@/components/auth/AuthSuperAdmin";
+import AuthSuperAdmin from '@/components/auth/AuthSuperAdmin';
+import { toast } from 'react-toastify';
 
 type Props = { params: { id: string } };
 
@@ -45,7 +46,7 @@ const Page = ({ params: { id } }: Props) => {
 
       const productImage = await createProductImage(formData);
       if (!productImage) throw new Error('Upload product image failed!');
-      alert('Upload product image success');
+      toast.success('Upload product image success');
       // router.push(`/admin/products/image/${id}`)
 
       const data = await getProductByID(id);
@@ -53,7 +54,7 @@ const Page = ({ params: { id } }: Props) => {
       router.refresh();
     } catch (err) {
       console.error(err);
-      alert('Upload product image failed');
+      toast.error('Upload product image failed');
     }
   };
 

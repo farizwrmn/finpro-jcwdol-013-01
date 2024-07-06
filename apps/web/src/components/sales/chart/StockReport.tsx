@@ -17,6 +17,7 @@ import {
 } from '@chakra-ui/react';
 import DropDownYear from './DropDownYear';
 import DropDownStore from './DropDownStore';
+import TableChart from './TableChart';
 
 // Sales Data Interface (replace with your actual data structure)
 interface SalesData {
@@ -183,8 +184,7 @@ const DashboardSalesReport: React.FC = () => {
           </Box>
         </GridItem>
       </Grid>
-
-      {/* Additional Charts (optional) */}
+      <TableChart />
     </Box>
   );
 };

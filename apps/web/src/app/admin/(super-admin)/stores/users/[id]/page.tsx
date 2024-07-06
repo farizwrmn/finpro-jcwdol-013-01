@@ -20,6 +20,7 @@ import {
   createUserStore,
 } from '@/services/store.service';
 import AssignedUsers from '@/components/AssignedUsers';
+import { toast } from 'react-toastify';
 
 type Props = { params: { id: string } };
 
@@ -70,7 +71,7 @@ const Page = ({ params: { id } }: Props) => {
     try {
       const store = await createUserStore(formData);
       if (!store) throw new Error('Assign user store failed!');
-      alert('Assign User store success');
+      toast.success('Assign User store success');
 
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -81,7 +82,7 @@ const Page = ({ params: { id } }: Props) => {
       setUnassignedUsers(data);
     } catch (err) {
       console.error(err);
-      alert('Assign user store failed');
+      toast.error('Assign user store failed');
     }
   };
 

@@ -152,7 +152,7 @@ const main = async () => {
   // await seedUsers();
   await seedCategories();
   await seedProducts();
-  // await seedStores();
+  await seedStores();
 };
 
 main()

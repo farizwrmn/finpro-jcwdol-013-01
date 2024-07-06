@@ -18,7 +18,8 @@ import { useRouter } from 'next/navigation';
 
 import { getStores } from '@/services/store.service';
 import { createStock } from '@/services/stock.service';
-import { useAppSelector } from "@/lib/hooks";
+import { useAppSelector } from '@/lib/hooks';
+import { toast } from 'react-toastify';
 
 type Props = { params: { id: string } };
 
@@ -38,8 +39,10 @@ const Page = ({ params: { id: productId } }: Props) => {
     (async () => {
       const data = await getStores({});
 
-      if (user.role === "store_admin") {
-        setStores(data?.stores.filter((store: any) => store.id === user.storeId));
+      if (user.role === 'store_admin') {
+        setStores(
+          data?.stores.filter((store: any) => store.id === user.storeId),
+        );
       } else {
         setStores(data?.stores);
       }
@@ -64,11 +67,11 @@ const Page = ({ params: { id: productId } }: Props) => {
     try {
       const product = await createStock(formData);
       if (!product) throw new Error('Create stock failed!');
-      alert('Create stock success');
+      toast.success('Create stock success');
       router.push(`/admin/products/stocks/${productId}`);
     } catch (err) {
       console.error(err);
-      alert('Create stock failed');
+      toast.error('Create stock failed');
     }
   };
 

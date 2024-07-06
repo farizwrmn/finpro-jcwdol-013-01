@@ -1,4 +1,5 @@
 import {
+  getSalesReportPerCategoryQuery,
   getSalesReportPerMonthQuery,
   getSalesReportPerProductQuery,
 } from '@/queries/report.query';
@@ -21,4 +22,18 @@ const getSalesReportPerProductAction = async (filters: IFilterReport) => {
     throw err;
   }
 };
-export { getSalesReportPerMonthAction, getSalesReportPerProductAction };
+
+const getSalesReportPerCategoryAction = async (filters: IFilterReport) => {
+  try {
+    const data = await getSalesReportPerCategoryQuery(filters);
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export {
+  getSalesReportPerMonthAction,
+  getSalesReportPerProductAction,
+  getSalesReportPerCategoryAction,
+};

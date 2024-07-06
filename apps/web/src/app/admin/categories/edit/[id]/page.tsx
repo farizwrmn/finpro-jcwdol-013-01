@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -13,9 +13,10 @@ import {
   FormLabel,
   Stack,
 } from '@chakra-ui/react';
-import { useRouter } from "next/navigation";
-import { getCategoryByID, updateCategory } from "@/services/category.service";
-import AuthSuperAdmin from "@/components/auth/AuthSuperAdmin";
+import { useRouter } from 'next/navigation';
+import { getCategoryByID, updateCategory } from '@/services/category.service';
+import AuthSuperAdmin from '@/components/auth/AuthSuperAdmin';
+import { toast } from 'react-toastify';
 
 type Props = { params: { id: string } };
 
@@ -33,36 +34,35 @@ const Page = ({ params: { id } }: Props) => {
       setFormData({
         name: data.name,
         slug: data.slug,
-      })
+      });
     })();
   }, [id]);
 
-  type ChangeEvent = (
-    React.ChangeEvent<HTMLInputElement> |
-    React.ChangeEvent<HTMLTextAreaElement> |
-    React.ChangeEvent<HTMLSelectElement>
-  )
+  type ChangeEvent =
+    | React.ChangeEvent<HTMLInputElement>
+    | React.ChangeEvent<HTMLTextAreaElement>
+    | React.ChangeEvent<HTMLSelectElement>;
 
   const handleChange = (e: ChangeEvent) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       const category = await updateCategory(id, formData);
-      if (!category) throw new Error("Update category failed!");
-      alert("Update category success");
-      router.push("/admin/categories")
+      if (!category) throw new Error('Update category failed!');
+      toast.success('Update category success');
+      router.push('/admin/categories');
     } catch (err) {
       console.error(err);
-      alert("Update category failed");
+      toast.error('Update category failed');
     }
-  }
+  };
 
   return (
     <AuthSuperAdmin url="/admin">
@@ -74,13 +74,7 @@ const Page = ({ params: { id } }: Props) => {
           <CardBody>
             <TableContainer>
               <form onSubmit={handleSubmit}>
-                <Stack
-                  spacing={6}
-                  w={'full'}
-                  rounded={'xl'}
-                  p={10}
-                  my={6}
-                >
+                <Stack spacing={6} w={'full'} rounded={'xl'} p={10} my={6}>
                   <FormControl id="name" isRequired>
                     <FormLabel>Category Name</FormLabel>
                     <Input
@@ -106,14 +100,15 @@ const Page = ({ params: { id } }: Props) => {
                   <Stack spacing={6} direction={['column', 'row']}>
                     <Button
                       onClick={() => {
-                        router.push("/admin/categories");
+                        router.push('/admin/categories');
                       }}
                       bg={'red.400'}
                       color={'white'}
                       w="full"
                       _hover={{
                         bg: 'red.500',
-                      }}>
+                      }}
+                    >
                       Cancel
                     </Button>
                     <Button
@@ -123,7 +118,8 @@ const Page = ({ params: { id } }: Props) => {
                       w="full"
                       _hover={{
                         bg: 'blue.500',
-                      }}>
+                      }}
+                    >
                       Update
                     </Button>
                   </Stack>

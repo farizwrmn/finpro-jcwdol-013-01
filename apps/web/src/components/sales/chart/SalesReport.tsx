@@ -17,7 +17,12 @@ import {
 } from '@chakra-ui/react';
 import DropDownYear from './DropDownYear';
 import DropDownStore from './DropDownStore';
-import { getSalesReportPerMonth } from '@/services/report.service';
+import {
+  getSalesReportPerCategory,
+  getSalesReportPerMonth,
+  getSalesReportPerProduct,
+} from '@/services/report.service';
+import TableChart from './TableChart';
 
 // Sales Data Interface (replace with your actual data structure)
 interface SalesData {
@@ -38,6 +43,8 @@ const salesData: SalesData[] = [
 
 const DashboardSalesReport: React.FC = () => {
   const [monthDatasets, setMonthDatasets] = useState<any[]>([]);
+  const [productDatasets, setProductDatasets] = useState<any[]>([]);
+  const [categoryDatasets, setCategoryDatasets] = useState<any[]>([]);
 
   const monthLabels = [
     'January',
@@ -62,51 +69,37 @@ const DashboardSalesReport: React.FC = () => {
   //   },
   // ];
 
-  const categoryDatasets = [
-    {
-      label: 'Sayur',
-      data: monthLabels.map(() => 100),
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Daging',
-      data: monthLabels.map(() => 200),
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ];
+  // const categoryDatasets = [
+  //   {
+  //     label: 'Sayur',
+  //     data: monthLabels.map(() => 100),
+  //     backgroundColor: 'rgba(255, 99, 132, 0.5)',
+  //   },
+  //   {
+  //     label: 'Daging',
+  //     data: monthLabels.map(() => 200),
+  //     backgroundColor: 'rgba(53, 162, 235, 0.5)',
+  //   },
+  // ];
 
-  const productDatasets = [
-    {
-      label: 'Bayam',
-      data: monthLabels.map(() => 100),
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Sapi',
-      data: monthLabels.map(() => 200),
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ];
+  // const productDatasets = [
+  //   {
+  //     label: 'Bayam',
+  //     data: monthLabels.map(() => 100),
+  //     borderColor: 'rgb(255, 99, 132)',
+  //     backgroundColor: 'rgba(255, 99, 132, 0.5)',
+  //   },
+  //   {
+  //     label: 'Sapi',
+  //     data: monthLabels.map(() => 200),
+  //     borderColor: 'rgb(53, 162, 235)',
+  //     backgroundColor: 'rgba(53, 162, 235, 0.5)',
+  //   },
+  // ];
 
-  const categoryLabels = [
-    'Sayur',
-    'Buah',
-    'Daging',
-    'Minyak',
-    'Garam',
-    'Telur',
-  ];
+  const categoryLabels = categoryDatasets.map((item) => item.label);
 
-  const productLabels = [
-    'Cap Kaki Naga',
-    'Cap Buah Khuldi',
-    'Daging Semut Abadi',
-    'Minyak Cap Keikhlasan',
-    'Garam Anti Miskin',
-    'Telur Dinosaurus Gede Sebelah',
-  ];
+  const productLabels = productDatasets.map((item) => item.label);
 
   const categoryPieDatasets = [
     {
@@ -160,6 +153,12 @@ const DashboardSalesReport: React.FC = () => {
     (async () => {
       const dataMonth = await getSalesReportPerMonth({});
       setMonthDatasets(dataMonth);
+
+      const dataProduct = await getSalesReportPerProduct({});
+      setProductDatasets(dataProduct);
+
+      const dataCategory = await getSalesReportPerCategory({});
+      setCategoryDatasets(dataCategory);
     })();
   }, []);
 
@@ -243,6 +242,7 @@ const DashboardSalesReport: React.FC = () => {
           </Box>
         </GridItem>
       </Grid>
+      <TableChart />
     </Box>
   );
 };

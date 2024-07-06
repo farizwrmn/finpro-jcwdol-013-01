@@ -24,6 +24,7 @@ import {
 } from '@/services/discount.service';
 import { getProducts } from '@/services/product.service';
 import { useAppSelector } from '@/lib/hooks';
+import { toast } from 'react-toastify';
 
 type Props = { params: { id: string } };
 
@@ -90,11 +91,11 @@ const Page = ({ params: { id: discountId } }: Props) => {
       if (!user.storeId) return;
       const product = await updateDiscount(discountId, formData);
       if (!product) throw new Error('Update discount failed!');
-      alert('Update discount success');
+      toast.success('Update discount success');
       router.push(`/admin/discounts`);
     } catch (err) {
       console.error(err);
-      alert('Update discount failed');
+      toast.error('Update discount failed');
     }
   };
 
