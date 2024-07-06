@@ -1,6 +1,7 @@
 import express from 'express';
 import { adminGuard, verifyToken } from '@/middlewares/auth.middleware';
 import {
+  getSalesReportPerCategoryController,
   getSalesReportPerMonthController,
   getSalesReportPerProductController,
 } from '@/controllers/report.controller';
@@ -19,6 +20,13 @@ router.get(
   verifyToken,
   adminGuard,
   getSalesReportPerProductController,
+);
+
+router.get(
+  '/sales/category',
+  verifyToken,
+  adminGuard,
+  getSalesReportPerCategoryController,
 );
 
 export default router;

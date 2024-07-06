@@ -24,6 +24,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { deleteUser, getUsers } from '@/services/user.service';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
 const Page = () => {
   const [data, setData] = useState({
@@ -49,13 +50,13 @@ const Page = () => {
     try {
       const user = await deleteUser(id);
       if (!user) throw new Error('Delete user failed');
-      alert('Delete user success');
+      toast.success('Delete user success');
 
       const result = await getUsers(filters);
       setData(result);
     } catch (err) {
       console.error(err);
-      alert('Delete user failed');
+      toast.error('Delete user failed');
     }
   };
 

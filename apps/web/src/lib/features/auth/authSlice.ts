@@ -12,6 +12,7 @@ import {
   updateCartStoreState,
 } from '../cart/cartSlice';
 import { getCartByUserID } from '@/services/cart.service';
+import { toast } from 'react-toastify';
 
 type User = {
   id?: string;
@@ -211,7 +212,7 @@ export const updateProfile =
       localStorage.setItem('user', JSON.stringify(data?.data));
     } catch (err) {
       console.log(err);
-      alert('Update profile failed');
+      toast.error('Update profile failed');
     }
   };
 
@@ -236,7 +237,7 @@ export const updateAvatar =
       localStorage.setItem('user', JSON.stringify(data?.data));
     } catch (err) {
       console.log(err);
-      alert('Update avatar failed');
+      toast.error('Update avatar failed');
     }
   };
 

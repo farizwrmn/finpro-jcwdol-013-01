@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -15,10 +15,15 @@ import {
   Stack,
   Textarea,
 } from '@chakra-ui/react';
-import { useRouter } from "next/navigation";
-import { getCities, getProvinces, getSubdistricts } from "@/services/shipping.service";
-import { getStoreByID, updateStore } from "@/services/store.service";
-import Map from "@/components/stores/Map";
+import { useRouter } from 'next/navigation';
+import {
+  getCities,
+  getProvinces,
+  getSubdistricts,
+} from '@/services/shipping.service';
+import { getStoreByID, updateStore } from '@/services/store.service';
+import Map from '@/components/stores/Map';
+import { toast } from 'react-toastify';
 
 type Props = { params: { id: string } };
 
@@ -56,7 +61,7 @@ const Page = ({ params: { id } }: Props) => {
         subdistrictName: data.subdistrictName,
         longitude: data.longitude,
         latitude: data.latitude,
-      })
+      });
     })();
   }, [id]);
 
@@ -81,32 +86,31 @@ const Page = ({ params: { id } }: Props) => {
     })();
   }, [formData.cityId]);
 
-  type ChangeEvent = (
-    React.ChangeEvent<HTMLInputElement> |
-    React.ChangeEvent<HTMLTextAreaElement> |
-    React.ChangeEvent<HTMLSelectElement>
-  )
+  type ChangeEvent =
+    | React.ChangeEvent<HTMLInputElement>
+    | React.ChangeEvent<HTMLTextAreaElement>
+    | React.ChangeEvent<HTMLSelectElement>;
 
   const handleChange = (e: ChangeEvent) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleChangeLonglat = (longitude: number, latitude: number) => {
-    setFormData(prevFormData => ({
+    setFormData((prevFormData) => ({
       ...prevFormData,
       longitude,
-      latitude
-    }))
-  }
+      latitude,
+    }));
+  };
 
   const handleChangeProvince = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const provinceId = e.target.value
-    const provinceName = provinces.find(
-      (province) => province.province_id === provinceId
-    )?.province || '';
+    const provinceId = e.target.value;
+    const provinceName =
+      provinces.find((province) => province.province_id === provinceId)
+        ?.province || '';
 
     setFormData({
       ...formData,
@@ -115,51 +119,51 @@ const Page = ({ params: { id } }: Props) => {
       cityId: '',
       cityName: '',
       subdistrictId: '',
-      subdistrictName: ''
-    })
-  }
+      subdistrictName: '',
+    });
+  };
 
   const handleChangeCity = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const cityId = e.target.value
-    const cityName = cities.find(
-      city => city.city_id === cityId
-    )?.city_name || ''
+    const cityId = e.target.value;
+    const cityName =
+      cities.find((city) => city.city_id === cityId)?.city_name || '';
 
     setFormData({
       ...formData,
       cityId,
       cityName,
       subdistrictId: '',
-      subdistrictName: ''
-    })
-  }
+      subdistrictName: '',
+    });
+  };
 
   const handleChangeSubdistrict = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const subdistrictId = e.target.value
-    const subdistrictName = subdistricts.find(
-      subdistrict => subdistrict.subdistrict_id === subdistrictId
-    )?.subdistrict_name || ''
+    const subdistrictId = e.target.value;
+    const subdistrictName =
+      subdistricts.find(
+        (subdistrict) => subdistrict.subdistrict_id === subdistrictId,
+      )?.subdistrict_name || '';
 
     setFormData({
       ...formData,
       subdistrictId,
-      subdistrictName
-    })
-  }
+      subdistrictName,
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       const store = await updateStore(id, formData);
-      if (!store) throw new Error("Update store failed!");
-      alert("Update store success");
-      router.push("/admin/stores")
+      if (!store) throw new Error('Update store failed!');
+      toast.success('Update store success');
+      router.push('/admin/stores');
     } catch (err) {
       console.error(err);
-      alert("Update store failed");
+      toast.error('Update store failed');
     }
-  }
+  };
 
   return (
     <Box>
@@ -170,13 +174,7 @@ const Page = ({ params: { id } }: Props) => {
         <CardBody>
           <TableContainer>
             <form onSubmit={handleSubmit}>
-              <Stack
-                spacing={6}
-                w={'full'}
-                rounded={'xl'}
-                p={10}
-                my={6}
-              >
+              <Stack spacing={6} w={'full'} rounded={'xl'} p={10} my={6}>
                 <FormControl id="name" isRequired>
                   <FormLabel>Store Name</FormLabel>
                   <Input
@@ -210,7 +208,9 @@ const Page = ({ params: { id } }: Props) => {
                       <option
                         key={province.province_id}
                         value={province.province_id}
-                      >{province.province}</option>
+                      >
+                        {province.province}
+                      </option>
                     ))}
                   </Select>
                 </FormControl>
@@ -222,7 +222,7 @@ const Page = ({ params: { id } }: Props) => {
                     onChange={handleChangeCity}
                   >
                     <option value=""></option>
-                    {cities?.map(city => (
+                    {cities?.map((city) => (
                       <option
                         key={city.city_id}
                         value={city.city_id}
@@ -238,17 +238,17 @@ const Page = ({ params: { id } }: Props) => {
                     onChange={handleChangeSubdistrict}
                   >
                     <option value=""></option>
-                    {subdistricts?.map(subdistrict => (
+                    {subdistricts?.map((subdistrict) => (
                       <option
                         key={subdistrict.subdistrict_id}
                         value={subdistrict.subdistrict_id}
-                      >{subdistrict.subdistrict_name}</option>
+                      >
+                        {subdistrict.subdistrict_name}
+                      </option>
                     ))}
                   </Select>
                 </FormControl>
-                <Map
-                  handleChangeLonglat={handleChangeLonglat}
-                />
+                <Map handleChangeLonglat={handleChangeLonglat} />
                 <FormControl id="longitude">
                   <FormLabel>Longitude</FormLabel>
                   <Input
@@ -274,14 +274,15 @@ const Page = ({ params: { id } }: Props) => {
                 <Stack spacing={6} direction={['column', 'row']}>
                   <Button
                     onClick={() => {
-                      router.push("/admin/stores");
+                      router.push('/admin/stores');
                     }}
                     bg={'red.400'}
                     color={'white'}
                     w="full"
                     _hover={{
                       bg: 'red.500',
-                    }}>
+                    }}
+                  >
                     Cancel
                   </Button>
                   <Button
@@ -291,7 +292,8 @@ const Page = ({ params: { id } }: Props) => {
                     w="full"
                     _hover={{
                       bg: 'blue.500',
-                    }}>
+                    }}
+                  >
                     Update
                   </Button>
                 </Stack>

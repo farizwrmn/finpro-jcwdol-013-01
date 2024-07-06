@@ -22,6 +22,7 @@ import {
   updateStock,
   getStockByID,
 } from '@/services/stock.service';
+import { toast } from 'react-toastify';
 
 type Props = { params: { id: string } };
 
@@ -66,11 +67,11 @@ const Page = ({ params: { id: stockId } }: Props) => {
     try {
       const product = await updateStock(stockId, formData);
       if (!product) throw new Error('Update stock failed!');
-      alert('Create stock success');
+      toast.success('Update stock success');
       router.push(`/admin/products/stocks/${stock.productId}`);
     } catch (err) {
       console.error(err);
-      alert('Create stock failed');
+      toast.error('Update stock failed');
     }
   };
 

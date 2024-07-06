@@ -22,21 +22,22 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { deleteAddress, getAddresses } from "@/services/address.service";
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import { useAppSelector } from "@/lib/hooks";
+import { deleteAddress, getAddresses } from '@/services/address.service';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { useAppSelector } from '@/lib/hooks';
+import { toast } from 'react-toastify';
 
 const Page = () => {
   const user = useAppSelector((state) => state.auth.user);
   const [data, setData] = useState({
     addresses: [],
-    pages: 1
+    pages: 1,
   });
   const [filters, setFilters] = useState({
     userId: user.id as string,
     keyword: '',
     page: 1,
-    size: 10
+    size: 10,
   });
   const router = useRouter();
 
@@ -48,17 +49,18 @@ const Page = () => {
   }, [filters]);
 
   const handleDelete = async (id: string, label: string) => {
-    if (!confirm(`Are you sure want to delete address ${label}?`) || !id) return;
+    if (!confirm(`Are you sure want to delete address ${label}?`) || !id)
+      return;
     try {
       const address = await deleteAddress(id);
       if (!address) throw new Error('Delete address failed');
-      alert('Delete address success');
+      toast.success('Delete address success');
 
       const result = await getAddresses(filters);
       setData(result);
     } catch (err) {
       console.error(err);
-      alert('Delete address failed');
+      toast.error('Delete address failed');
     }
   };
 
@@ -73,7 +75,9 @@ const Page = () => {
             <Input
               placeholder="Search..."
               value={filters.keyword}
-              onChange={(e) => setFilters({ ...filters, keyword: e.target.value, page: 1 })}
+              onChange={(e) =>
+                setFilters({ ...filters, keyword: e.target.value, page: 1 })
+              }
             />
             <Button
               colorScheme="blue"
@@ -116,7 +120,9 @@ const Page = () => {
                         </Button>
                         <Button
                           colorScheme="red"
-                          onClick={() => handleDelete(address.id, address.label)}
+                          onClick={() =>
+                            handleDelete(address.id, address.label)
+                          }
                         >
                           Delete
                         </Button>
@@ -131,7 +137,13 @@ const Page = () => {
             <Select
               width="auto"
               value={filters.size}
-              onChange={(e) => setFilters({ ...filters, size: parseInt(e.target.value), page: 1 })}
+              onChange={(e) =>
+                setFilters({
+                  ...filters,
+                  size: parseInt(e.target.value),
+                  page: 1,
+                })
+              }
             >
               <option value="5">5 per page</option>
               <option value="10">10 per page</option>
@@ -143,20 +155,24 @@ const Page = () => {
               <IconButton
                 aria-label="left"
                 icon={<Icon as={FiChevronLeft} />}
-                onClick={() => setFilters(prevFilters => ({
-                  ...prevFilters,
-                  page: Math.max(prevFilters.page - 1, 1)
-                }))}
+                onClick={() =>
+                  setFilters((prevFilters) => ({
+                    ...prevFilters,
+                    page: Math.max(prevFilters.page - 1, 1),
+                  }))
+                }
                 isDisabled={filters.page === 1}
               />
-              <Box p={2}>{filters.page} / {data.pages}</Box>
+              <Box p={2}>
+                {filters.page} / {data.pages}
+              </Box>
               <IconButton
                 aria-label="right"
                 icon={<Icon as={FiChevronRight} />}
                 onClick={() =>
-                  setFilters(prevFilters => ({
+                  setFilters((prevFilters) => ({
                     ...prevFilters,
-                    page: Math.min(prevFilters.page + 1, data.pages)
+                    page: Math.min(prevFilters.page + 1, data.pages),
                   }))
                 }
                 isDisabled={filters.page === data.pages}

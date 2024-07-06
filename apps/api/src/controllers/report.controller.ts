@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import {
+  getSalesReportPerCategoryAction,
   getSalesReportPerMonthAction,
   getSalesReportPerProductAction,
 } from '@/actions/report.action';
@@ -40,4 +41,26 @@ const getSalesReportPerProductController = async (
   }
 };
 
-export { getSalesReportPerMonthController, getSalesReportPerProductController };
+const getSalesReportPerCategoryController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const filters = req.query;
+    const data = await getSalesReportPerCategoryAction(filters);
+
+    res.status(200).json({
+      message: 'Get sales report per category success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export {
+  getSalesReportPerMonthController,
+  getSalesReportPerProductController,
+  getSalesReportPerCategoryController,
+};
