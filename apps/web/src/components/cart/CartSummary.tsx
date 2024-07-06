@@ -49,7 +49,10 @@ export const CartSummary = () => {
       <Heading size="md">Order Summary</Heading>
 
       <Stack spacing="6">
-        <OrderSummaryItem label="Subtotal" value={FormatCurrency(cart.itemsPrice!)} />
+        <OrderSummaryItem label="Product Subtotal" value={FormatCurrency(cart.itemsPrice!)} />
+        {cart.itemsDiscount && (
+          <OrderSummaryItem label="Product Discount" value={FormatCurrency(-cart.itemsDiscount!)} />
+        )}
         <Flex justify="space-between">
           <Text fontSize="lg" fontWeight="semibold">
             Total
