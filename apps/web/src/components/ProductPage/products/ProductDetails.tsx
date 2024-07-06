@@ -287,7 +287,7 @@ export default function ProductDetails({ product }: Props) {
                         icon={<Icon as={FiMinus} />}
                         borderRightRadius={0}
                         onClick={decrementQuantity}
-                        isDisabled={!formData.quantity}
+                        isDisabled={!stock?.remainingStock || !formData.quantity}
                       />
                       <Input
                         name="quantity"
@@ -305,7 +305,7 @@ export default function ProductDetails({ product }: Props) {
                         icon={<Icon as={FiPlus} />}
                         borderLeftRadius={0}
                         onClick={incrementQuantity}
-                        isDisabled={formData.quantity === stock?.remainingStock}
+                        isDisabled={!stock?.remainingStock || formData.quantity === stock?.remainingStock}
                       />
                     </Box>
                     {stock?.remainingStock > 0 ? (

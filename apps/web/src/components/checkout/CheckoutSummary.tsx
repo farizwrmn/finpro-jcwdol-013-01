@@ -3,6 +3,8 @@
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { FormatCurrency } from '@/utils/FormatCurrency';
 import {
+  Alert,
+  AlertIcon,
   Button,
   Flex,
   Heading,
@@ -13,7 +15,7 @@ import {
 import { useEffect, useState } from "react";
 import { FaArrowRight } from 'react-icons/fa';
 import { useRouter } from "next/navigation";
-import { getCartByID, getCartByUserID } from "@/services/cart.service";
+import { getCartByUserID } from "@/services/cart.service";
 import { toast } from "react-toastify";
 import { createOrder } from "@/services/order.service";
 import { resetCartState, updateCartStoreState } from "@/lib/features/cart/cartSlice";
@@ -43,6 +45,7 @@ export const CheckoutSummary = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const isDisabled = !cart.userAddressId || !cart.shippingCourier || !cart.shippingService || !cart.paymentMethod;
 
   useEffect(() => {
     setIsLoaded(true);
@@ -132,9 +135,16 @@ export const CheckoutSummary = () => {
         fontSize="md"
         rightIcon={<FaArrowRight />}
         onClick={handleOrder}
+        isDisabled={isDisabled}
       >
         Order
       </Button>
+      {isDisabled && (
+        <Alert status='info' borderRadius={5}>
+          <AlertIcon />
+          Please select shipping method & payment method first!
+        </Alert>
+      )}
     </Stack>
   );
 };

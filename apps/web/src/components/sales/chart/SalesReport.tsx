@@ -38,7 +38,7 @@ const salesData: SalesData[] = [
 ];
 
 const DashboardSalesReport: React.FC = () => {
-  const [monthData, setMonthData] = useState<any[]>([]);
+  const [monthDatasets, setMonthDatasets] = useState<any[]>([]);
 
   const monthLabels = [
     'January',
@@ -55,13 +55,13 @@ const DashboardSalesReport: React.FC = () => {
     'December',
   ];
 
-  const monthDatasets = [
-    {
-      label: 'Penjualan',
-      data: monthData,
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-  ];
+  // const monthDatasets = [
+  //   {
+  //     label: 'Penjualan',
+  //     data: monthData,
+  //     backgroundColor: 'rgba(255, 99, 132, 0.5)',
+  //   },
+  // ];
 
   const categoryDatasets = [
     {
@@ -160,7 +160,7 @@ const DashboardSalesReport: React.FC = () => {
   useEffect(() => {
     (async () => {
       const dataMonth = await getSalesReportPerMonth({});
-      setMonthData(dataMonth);
+      setMonthDatasets(dataMonth);
     })();
   }, []);
 
