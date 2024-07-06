@@ -55,6 +55,6 @@ export const confirmPayment = async (orderId: string, formData: FormData) => {
     return order;
   } catch (err) {
     console.log(err);
-    toast.error('Update avatar failed');
+    toast.error('Confirm payment failed');
   }
 };

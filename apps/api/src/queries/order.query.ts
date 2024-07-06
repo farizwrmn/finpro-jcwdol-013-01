@@ -5,6 +5,7 @@ import {
   IResultOrder,
 } from '../interfaces/order.interface';
 import { getCartByUserIDQuery, resetCartItemsQuery } from './cart.query';
+import { getStockByProductIdAndStoreIdQuery, updateStockQuery } from "./stock.query";
 
 const prisma = new PrismaClient();
 
@@ -81,21 +82,42 @@ const getOrderByIDQuery = async (id: string): Promise<Order | null> => {
 
 const createOrderQuery = async (data: IOrder): Promise<Order> => {
   try {
-    const order = await prisma.order.create({
-      data: {
-        ...data,
-        orderItems: {
-          createMany: {
-            data: data.orderItems,
+    const trx = await prisma.$transaction(async (prisma) => {
+      try {
+        const order = await prisma.order.create({
+          data: {
+            ...data,
+            orderItems: {
+              createMany: {
+                data: data.orderItems,
+              },
+            },
           },
-        },
-      },
+        });
+
+        // reset cart items
+        const cart = await getCartByUserIDQuery(data.userId);
+        if (cart) await resetCartItemsQuery(cart.id);
+
+        // update stock
+        for (const item of data.orderItems) {
+          const stock = await getStockByProductIdAndStoreIdQuery(item.productId, data.storeId);
+
+          if (stock) {
+            await updateStockQuery(stock.id, {
+              type: "kurang",
+              stock: Number(item.quantity),
+            });
+          }
+        }
+
+        return order;
+      } catch (err) {
+        throw err;
+      }
     });
 
-    const cart = await getCartByUserIDQuery(data.userId);
-    if (cart) await resetCartItemsQuery(cart.id);
-
-    return order;
+    return trx;
   } catch (err) {
     throw err;
   }

@@ -28,9 +28,9 @@ const Checkout = () => {
   const [store, setStore] = useState<any>(null);
   const [couriers, setCouriers] = useState<any[]>([]);
 
-  useEffect(() => {
-    if (!cart.itemsCount) router.push("/cart");
-  }, [cart.itemsCount, router]);
+  // useEffect(() => {
+  //   if (!cart.itemsCount) router.push("/cart");
+  // }, [cart.itemsCount, router]);
 
   useEffect(() => {
     (async () => {
