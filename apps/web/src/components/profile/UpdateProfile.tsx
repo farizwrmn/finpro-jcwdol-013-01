@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import InnerForm from './innerForm';
 import { updateProfile } from '@/lib/features/auth/authSlice';
 import { toast } from 'react-toastify';
+import { format } from 'date-fns';
 
 const UpdateProfileSchema = Yup.object().shape({
   email: Yup.string()
@@ -29,7 +30,10 @@ export default function UserProfileEdit(): JSX.Element {
       image: props.initialImage || user.image || '',
       phone: props.initialPhone || user.phone || '',
       gender: props.initialGender || user.gender || '',
-      birthDate: props.initialBirthDate || user.birthDate || '',
+      birthDate:
+        props.initialBirthDate ||
+        format(new Date(user.birthDate as string), 'dd/MM/yyyy') ||
+        '',
     }),
     validationSchema: UpdateProfileSchema,
     enableReinitialize: true,
