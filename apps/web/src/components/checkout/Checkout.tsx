@@ -9,6 +9,7 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { CheckoutSummary } from './CheckoutSummary';
 import { useAppSelector, useAppDispatch } from "@/lib/hooks";
 import Link from "next/link";
@@ -20,11 +21,16 @@ import { getCouriers } from "@/services/shipping.service";
 import { updateCartOriginState } from "@/lib/features/cart/cartSlice";
 
 const Checkout = () => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
   const cart = useAppSelector((state) => state.cart);
   const [store, setStore] = useState<any>(null);
   const [couriers, setCouriers] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (!cart.itemsCount) router.push("/cart");
+  }, [cart.itemsCount, router]);
 
   useEffect(() => {
     (async () => {

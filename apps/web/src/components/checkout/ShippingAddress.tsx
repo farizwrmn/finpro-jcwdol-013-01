@@ -1,4 +1,4 @@
-import { Button, Flex, FormControl, FormLabel, Heading, Select, Stack, Text } from "@chakra-ui/react"
+import { Alert, AlertIcon, Button, Flex, FormControl, FormLabel, Heading, Select, Stack, Text } from "@chakra-ui/react"
 import React, { useEffect, useMemo, useState } from 'react'
 import { getAddresses } from "@/services/address.service";
 import { useRouter } from "next/navigation";
@@ -54,7 +54,7 @@ const ShippingAddress = ({ store }: Props) => {
               onChange={handleChangeAddress}
               flexGrow={1}
             >
-              <option value=""></option>
+              <option value="">Select Label Address</option>
               {addresses?.map((address: any) => (
                 <option
                   key={address.id}
@@ -74,7 +74,14 @@ const ShippingAddress = ({ store }: Props) => {
         </FormControl>
         <FormControl id="address">
           <FormLabel>Customer Address</FormLabel>
-          <Text>{address?.address ? `${address?.address}, ${address?.subdistrictName}, ${address?.cityName}, ${address?.provinceName} ${address?.postalCode || ''}` : '-'}</Text>
+          {cart.userAddressId ? (
+            <Text>{address?.address ? `${address?.address}, ${address?.subdistrictName}, ${address?.cityName}, ${address?.provinceName} ${address?.postalCode || ''}` : '-'}</Text>
+          ) : (
+            <Alert status='info' borderRadius={5} mt={4}>
+              <AlertIcon />
+              Please select label address first!
+            </Alert>
+          )}
         </FormControl>
         <FormControl id="address">
           <FormLabel>Store Address</FormLabel>

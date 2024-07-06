@@ -1,0 +1,64 @@
+export const COLORS: {
+  borderColor: string;
+  backgroundColor: string;
+}[] = [{
+  borderColor: '#FC8181',
+  backgroundColor: '#E53E3E',
+}, {
+  borderColor: '#F6AD55',
+  backgroundColor: '#DD6B20',
+}, {
+  borderColor: '#F6E05E',
+  backgroundColor: '#D69E2E',
+}, {
+  borderColor: '#68D391',
+  backgroundColor: '#38A169',
+}, {
+  borderColor: '#4FD1C5',
+  backgroundColor: '#319795',
+}, {
+  borderColor: '#63B3ED',
+  backgroundColor: '#3182CE',
+}, {
+  borderColor: '#76E4F7',
+  backgroundColor: '#00B5D8',
+}, {
+  borderColor: '#B794F4',
+  backgroundColor: '#805AD5',
+}, {
+  borderColor: '#F687B3',
+  backgroundColor: '#D53F8C',
+}, {
+  borderColor: '#CBD5E0',
+  backgroundColor: '#718096',
+}, {
+  borderColor: '#9B2C2C',
+  backgroundColor: '#63171B',
+}, {
+  borderColor: '#9C4221',
+  backgroundColor: '#652B19',
+}, {
+  borderColor: '#975A16',
+  backgroundColor: '#5F370E',
+}, {
+  borderColor: '#276749',
+  backgroundColor: '#1C4532',
+}, {
+  borderColor: '#285E61',
+  backgroundColor: '#1D4044',
+}, {
+  borderColor: '#2C5282',
+  backgroundColor: '#1A365D',
+}, {
+  borderColor: '#0987A0',
+  backgroundColor: '#065666',
+}, {
+  borderColor: '#553C9A',
+  backgroundColor: '#322659',
+}, {
+  borderColor: '#97266D',
+  backgroundColor: '#521B41',
+}, {
+  borderColor: '#2D3748',
+  backgroundColor: '#171923',
+}];

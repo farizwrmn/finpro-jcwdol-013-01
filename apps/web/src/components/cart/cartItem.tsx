@@ -1,8 +1,12 @@
 'use client';
 
 import {
+  Box,
   CloseButton,
   Flex,
+  Icon,
+  IconButton,
+  Input,
   Link,
   Select,
   SelectProps,
@@ -10,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { PriceTag } from './PriceTag';
 import { CartProductMeta } from './CartProductMeta';
+import { FiMinus } from "react-icons/fi";
 
 const QuantitySelect = (props: SelectProps) => (
   <Select
@@ -50,10 +55,36 @@ export const CartItem = ({ item, handleRemoveCartItem }: Props) => {
         justify="space-between"
         display={{ base: 'none', md: 'flex' }}
       >
+        {/* <Box display="inline-flex" mr={5}>
+          <IconButton
+            aria-label="left"
+            icon={<Icon as={FiMinus} />}
+            borderRightRadius={0}
+            onClick={decrementQuantity}
+            isDisabled={!stock?.remainingStock || !formData.quantity}
+          />
+          <Input
+            name="quantity"
+            placeholder="Quantity"
+            width={'50%'}
+            type="number"
+            borderRadius={0}
+            value={formData.quantity}
+            onChange={handleChange}
+            onBlur={validateQuantity}
+            isDisabled={!stock?.remainingStock}
+          />
+          <IconButton
+            aria-label="right"
+            icon={<Icon as={FiPlus} />}
+            borderLeftRadius={0}
+            onClick={incrementQuantity}
+            isDisabled={!stock?.remainingStock || formData.quantity === stock?.remainingStock}
+          />
+        </Box> */}
         <QuantitySelect
           value={item.quantity}
           onChange={(e) => {
-            // onChangeQuantity?.(+e.currentTarget.value);
           }}
         />
         <PriceTag price={item.price} currency="" />
