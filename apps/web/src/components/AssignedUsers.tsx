@@ -19,6 +19,7 @@ import {
   getUnassignedUsersByStoreID,
   getUserStores,
 } from '@/services/store.service';
+import { toast } from 'react-toastify';
 
 type Props = { id: string; setUnassignedUsers: (stores: any[]) => void };
 
@@ -38,7 +39,7 @@ const AssignedUsers = ({ id: storeId, setUnassignedUsers }: Props) => {
     try {
       const store = await deleteUserStore(id);
       if (!store) throw new Error('Delete user store failed');
-      alert('Delete user store success');
+      toast.success('Delete user store success');
 
       const result = await getUserStores(storeId);
       setUsers(result);
@@ -47,7 +48,7 @@ const AssignedUsers = ({ id: storeId, setUnassignedUsers }: Props) => {
       setUnassignedUsers(data);
     } catch (err) {
       console.error(err);
-      alert('Delete user store failed');
+      toast.error('Delete user store failed');
     }
   };
 

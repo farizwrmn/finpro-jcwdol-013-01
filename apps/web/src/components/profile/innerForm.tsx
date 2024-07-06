@@ -15,9 +15,10 @@ import {
 import { FormikProps, Form, Field } from 'formik';
 import { FormValues } from './types';
 import { useState } from 'react';
-import { SmallCloseIcon } from "@chakra-ui/icons";
+import { SmallCloseIcon } from '@chakra-ui/icons';
 import { updateAvatar } from '@/lib/features/auth/authSlice';
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch } from '@/lib/hooks';
+import { toast } from 'react-toastify';
 
 export default function InnerForm(props: FormikProps<FormValues>) {
   const { values, errors, touched, handleChange, handleSubmit, isSubmitting } =
@@ -28,30 +29,27 @@ export default function InnerForm(props: FormikProps<FormValues>) {
   const handleUpdateAvatar = async () => {
     try {
       const formData = new FormData();
-      const inputFile = document.getElementById("image") as HTMLInputElement;
-      formData.append("image", inputFile?.files?.item(0) as File);
+      const inputFile = document.getElementById('image') as HTMLInputElement;
+      formData.append('image', inputFile?.files?.item(0) as File);
 
       dispatch(updateAvatar(values.id, formData));
-      alert("Update Avatar Success");
+      toast.success('Update Avatar Success');
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   return (
     <Box>
       <Form onSubmit={handleSubmit}>
-        <Stack
-          spacing={6}
-          w={'full'}
-          rounded={'xl'}
-          p={10}
-          my={6}
-        >
+        <Stack spacing={6} w={'full'} rounded={'xl'} p={10} my={6}>
           <FormControl id="userName">
             <Stack spacing={4}>
               <Center>
-                <Avatar size="xl" src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/avatar/${values.image}`}>
+                <Avatar
+                  size="xl"
+                  src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/avatar/${values.image}`}
+                >
                   <AvatarBadge
                     as={IconButton}
                     size="sm"
@@ -83,7 +81,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
                 padding: '5px',
                 border: '0.5px solid grey',
                 borderRadius: '5px',
-                width: '100%'
+                width: '100%',
               }}
               onChange={handleChange}
               value={values.name}
@@ -110,7 +108,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
                 padding: '5px',
                 border: '0.5px solid grey',
                 borderRadius: '5px',
-                width: '100%'
+                width: '100%',
               }}
               onChange={handleChange}
               value={values.email}
@@ -137,7 +135,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
                 padding: '5px',
                 border: '0.5px solid grey',
                 borderRadius: '5px',
-                width: '100%'
+                width: '100%',
               }}
               onChange={handleChange}
               value={values.phone}
@@ -162,7 +160,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
                 padding: '5px',
                 border: '0.5px solid grey',
                 borderRadius: '5px',
-                width: '100%'
+                width: '100%',
               }}
               onChange={handleChange}
               value={values.gender}
@@ -181,7 +179,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
                 padding: '5px',
                 border: '0.5px solid grey',
                 borderRadius: '5px',
-                width: '100%'
+                width: '100%',
               }}
               onChange={handleChange}
               value={values.birthDate}

@@ -18,7 +18,8 @@ import {
 import { useRouter } from 'next/navigation';
 import { getProductByID, updateProduct } from '@/services/product.service';
 import { getCategories } from '@/services/category.service';
-import AuthSuperAdmin from "@/components/auth/AuthSuperAdmin";
+import AuthSuperAdmin from '@/components/auth/AuthSuperAdmin';
+import { toast } from 'react-toastify';
 
 type Props = { params: { id: string } };
 
@@ -73,11 +74,11 @@ const Page = ({ params: { id } }: Props) => {
     try {
       const product = await updateProduct(id, formData);
       if (!product) throw new Error('Update product failed!');
-      alert('Update product success');
+      toast.success('Update product success');
       router.push('/admin/products');
     } catch (err) {
       console.error(err);
-      alert('Update product failed');
+      toast.error('Update product failed');
     }
   };
 

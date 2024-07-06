@@ -1,17 +1,26 @@
-import { PrismaClient, Category } from "@prisma/client";
-import { ICategory, IFilterCategory, IResultCategory } from "../interfaces/category.interface";
+import { PrismaClient, Category } from '@prisma/client';
+import {
+  ICategory,
+  IFilterCategory,
+  IResultCategory,
+} from '../interfaces/category.interface';
 
 const prisma = new PrismaClient();
 
-const getCategoriesQuery = async (filters: IFilterCategory): Promise<IResultCategory> => {
+const getCategoriesQuery = async (
+  filters: IFilterCategory,
+): Promise<IResultCategory> => {
   try {
-    const { keyword = "", page = 1, size = 1000 } = filters;
+    const { keyword = '', page = 1, size = 1000 } = filters;
 
     const categories = await prisma.category.findMany({
       where: {
         name: {
-          contains: keyword
-        }
+          contains: keyword,
+        },
+      },
+      orderBy: {
+        name: 'asc',
       },
       skip: Number(page) > 0 ? (Number(page) - 1) * Number(size) : 0,
       take: Number(size),
@@ -19,12 +28,12 @@ const getCategoriesQuery = async (filters: IFilterCategory): Promise<IResultCate
 
     const data = await prisma.category.aggregate({
       _count: {
-        id: true
+        id: true,
       },
       where: {
         name: {
-          contains: keyword
-        }
+          contains: keyword,
+        },
       },
     });
     const count = data._count.id;
@@ -34,23 +43,26 @@ const getCategoriesQuery = async (filters: IFilterCategory): Promise<IResultCate
   } catch (err) {
     throw err;
   }
-}
+};
 
 const getCategoryByIDQuery = async (id: string): Promise<Category | null> => {
   try {
     const category = await prisma.category.findUnique({
       where: {
-        id
-      }
+        id,
+      },
     });
 
     return category;
   } catch (err) {
     throw err;
   }
-}
+};
 
-const getCategoryBySlugOrNameQuery = async (slug: string, name: string): Promise<Category | null> => {
+const getCategoryBySlugOrNameQuery = async (
+  slug: string,
+  name: string,
+): Promise<Category | null> => {
   try {
     const category = await prisma.category.findFirst({
       where: {
@@ -62,23 +74,25 @@ const getCategoryBySlugOrNameQuery = async (slug: string, name: string): Promise
             name,
           },
         ],
-      }
+      },
     });
 
     return category;
   } catch (err) {
     throw err;
   }
-}
+};
 
-const createCategoryQuery = async (categoryData: ICategory): Promise<Category> => {
+const createCategoryQuery = async (
+  categoryData: ICategory,
+): Promise<Category> => {
   try {
     const trx = await prisma.$transaction(async (prisma) => {
       try {
         const category = await prisma.category.create({
           data: {
             ...categoryData,
-          }
+          },
         });
 
         return category;
@@ -91,11 +105,11 @@ const createCategoryQuery = async (categoryData: ICategory): Promise<Category> =
   } catch (err) {
     throw err;
   }
-}
+};
 
 const updateCategoryQuery = async (
   id: string,
-  categoryData: ICategory
+  categoryData: ICategory,
 ): Promise<Category> => {
   try {
     const category = await prisma.category.update({
@@ -103,29 +117,29 @@ const updateCategoryQuery = async (
         ...categoryData,
       },
       where: {
-        id
-      }
+        id,
+      },
     });
 
     return category;
   } catch (err) {
     throw err;
   }
-}
+};
 
 const deleteCategoryQuery = async (id: string): Promise<Category> => {
   try {
     const category = await prisma.category.delete({
       where: {
-        id
-      }
+        id,
+      },
     });
 
     return category;
   } catch (err) {
     throw err;
   }
-}
+};
 
 export {
   getCategoriesQuery,
@@ -134,4 +148,4 @@ export {
   createCategoryQuery,
   updateCategoryQuery,
   deleteCategoryQuery,
-}
+};

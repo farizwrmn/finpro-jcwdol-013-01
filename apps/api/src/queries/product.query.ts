@@ -24,6 +24,9 @@ const getProductsQuery = async (
           contains: keyword,
         },
       },
+      orderBy: {
+        name: 'asc',
+      },
       skip: Number(page) > 0 ? (Number(page) - 1) * Number(size) : 0,
       take: Number(size),
     });

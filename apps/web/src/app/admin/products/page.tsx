@@ -24,8 +24,9 @@ import {
 import { useRouter } from 'next/navigation';
 import { deleteProduct, getProducts } from '@/services/product.service';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { FormatCurrency } from "@/utils/FormatCurrency";
-import { useAppSelector } from "@/lib/hooks";
+import { FormatCurrency } from '@/utils/FormatCurrency';
+import { useAppSelector } from '@/lib/hooks';
+import { toast } from 'react-toastify';
 
 const Page = () => {
   const [data, setData] = useState({
@@ -52,13 +53,13 @@ const Page = () => {
     try {
       const product = await deleteProduct(id);
       if (!product) throw new Error('Delete product failed');
-      alert('Delete product success');
+      toast.success('Delete product success');
 
       const result = await getProducts(filters);
       setData(result);
     } catch (err) {
       console.error(err);
-      alert('Delete product failed');
+      toast.error('Delete product failed');
     }
   };
 
@@ -77,7 +78,7 @@ const Page = () => {
                 setFilters({ ...filters, keyword: e.target.value, page: 1 })
               }
             />
-            {user?.role === "super_admin" && (
+            {user?.role === 'super_admin' && (
               <Button
                 colorScheme="blue"
                 onClick={() => {
@@ -116,12 +117,14 @@ const Page = () => {
                         >
                           Stock
                         </Button>
-                        {user?.role === "super_admin" && (
+                        {user?.role === 'super_admin' && (
                           <>
                             <Button
                               colorScheme="blue"
                               onClick={() => {
-                                router.push(`/admin/products/image/${product.id}`);
+                                router.push(
+                                  `/admin/products/image/${product.id}`,
+                                );
                               }}
                             >
                               Images
@@ -129,14 +132,18 @@ const Page = () => {
                             <Button
                               colorScheme="blue"
                               onClick={() => {
-                                router.push(`/admin/products/edit/${product.id}`);
+                                router.push(
+                                  `/admin/products/edit/${product.id}`,
+                                );
                               }}
                             >
                               Edit
                             </Button>
                             <Button
                               colorScheme="red"
-                              onClick={() => handleDelete(product.id, product.name)}
+                              onClick={() =>
+                                handleDelete(product.id, product.name)
+                              }
                             >
                               Delete
                             </Button>

@@ -17,6 +17,7 @@ import { IUsers } from '@/interface/user.interface';
 import InnerForm from './components/innerForm';
 import instance from '@/utils/axiosInstance';
 import PageWrapper from '../pageWrapper';
+import { toast } from 'react-toastify';
 
 const RegisterSchema = Yup.object().shape({
   email: Yup.string()
@@ -33,10 +34,10 @@ const RegisterView = () => {
       const form = new FormData();
       form.append('email', email);
       const { data } = await instance.post('/auth/register', form);
-      alert(data?.message);
+      toast.success(data?.message);
     } catch (err) {
       console.error(err);
-      alert('Email already exist, please Sign in');
+      toast.error('Email already exist, please Sign in');
     }
   };
 
