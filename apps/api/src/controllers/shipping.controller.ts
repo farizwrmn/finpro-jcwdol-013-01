@@ -1,4 +1,4 @@
-import { getCitiesAction, getCouriersAction, getProvincesAction, getSubdistrictsAction } from "@/actions/shipping.action";
+import { sendOrderAction, getCitiesAction, getCouriersAction, getProvincesAction, getSubdistrictsAction } from "@/actions/shipping.action";
 import { Request, Response, NextFunction } from "express";
 
 const getProvincesController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -56,9 +56,24 @@ const getCouriersController = async (req: Request, res: Response, next: NextFunc
   }
 }
 
+const sendOrderController = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const data = await sendOrderAction(id);
+
+    res.status(200).json({
+      message: "Send order success",
+      data
+    });
+  } catch (err) {
+    next(err);
+  }
+}
+
 export {
   getProvincesController,
   getCitiesController,
   getSubdistrictsController,
   getCouriersController,
+  sendOrderController,
 }

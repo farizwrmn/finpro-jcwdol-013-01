@@ -1,4 +1,6 @@
 import { COURIERS, DESTINATION_TYPE, WEIGHT_IN_GRAMS } from "@/constants/shipping.constant";
+import { sendOrderQuery } from "@/queries/shipping.query";
+import { Order } from "@prisma/client";
 
 const getProvincesAction = async () => {
   try {
@@ -82,9 +84,22 @@ const getCouriersAction = async (origin: string, destination: string) => {
   }
 }
 
+const sendOrderAction = async (
+  orderId: string,
+): Promise<Order> => {
+  try {
+    const order = await sendOrderQuery(orderId);
+    return order;
+  } catch (err) {
+    throw err;
+  }
+}
+
+
 export {
   getProvincesAction,
   getCitiesAction,
   getSubdistrictsAction,
   getCouriersAction,
+  sendOrderAction,
 }

@@ -1,4 +1,5 @@
 import instance from "@/utils/axiosInstance";
+import { toast } from "react-toastify";
 
 export const getProvinces = async () => {
   try {
@@ -37,5 +38,26 @@ export const getCouriers = async (origin: string, destination: string) => {
     return couriers;
   } catch (err) {
     console.error(err);
+  }
+};
+
+export const sendOrder = async (orderId: string) => {
+  try {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await instance.patch(
+      `/shipping/send/${orderId}`,
+      {},
+      config,
+    );
+    const order = data?.data;
+    return order;
+  } catch (err) {
+    console.log(err);
+    toast.error('Send order failed');
   }
 };

@@ -1,4 +1,3 @@
-import { IPayment } from "@/interfaces/payment.interface";
 import { getOrderByIDQuery } from "@/queries/order.query";
 import { confirmPaymentQuery, createMidtransTransactionQuery, createXenditInvoiceQuery, updatePaymentStatusQuery } from "@/queries/payment.query";
 import { Order } from "@prisma/client";

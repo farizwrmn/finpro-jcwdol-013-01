@@ -25,6 +25,7 @@ import { FormatCurrency } from "@/utils/FormatCurrency";
 import { createPayment, updatePaymentStatus } from "@/services/payment.service";
 import { toast } from "react-toastify";
 import { ORDER_STATUS } from "@/constants/order.constant";
+import { sendOrder } from "@/services/shipping.service";
 
 type Props = { params: { id: string } };
 
@@ -55,8 +56,7 @@ const Page = ({ params: { id } }: Props) => {
 
   const handleSend = async () => {
     try {
-      const formData = { orderStatus: ORDER_STATUS.dikirim };
-      const order = await updatePaymentStatus(id, formData);
+      const order = await sendOrder(id);
       if (!order?.id) throw new Error("Send order failed");
 
       const data = await getOrderByID(id);
@@ -128,10 +128,18 @@ const Page = ({ params: { id } }: Props) => {
             <OrderContent id="store" label="Store" value={order?.store.name || '-'} />
             <OrderContent id="itemsPrice" label="Product Subtotal" value={FormatCurrency(order?.itemsPrice)} />
             <OrderContent id="shippingPrice" label="Shipping Subtotal" value={FormatCurrency(order?.shippingPrice)} />
-            <OrderContent id="itemsDiscount" label="Product Discount" value={FormatCurrency(-order?.itemsDiscount)} />
-            <OrderContent id="shippingDiscount" label="Shipping Discount" value={FormatCurrency(-order?.shippingDiscount)} />
-            <OrderContent id="voucherDiscount" label="Voucher Discount" value={FormatCurrency(-order?.voucherDiscount)} />
-            <OrderContent id="referralDiscount" label="Referral Discount" value={FormatCurrency(-order?.referralDiscount)} />
+            {order?.itemsDiscount && (
+              <OrderContent id="itemsDiscount" label="Product Discount" value={FormatCurrency(-order?.itemsDiscount)} />
+            )}
+            {order?.shippingDiscount && (
+              <OrderContent id="shippingDiscount" label="Shipping Discount" value={FormatCurrency(-order?.shippingDiscount)} />
+            )}
+            {order?.voucherDiscount && (
+              <OrderContent id="voucherDiscount" label="Voucher Discount" value={FormatCurrency(-order?.voucherDiscount)} />
+            )}
+            {order?.referralDiscount && (
+              <OrderContent id="referralDiscount" label="Referral Discount" value={FormatCurrency(-order?.referralDiscount)} />
+            )}
             <OrderContent id="totalPrice" label="Total Price" value={FormatCurrency(order?.totalPrice)} />
             <OrderContent id="orderStatus" label="Order Status" value={order?.orderStatus} />
             <OrderContent id="orderDate" label="Order Date" value={order?.orderDate} />

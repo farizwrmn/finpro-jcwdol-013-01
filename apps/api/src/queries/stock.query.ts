@@ -9,8 +9,8 @@ const createStockQuery = async (stockData: IStock): Promise<Stock> => {
       try {
         const stock = await prisma.stock.create({
           data: {
-            baseStock: stockData.baseStock,
-            remainingStock: stockData.remainingStock,
+            baseStock: stockData.stock,
+            remainingStock: stockData.stock,
             storeId: stockData.storeId,
             productId: stockData.productId,
           },
@@ -24,7 +24,7 @@ const createStockQuery = async (stockData: IStock): Promise<Stock> => {
               },
             },
             type: stockData.type,
-            stock: stockData.baseStock,
+            stock: stockData.stock,
           },
         });
 
@@ -45,48 +45,54 @@ const updateStockQuery = async (
   stockData: IUpdateStock,
 ): Promise<Stock> => {
   try {
-    const stock = await prisma.stock.findUnique({
-      where: {
-        id,
-      },
-    });
-
-    if (!stock) throw new Error('Stock not found');
-
-    let baseStock;
-    let remainingStock;
-
-    if (stockData.type === 'kurang') {
-      baseStock = stock.baseStock - stockData.baseStock;
-      remainingStock = stock.remainingStock - stockData.remainingStock;
-    } else {
-      baseStock = stock.baseStock + stockData.baseStock;
-      remainingStock = stock.remainingStock + stockData.remainingStock;
-    }
-
-    const updatedStock = await prisma.stock.update({
-      data: {
-        baseStock,
-        remainingStock,
-      },
-      where: {
-        id,
-      },
-    });
-
-    await prisma.stockHistory.create({
-      data: {
-        stockProduct: {
-          connect: {
-            id: stock.id,
+    const trx = await prisma.$transaction(async (prisma) => {
+      try {
+        const stock = await prisma.stock.findUnique({
+          where: {
+            id,
           },
-        },
-        type: stockData.type,
-        stock: stockData.baseStock,
-      },
+        });
+
+        if (!stock) throw new Error('Stock not found');
+
+        let data: any = {};
+
+        if (stockData.type === 'kurang') {
+          data.usedStock = stock.usedStock + stockData.stock;
+          data.remainingStock = stock.remainingStock - stockData.stock;
+        } else {
+          data.baseStock = stock.baseStock + stockData.stock;
+          data.remainingStock = stock.remainingStock + stockData.stock;
+        }
+
+        const updatedStock = await prisma.stock.update({
+          data: {
+            ...data
+          },
+          where: {
+            id,
+          },
+        });
+
+        await prisma.stockHistory.create({
+          data: {
+            stockProduct: {
+              connect: {
+                id: stock.id,
+              },
+            },
+            type: stockData.type,
+            stock: stockData.stock,
+          },
+        });
+
+        return updatedStock;
+      } catch (err) {
+        throw err;
+      }
     });
 
-    return updatedStock;
+    return trx;
   } catch (err) {
     throw err;
   }
