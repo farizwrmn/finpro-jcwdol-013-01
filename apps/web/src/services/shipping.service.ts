@@ -39,3 +39,24 @@ export const getCouriers = async (origin: string, destination: string) => {
     console.error(err);
   }
 };
+
+export const sendOrder = async (orderId: string) => {
+  try {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await instance.patch(
+      `/shipping/send/${orderId}`,
+      {},
+      config,
+    );
+    const order = data?.data;
+    return order;
+  } catch (err) {
+    console.log(err);
+    alert('Confirm delivery failed');
+  }
+};

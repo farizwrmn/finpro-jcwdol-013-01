@@ -50,6 +50,6 @@ export const confirmPayment = async (orderId: string, formData: FormData) => {
     return order;
   } catch (err) {
     console.log(err);
-    alert('Update avatar failed');
+    alert('Confirm payment failed');
   }
 };

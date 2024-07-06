@@ -1,19 +1,15 @@
 import { Stock } from '@prisma/client';
 
 export interface IStock {
-  baseStock: number;
-  usedStock?: number;
-  remainingStock: number;
   storeId: string;
   productId: string;
   type: string;
+  stock: number;
 }
 
 export interface IUpdateStock {
-  baseStock: number;
-  usedStock?: number;
-  remainingStock: number;
   type: string;
+  stock: number;
 }
 
 export interface IFilterStock {
