@@ -25,6 +25,7 @@ import { useRouter } from 'next/navigation';
 import { deleteUser, getUsers } from '@/services/user.service';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { toast } from 'react-toastify';
+import { formatDate } from '@/utils/date';
 
 const Page = () => {
   const [data, setData] = useState({
@@ -105,7 +106,7 @@ const Page = () => {
                     <Td>{user.email}</Td>
                     <Td>{user.phone}</Td>
                     <Td>{user.role.name}</Td>
-                    <Td>{user.createdDate}</Td>
+                    <Td>{formatDate(user.createdDate)}</Td>
                     <Td>
                       {user.role.name === 'store_admin' && (
                         <ButtonGroup>

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -15,11 +15,10 @@ import {
   Flex,
   Image,
 } from '@chakra-ui/react';
-import { getOrderByID } from "@/services/order.service";
-import { FormatCurrency } from "@/utils/FormatCurrency";
-import { updatePaymentStatus } from "@/services/payment.service";
-import { useRouter } from "next/navigation";
-import { ORDER_STATUS } from "@/constants/order.constant";
+import { getOrderByID } from '@/services/order.service';
+import { updatePaymentStatus } from '@/services/payment.service';
+import { useRouter } from 'next/navigation';
+import { ORDER_STATUS } from '@/constants/order.constant';
 
 type Props = { params: { id: string } };
 
@@ -40,7 +39,7 @@ const Page = ({ params: { id } }: Props) => {
       } else {
         router.push(`/users/orders/${id}`);
       }
-    })()
+    })();
   }, [id, router]);
 
   return (
@@ -80,7 +79,7 @@ const Page = ({ params: { id } }: Props) => {
             </Heading>
             <Text color={'gray.500'}>
               <p>We have received your payment for this order.</p>
-              <p>Your order will be  will be processed shortly.</p>
+              <p>Your order will be will be processed shortly.</p>
             </Text>
             <Stack
               direction={'column'}
@@ -91,7 +90,7 @@ const Page = ({ params: { id } }: Props) => {
             >
               <Button
                 onClick={() => {
-                  router.push(`/users/orders`)
+                  router.push(`/users/orders`);
                 }}
                 colorScheme={'green'}
                 bg={'green.400'}
