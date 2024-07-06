@@ -5,7 +5,6 @@ import { Box, Drawer, DrawerContent, useDisclosure } from '@chakra-ui/react';
 import { FiHome, FiUser } from 'react-icons/fi';
 import { FaAddressBook, FaAtlas, FaPager, FaTicketAlt } from 'react-icons/fa';
 import { IconType } from 'react-icons';
-
 import AuthCustomer from '@/components/auth/AuthCustomer';
 import MobileNavUser from '@/components/navbar/users/MobileNavUser';
 import SidebarUser from '@/components/navbar/users/SidebarUser';
