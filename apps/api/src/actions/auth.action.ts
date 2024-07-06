@@ -18,14 +18,11 @@ import { getNearestStores } from '@/utils/store.util';
 const registerAction = async (data: RegisterAuth): Promise<User> => {
   try {
     const check = await getUserByEmailQuery(data.email || '');
-
-    if (check) throw new Error('user already exist');
-
-    const salt = await genSalt(10);
-
-    // const hashPass = await hash(data.password || '', salt);
+    if (check) throw new Error('User already exist');
 
     const user = await registerQuery(data);
+
+    // create referral code voucher
 
     return user;
   } catch (err) {
@@ -37,8 +34,6 @@ const loginAction = async (data: Auth) => {
   try {
     const user = await getUserByEmailQuery(data.email);
     if (!user) throw new Error('email doesnt exist');
-
-    // if (data.password === user.password)
 
     const isValid = await compare(data.password, user.password || '');
     if (!isValid) throw new Error('password is wrong');
@@ -54,7 +49,6 @@ const loginAction = async (data: Auth) => {
 
     if (!cart?.id) {
       const { stores } = await getStoresQuery({});
-
       const store = getNearestStores({ stores, userLocation });
 
       await createCartQuery({

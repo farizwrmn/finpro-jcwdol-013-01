@@ -37,7 +37,7 @@ const getDiscountAction = async (
 
 const getDiscountsByStoreIDAction = async (
   storeId: string,
-): Promise<Discount[] | null> => {
+): Promise<Discount[]> => {
   try {
     const discounts = await getDiscountsByStoreIDQuery(storeId);
 
