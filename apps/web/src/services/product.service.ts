@@ -3,13 +3,14 @@ import instance from '@/utils/axiosInstance';
 import { toast } from 'react-toastify';
 
 export const getProducts = async ({
+  category = '',
   keyword = '',
   page = 1,
   size = 10,
 }: IFilterProduct) => {
   try {
     const { data } = await instance.get(
-      `/products?keyword=${keyword}&page=${page}&size=${size}`,
+      `/products?keyword=${keyword}&page=${page}&size=${size}&category=${category}`,
     );
     const products = data?.data;
     return products;

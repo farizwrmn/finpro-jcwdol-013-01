@@ -99,7 +99,6 @@ export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
     });
     const payload = await parseJWT(data?.data);
     const user = data?.data.user;
-    console.log(user);
     dispatch(
       loginState({
         id: user?.id,

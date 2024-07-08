@@ -31,7 +31,7 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { FiChevronDown, FiShoppingCart } from 'react-icons/fi';
 import { signOut } from '@/lib/features/auth/authSlice';
 import { useRouter } from 'next/navigation';
-import { USER_ROLE } from "@/constants/user.constant";
+import { USER_ROLE } from '@/constants/user.constant';
 
 export interface NavItem {
   label: string;
