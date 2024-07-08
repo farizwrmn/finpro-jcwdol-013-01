@@ -1,7 +1,8 @@
 import { FormatCurrency } from '@/utils/FormatCurrency';
 import {
+  Badge,
+  Flex,
   HStack,
-  StackProps,
   Text,
   TextProps,
   useColorModeValue as mode,
@@ -9,60 +10,45 @@ import {
 import { ReactNode } from 'react';
 
 interface PriceTagProps {
-  currency: string;
   price: number;
-  salePrice?: number;
-  rootProps?: StackProps;
-  priceProps?: TextProps;
-  salePriceProps?: TextProps;
+  discount?: number;
+  isBuy1Get1?: boolean;
 }
 
-export type FormatPriceOptions = { locale?: string; currency?: string };
-
-export const PriceTag = (props: PriceTagProps) => {
-  const { price, currency, salePrice, rootProps, priceProps, salePriceProps } =
-    props;
+export const PriceTag = ({ price, discount, isBuy1Get1 }: PriceTagProps) => {
   return (
-    <HStack spacing="1" {...rootProps}>
-      <Price isOnSale={!!salePrice} textProps={priceProps}>
-        {FormatCurrency(price)}
-      </Price>
-      {salePrice && (
-        <SalePrice {...salePriceProps}>{FormatCurrency(salePrice)}</SalePrice>
+    <Flex direction="column" textAlign="center" gap={2}>
+      {discount && discount > 0 ? (
+        <Flex direction="column" gap={2}>
+          <Text
+            as="span"
+            fontWeight="medium"
+          >
+            {FormatCurrency(price - discount)}
+          </Text>
+          <Text
+            as="span"
+            fontWeight="medium"
+            fontSize="0.9em"
+            color="#656565"
+            textDecoration="line-through"
+          >
+            {FormatCurrency(price)}
+          </Text>
+        </Flex>
+      ) : (
+        <Text
+          as="span"
+          fontWeight="medium"
+        >
+          {FormatCurrency(price)}
+        </Text>
       )}
-    </HStack>
+      {isBuy1Get1 && (
+        <Badge variant='solid' colorScheme='green'>
+          Buy 1 Get 1
+        </Badge>
+      )}
+    </Flex>
   );
 };
-
-interface PriceProps {
-  children?: ReactNode;
-  isOnSale?: boolean;
-  textProps?: TextProps;
-}
-
-const Price = (props: PriceProps) => {
-  const { isOnSale, children, textProps } = props;
-  const defaultColor = mode('gray.700', 'gray.400');
-  const onSaleColor = mode('gray.400', 'gray.700');
-  const color = isOnSale ? onSaleColor : defaultColor;
-  return (
-    <Text
-      as="span"
-      fontWeight="medium"
-      color={color}
-      textDecoration={isOnSale ? 'line-through' : 'none'}
-      {...textProps}
-    >
-      {children}
-    </Text>
-  );
-};
-
-const SalePrice = (props: TextProps) => (
-  <Text
-    as="span"
-    fontWeight="semibold"
-    color={mode('gray.800', 'gray.100')}
-    {...props}
-  />
-);

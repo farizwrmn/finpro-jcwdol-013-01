@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, ReactNode } from 'react';
 import {
   Card,
   CardBody,
@@ -18,6 +18,8 @@ import {
   Tbody,
   Td,
   SimpleGrid,
+  Alert,
+  AlertIcon,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { getOrderByID } from '@/services/order.service';
@@ -85,12 +87,13 @@ const Page = ({ params: { id } }: Props) => {
   }: {
     id?: string;
     label?: string;
-    value?: string;
+    value?: string | ReactNode;
   }) => (
     <FormControl id={id}>
       <SimpleGrid
         columns={{ base: 1, sm: 1, md: 3 }}
         spacing={{ base: 0, sm: 0, md: 10 }}
+        alignItems="center"
       >
         <FormLabel>{label}</FormLabel>
         <Text gridColumn={{ base: 'unset', sm: 'unset', md: '2/-1' }}>
@@ -98,6 +101,19 @@ const Page = ({ params: { id } }: Props) => {
         </Text>
       </SimpleGrid>
     </FormControl>
+  );
+
+  const OrderStatus = ({
+    text,
+    status,
+  }: {
+    text: string;
+    status: "error" | "info" | "warning" | "success";
+  }) => (
+    <Alert status={status} width="auto" display="inline-flex" borderRadius={10}>
+      <AlertIcon />
+      {text}
+    </Alert>
   );
 
   return (
@@ -173,11 +189,6 @@ const Page = ({ params: { id } }: Props) => {
               value={FormatCurrency(order?.totalPrice)}
             />
             <OrderContent
-              id="orderStatus"
-              label="Order Status"
-              value={order?.orderStatus}
-            />
-            <OrderContent
               id="orderDate"
               label="Order Date"
               value={formatDate(order?.orderDate)}
@@ -202,9 +213,31 @@ const Page = ({ params: { id } }: Props) => {
               label="Shipping Date"
               value={formatDate(order?.shippingDate) || '-'}
             />
+            <OrderContent
+              id="orderStatus"
+              label="Order Status"
+              value={[
+                ORDER_STATUS.menungguPembayaran,
+                ORDER_STATUS.menungguKonfirmasiPembayaran,
+              ].includes(order?.orderStatus) ? (
+                <OrderStatus status='warning' text={order?.orderStatus} />
+              ) : [
+                ORDER_STATUS.diproses,
+                ORDER_STATUS.dikirim,
+              ].includes(order?.orderStatus) ? (
+                <OrderStatus status='info' text={order?.orderStatus} />
+              ) : [
+                ORDER_STATUS.dibatalkan,
+                ORDER_STATUS.pembayaranGagal,
+              ].includes(order?.orderStatus) ? (
+                <OrderStatus status='error' text={order?.orderStatus} />
+              ) : (
+                <OrderStatus status='success' text={order?.orderStatus} />
+              )}
+            />
 
             {order?.paymentMethod === 'BANK' && order?.paymentImage && (
-              <FormControl id="orderStatus">
+              <FormControl id="orderStatus" mt={5}>
                 <SimpleGrid
                   columns={{ base: 1, sm: 1, md: 3 }}
                   spacing={{ base: 0, sm: 0, md: 10 }}
@@ -311,9 +344,9 @@ const Page = ({ params: { id } }: Props) => {
                     <Td>{item.name}</Td>
                     <Td>{item.description}</Td>
                     <Td>{item.quantity}</Td>
-                    <Td>{item.bonusQuantity}</Td>
+                    <Td>{item.bonusQuantity > 0 && item.bonusQuantity}</Td>
                     <Td>{FormatCurrency(item.price)}</Td>
-                    <Td>{FormatCurrency(-item.discount)}</Td>
+                    <Td>{item.discount > 0 && FormatCurrency(-item.discount)}</Td>
                   </Tr>
                 ))}
               </Tbody>

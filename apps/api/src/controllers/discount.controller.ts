@@ -2,6 +2,7 @@ import {
   createDiscountAction,
   getDiscountAction,
   getDiscountByIDAction,
+  getDiscountByProductIdAndStoreIdAction,
   getDiscountsByStoreIDAction,
   updateDiscountAction,
 } from '@/actions/discount.action';
@@ -116,10 +117,29 @@ const updateDiscountController = async (
   }
 };
 
+const getDiscountByProductIdAndStoreIdController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { productId, storeId } = req.params;
+    const data = await getDiscountByProductIdAndStoreIdAction(productId, storeId);
+
+    res.status(200).json({
+      message: 'Get discount success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export {
   updateDiscountController,
   getDiscountByIDController,
   createDiscountController,
   getDiscountController,
   getDiscountsByStoreIDController,
+  getDiscountByProductIdAndStoreIdController,
 };

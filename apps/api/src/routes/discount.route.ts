@@ -3,6 +3,7 @@ import { adminGuard, verifyToken } from '@/middlewares/auth.middleware';
 import {
   createDiscountController,
   getDiscountByIDController,
+  getDiscountByProductIdAndStoreIdController,
   getDiscountController,
   getDiscountsByStoreIDController,
   updateDiscountController,
@@ -17,6 +18,11 @@ router.get(
   verifyToken,
   adminGuard,
   getDiscountsByStoreIDController,
+);
+router.get(
+  '/product/:productId/store/:storeId',
+  verifyToken,
+  getDiscountByProductIdAndStoreIdController
 );
 router.get('/:id', verifyToken, adminGuard, getDiscountByIDController);
 router.patch('/:id', verifyToken, adminGuard, updateDiscountController);

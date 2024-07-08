@@ -18,13 +18,13 @@ import { useRouter } from 'next/navigation';
 
 import { getStoreByID } from '@/services/store.service';
 import {
-  createDiscount,
   getDiscountByID,
   updateDiscount,
 } from '@/services/discount.service';
 import { getProducts } from '@/services/product.service';
 import { useAppSelector } from '@/lib/hooks';
 import { toast } from 'react-toastify';
+import { DISCOUNT_TYPE, DISCOUNT_UNIT } from "@/constants/discount.constant";
 
 type Props = { params: { id: string } };
 
@@ -33,9 +33,9 @@ const Page = ({ params: { id: discountId } }: Props) => {
   const [products, setProducts] = useState<any[]>([]);
   const user = useAppSelector((state) => state.auth.user);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<any>({
     storeId: user.storeId,
-    type: 'Product Discount',
+    type: DISCOUNT_TYPE.productDiscount,
     amount: 0,
     unit: '',
     minimumPrice: 0,
@@ -89,8 +89,13 @@ const Page = ({ params: { id: discountId } }: Props) => {
 
     try {
       if (!user.storeId) return;
-      const product = await updateDiscount(discountId, formData);
+
+      const newFormData = formData;
+      if (!newFormData.productId) delete newFormData.productId;
+
+      const product = await updateDiscount(discountId, newFormData);
       if (!product) throw new Error('Update discount failed!');
+
       toast.success('Update discount success');
       router.push(`/admin/discounts`);
     } catch (err) {
@@ -121,16 +126,67 @@ const Page = ({ params: { id: discountId } }: Props) => {
                     value={formData.type}
                     onChange={handleChange}
                   >
-                    <option value="Product Discount">Product Discount</option>
-                    <option value="Minimum Purchase">Minimum Purchase</option>
-                    <option value="Buy 1 Get 1">Buy 1 Get 1</option>
-                    <option value="Free Shipping">Free Shipping</option>
-                    <option value="Referral Code">Referral Code</option>
+                    <option value={DISCOUNT_TYPE.productDiscount}>{DISCOUNT_TYPE.productDiscount}</option>
+                    <option value={DISCOUNT_TYPE.minimumPurchase}>{DISCOUNT_TYPE.minimumPurchase}</option>
+                    <option value={DISCOUNT_TYPE.buy1Get1}>{DISCOUNT_TYPE.buy1Get1}</option>
+                    <option value={DISCOUNT_TYPE.freeShipping}>{DISCOUNT_TYPE.freeShipping}</option>
+                    <option value={DISCOUNT_TYPE.referralCode}>{DISCOUNT_TYPE.referralCode}</option>
                   </Select>
                 </FormControl>
 
-                {(formData.type === 'Product Discount' ||
-                  formData.type === 'Minimum Purchase') && (
+                {(formData.type === DISCOUNT_TYPE.productDiscount ||
+                  formData.type === DISCOUNT_TYPE.buy1Get1) && (
+                    <>
+                      <FormControl id="productId" isRequired>
+                        <FormLabel>Product</FormLabel>
+                        <Select
+                          name="productId"
+                          width="auto"
+                          value={formData.productId}
+                          onChange={handleChange}
+                        >
+                          <option value=""></option>
+                          {products?.map((product: any) => (
+                            <option key={product.id} value={product.id}>
+                              {product.name}
+                            </option>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </>
+                  )}
+
+                {(formData.type === DISCOUNT_TYPE.productDiscount ||
+                  formData.type === DISCOUNT_TYPE.minimumPurchase) && (
+                    <>
+                      <FormControl id="amount" isRequired>
+                        <FormLabel>Amount</FormLabel>
+                        <Input
+                          name="amount"
+                          placeholder="Amount"
+                          _placeholder={{ color: 'gray.500' }}
+                          type="number"
+                          value={formData.amount}
+                          onChange={handleChange}
+                        />
+                      </FormControl>
+                      <FormControl id="unit" isRequired>
+                        <FormLabel>Unit</FormLabel>
+                        <Select
+                          name="unit"
+                          width="auto"
+                          value={formData.unit}
+                          onChange={handleChange}
+                        >
+                          <option value=""></option>
+                          <option value={DISCOUNT_UNIT.amount}>{DISCOUNT_UNIT.amount}</option>
+                          <option value={DISCOUNT_UNIT.percentage}>{DISCOUNT_UNIT.percentage}</option>
+                        </Select>
+                      </FormControl>
+                    </>
+                  )}
+
+                {formData.type === DISCOUNT_TYPE.referralCode && (
                   <>
                     <FormControl id="amount" isRequired>
                       <FormLabel>Amount</FormLabel>
@@ -152,49 +208,19 @@ const Page = ({ params: { id: discountId } }: Props) => {
                         onChange={handleChange}
                       >
                         <option value=""></option>
-                        <option value="Amount">Amount</option>
-                        <option value="Percentage">Percentage</option>
+                        <option value={DISCOUNT_UNIT.amount}>{DISCOUNT_UNIT.amount}</option>
                       </Select>
                     </FormControl>
                   </>
                 )}
 
-                {formData.type === 'Referral Code' && (
-                  <>
-                    <FormControl id="amount" isRequired>
-                      <FormLabel>Amount</FormLabel>
-                      <Input
-                        name="amount"
-                        placeholder="Amount"
-                        _placeholder={{ color: 'gray.500' }}
-                        type="number"
-                        value={formData.amount}
-                        onChange={handleChange}
-                      />
-                    </FormControl>
-                    <FormControl id="unit" isRequired>
-                      <FormLabel>Unit</FormLabel>
-                      <Select
-                        name="unit"
-                        width="auto"
-                        value={formData.unit}
-                        onChange={handleChange}
-                      >
-                        <option value=""></option>
-                        <option value="Amount">Amount</option>
-                        <option value="Percentage">Percentage</option>
-                      </Select>
-                    </FormControl>
-                  </>
-                )}
-
-                {formData.type === 'Minimum Purchase' && (
+                {formData.type === DISCOUNT_TYPE.minimumPurchase && (
                   <>
                     <FormControl id="minimumPrice" isRequired>
-                      <FormLabel>Minimum Price</FormLabel>
+                      <FormLabel>Minimum Total Price</FormLabel>
                       <Input
                         name="minimumPrice"
-                        placeholder="Minimum Price"
+                        placeholder="Minimum Total Price"
                         _placeholder={{ color: 'gray.500' }}
                         type="number"
                         value={formData.minimumPrice}
@@ -217,7 +243,7 @@ const Page = ({ params: { id: discountId } }: Props) => {
                   </>
                 )}
 
-                {formData.type === 'Free Shipping' && (
+                {formData.type === DISCOUNT_TYPE.freeShipping && (
                   <>
                     <FormControl id="minimumOrders" isRequired>
                       <FormLabel>Minimum Order</FormLabel>
@@ -229,28 +255,6 @@ const Page = ({ params: { id: discountId } }: Props) => {
                         value={formData.minimumOrders}
                         onChange={handleChange}
                       />
-                    </FormControl>
-                  </>
-                )}
-
-                {(formData.type === 'Product Discount' ||
-                  formData.type === 'Buy 1 Get 1') && (
-                  <>
-                    <FormControl id="productId" isRequired>
-                      <FormLabel>Product</FormLabel>
-                      <Select
-                        name="productId"
-                        width="auto"
-                        value={formData.productId}
-                        onChange={handleChange}
-                      >
-                        <option value=""></option>
-                        {products?.map((product: any) => (
-                          <option key={product.id} value={product.id}>
-                            {product.name}
-                          </option>
-                        ))}
-                      </Select>
                     </FormControl>
                   </>
                 )}

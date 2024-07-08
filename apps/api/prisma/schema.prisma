@@ -252,15 +252,17 @@ model UserVoucher {
 }
 
 model Cart {
-  id          String     @id @default(uuid())
-  user        User       @relation(fields: [userId], references: [id])
-  userId      String     @map(name: "user_id")
-  store       Store?     @relation(fields: [storeId], references: [id])
-  storeId     String?    @map(name: "store_id")
-  itemsPrice  Float      @default(0) @map(name: "items_price")
-  createdDate DateTime   @default(now()) @map(name: "created_date")
-  updatedDate DateTime   @updatedAt @map(name: "updated_date")
-  cartItems   CartItem[]
+  id            String     @id @default(uuid())
+  user          User       @relation(fields: [userId], references: [id])
+  userId        String     @map(name: "user_id")
+  store         Store?     @relation(fields: [storeId], references: [id])
+  storeId       String?    @map(name: "store_id")
+  itemsPrice    Float      @default(0) @map(name: "items_price")
+  itemsDiscount Float      @default(0) @map(name: "itemsDiscount")
+  totalPrice    Float      @default(0) @map(name: "total_price")
+  createdDate   DateTime   @default(now()) @map(name: "created_date")
+  updatedDate   DateTime   @updatedAt @map(name: "updated_date")
+  cartItems     CartItem[]
 
   @@map(name: "carts")
 }
@@ -273,6 +275,8 @@ model CartItem {
   image       String? @db.VarChar(1000)
   quantity    Float   @default(0)
   price       Float   @default(0)
+  discount    Float   @default(0)
+  isBuy1Get1  Boolean @default(false) @map(name: "is_buy1_get1")
   cart        Cart    @relation(fields: [cartId], references: [id])
   cartId      String  @map(name: "cart_id")
   product     Product @relation(fields: [productId], references: [id])

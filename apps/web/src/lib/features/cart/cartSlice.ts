@@ -46,9 +46,11 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    updateCartItemsState: (state: Cart, action: PayloadAction<{ itemsCount: number, itemsPrice: number }>) => {
+    updateCartItemsState: (state: Cart, action: PayloadAction<{ itemsCount: number, itemsPrice: number, itemsDiscount: number, totalPrice: number }>) => {
       state.itemsCount = action.payload.itemsCount;
       state.itemsPrice = action.payload.itemsPrice;
+      state.itemsDiscount = action.payload.itemsDiscount;
+      state.totalPrice = action.payload.totalPrice;
       return updateCart(state);
     },
     updateCartStoreState: (state: Cart, action: PayloadAction<{ storeId: string }>) => {

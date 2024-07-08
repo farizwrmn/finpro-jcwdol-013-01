@@ -148,8 +148,8 @@ const seedStores = async () => {
 };
 
 const main = async () => {
-  // await seedRoles();
-  // await seedUsers();
+  await seedRoles();
+  await seedUsers();
   await seedCategories();
   await seedProducts();
   await seedStores();

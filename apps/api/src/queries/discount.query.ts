@@ -106,6 +106,21 @@ const getDiscountByIDQuery = async (id: string): Promise<Discount | null> => {
   }
 };
 
+const getDiscountByProductIdAndStoreIdQuery = async (productId: string, storeId: string): Promise<Discount | null> => {
+  try {
+    const discount = await prisma.discount.findFirst({
+      where: {
+        productId,
+        storeId,
+      },
+    });
+
+    return discount;
+  } catch (err) {
+    throw err;
+  }
+};
+
 const updateDiscountQuery = async (
   id: string,
   discountData: IDiscount,
@@ -147,4 +162,5 @@ export {
   createDiscountQuery,
   getDiscountQuery,
   getDiscountsByStoreIDQuery,
+  getDiscountByProductIdAndStoreIdQuery,
 };
