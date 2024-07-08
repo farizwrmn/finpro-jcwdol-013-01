@@ -13,6 +13,13 @@ import DesktopSubNav from './DesktopSubNav';
 export const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'Products',
+    children: [
+      {
+        label: 'Explore Product',
+        subLabel: 'Grocery for you',
+        href: '/products',
+      },
+    ],
     href: '/products',
   },
   {

@@ -55,7 +55,7 @@ const Category = () => {
             >
               {data.categories?.map((category: any, index: number) => (
                 <GridItem key={index}>
-                  <Link href={'/'}>
+                  <Link href={`/products?category=${category.slug}`}>
                     <Image
                       key={index}
                       src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/categories/${category.image}`}

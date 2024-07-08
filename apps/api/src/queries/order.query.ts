@@ -5,10 +5,14 @@ import {
   IResultOrder,
 } from '../interfaces/order.interface';
 import { getCartByUserIDQuery, resetCartItemsQuery } from './cart.query';
-import { getStockByProductIdAndStoreIdQuery, updateStockQuery } from "./stock.query";
-import { getDiscountsByStoreIDQuery } from "./discount.query";
-import { DISCOUNT_TYPE } from "@/constants/discount.constant";
-import { createVoucherQuery } from "./voucher.query";
+import {
+  getStockByProductIdAndStoreIdQuery,
+  updateStockQuery,
+} from './stock.query';
+import { getDiscountsByStoreIDQuery } from './discount.query';
+import { DISCOUNT_TYPE } from '@/constants/discount.constant';
+import { createVoucherQuery } from './voucher.query';
+import { ORDER_STATUS } from '@/constants/order.constant';
 
 const prisma = new PrismaClient();
 
@@ -104,7 +108,10 @@ const createOrderQuery = async (data: IOrder): Promise<Order> => {
 
         // update stock
         for (const item of data.orderItems) {
-          const stock = await getStockByProductIdAndStoreIdQuery(item.productId, data.storeId);
+          const stock = await getStockByProductIdAndStoreIdQuery(
+            item.productId,
+            data.storeId,
+          );
 
           if (stock) {
             await updateStockQuery(stock.id, {
@@ -155,4 +162,31 @@ const createOrderQuery = async (data: IOrder): Promise<Order> => {
   }
 };
 
-export { getOrdersQuery, getOrderByIDQuery, createOrderQuery };
+const confirmShippingOrderQuery = async () => {
+  try {
+    const twoDaysAgo = new Date();
+    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+
+    const orders = await prisma.order.updateMany({
+      where: {
+        orderStatus: ORDER_STATUS.dikirim,
+        shippingDate: {
+          gt: twoDaysAgo,
+        },
+      },
+      data: {
+        orderStatus: ORDER_STATUS.pesananDikonfirmasi,
+      },
+    });
+    return orders;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export {
+  confirmShippingOrderQuery,
+  getOrdersQuery,
+  getOrderByIDQuery,
+  createOrderQuery,
+};
