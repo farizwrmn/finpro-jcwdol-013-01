@@ -17,12 +17,7 @@ export const NAV_ITEMS: Array<NavItem> = [
       {
         label: 'Explore Product',
         subLabel: 'Grocery for you',
-        href: '#',
-      },
-      {
-        label: 'New Arrival',
-        subLabel: 'Up-and-coming Product',
-        href: '#',
+        href: '/products',
       },
     ],
   },

@@ -18,13 +18,15 @@ import { useRouter } from 'next/navigation';
 
 import { getStores } from '@/services/store.service';
 import { createStock } from '@/services/stock.service';
-import { useAppSelector } from "@/lib/hooks";
+import { useAppSelector } from '@/lib/hooks';
+import { getProductByID } from '@/services/product.service';
 
 type Props = { params: { id: string } };
 
 const Page = ({ params: { id: productId } }: Props) => {
   const user = useAppSelector((state) => state.auth.user);
   const [stores, setStores] = useState<any[]>([]);
+  const [product, setProduct] = useState<any>(null);
 
   const [formData, setFormData] = useState({
     productId,
@@ -38,13 +40,22 @@ const Page = ({ params: { id: productId } }: Props) => {
     (async () => {
       const data = await getStores({});
 
-      if (user.role === "store_admin") {
-        setStores(data?.stores.filter((store: any) => store.id === user.storeId));
+      if (user.role === 'store_admin') {
+        setStores(
+          data?.stores.filter((store: any) => store.id === user.storeId),
+        );
       } else {
         setStores(data?.stores);
       }
     })();
   }, [user.role, user.storeId]);
+
+  useEffect(() => {
+    (async () => {
+      const resultProduct = await getProductByID(productId);
+      setProduct(resultProduct);
+    })();
+  }, [productId]);
 
   type ChangeEvent =
     | React.ChangeEvent<HTMLInputElement>
@@ -75,7 +86,7 @@ const Page = ({ params: { id: productId } }: Props) => {
   return (
     <Box>
       <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-        Stock Management
+        Add Stock for Product &quot;{product?.name}&quot;
       </Text>
       <Card my={10}>
         <CardBody>
@@ -113,7 +124,7 @@ const Page = ({ params: { id: productId } }: Props) => {
                 <Stack spacing={6} direction={['column', 'row']}>
                   <Button
                     onClick={() => {
-                      router.push(`/admin/products/stocks/${productId}`);
+                      router.push(`/admin/products/stocks/${product.id}`);
                     }}
                     bg={'red.400'}
                     color={'white'}

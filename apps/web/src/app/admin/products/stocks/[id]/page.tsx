@@ -22,10 +22,14 @@ import {
   Select,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { addStock, getStocks, getStocksByProductID } from '@/services/stock.service';
+import {
+  addStock,
+  getStocks,
+  getStocksByProductID,
+} from '@/services/stock.service';
 import { getProductByID } from '@/services/product.service';
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import { useAppSelector } from "@/lib/hooks";
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { useAppSelector } from '@/lib/hooks';
 
 type Props = { params: { id: string } };
 
@@ -68,7 +72,7 @@ const Page = ({ params: { id } }: Props) => {
       <Card my={10}>
         <CardBody>
           <Flex gap={4} pb={8}>
-            {user?.role === "super_admin" && (
+            {user?.role === 'super_admin' && (
               <Input
                 placeholder="Search..."
                 value={filters.keyword}
@@ -77,7 +81,7 @@ const Page = ({ params: { id } }: Props) => {
                 }
               />
             )}
-            {user?.role === "store_admin" && data.stocks.length > 0 ? (
+            {user?.role === 'store_admin' && data.stocks.length > 0 ? (
               <></>
             ) : (
               <Button
@@ -129,7 +133,7 @@ const Page = ({ params: { id } }: Props) => {
               </Tbody>
             </Table>
           </TableContainer>
-          {user?.role === "super_admin" && (
+          {user?.role === 'super_admin' && (
             <Box pt={4} display="flex" justifyContent="space-between">
               <Select
                 width="auto"

@@ -5,6 +5,7 @@ import {
   IResultOrder,
 } from '../interfaces/order.interface';
 import { getCartByUserIDQuery, resetCartItemsQuery } from './cart.query';
+import { ORDER_STATUS } from '@/constants/order.constant';
 
 const prisma = new PrismaClient();
 
@@ -101,4 +102,31 @@ const createOrderQuery = async (data: IOrder): Promise<Order> => {
   }
 };
 
-export { getOrdersQuery, getOrderByIDQuery, createOrderQuery };
+const confirmShippingOrderQuery = async () => {
+  try {
+    const twoDaysAgo = new Date();
+    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+
+    const orders = await prisma.order.updateMany({
+      where: {
+        orderStatus: ORDER_STATUS.dikirim,
+        shippingDate: {
+          gt: twoDaysAgo,
+        },
+      },
+      data: {
+        orderStatus: ORDER_STATUS.pesananDikonfirmasi,
+      },
+    });
+    return orders;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export {
+  confirmShippingOrderQuery,
+  getOrdersQuery,
+  getOrderByIDQuery,
+  createOrderQuery,
+};

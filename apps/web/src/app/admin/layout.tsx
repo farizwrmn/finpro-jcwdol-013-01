@@ -26,20 +26,15 @@ import {
   Image,
   AvatarBadge,
 } from '@chakra-ui/react';
-import { FiHome, FiMenu, FiBell, FiChevronDown, FiUser } from 'react-icons/fi';
+import { FiHome, FiMenu, FiChevronDown, FiUser } from 'react-icons/fi';
 import {
-  FaApplePay,
-  FaBirthdayCake,
   FaCashRegister,
   FaCcDiscover,
   FaChartArea,
   FaChartLine,
-  FaIceCream,
-  FaProductHunt,
   FaShopify,
   FaStore,
   FaTicketAlt,
-  FaWolfPackBattalion,
 } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 import { ReactText } from 'react';
@@ -47,6 +42,7 @@ import AuthAdmin from '@/components/auth/AuthAdmin';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { signOut } from '@/lib/features/auth/authSlice';
 import { useRouter } from 'next/navigation';
+import { USER_ROLE } from '@/constants/user.constant';
 
 interface LinkItemProps {
   name: string;
@@ -283,9 +279,9 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">{user.email}</Text>
+                  <Text fontSize="sm">{user?.name || user?.email}</Text>
                   <Text fontSize="xs" color="gray.600">
-                    {user.role}
+                    {USER_ROLE[user?.role as string]}
                   </Text>
                 </VStack>
                 <Box display={{ base: 'none', md: 'flex' }}>

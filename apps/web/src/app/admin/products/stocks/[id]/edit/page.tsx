@@ -7,21 +7,17 @@ import {
   TableContainer,
   Box,
   Input,
-  Select,
   Text,
   Button,
   FormControl,
   FormLabel,
   Stack,
+  Select,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 
 import { getStores } from '@/services/store.service';
-import {
-  createStock,
-  updateStock,
-  getStockByID,
-} from '@/services/stock.service';
+import { updateStock, getStockByID } from '@/services/stock.service';
 
 type Props = { params: { id: string } };
 
@@ -66,11 +62,11 @@ const Page = ({ params: { id: stockId } }: Props) => {
     try {
       const product = await updateStock(stockId, formData);
       if (!product) throw new Error('Update stock failed!');
-      alert('Create stock success');
+      alert('Update stock success');
       router.push(`/admin/products/stocks/${stock.productId}`);
     } catch (err) {
       console.error(err);
-      alert('Create stock failed');
+      alert('Update stock failed');
     }
   };
 
@@ -88,6 +84,18 @@ const Page = ({ params: { id: stockId } }: Props) => {
                   <FormLabel>Store</FormLabel>
                   <Text>{stock?.store?.name}</Text>
                 </FormControl>
+                <FormControl id="type" isRequired>
+                  <FormLabel>Type</FormLabel>
+                  <Select
+                    name="type"
+                    width="auto"
+                    value={formData.type}
+                    onChange={handleChange}
+                  >
+                    <option value="tambah">Tambah</option>
+                    <option value="kurang">Kurang</option>
+                  </Select>
+                </FormControl>
                 <FormControl id="stock" isRequired>
                   <FormLabel>Stock</FormLabel>
                   <Input
@@ -103,7 +111,7 @@ const Page = ({ params: { id: stockId } }: Props) => {
                 <Stack spacing={6} direction={['column', 'row']}>
                   <Button
                     onClick={() => {
-                      router.push(`/admin/products/stocks/${stockId}`);
+                      router.push(`/admin/products/stocks/${stock.productId}`);
                     }}
                     bg={'red.400'}
                     color={'white'}

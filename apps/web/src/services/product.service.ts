@@ -1,9 +1,16 @@
-import { IFilterProduct } from "@/interface/product.interface";
-import instance from "@/utils/axiosInstance";
+import { IFilterProduct } from '@/interface/product.interface';
+import instance from '@/utils/axiosInstance';
 
-export const getProducts = async ({ keyword = "", page = 1, size = 10 }: IFilterProduct) => {
+export const getProducts = async ({
+  category = '',
+  keyword = '',
+  page = 1,
+  size = 10,
+}: IFilterProduct) => {
   try {
-    const { data } = await instance.get(`/products?keyword=${keyword}&page=${page}&size=${size}`);
+    const { data } = await instance.get(
+      `/products?keyword=${keyword}&page=${page}&size=${size}&category=${category}`,
+    );
     const products = data?.data;
     return products;
   } catch (err) {
@@ -37,7 +44,7 @@ export const createProduct = async (formData: any) => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
-      }
+      },
     };
     const { data } = await instance.post('/products', formData, config);
     const product = data?.data;
@@ -53,7 +60,7 @@ export const updateProduct = async (id: string, formData: any) => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
-      }
+      },
     };
     const { data } = await instance.patch(`/products/${id}`, formData, config);
     const product = data?.data;
@@ -69,7 +76,7 @@ export const deleteProduct = async (id: string) => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
-      }
+      },
     };
     const { data } = await instance.delete(`/products/${id}`, config);
     const product = data?.data;
@@ -88,11 +95,7 @@ export const createProductImage = async (formData: any) => {
         'Content-Type': 'multipart/form-data',
       },
     };
-    const { data } = await instance.post(
-      `/products/image`,
-      formData,
-      config,
-    );
+    const { data } = await instance.post(`/products/image`, formData, config);
 
     const productImage = data?.data;
     return productImage;
@@ -108,7 +111,7 @@ export const deleteProductImage = async (id: string) => {
     const config = {
       headers: {
         Authorization: `Bearer ${token}`,
-      }
+      },
     };
     const { data } = await instance.delete(`/products/image/${id}`, config);
     const productImage = data?.data;
