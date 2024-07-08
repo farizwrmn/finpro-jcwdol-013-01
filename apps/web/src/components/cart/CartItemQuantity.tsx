@@ -68,6 +68,8 @@ const CartItemQuantity = ({ item }: Props) => {
           updateCartItemsState({
             itemsCount: dataCart.cartItems.length,
             itemsPrice: dataCart.itemsPrice,
+            itemsDiscount: dataCart.itemsDiscount,
+            totalPrice: dataCart.totalPrice,
           }),
         );
       }

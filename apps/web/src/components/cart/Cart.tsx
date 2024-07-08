@@ -10,7 +10,7 @@ import {
   useColorModeValue as mode,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { CartItem } from './cartItem';
+import { CartItem } from './CartItem';
 import { CartSummary } from './CartSummary';
 import { deleteCartItem, getCartByUserID } from '@/services/cart.service';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -46,6 +46,8 @@ const Cart = () => {
           updateCartItemsState({
             itemsCount: dataCart.cartItems.length,
             itemsPrice: dataCart.itemsPrice,
+            itemsDiscount: dataCart.itemsDiscount,
+            totalPrice: dataCart.totalPrice,
           }),
         );
       }

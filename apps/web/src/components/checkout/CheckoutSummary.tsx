@@ -79,7 +79,9 @@ export const CheckoutSummary = () => {
             description: item.description,
             image: item.image,
             quantity: item.quantity,
-            price: item.price
+            bonusQuantity: Boolean(item.isBuy1Get1) ? item.quantity : 0,
+            price: item.price,
+            discount: item.discount,
           }
         }),
       }
