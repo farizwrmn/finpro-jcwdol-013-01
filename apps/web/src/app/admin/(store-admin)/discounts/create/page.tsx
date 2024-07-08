@@ -20,6 +20,7 @@ import { getStoreByID } from '@/services/store.service';
 import { createDiscount } from '@/services/discount.service';
 import { getProducts } from '@/services/product.service';
 import { useAppSelector } from '@/lib/hooks';
+import { toast } from 'react-toastify';
 
 const Page = () => {
   const [store, setStore] = useState<any>(null);
@@ -68,11 +69,11 @@ const Page = () => {
       if (!user.storeId) return;
       const product = await createDiscount(formData);
       if (!product) throw new Error('Create discount failed!');
-      alert('Create discount success');
+      toast.success('Create discount success');
       router.push(`/admin/stores/discounts/${user.storeId}`);
     } catch (err) {
       console.error(err);
-      alert('Create discount failed');
+      toast.error('Create discount failed');
     }
   };
 

@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  Box,
-  Card,
-  CardBody,
-  Text,
-} from '@chakra-ui/react';
+import { Box, Card, CardBody, Text } from '@chakra-ui/react';
 import { withFormik } from 'formik';
 import * as Yup from 'yup';
 import { FormValues, FormProps } from './types';
@@ -13,6 +8,8 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { useRouter } from 'next/navigation';
 import InnerForm from './innerForm';
 import { updateProfile } from '@/lib/features/auth/authSlice';
+import { toast } from 'react-toastify';
+import { format } from 'date-fns';
 
 const UpdateProfileSchema = Yup.object().shape({
   email: Yup.string()
@@ -33,7 +30,10 @@ export default function UserProfileEdit(): JSX.Element {
       image: props.initialImage || user.image || '',
       phone: props.initialPhone || user.phone || '',
       gender: props.initialGender || user.gender || '',
-      birthDate: props.initialBirthDate || user.birthDate || '',
+      birthDate:
+        props.initialBirthDate ||
+        format(new Date(user.birthDate as string), 'dd/MM/yyyy') ||
+        '',
     }),
     validationSchema: UpdateProfileSchema,
     enableReinitialize: true,
@@ -51,7 +51,7 @@ export default function UserProfileEdit(): JSX.Element {
         }),
       );
       resetForm();
-      alert('Update user profile success');
+      toast.success('Update user profile success');
       router.push('/users/profile');
     },
   })(InnerForm);

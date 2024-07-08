@@ -20,21 +20,11 @@ export const NAV_ITEMS: Array<NavItem> = [
         href: '/products',
       },
     ],
+    href: '/products',
   },
   {
     label: 'About us',
-    children: [
-      {
-        label: 'Contact',
-        subLabel: 'Customer Service',
-        href: '#',
-      },
-      {
-        label: 'History',
-        subLabel: '',
-        href: '/about-us',
-      },
-    ],
+    href: '/about-us',
   },
 ];
 

@@ -24,6 +24,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { deleteStore, getStores } from '@/services/store.service';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
 const Page = () => {
   const [data, setData] = useState({
@@ -49,13 +50,13 @@ const Page = () => {
     try {
       const store = await deleteStore(id);
       if (!store) throw new Error('Delete store failed');
-      alert('Delete store success');
+      toast.success('Delete store success');
 
       const result = await getStores(filters);
       setData(result);
     } catch (err) {
       console.error(err);
-      alert('Delete store failed');
+      toast.error('Delete store failed');
     }
   };
 

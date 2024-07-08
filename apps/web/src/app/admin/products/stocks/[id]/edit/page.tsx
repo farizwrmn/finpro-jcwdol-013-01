@@ -17,7 +17,12 @@ import {
 import { useRouter } from 'next/navigation';
 
 import { getStores } from '@/services/store.service';
-import { updateStock, getStockByID } from '@/services/stock.service';
+import {
+  createStock,
+  updateStock,
+  getStockByID,
+} from '@/services/stock.service';
+import { toast } from 'react-toastify';
 
 type Props = { params: { id: string } };
 
@@ -62,11 +67,11 @@ const Page = ({ params: { id: stockId } }: Props) => {
     try {
       const product = await updateStock(stockId, formData);
       if (!product) throw new Error('Update stock failed!');
-      alert('Update stock success');
+      toast.success('Update stock success');
       router.push(`/admin/products/stocks/${stock.productId}`);
     } catch (err) {
       console.error(err);
-      alert('Update stock failed');
+      toast.error('Update stock failed');
     }
   };
 

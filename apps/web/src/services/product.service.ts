@@ -1,5 +1,6 @@
 import { IFilterProduct } from '@/interface/product.interface';
 import instance from '@/utils/axiosInstance';
+import { toast } from 'react-toastify';
 
 export const getProducts = async ({
   category = '',
@@ -101,7 +102,7 @@ export const createProductImage = async (formData: any) => {
     return productImage;
   } catch (err) {
     console.log(err);
-    alert('Upload product image failed');
+    toast.error('Upload product image failed');
   }
 };
 

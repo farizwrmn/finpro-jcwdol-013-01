@@ -12,6 +12,7 @@ import orderRouter from './order.route';
 import paymentRouter from './payment.route';
 import discountsRouter from './discount.route';
 import reportRouter from './report.route';
+import voucherRouter from './voucher.route';
 
 module.exports = (app: Application) => {
   app.use('/auth', authRouter);
@@ -27,4 +28,5 @@ module.exports = (app: Application) => {
   app.use('/payment', paymentRouter);
   app.use('/discounts', discountsRouter);
   app.use('/report', reportRouter);
+  app.use('/vouchers', voucherRouter);
 }

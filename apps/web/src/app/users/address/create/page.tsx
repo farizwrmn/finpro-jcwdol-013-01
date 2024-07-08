@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -17,10 +17,15 @@ import {
   GridItem,
   SimpleGrid,
 } from '@chakra-ui/react';
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/lib/hooks';
-import { getCities, getProvinces, getSubdistricts } from "@/services/shipping.service";
-import { createAddress } from "@/services/address.service";
+import {
+  getCities,
+  getProvinces,
+  getSubdistricts,
+} from '@/services/shipping.service';
+import { createAddress } from '@/services/address.service';
+import { toast } from 'react-toastify';
 
 const Page = () => {
   const [provinces, setProvinces] = useState<any[]>([]);
@@ -64,24 +69,23 @@ const Page = () => {
     })();
   }, [formData.cityId]);
 
-  type ChangeEvent = (
-    React.ChangeEvent<HTMLInputElement> |
-    React.ChangeEvent<HTMLTextAreaElement> |
-    React.ChangeEvent<HTMLSelectElement>
-  )
+  type ChangeEvent =
+    | React.ChangeEvent<HTMLInputElement>
+    | React.ChangeEvent<HTMLTextAreaElement>
+    | React.ChangeEvent<HTMLSelectElement>;
 
   const handleChange = (e: ChangeEvent) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleChangeProvince = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const provinceId = e.target.value
-    const provinceName = provinces.find(
-      (province) => province.province_id === provinceId
-    )?.province || '';
+    const provinceId = e.target.value;
+    const provinceName =
+      provinces.find((province) => province.province_id === provinceId)
+        ?.province || '';
 
     setFormData({
       ...formData,
@@ -90,51 +94,51 @@ const Page = () => {
       cityId: '',
       cityName: '',
       subdistrictId: '',
-      subdistrictName: ''
-    })
-  }
+      subdistrictName: '',
+    });
+  };
 
   const handleChangeCity = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const cityId = e.target.value
-    const cityName = cities.find(
-      city => city.city_id === cityId
-    )?.city_name || ''
+    const cityId = e.target.value;
+    const cityName =
+      cities.find((city) => city.city_id === cityId)?.city_name || '';
 
     setFormData({
       ...formData,
       cityId,
       cityName,
       subdistrictId: '',
-      subdistrictName: ''
-    })
-  }
+      subdistrictName: '',
+    });
+  };
 
   const handleChangeSubdistrict = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const subdistrictId = e.target.value
-    const subdistrictName = subdistricts.find(
-      subdistrict => subdistrict.subdistrict_id === subdistrictId
-    )?.subdistrict_name || ''
+    const subdistrictId = e.target.value;
+    const subdistrictName =
+      subdistricts.find(
+        (subdistrict) => subdistrict.subdistrict_id === subdistrictId,
+      )?.subdistrict_name || '';
 
     setFormData({
       ...formData,
       subdistrictId,
-      subdistrictName
-    })
-  }
+      subdistrictName,
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       const address = await createAddress(formData);
-      if (!address) throw new Error("Create address failed!");
-      alert("Create address success");
-      router.push("/users/address")
+      if (!address) throw new Error('Create address failed!');
+      toast.success('Create address success');
+      router.push('/users/address');
     } catch (err) {
       console.error(err);
-      alert("Create address failed");
+      toast.error('Create address failed');
     }
-  }
+  };
 
   return (
     <Box>
@@ -145,13 +149,7 @@ const Page = () => {
         <CardBody>
           <TableContainer>
             <form onSubmit={handleSubmit}>
-              <Stack
-                spacing={6}
-                w={'full'}
-                rounded={'xl'}
-                p={10}
-                my={6}
-              >
+              <Stack spacing={6} w={'full'} rounded={'xl'} p={10} my={6}>
                 <FormControl id="label" isRequired>
                   <FormLabel>Label</FormLabel>
                   <Input
@@ -189,7 +187,9 @@ const Page = () => {
                         <option
                           key={province.province_id}
                           value={province.province_id}
-                        >{province.province}</option>
+                        >
+                          {province.province}
+                        </option>
                       ))}
                     </Select>
                   </FormControl>
@@ -201,7 +201,7 @@ const Page = () => {
                       onChange={handleChangeCity}
                     >
                       <option value=""></option>
-                      {cities?.map(city => (
+                      {cities?.map((city) => (
                         <option
                           key={city.city_id}
                           value={city.city_id}
@@ -222,11 +222,13 @@ const Page = () => {
                       onChange={handleChangeSubdistrict}
                     >
                       <option value=""></option>
-                      {subdistricts?.map(subdistrict => (
+                      {subdistricts?.map((subdistrict) => (
                         <option
                           key={subdistrict.subdistrict_id}
                           value={subdistrict.subdistrict_id}
-                        >{subdistrict.subdistrict_name}</option>
+                        >
+                          {subdistrict.subdistrict_name}
+                        </option>
                       ))}
                     </Select>
                   </FormControl>
@@ -245,14 +247,15 @@ const Page = () => {
                 <Stack spacing={6} direction={['column', 'row']}>
                   <Button
                     onClick={() => {
-                      router.push("/users/address");
+                      router.push('/users/address');
                     }}
                     bg={'red.400'}
                     color={'white'}
                     w="full"
                     _hover={{
                       bg: 'red.500',
-                    }}>
+                    }}
+                  >
                     Cancel
                   </Button>
                   <Button
@@ -262,7 +265,8 @@ const Page = () => {
                     w="full"
                     _hover={{
                       bg: 'blue.500',
-                    }}>
+                    }}
+                  >
                     Create
                   </Button>
                 </Stack>

@@ -16,6 +16,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { getUserStores, updateUserStore } from '@/services/store.service';
 import { getUserByID } from '@/services/user.service';
+import { toast } from 'react-toastify';
 
 type Props = { params: { id: string } };
 
@@ -55,11 +56,11 @@ const Page = ({ params: { id } }: Props) => {
     try {
       const store = await updateUserStore(id, formData);
       if (!store) throw new Error('Update user store failed!');
-      alert('Update user store success');
+      toast.success('Update user store success');
       router.push('/admin/users');
     } catch (err) {
       console.error(err);
-      alert('Update user store failed');
+      toast.error('Update user store failed');
     }
   };
 

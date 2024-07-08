@@ -75,7 +75,7 @@ const createDiscountQuery = async (
 
 const getDiscountsByStoreIDQuery = async (
   storeId: string,
-): Promise<Discount[] | null> => {
+): Promise<Discount[]> => {
   try {
     const discounts = await prisma.discount.findMany({
       include: {

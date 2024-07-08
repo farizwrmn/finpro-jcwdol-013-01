@@ -19,8 +19,7 @@ const createStockController = async (
     const data = await createStockAction({
       productId: params.productId,
       storeId: params.storeId,
-      baseStock: Number(params.stock),
-      remainingStock: Number(params.stock),
+      stock: Number(params.stock),
       type: 'tambah',
     });
 
@@ -43,8 +42,7 @@ const updateStockController = async (
     const params = req.body;
     const data = await updateStockAction(id, {
       type: params.type,
-      baseStock: Number(params.stock),
-      remainingStock: Number(params.stock),
+      stock: Number(params.stock),
     });
 
     res.status(200).json({

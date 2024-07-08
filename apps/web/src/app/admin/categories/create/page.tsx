@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -15,9 +15,10 @@ import {
   Stack,
   Textarea,
 } from '@chakra-ui/react';
-import { useRouter } from "next/navigation";
-import { createCategory } from "@/services/category.service";
-import AuthSuperAdmin from "@/components/auth/AuthSuperAdmin";
+import { useRouter } from 'next/navigation';
+import { createCategory } from '@/services/category.service';
+import AuthSuperAdmin from '@/components/auth/AuthSuperAdmin';
+import { toast } from 'react-toastify';
 
 const Page = () => {
   const [formData, setFormData] = useState({
@@ -27,32 +28,31 @@ const Page = () => {
 
   const router = useRouter();
 
-  type ChangeEvent = (
-    React.ChangeEvent<HTMLInputElement> |
-    React.ChangeEvent<HTMLTextAreaElement> |
-    React.ChangeEvent<HTMLSelectElement>
-  )
+  type ChangeEvent =
+    | React.ChangeEvent<HTMLInputElement>
+    | React.ChangeEvent<HTMLTextAreaElement>
+    | React.ChangeEvent<HTMLSelectElement>;
 
   const handleChange = (e: ChangeEvent) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       const category = await createCategory(formData);
-      if (!category) throw new Error("Create category failed!");
-      alert("Create category success");
-      router.push("/admin/categories")
+      if (!category) throw new Error('Create category failed!');
+      toast.success('Create category success');
+      router.push('/admin/categories');
     } catch (err) {
       console.error(err);
-      alert("Create category failed");
+      toast.error('Create category failed');
     }
-  }
+  };
 
   return (
     <AuthSuperAdmin url="/admin">
@@ -64,13 +64,7 @@ const Page = () => {
           <CardBody>
             <TableContainer>
               <form onSubmit={handleSubmit}>
-                <Stack
-                  spacing={6}
-                  w={'full'}
-                  rounded={'xl'}
-                  p={10}
-                  my={6}
-                >
+                <Stack spacing={6} w={'full'} rounded={'xl'} p={10} my={6}>
                   <FormControl id="name" isRequired>
                     <FormLabel>Category Name</FormLabel>
                     <Input
@@ -96,14 +90,15 @@ const Page = () => {
                   <Stack spacing={6} direction={['column', 'row']}>
                     <Button
                       onClick={() => {
-                        router.push("/admin/categories");
+                        router.push('/admin/categories');
                       }}
                       bg={'red.400'}
                       color={'white'}
                       w="full"
                       _hover={{
                         bg: 'red.500',
-                      }}>
+                      }}
+                    >
                       Cancel
                     </Button>
                     <Button
@@ -113,7 +108,8 @@ const Page = () => {
                       w="full"
                       _hover={{
                         bg: 'blue.500',
-                      }}>
+                      }}
+                    >
                       Create
                     </Button>
                   </Stack>

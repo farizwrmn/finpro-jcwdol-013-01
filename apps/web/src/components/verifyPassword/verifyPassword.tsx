@@ -18,6 +18,7 @@ import { IUsers } from '@/interface/user.interface';
 import InnerForm from './component/innerForm';
 import instance from '@/utils/axiosInstance';
 import PageWrapper from '../pageWrapper';
+import { toast } from 'react-toastify';
 
 const PasswordSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
@@ -41,7 +42,7 @@ const VerifyView = () => {
           },
         },
       );
-      alert('Account verified, please Sign In');
+      toast.success('Account verified, please Sign In');
       router.push('/sign-in');
     } catch (err) {
       console.log(err);

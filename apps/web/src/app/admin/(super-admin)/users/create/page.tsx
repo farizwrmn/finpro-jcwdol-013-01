@@ -17,6 +17,7 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { createUser } from '@/services/user.service';
+import { toast } from 'react-toastify';
 
 const Page = () => {
   const [show, setShow] = useState(false);
@@ -47,11 +48,11 @@ const Page = () => {
     try {
       const user = await createUser(formData);
       if (!user) throw new Error('Create user failed!');
-      alert('Create user success');
+      toast.success('Create user success');
       router.push('/admin/users');
     } catch (err) {
       console.error(err);
-      alert('Create user failed');
+      toast.error('Create user failed');
     }
   };
 

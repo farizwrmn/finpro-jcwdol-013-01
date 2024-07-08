@@ -24,6 +24,8 @@ import {
 import { useRouter } from 'next/navigation';
 import { deleteUser, getUsers } from '@/services/user.service';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { toast } from 'react-toastify';
+import { formatDate } from '@/utils/date';
 
 const Page = () => {
   const [data, setData] = useState({
@@ -49,13 +51,13 @@ const Page = () => {
     try {
       const user = await deleteUser(id);
       if (!user) throw new Error('Delete user failed');
-      alert('Delete user success');
+      toast.success('Delete user success');
 
       const result = await getUsers(filters);
       setData(result);
     } catch (err) {
       console.error(err);
-      alert('Delete user failed');
+      toast.error('Delete user failed');
     }
   };
 
@@ -104,7 +106,7 @@ const Page = () => {
                     <Td>{user.email}</Td>
                     <Td>{user.phone}</Td>
                     <Td>{user.role.name}</Td>
-                    <Td>{user.createdDate}</Td>
+                    <Td>{formatDate(user.createdDate)}</Td>
                     <Td>
                       {user.role.name === 'store_admin' && (
                         <ButtonGroup>

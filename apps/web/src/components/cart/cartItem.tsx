@@ -3,27 +3,10 @@
 import {
   CloseButton,
   Flex,
-  Link,
-  Select,
-  SelectProps,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import { PriceTag } from './PriceTag';
 import { CartProductMeta } from './CartProductMeta';
-
-const QuantitySelect = (props: SelectProps) => (
-  <Select
-    maxW="64px"
-    aria-label="Select quantity"
-    focusBorderColor={useColorModeValue('blue.500', 'blue.200')}
-    {...props}
-  >
-    <option value="1">1</option>
-    <option value="2">2</option>
-    <option value="3">3</option>
-    <option value="4">4</option>
-  </Select>
-);
+import CartItemQuantity from "./CartItemQuantity";
 
 type Props = {
   item: any,
@@ -40,22 +23,18 @@ export const CartItem = ({ item, handleRemoveCartItem }: Props) => {
       <CartProductMeta
         name={item.name}
         slug={item.slug}
-        description={item.description}
         image={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/products/${item.image}`}
       />
 
       {/* Desktop */}
       <Flex
+        flexGrow={1}
         width="full"
         justify="space-between"
+        alignItems="center"
         display={{ base: 'none', md: 'flex' }}
       >
-        <QuantitySelect
-          value={item.quantity}
-          onChange={(e) => {
-            // onChangeQuantity?.(+e.currentTarget.value);
-          }}
-        />
+        <CartItemQuantity item={item} />
         <PriceTag price={item.price} currency="" />
         <CloseButton
           aria-label={`Delete ${name} from cart`}
@@ -73,15 +52,13 @@ export const CartItem = ({ item, handleRemoveCartItem }: Props) => {
         justify="space-between"
         display={{ base: 'flex', md: 'none' }}
       >
-        <Link fontSize="sm" textDecor="underline">
-          Delete
-        </Link>
-        <QuantitySelect
-          value={item.quantity}
-          onChange={(e) => {
-            // onChangeQuantity?.(+e.currentTarget.value);
+        <CloseButton
+          aria-label={`Delete ${name} from cart`}
+          onClick={() => {
+            handleRemoveCartItem(item.id);
           }}
         />
+        <CartItemQuantity item={item} />
         <PriceTag price={item.price} currency={''} />
       </Flex>
     </Flex>

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -15,10 +15,11 @@ import {
   Stack,
   Textarea,
 } from '@chakra-ui/react';
-import { useRouter } from "next/navigation";
-import { createProduct } from "@/services/product.service";
-import { getCategories } from "@/services/category.service";
-import AuthSuperAdmin from "@/components/auth/AuthSuperAdmin";
+import { useRouter } from 'next/navigation';
+import { createProduct } from '@/services/product.service';
+import { getCategories } from '@/services/category.service';
+import AuthSuperAdmin from '@/components/auth/AuthSuperAdmin';
+import { toast } from 'react-toastify';
 
 const Page = () => {
   const [categories, setCategories] = useState<any[]>([]);
@@ -40,32 +41,31 @@ const Page = () => {
     })();
   }, []);
 
-  type ChangeEvent = (
-    React.ChangeEvent<HTMLInputElement> |
-    React.ChangeEvent<HTMLTextAreaElement> |
-    React.ChangeEvent<HTMLSelectElement>
-  )
+  type ChangeEvent =
+    | React.ChangeEvent<HTMLInputElement>
+    | React.ChangeEvent<HTMLTextAreaElement>
+    | React.ChangeEvent<HTMLSelectElement>;
 
   const handleChange = (e: ChangeEvent) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       const product = await createProduct(formData);
-      if (!product) throw new Error("Create product failed!");
-      alert("Create product success");
-      router.push("/admin/products")
+      if (!product) throw new Error('Create product failed!');
+      toast.success('Create product success');
+      router.push('/admin/products');
     } catch (err) {
       console.error(err);
-      alert("Create product failed");
+      toast.error('Create product failed');
     }
-  }
+  };
 
   return (
     <AuthSuperAdmin url="/admin">
@@ -77,13 +77,7 @@ const Page = () => {
           <CardBody>
             <TableContainer>
               <form onSubmit={handleSubmit}>
-                <Stack
-                  spacing={6}
-                  w={'full'}
-                  rounded={'xl'}
-                  p={10}
-                  my={6}
-                >
+                <Stack spacing={6} w={'full'} rounded={'xl'} p={10} my={6}>
                   <FormControl id="name" isRequired>
                     <FormLabel>Product Name</FormLabel>
                     <Input
@@ -137,24 +131,24 @@ const Page = () => {
                     >
                       <option value=""></option>
                       {categories?.map((category: any) => (
-                        <option
-                          key={category.id}
-                          value={category.id}
-                        >{category.name}</option>
+                        <option key={category.id} value={category.id}>
+                          {category.name}
+                        </option>
                       ))}
                     </Select>
                   </FormControl>
                   <Stack spacing={6} direction={['column', 'row']}>
                     <Button
                       onClick={() => {
-                        router.push("/admin/products");
+                        router.push('/admin/products');
                       }}
                       bg={'red.400'}
                       color={'white'}
                       w="full"
                       _hover={{
                         bg: 'red.500',
-                      }}>
+                      }}
+                    >
                       Cancel
                     </Button>
                     <Button
@@ -164,7 +158,8 @@ const Page = () => {
                       w="full"
                       _hover={{
                         bg: 'blue.500',
-                      }}>
+                      }}
+                    >
                       Create
                     </Button>
                   </Stack>
