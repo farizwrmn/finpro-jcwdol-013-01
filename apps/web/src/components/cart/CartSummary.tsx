@@ -58,7 +58,7 @@ export const CartSummary = () => {
             Total
           </Text>
           <Text fontSize="xl" fontWeight="extrabold">
-            {FormatCurrency(cart.itemsPrice!)}
+            {FormatCurrency(cart.totalPrice!)}
           </Text>
         </Flex>
       </Stack>

@@ -116,7 +116,7 @@ const createOrderQuery = async (data: IOrder): Promise<Order> => {
           if (stock) {
             await updateStockQuery(stock.id, {
               type: 'kurang',
-              stock: Number(item.quantity),
+              stock: Number(item.quantity + (item.bonusQuantity || 0)),
             });
           }
         }
