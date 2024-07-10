@@ -20,6 +20,7 @@ import {
   SimpleGrid,
   Alert,
   AlertIcon,
+  Image,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { getOrderByID } from '@/services/order.service';
@@ -261,7 +262,7 @@ const Page = ({ params: { id } }: Props) => {
                   spacing={{ base: 0, sm: 0, md: 10 }}
                 >
                   <FormLabel>Payment Proof</FormLabel>
-                  <img
+                  <Image
                     src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/confirmation/${order?.paymentImage}`}
                     style={{ height: 300 }}
                     alt="Payment Proof"

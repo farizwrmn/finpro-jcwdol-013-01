@@ -51,7 +51,7 @@ export default function Error() {
           <Box>
             <Text color={'gray.500'}>Something Wrong Here!!</Text>
             <Text color={'gray.500'}>
-              This monkey will accompany you so that you don't get confused
+              This monkey will accompany you so that you dont get confused
               alone
             </Text>
           </Box>

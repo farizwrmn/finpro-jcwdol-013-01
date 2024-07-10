@@ -7,9 +7,9 @@ import {
   TableContainer,
   Box,
   Input,
-  Select,
   Text,
   Button,
+  Image,
   FormControl,
   FormLabel,
   Stack,
@@ -18,7 +18,6 @@ import {
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { createProductImage, getProductByID } from '@/services/product.service';
-import Image from 'next/image';
 import AuthSuperAdmin from '@/components/auth/AuthSuperAdmin';
 import { toast } from 'react-toastify';
 
@@ -95,8 +94,8 @@ const Page = ({ params: { id } }: Props) => {
             <TableContainer>
               <Grid templateColumns="repeat(4, 1fr)" gap={6}>
                 {product?.productImages.map((item: any) => (
-                  <img
-                    src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/products/${item.image}}`}
+                  <Image
+                    src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/products/${item.image}`}
                     alt=""
                     key={item.id}
                   />
