@@ -5,34 +5,28 @@ import {
   Button,
   Stack,
   Text,
-  Center,
+  InputRightElement,
+  InputGroup,
 } from '@chakra-ui/react';
-import { FcGoogle } from 'react-icons/fc';
 import { FormikProps, Form, Field } from 'formik';
 import { FormValues } from '@/types';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
-import { FieldValues, SubmitHandler } from 'react-hook-form';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function InnerForm(props: FormikProps<FormValues>) {
   const { values, errors, touched, handleChange, handleSubmit, isSubmitting } =
     props;
-  const [showPassword, setShowPassword] = useState(false);
 
-  // const onSubmit: SubmitHandler<FieldValues> = (data) => {
-  //   signIn('credentials', {
-  //     ...data,
-  //     redirect: false,
-  //   });
-  // };
+  const [show, setShow] = useState(false);
+  const handleClick = () => setShow(!show);
 
   return (
     <Box>
       <Form onSubmit={handleSubmit}>
         <Stack spacing={4}>
           <FormControl id="email">
-            <FormLabel htmlFor="email">Email </FormLabel>
+            <FormLabel htmlFor="email">Email :</FormLabel>
             <Field
               name="email"
               type="email"
@@ -58,17 +52,33 @@ export default function InnerForm(props: FormikProps<FormValues>) {
           </FormControl>
           <FormControl>
             <FormLabel htmlFor="password">Password :</FormLabel>
-            <Field
-              name="password"
-              type="password"
-              onChange={handleChange}
-              value={values.password}
-              style={{
-                padding: '5px',
-                border: '0.5px solid grey',
-                borderRadius: '5px',
-              }}
-            />
+            <InputGroup>
+              <Field
+                name="password"
+                type={show ? 'text' : 'password'}
+                placeholder="Password"
+                onChange={handleChange}
+                value={values.password}
+                style={{
+                  padding: '5px',
+                  border: '0.5px solid grey',
+                  borderRadius: '5px',
+                }}
+              />
+              <InputRightElement w={'fit'}>
+                <Button
+                  h={'auto'}
+                  size="xl"
+                  onClick={handleClick}
+                  borderRadius="md"
+                  p={2}
+                  mb={1}
+                  mr={0.5}
+                >
+                  {show ? <FaEyeSlash /> : <FaEye />}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
             {touched.password && errors.password && (
               <Text
                 m={'2'}

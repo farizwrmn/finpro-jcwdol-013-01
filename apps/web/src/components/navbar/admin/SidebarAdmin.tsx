@@ -6,6 +6,7 @@ import {
   Flex,
   Image,
   CloseButton,
+  Text,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { IconType } from 'react-icons';
@@ -33,6 +34,7 @@ const SidebarAdmin = ({ onClose, linkItems, ...rest }: SidebarProps) => {
       w={{ base: 'full', md: 60 }}
       pos="fixed"
       h="full"
+      bgGradient="linear(to-b, white, blue.500, green.200)"
       {...rest}
     >
       <Flex
@@ -49,10 +51,19 @@ const SidebarAdmin = ({ onClose, linkItems, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {linkItems.map((link) => (
-        <NavItemAdmin key={link.name} icon={link.icon} href={link.href}>
+        <NavItemAdmin
+          key={link.name}
+          icon={link.icon}
+          href={link.href}
+          onClose={onClose}
+        >
           {link.name}
         </NavItemAdmin>
       ))}
+
+      <Text align={'center'} pt={110}>
+        © Mind Groceries, 2024
+      </Text>
     </Box>
   );
 };

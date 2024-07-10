@@ -64,10 +64,19 @@ const RegisterView = () => {
         justify={'center'}
         bg={useColorModeValue('gray.50', 'gray.800')}
         shadow={'2xl'}
+        bgImage={'/assets/images/bgline.png'}
+        bgSize={{ base: 'cover', sm: 'cover' }}
       >
         <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
           <Stack align={'center'}>
-            <Heading fontSize={'3xl'}>Sign Up</Heading>
+            <Heading
+              fontSize={'3xl'}
+              backgroundColor={'white'}
+              borderRadius={'2xl'}
+              p={2}
+            >
+              Sign Up
+            </Heading>
           </Stack>
           <Divider />
           <Box

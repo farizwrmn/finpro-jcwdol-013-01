@@ -9,6 +9,7 @@ interface NavItemProps extends FlexProps {
   icon: IconType;
   href: string;
   children: ReactText;
+  onClose: () => void;
 }
 
 interface LinkItemProps {
@@ -46,9 +47,18 @@ const LinkItems: Array<LinkItemProps> = [
   },
 ];
 
-const NavItemUser = ({ icon, href, children, ...rest }: NavItemProps) => {
+const NavItemUser = ({
+  icon,
+  href,
+  children,
+  onClose,
+  ...rest
+}: NavItemProps) => {
+  const handleClick = () => {
+    onClose();
+  };
   return (
-    <Link href={href} style={{ textDecoration: 'none' }}>
+    <Link href={href} onClick={handleClick} style={{ textDecoration: 'none' }}>
       <Flex
         align="center"
         p="4"

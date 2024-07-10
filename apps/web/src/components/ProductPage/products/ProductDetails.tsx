@@ -36,10 +36,10 @@ import {
   updateCartItemsState,
   updateCartStoreState,
 } from '@/lib/features/cart/cartSlice';
-import { getStockByProductIdAndStoreId } from "@/services/stock.service";
-import { FiMinus, FiPlus } from "react-icons/fi";
-import { getDiscountByProductIdAndStoreId } from "@/services/discount.service";
-import { DISCOUNT_TYPE, DISCOUNT_UNIT } from "@/constants/discount.constant";
+import { getStockByProductIdAndStoreId } from '@/services/stock.service';
+import { FiMinus, FiPlus } from 'react-icons/fi';
+import { getDiscountByProductIdAndStoreId } from '@/services/discount.service';
+import { DISCOUNT_TYPE, DISCOUNT_UNIT } from '@/constants/discount.constant';
 
 type Props = {
   product: any;
@@ -102,23 +102,28 @@ export default function ProductDetails({ product }: Props) {
     (async () => {
       if (!product.id || !cart.storeId) return;
 
-      const dataStock = await getStockByProductIdAndStoreId(product.id, cart.storeId);
+      const dataStock = await getStockByProductIdAndStoreId(
+        product.id,
+        cart.storeId,
+      );
       setStock(dataStock);
 
-      const dataDiscount = await getDiscountByProductIdAndStoreId(product.id, cart.storeId);
+      const dataDiscount = await getDiscountByProductIdAndStoreId(
+        product.id,
+        cart.storeId,
+      );
       setDiscount(dataDiscount);
 
-      console.log("dataDiscount:", dataDiscount);
+      console.log('dataDiscount:', dataDiscount);
 
       if (dataDiscount) {
         if (dataDiscount?.type === DISCOUNT_TYPE.productDiscount) {
           setFormData((prevFormData) => ({
             ...prevFormData,
-            discount: (
+            discount:
               dataDiscount.unit === DISCOUNT_UNIT.percentage
-                ? Math.round(prevFormData.price * dataDiscount.amount / 100)
-                : dataDiscount.amount
-            ),
+                ? Math.round((prevFormData.price * dataDiscount.amount) / 100)
+                : dataDiscount.amount,
           }));
         } else if (dataDiscount?.type === DISCOUNT_TYPE.buy1Get1) {
           setFormData((prevFormData) => ({
@@ -140,7 +145,7 @@ export default function ProductDetails({ product }: Props) {
       ...prevFormData,
       quantity: 0,
     }));
-  }
+  };
 
   const validateQuantity = () => {
     if (formData.quantity < 1) {
@@ -154,7 +159,7 @@ export default function ProductDetails({ product }: Props) {
         quantity: stock.remainingStock,
       }));
     }
-  }
+  };
 
   const decrementQuantity = () => {
     if (formData.quantity > 1) {
@@ -163,7 +168,7 @@ export default function ProductDetails({ product }: Props) {
         quantity: prevFormData.quantity - 1,
       }));
     }
-  }
+  };
 
   const incrementQuantity = () => {
     if (formData.quantity < stock.remainingStock) {
@@ -172,7 +177,7 @@ export default function ProductDetails({ product }: Props) {
         quantity: prevFormData.quantity + 1,
       }));
     }
-  }
+  };
 
   const handleChange = (e: ChangeEvent) => {
     setFormData({
@@ -184,7 +189,12 @@ export default function ProductDetails({ product }: Props) {
   const handleChangeStore = async (e: ChangeEvent) => {
     const newStoreId = e.target.value;
     if (!newStoreId) return;
-    if (!confirm(`Update store will remove all cart items, do you want to continue?`)) return;
+    if (
+      !confirm(
+        `Update store will remove all cart items, do you want to continue?`,
+      )
+    )
+      return;
 
     try {
       const resultUpdate = await updateCart(formData.cartId, {
@@ -289,7 +299,7 @@ export default function ProductDetails({ product }: Props) {
                 </Text>
               )}
               {discount && discount?.type === DISCOUNT_TYPE.buy1Get1 && (
-                <Badge variant='solid' colorScheme='green'>
+                <Badge variant="solid" colorScheme="green">
                   Buy 1 Get 1
                 </Badge>
               )}
@@ -327,7 +337,9 @@ export default function ProductDetails({ product }: Props) {
                         icon={<Icon as={FiMinus} />}
                         borderRightRadius={0}
                         onClick={decrementQuantity}
-                        isDisabled={!stock?.remainingStock || !formData.quantity}
+                        isDisabled={
+                          !stock?.remainingStock || !formData.quantity
+                        }
                       />
                       <Input
                         name="quantity"
@@ -345,7 +357,10 @@ export default function ProductDetails({ product }: Props) {
                         icon={<Icon as={FiPlus} />}
                         borderLeftRadius={0}
                         onClick={incrementQuantity}
-                        isDisabled={!stock?.remainingStock || formData.quantity === stock?.remainingStock}
+                        isDisabled={
+                          !stock?.remainingStock ||
+                          formData.quantity === stock?.remainingStock
+                        }
                       />
                     </Box>
                     {stock?.remainingStock > 0 ? (
@@ -354,7 +369,9 @@ export default function ProductDetails({ product }: Props) {
                         <Text as={'span'}>{stock.remainingStock}</Text>
                       </>
                     ) : (
-                      <FormLabel display={'inline'} color={'red.500'}>Out of Stock</FormLabel>
+                      <FormLabel display={'inline'} color={'red.500'}>
+                        Out of Stock
+                      </FormLabel>
                     )}
                   </FormControl>
                 </Stack>
