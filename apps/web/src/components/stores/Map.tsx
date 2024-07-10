@@ -57,7 +57,7 @@ const Map = ({
         mapRef.current.remove();
       }
     };
-  }, [mapContainerRef]);
+  }, [mapContainerRef, handleChangeLonglat]);
 
   return (
     <Box

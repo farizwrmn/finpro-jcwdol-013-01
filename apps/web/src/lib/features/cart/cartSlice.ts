@@ -1,6 +1,6 @@
-import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface Cart {
+export interface Cart {
   itemsCount: number,
   storeId: string,
   userAddressId: string,
@@ -46,11 +46,16 @@ export const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    updateCartItemsState: (state: Cart, action: PayloadAction<{ itemsCount: number, itemsPrice: number, itemsDiscount: number, totalPrice: number }>) => {
-      state.itemsCount = action.payload.itemsCount;
-      state.itemsPrice = action.payload.itemsPrice;
-      state.itemsDiscount = action.payload.itemsDiscount;
-      state.totalPrice = action.payload.totalPrice;
+    updateCartItemsState: (state: Cart, action: PayloadAction<{ itemsCount?: number, itemsPrice?: number, itemsDiscount?: number }>) => {
+      if (action.payload.itemsCount) {
+        state.itemsCount = action.payload.itemsCount;
+      }
+      if (action.payload.itemsPrice) {
+        state.itemsPrice = action.payload.itemsPrice;
+      }
+      if (action.payload.itemsDiscount) {
+        state.itemsDiscount = action.payload.itemsDiscount;
+      }
       return updateCart(state);
     },
     updateCartStoreState: (state: Cart, action: PayloadAction<{ storeId: string }>) => {

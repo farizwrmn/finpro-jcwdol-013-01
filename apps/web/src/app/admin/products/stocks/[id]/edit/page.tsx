@@ -47,7 +47,7 @@ const Page = ({ params: { id: stockId } }: Props) => {
       const stockData = await getStockByID(stockId);
       setStock(stockData);
     })();
-  }, []);
+  }, [stockId]);
 
   type ChangeEvent =
     | React.ChangeEvent<HTMLInputElement>

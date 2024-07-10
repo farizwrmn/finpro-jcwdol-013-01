@@ -69,7 +69,6 @@ const CartItemQuantity = ({ item }: Props) => {
             itemsCount: dataCart.cartItems.length,
             itemsPrice: dataCart.itemsPrice,
             itemsDiscount: dataCart.itemsDiscount,
-            totalPrice: dataCart.totalPrice,
           }),
         );
       }

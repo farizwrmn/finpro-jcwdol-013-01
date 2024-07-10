@@ -19,12 +19,6 @@ import {
   useTheme,
 } from '@chakra-ui/react';
 import React, { useEffect, useState } from 'react';
-import ProductCard1 from './ayam'; // Assuming these are components for individual products
-import ProductCard from './beras';
-import ProductCard2 from './buah';
-import ProductCard3 from './minyak';
-import ProductCard4 from './sayur';
-import ProductCard5 from './bumbu';
 import { SearchIcon } from '@chakra-ui/icons';
 import CategoryFilter from './CategoryFilter';
 
@@ -130,12 +124,7 @@ const ProductList: React.FC = () => {
             </Stack>
             <SimpleGrid columns={{ base: 2, sm: 3, md: 4, lg: 5 }} spacing={5}>
               {/* Replace with actual product data if needed */}
-              <ProductCard />
-              <ProductCard1 />
-              <ProductCard2 />
-              <ProductCard3 />
-              <ProductCard4 />
-              <ProductCard5 /> {/* Add more product cards as needed */}{' '}
+              {/* Add more product cards as needed */}{' '}
             </SimpleGrid>{' '}
           </Box>{' '}
         </Stack>{' '}

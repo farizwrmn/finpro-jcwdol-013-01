@@ -152,7 +152,7 @@ export default function PaymentMethod() {
                   {transferBanks.map((method, index) => (
                     <Radio key={index} value={method.value}>
                       <Box pl={2}>
-                        <img width={90} height={25} src={method.image} alt={method.value} />
+                        <Image width={90} height={25} src={method.image} alt={method.value} />
                       </Box>
                     </Radio>
                   ))}

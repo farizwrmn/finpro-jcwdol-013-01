@@ -31,7 +31,7 @@ const AssignedUsers = ({ id: storeId, setUnassignedUsers }: Props) => {
       const data = await getUserStores(storeId);
       setUsers(data);
     })();
-  }, []);
+  }, [storeId]);
 
   const handleDelete = async (id: string, name: string) => {
     if (!confirm(`Are you sure want to delete user store ${name}?`) || !id)
