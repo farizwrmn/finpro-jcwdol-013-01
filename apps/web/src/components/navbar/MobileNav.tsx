@@ -2,7 +2,6 @@ import {
   Stack,
   useColorModeValue,
   Flex,
-  Link,
   useDisclosure,
   Text,
   Icon,
@@ -11,6 +10,7 @@ import {
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import { NAV_ITEMS } from './DesktopNav';
 import { NavItem } from './Navbar';
+import Link from 'next/link';
 
 const MobileNav = () => {
   return (
@@ -66,10 +66,11 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
           borderStyle={'solid'}
           borderColor={useColorModeValue('gray.200', 'gray.700')}
           align={'start'}
+          alignItems="center"
         >
           {children &&
             children.map((child) => (
-              <Link key={child.label} py={2} href={child.href}>
+              <Link key={child.label} href={child.href ?? '#'}>
                 {child.label}
               </Link>
             ))}

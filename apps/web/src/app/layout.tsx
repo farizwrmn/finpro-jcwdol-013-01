@@ -1,14 +1,15 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import Footer from '@/components/Footer';
 import { ChakraProvider } from '@chakra-ui/react';
-import Navbar from '../components/navbar/Navbar';
+import StoreProvider from './StoreProvider';
+import Auth from '@/components/auth/Auth';
+import { ToastContainer } from 'react-toastify';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Tokopedya',
+  title: 'Mind Groceries',
   description: 'Grocery App',
 };
 
@@ -18,14 +19,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <ChakraProvider>
-          <Navbar />
-          {children}
-          <Footer />
-        </ChakraProvider>
-      </body>
-    </html>
+    <StoreProvider>
+      <html lang="en">
+        <body className={inter.className}>
+          <Auth>
+            <ChakraProvider>
+              {children}
+              <ToastContainer position="bottom-right" />
+            </ChakraProvider>
+          </Auth>
+        </body>
+      </html>
+    </StoreProvider>
   );
 }

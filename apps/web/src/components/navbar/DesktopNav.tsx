@@ -3,12 +3,13 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  Link,
   Box,
   useColorModeValue,
+  Text,
 } from '@chakra-ui/react';
 import { NavItem } from './Navbar';
 import DesktopSubNav from './DesktopSubNav';
+import Link from 'next/link';
 
 export const NAV_ITEMS: Array<NavItem> = [
   {
@@ -17,29 +18,13 @@ export const NAV_ITEMS: Array<NavItem> = [
       {
         label: 'Explore Product',
         subLabel: 'Grocery for you',
-        href: '#',
-      },
-      {
-        label: 'New Arrival',
-        subLabel: 'Up-and-coming Product',
-        href: '#',
+        href: '/products?category',
       },
     ],
   },
   {
     label: 'About us',
-    children: [
-      {
-        label: 'Contact',
-        subLabel: 'Customer Service',
-        href: '#',
-      },
-      {
-        label: 'History',
-        subLabel: '',
-        href: '#',
-      },
-    ],
+    href: '/about-us',
   },
 ];
 
@@ -49,23 +34,24 @@ const DesktopNav = () => {
   const popoverContentBgColor = useColorModeValue('white', 'gray.800');
 
   return (
-    <Stack direction={'row'} spacing={4} mr={24}>
+    <Stack direction={'row'} spacing={4} ml={28}>
       {NAV_ITEMS.map((navItem) => (
         <Box key={navItem.label}>
           <Popover trigger={'hover'} placement={'bottom-start'}>
             <PopoverTrigger>
-              <Link
-                p={2}
-                href={navItem.href ?? '#'}
-                fontSize={'md'}
-                fontWeight={600}
-                color={linkColor}
-                _hover={{
-                  textDecoration: 'none',
-                  color: linkHoverColor,
-                }}
-              >
-                {navItem.label}
+              <Link href={navItem.href ?? '#'}>
+                <Text
+                  p={2}
+                  fontSize={'md'}
+                  fontWeight={600}
+                  color={linkColor}
+                  _hover={{
+                    textDecoration: 'none',
+                    color: linkHoverColor,
+                  }}
+                >
+                  {navItem.label}
+                </Text>
               </Link>
             </PopoverTrigger>
 

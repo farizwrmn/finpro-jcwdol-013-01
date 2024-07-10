@@ -49,6 +49,7 @@ export default function Footer() {
     <Box
       bg={useColorModeValue('gray.50', 'gray.900')}
       color={useColorModeValue('gray.700', 'gray.200')}
+      boxShadow={'dark-lg'}
     >
       <Container
         as={Stack}
@@ -60,22 +61,16 @@ export default function Footer() {
         align={{ base: 'center', md: 'center' }}
       >
         <Text textAlign={{ base: 'center', sm: 'start' }}>
-          © 2024 Tokopedya, &nbsp;All rights reserved.
+          © 2024 Mind Groceries.&nbsp;All rights reserved.
         </Text>
         <Stack direction={'row'} spacing={6}>
-          <SocialButton label={'Twitter'} href={'#'}>
+          <SocialButton label={'Twitter'} href={'/'}>
             <FaTwitter />
           </SocialButton>
-          <SocialButton
-            label={'GPS'}
-            href={'https://maps.app.goo.gl/jAy2RYr4hiKWcehA7'}
-          >
+          <SocialButton label={'GPS'} href={'/'}>
             <FaLocationArrow />
           </SocialButton>
-          <SocialButton
-            label={'Instagram'}
-            href={'https://instagram.com/warkopmilitan'}
-          >
+          <SocialButton label={'Instagram'} href={'/'}>
             <FaInstagram />
           </SocialButton>
         </Stack>

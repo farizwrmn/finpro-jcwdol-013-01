@@ -19,19 +19,19 @@ export default function Hero() {
   const [slider, setSlider] = React.useState<Slider | null>(null);
   const cards = [
     {
-      title: 'We deliver great foods at all cost!',
+      title: 'You order? We Deliver!',
       image:
-        'https://images.unsplash.com/photo-1546072533-72256bac6a51?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8b3V0ZG9vciUyMGNhZmV8ZW58MHx8MHx8fDA%3D',
+        'https://images.unsplash.com/photo-1548695607-9c73430ba065?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y291cmllcnxlbnwwfHwwfHx8MA%3D%3D',
     },
     {
-      title: 'Cozy Scheme Interior',
+      title: '24 / 7, No matter the weather',
       image:
-        'https://images.unsplash.com/photo-1524193982970-5273c9c11049?q=80&w=3087&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        'https://images.unsplash.com/photo-1621972750749-0fbb1abb7736?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGNvdXJpZXJ8ZW58MHx8MHx8fDA%3D',
     },
     {
-      title: 'Celebrate Holiday with Theme',
+      title: 'Enjoy 20% Discount for New comers',
       image:
-        'https://images.unsplash.com/photo-1710880694444-970aaf7e7f97?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8',
+        'https://images.unsplash.com/photo-1588964895597-cfccd6e2dbf9?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Z3JvY2VyaWVzfGVufDB8fDB8fHww',
     },
   ];
 
@@ -76,7 +76,7 @@ export default function Hero() {
                 <Heading
                   fontSize={{ base: 'lg', sm: '4xl' }}
                   fontWeight={'800'}
-                  color={'Teal'}
+                  color={'mustard'}
                   textAlign={'center'}
                   borderRadius={'20'}
                   p={2}
