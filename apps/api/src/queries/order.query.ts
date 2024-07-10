@@ -115,7 +115,7 @@ const createOrderQuery = async (data: IOrder): Promise<Order> => {
 
           if (stock) {
             await updateStockQuery(stock.id, {
-              type: "kurang",
+              type: 'kurang',
               stock: Number(item.quantity + (item.bonusQuantity || 0)),
             });
           }
@@ -123,10 +123,10 @@ const createOrderQuery = async (data: IOrder): Promise<Order> => {
 
         // get discounts
         const discounts = await getDiscountsByStoreIDQuery(data.storeId);
-        const storeDiscounts = discounts?.filter(discount => {
+        const storeDiscounts = discounts?.filter((discount) => {
           return [
             DISCOUNT_TYPE.minimumPurchase,
-            DISCOUNT_TYPE.freeShipping
+            DISCOUNT_TYPE.freeShipping,
           ].includes(discount.type);
         });
         const dataOrders = await getOrdersQuery({ userId: data.userId });
@@ -135,13 +135,10 @@ const createOrderQuery = async (data: IOrder): Promise<Order> => {
         // create vouchers
         for (const discount of storeDiscounts) {
           if (
-            (
-              discount.type === DISCOUNT_TYPE.minimumPurchase &&
-              data.totalPrice >= Number(discount.minimumPrice)
-            ) || (
-              discount.type === DISCOUNT_TYPE.freeShipping &&
-              totalOrders >= Number(discount.minimumOrders)
-            )
+            (discount.type === DISCOUNT_TYPE.minimumPurchase &&
+              data.totalPrice >= Number(discount.minimumPrice)) ||
+            (discount.type === DISCOUNT_TYPE.freeShipping &&
+              totalOrders >= Number(discount.minimumOrders))
           ) {
             await createVoucherQuery({
               userId: data.userId,

@@ -43,7 +43,7 @@ const CartEmpty = () => {
       >
         <Button
           onClick={() => {
-            router.push(`/products`);
+            router.push(`/products?category`);
           }}
           colorScheme={'green'}
           bg={'green.400'}

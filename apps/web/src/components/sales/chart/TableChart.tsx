@@ -2,8 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  Card,
-  CardBody,
   Table,
   Thead,
   Tbody,
@@ -12,9 +10,6 @@ import {
   Td,
   TableContainer,
   Box,
-  Text,
-  ButtonGroup,
-  Button,
   Flex,
   Input,
   Select,
@@ -22,7 +17,7 @@ import {
   Icon,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { deleteStore, getStores } from '@/services/store.service';
+import { getStores } from '@/services/store.service';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 const TableChart = () => {

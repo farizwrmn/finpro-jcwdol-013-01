@@ -26,7 +26,7 @@ import { FormValues, FormProps } from './types';
 import InnerForm from '../signIn/components/innerForm';
 import PageWrapper from '../pageWrapper';
 import { FcGoogle } from 'react-icons/fc';
-import { toast } from "react-toastify";
+import { toast } from 'react-toastify';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -73,10 +73,19 @@ const LoginView = ({ callbackUrl, authError }: Props) => {
         justify={'center'}
         bg={useColorModeValue('gray.50', 'gray.800')}
         shadow={'2xl'}
+        bgImage={'/assets/images/bgline.png'}
+        bgSize={{ base: 'cover', sm: 'cover' }}
       >
         <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
           <Stack align={'center'}>
-            <Heading fontSize={'3xl'}>Sign In</Heading>
+            <Heading
+              fontSize={'3xl'}
+              backgroundColor={'white'}
+              borderRadius={'2xl'}
+              p={2}
+            >
+              Sign In
+            </Heading>
           </Stack>
           <Divider />
           <Box
