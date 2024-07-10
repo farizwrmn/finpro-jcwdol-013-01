@@ -19,6 +19,7 @@ import ShippingMethod from './ShippingMethod';
 import { getStoreByID } from "@/services/store.service";
 import { getCouriers } from "@/services/shipping.service";
 import { updateCartOriginState } from "@/lib/features/cart/cartSlice";
+import VoucherList from "./VoucherList";
 
 const Checkout = () => {
   const router = useRouter();
@@ -82,15 +83,17 @@ const Checkout = () => {
           align="center"
           flex="1"
           mt={{ base: 0, sm: 100 }}
+          gap={6}
         >
+          <VoucherList />
           <CheckoutSummary />
-          <HStack mt="6" fontWeight="semibold">
+          <HStack fontWeight="semibold">
             <p>or</p>
             <Link
               style={{ color: "rgb(49, 130, 206)" }}
-              href="/products"
+              href="/cart"
             >
-              Continue shopping
+              Back to Cart
             </Link>
           </HStack>
         </Flex>
