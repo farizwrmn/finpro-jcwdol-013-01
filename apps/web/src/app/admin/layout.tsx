@@ -97,12 +97,16 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
   return (
     <AuthAdmin>
-      <Box>
+      <Box
+        bgImage={'/assets/images/bgline.png'}
+        bgSize={{ base: 'cover', sm: 'cover' }}
+      >
         <SidebarAdmin
           onClose={() => onClose}
           display={{ base: 'none', md: 'block' }}
           zIndex={100}
           linkItems={linkItems}
+          bgGradient="linear(to-b, white, blue.500, green.200)"
         />
         <Drawer
           autoFocus={false}

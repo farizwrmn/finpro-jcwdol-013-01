@@ -21,7 +21,11 @@ import PageWrapper from '../pageWrapper';
 import { toast } from 'react-toastify';
 
 const PasswordSchema = Yup.object().shape({
-  password: Yup.string().required('Password is required'),
+  password: Yup.string()
+    .required('Password is required')
+    .min(8, 'Password should be 8 chars minimum.')
+    .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
+  password1: Yup.string().required('Confirm Password is required'),
 });
 
 const VerifyView = () => {
@@ -72,10 +76,19 @@ const VerifyView = () => {
         justify={'center'}
         bg={useColorModeValue('gray.50', 'gray.800')}
         shadow={'2xl'}
+        bgImage={'/assets/images/bgline.png'}
+        bgSize={{ base: 'cover', sm: 'cover' }}
       >
         <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
           <Stack align={'center'}>
-            <Heading fontSize={'3xl'}>Set Password</Heading>
+            <Heading
+              fontSize={'3xl'}
+              backgroundColor={'white'}
+              borderRadius={'2xl'}
+              p={2}
+            >
+              Set Password
+            </Heading>
           </Stack>
           <Divider />
           <Box

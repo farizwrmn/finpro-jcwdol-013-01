@@ -51,8 +51,8 @@ export default function Navbar() {
     <>
       <Box>
         <Flex
-          bg={useColorModeValue('white', 'gray.800')}
-          color={useColorModeValue('gray.600', 'white')}
+          bg={useColorModeValue('gray.50', 'gray.900')}
+          color={useColorModeValue('gray.700', 'gray.200')}
           minH={'60px'}
           py={{ base: 2 }}
           px={{ base: 4 }}
@@ -82,11 +82,20 @@ export default function Navbar() {
           </Flex>
           <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
             <Link href="/">
-              <Image
-                src="/assets/images/logo.png"
-                alt="logo"
-                w={{ base: 20, sm: 120 }}
-              />
+              {user.role === 'store_admin' || user.role === 'super_admin' ? (
+                <Image
+                  src="/assets/images/logo.png"
+                  alt="logo"
+                  w={{ base: 20, sm: 120 }}
+                  mr={{ base: 36, sm: 0 }}
+                />
+              ) : (
+                <Image
+                  src="/assets/images/logo.png"
+                  alt="logo"
+                  w={{ base: 20, sm: 120 }}
+                />
+              )}
             </Link>
             <Flex display={{ base: 'none', md: 'flex' }} m={'auto'}>
               <DesktopNav />
@@ -137,6 +146,7 @@ export default function Navbar() {
                         size={{ base: 'sm', sm: 'md' }}
                         src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/avatar/${user.image}`}
                         ml={2}
+                        name={user?.name || user?.email}
                       >
                         <AvatarBadge boxSize="1.25em" bg="green.500" />
                       </Avatar>

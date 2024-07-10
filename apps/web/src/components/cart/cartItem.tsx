@@ -1,17 +1,14 @@
 'use client';
 
-import {
-  CloseButton,
-  Flex,
-} from '@chakra-ui/react';
+import { CloseButton, Flex } from '@chakra-ui/react';
 import { PriceTag } from './PriceTag';
 import { CartProductMeta } from './CartProductMeta';
-import CartItemQuantity from "./CartItemQuantity";
+import CartItemQuantity from './CartItemQuantity';
 
 type Props = {
-  item: any,
+  item: any;
   handleRemoveCartItem: (id: string) => void;
-}
+};
 
 export const CartItem = ({ item, handleRemoveCartItem }: Props) => {
   return (

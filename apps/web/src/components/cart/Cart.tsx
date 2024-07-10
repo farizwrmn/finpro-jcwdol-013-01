@@ -104,7 +104,10 @@ const Cart = () => {
               <CartSummary />
               <HStack mt="6" fontWeight="semibold">
                 <p>or</p>
-                <Link style={{ color: 'rgb(49, 130, 206)' }} href="/products">
+                <Link
+                  style={{ color: 'rgb(49, 130, 206)' }}
+                  href="/products?category"
+                >
                   Continue shopping
                 </Link>
               </HStack>
