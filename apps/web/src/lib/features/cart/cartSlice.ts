@@ -76,6 +76,18 @@ export const cartSlice = createSlice({
       state.paymentMethod = action.payload.paymentMethod;
       return updateCart(state);
     },
+    updateCartDiscountState: (state: Cart, action: PayloadAction<{ voucherDiscount?: number, shippingDiscount?: number, referralDiscount?: number }>) => {
+      if (action.payload.voucherDiscount) {
+        state.voucherDiscount = action.payload.voucherDiscount;
+      }
+      if (action.payload.shippingDiscount) {
+        state.shippingDiscount = action.payload.shippingDiscount;
+      }
+      if (action.payload.referralDiscount) {
+        state.referralDiscount = action.payload.referralDiscount;
+      }
+      return updateCart(state);
+    },
     resetCartState: (state: Cart) => {
       localStorage.removeItem("cart");
       return cartState;
@@ -102,6 +114,7 @@ export const {
   updateCartDestinationState,
   updateCartShippingState,
   updateCartPaymentState,
+  updateCartDiscountState,
   resetCartState,
 } = cartSlice.actions;
 
