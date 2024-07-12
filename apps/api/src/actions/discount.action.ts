@@ -7,6 +7,7 @@ import {
 import {
   createDiscountQuery,
   getDiscountByIDQuery,
+  getDiscountByProductIdAndStoreIdQuery,
   getDiscountQuery,
   getDiscountsByStoreIDQuery,
   updateDiscountQuery,
@@ -61,6 +62,19 @@ const getDiscountByIDAction = async (id: string): Promise<Discount | null> => {
   }
 };
 
+const getDiscountByProductIdAndStoreIdAction = async (productId: string, storeId: string): Promise<Discount | null> => {
+  try {
+    if (!productId || !storeId) throw new Error("Please fill product ID and store ID");
+
+    const discount = await getDiscountByProductIdAndStoreIdQuery(productId, storeId);
+    if (!discount) throw new HttpException(404, 'Data not found');
+
+    return discount;
+  } catch (err) {
+    throw err;
+  }
+};
+
 const updateDiscountAction = async (
   id: string,
   discountData: IDiscount,
@@ -79,4 +93,5 @@ export {
   createDiscountAction,
   getDiscountAction,
   getDiscountsByStoreIDAction,
+  getDiscountByProductIdAndStoreIdAction,
 };

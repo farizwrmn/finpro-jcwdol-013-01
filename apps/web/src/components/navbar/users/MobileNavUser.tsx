@@ -15,12 +15,23 @@ import {
   MenuItem,
   MenuDivider,
   Text,
+  AvatarBadge,
+  Stack,
+  Badge,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { IconType } from 'react-icons';
 import { FaPager, FaAddressBook, FaAtlas, FaTicketAlt } from 'react-icons/fa';
-import { FiHome, FiUser, FiMenu, FiChevronDown } from 'react-icons/fi';
+import {
+  FiHome,
+  FiUser,
+  FiMenu,
+  FiChevronDown,
+  FiShoppingCart,
+} from 'react-icons/fi';
 import { signOut } from '@/lib/features/auth/authSlice';
+import { USER_ROLE } from '@/constants/user.constant';
+import Link from 'next/link';
 
 interface MobileProps extends FlexProps {
   onOpen: () => void;
@@ -65,6 +76,7 @@ const MobileNavUser = ({ onOpen, ...rest }: MobileProps) => {
   const { status, user } = useAppSelector((state) => state.auth);
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const cart = useAppSelector((state) => state.cart);
 
   return (
     <Flex
@@ -87,6 +99,37 @@ const MobileNavUser = ({ onOpen, ...rest }: MobileProps) => {
       />
 
       <HStack spacing={{ base: '0', md: '6' }}>
+        {user.role === 'customer' && (
+          <Flex alignItems={'center'} mr={1}>
+            <Link href={'/cart'}>
+              <Stack position="relative">
+                <IconButton
+                  size="lg"
+                  variant="ghost"
+                  aria-label="open menu"
+                  icon={<FiShoppingCart />}
+                  ml={2}
+                />
+                {cart.itemsCount > 0 && (
+                  <Badge
+                    width={6}
+                    height={6}
+                    colorScheme="green"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    rounded="full"
+                    top="0"
+                    right="-5px"
+                    position="absolute"
+                  >
+                    {cart.itemsCount}
+                  </Badge>
+                )}
+              </Stack>
+            </Link>
+          </Flex>
+        )}
         <Flex alignItems={'center'}>
           <Menu>
             <MenuButton
@@ -97,18 +140,21 @@ const MobileNavUser = ({ onOpen, ...rest }: MobileProps) => {
               <HStack>
                 <Avatar
                   size={{ base: 'sm', sm: 'md' }}
-                  src={user.image}
+                  src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/avatar/${user.image}`}
                   ml={2}
-                />
+                  name={user?.name || user?.email}
+                >
+                  <AvatarBadge boxSize="1.25em" bg="green.500" />
+                </Avatar>
                 <VStack
                   display={{ base: 'none', md: 'flex' }}
                   alignItems="flex-start"
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">{user.email}</Text>
+                  <Text fontSize="sm">{user?.name || user?.email}</Text>
                   <Text fontSize="xs" color="gray.600">
-                    {user.role}
+                    {USER_ROLE[user?.role as string]}
                   </Text>
                 </VStack>
                 <Box display={{ base: 'none', md: 'flex' }}>
@@ -116,10 +162,7 @@ const MobileNavUser = ({ onOpen, ...rest }: MobileProps) => {
                 </Box>
               </HStack>
             </MenuButton>
-            <MenuList
-            // bg={useColorModeValue('white', 'gray.900')}
-            // borderColor={useColorModeValue('gray.200', 'gray.700')}
-            >
+            <MenuList>
               <MenuItem
                 onClick={() => {
                   router.push(

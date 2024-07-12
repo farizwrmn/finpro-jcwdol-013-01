@@ -12,7 +12,7 @@ const getProductsQuery = async (
   filters: IFilterProduct,
 ): Promise<IResultProduct> => {
   try {
-    const { keyword = '', page = 1, size = 1000 } = filters;
+    const { category = '', keyword = '', page = 1, size = 1000 } = filters;
 
     const products = await prisma.product.findMany({
       include: {
@@ -22,6 +22,11 @@ const getProductsQuery = async (
       where: {
         name: {
           contains: keyword,
+        },
+        category: {
+          slug: {
+            contains: category,
+          },
         },
       },
       orderBy: {
@@ -38,6 +43,11 @@ const getProductsQuery = async (
       where: {
         name: {
           contains: keyword,
+        },
+        category: {
+          slug: {
+            contains: category,
+          },
         },
       },
     });

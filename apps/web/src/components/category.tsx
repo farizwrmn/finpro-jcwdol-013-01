@@ -45,7 +45,14 @@ const Category = () => {
         Select from Categories
       </Heading>
       <Divider />
-      <Flex mt={{ base: '5', sm: '2' }} pt={5} pb={20}>
+      <Flex
+        mt={{ base: '5', sm: '2' }}
+        pt={5}
+        pb={20}
+        bgImage={'/assets/images/bgline1.png'}
+        bgSize={{ base: 'auto', sm: 'cover' }}
+        bgPos={{ base: 'left', sm: 'unset' }}
+      >
         <Container p={'auto'}>
           <Box justifyContent={'center'}>
             <Grid
@@ -55,7 +62,7 @@ const Category = () => {
             >
               {data.categories?.map((category: any, index: number) => (
                 <GridItem key={index}>
-                  <Link href={'/'}>
+                  <Link href={`/products?category=${category.slug}`}>
                     <Image
                       key={index}
                       src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/categories/${category.image}`}
@@ -71,11 +78,7 @@ const Category = () => {
                       alt={category.name}
                       mb={2}
                     />
-                    <Text
-                      _hover={{ color: 'green' }}
-                      as={'cite'}
-                      noOfLines={15}
-                    >
+                    <Text _hover={{ color: 'green' }} as={'cite'}>
                       {category.name}
                     </Text>
                   </Link>

@@ -1,12 +1,14 @@
 export interface ICart {
   userId: string;
-  itemsPrice: number;
   storeId?: string;
+  itemsPrice: number;
 }
 
 export interface IUpdateCart {
-  itemsPrice?: number;
   storeId?: string;
+  itemsPrice?: number;
+  itemsDiscount?: number;
+  totalPrice?: number;
 }
 
 export interface ICartItem {

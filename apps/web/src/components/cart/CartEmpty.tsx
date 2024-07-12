@@ -31,7 +31,7 @@ const CartEmpty = () => {
         </Flex>
       </Heading>
       <Text color={'gray.500'}>
-        <p>Well, if you don't want the PennyWise come to reminder you,</p>
+        <p>Well, if you dont want the PennyWise come to reminder you,</p>
         <p>We suggest you to order something...</p>
       </Text>
       <Stack
@@ -43,7 +43,7 @@ const CartEmpty = () => {
       >
         <Button
           onClick={() => {
-            router.push(`/products`);
+            router.push(`/products?category`);
           }}
           colorScheme={'green'}
           bg={'green.400'}

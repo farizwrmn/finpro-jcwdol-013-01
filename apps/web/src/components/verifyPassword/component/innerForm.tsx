@@ -5,13 +5,22 @@ import {
   Button,
   Stack,
   Text,
+  InputGroup,
+  InputRightElement,
 } from '@chakra-ui/react';
 import { FormikProps, Form, Field } from 'formik';
 import { FormValues } from '@/types';
+import { useState } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 export default function InnerForm(props: FormikProps<FormValues>) {
   const { values, errors, touched, handleChange, handleSubmit, isSubmitting } =
     props;
+
+  const [show, setShow] = useState(false);
+  const handleClick = () => setShow(!show);
+  const [show1, setShow1] = useState(false);
+  const handleClick1 = () => setShow1(!show1);
 
   const validateConfirmPassword = (pass: string, value: string) => {
     let error = '';
@@ -29,17 +38,34 @@ export default function InnerForm(props: FormikProps<FormValues>) {
         <Stack spacing={4}>
           <FormControl id="password">
             <FormLabel htmlFor="password">Password </FormLabel>
-            <Field
-              name="password"
-              type="password"
-              onChange={handleChange}
-              value={values.password}
-              style={{
-                padding: '5px',
-                border: '0.5px solid grey',
-                borderRadius: '5px',
-              }}
-            />
+            <InputGroup>
+              <Field
+                name="password"
+                type={show ? 'text' : 'password'}
+                onChange={handleChange}
+                placeholder="Password"
+                value={values.password}
+                style={{
+                  padding: '5px',
+                  border: '0.5px solid grey',
+                  borderRadius: '5px',
+                }}
+              />
+              <InputRightElement w={'fit'}>
+                <Button
+                  h={'auto'}
+                  size="xl"
+                  onClick={handleClick}
+                  borderRadius="md"
+                  p={2}
+                  mb={1}
+                  mr={0.5}
+                >
+                  {show ? <FaEyeSlash /> : <FaEye />}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+
             {touched.password && errors.password && (
               <Text
                 m={'2'}
@@ -54,22 +80,45 @@ export default function InnerForm(props: FormikProps<FormValues>) {
           </FormControl>
           <FormControl id="password1">
             <FormLabel htmlFor="password">Confirm Password </FormLabel>
-            <Field
-              name="password1"
-              type="password"
-              onChange={handleChange}
-              value={values.password1}
-              style={{
-                padding: '5px',
-                border: '0.5px solid grey',
-                borderRadius: '5px',
-              }}
-              validate={() =>
-                validateConfirmPassword(values.password, values.password1)
-              }
-            />
-            {errors.password1 && (
-              <Text p={5} textAlign={'center'} color={'red'}>
+            <InputGroup>
+              <Field
+                name="password1"
+                type={show1 ? 'text' : 'password'}
+                onChange={handleChange}
+                value={values.password1}
+                placeholder="Password"
+                style={{
+                  padding: '5px',
+                  border: '0.5px solid grey',
+                  borderRadius: '5px',
+                }}
+                validate={() =>
+                  validateConfirmPassword(values.password, values.password1)
+                }
+              />
+              <InputRightElement w={'fit'}>
+                <Button
+                  h={'auto'}
+                  size="xl"
+                  onClick={handleClick1}
+                  borderRadius="md"
+                  p={2}
+                  mb={1}
+                  mr={0.5}
+                >
+                  {show1 ? <FaEyeSlash /> : <FaEye />}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+
+            {touched.password1 && errors.password1 && (
+              <Text
+                m={'2'}
+                textAlign={'center'}
+                sx={{
+                  color: 'red',
+                }}
+              >
                 {errors.password1}
               </Text>
             )}

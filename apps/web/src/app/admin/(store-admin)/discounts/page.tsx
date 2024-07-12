@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Card,
   CardBody,
@@ -18,26 +18,17 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { addStock, getStocksByProductID } from '@/services/stock.service';
-import { getProductByID } from '@/services/product.service';
 import { getStoreByID } from '@/services/store.service';
-import {
-  getDiscounts,
-  getDiscountsByStoreID,
-} from '@/services/discount.service';
+import { getDiscountsByStoreID } from '@/services/discount.service';
 import { FormatCurrency } from '@/utils/FormatCurrency';
 import { useAppSelector } from '@/lib/hooks';
-import { toast } from 'react-toastify';
+import { DISCOUNT_TYPE } from "@/constants/discount.constant";
 
 const Page = () => {
+  const router = useRouter();
+  const user = useAppSelector((state) => state.auth.user);
   const [discounts, setDiscounts] = useState<any[]>([]);
   const [store, setStore] = useState<any>();
-  const user = useAppSelector((state) => state.auth.user);
-
-  const [formData, setFormData] = useState({
-    initialStock: '',
-    initialStoreId: '',
-  });
 
   useEffect(() => {
     (async () => {
@@ -49,38 +40,10 @@ const Page = () => {
     })();
   }, [user.storeId]);
 
-  type ChangeEvent =
-    | React.ChangeEvent<HTMLInputElement>
-    | React.ChangeEvent<HTMLTextAreaElement>
-    | React.ChangeEvent<HTMLSelectElement>;
-
-  const handleChange = (e: ChangeEvent) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      if (!user.storeId) return;
-      const product = await addStock(user.storeId, formData);
-      if (!product) throw new Error('Update product failed!');
-      toast.success('Update product success');
-      router.push(`/admin/products/stocks/${user.storeId}`);
-    } catch (err) {
-      console.error(err);
-      toast.error('Update product failed');
-    }
-  };
-
-  const router = useRouter();
-
   return (
     <Box>
       <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-        Discount for Store "{store?.name}"
+        Discount for Store &quot;{store?.name}&quot;
       </Text>
       <Card my={10}>
         <CardBody>
@@ -91,7 +54,7 @@ const Page = () => {
                 router.push(`/admin/discounts/create`);
               }}
             >
-              Add Discount
+              Add
             </Button>
           </Flex>
           <TableContainer>
@@ -100,11 +63,12 @@ const Page = () => {
                 <Tr>
                   <Th>No.</Th>
                   <Th>Discount Type</Th>
+                  <Th>Product</Th>
                   <Th>Amount</Th>
                   <Th>Unit</Th>
-                  <Th>Minimum Price</Th>
+                  <Th>Minimum Total Price</Th>
                   <Th>Maximum Discount</Th>
-                  <Th>Product</Th>
+                  <Th>Minimum Orders</Th>
                   <Th textAlign={'start'}>Action</Th>
                 </Tr>
               </Thead>
@@ -114,18 +78,48 @@ const Page = () => {
                     <Td>{index + 1}</Td>
                     <Td>{discount.type}</Td>
                     <Td>
-                      {discount.unit === 'Amount'
-                        ? FormatCurrency(discount.amount)
-                        : discount.amount + '%'}
+                      {[
+                        DISCOUNT_TYPE.productDiscount,
+                        DISCOUNT_TYPE.buy1Get1,
+                      ].includes(discount.type) ? discount.product?.name : ''}
                     </Td>
-                    <Td>{discount.unit}</Td>
-                    <Td>{FormatCurrency(discount.minimumPrice)}</Td>
-                    <Td>{FormatCurrency(discount.maximumDiscount)}</Td>
-                    <Td>{discount.product?.name}</Td>
+                    <Td>
+                      {[
+                        DISCOUNT_TYPE.productDiscount,
+                        DISCOUNT_TYPE.minimumPurchase,
+                        DISCOUNT_TYPE.referralCode,
+                      ].includes(discount.type) ? (
+                        discount.unit === 'Amount'
+                          ? FormatCurrency(discount.amount)
+                          : discount.amount + '%'
+                      ) : ''}
+                    </Td>
+                    <Td>
+                      {[
+                        DISCOUNT_TYPE.productDiscount,
+                        DISCOUNT_TYPE.minimumPurchase,
+                        DISCOUNT_TYPE.referralCode,
+                      ].includes(discount.type) ? discount.unit : ''}
+                    </Td>
+                    <Td>
+                      {[
+                        DISCOUNT_TYPE.minimumPurchase
+                      ].includes(discount.type) ? FormatCurrency(discount.minimumPrice) : ''}
+                    </Td>
+                    <Td>
+                      {[
+                        DISCOUNT_TYPE.minimumPurchase
+                      ].includes(discount.type) ? FormatCurrency(discount.maximumDiscount) : ''}
+                    </Td>
+                    <Td>
+                      {[
+                        DISCOUNT_TYPE.freeShipping
+                      ].includes(discount.type) ? discount.minimumOrders : ''}
+                    </Td>
                     <Td>
                       <ButtonGroup>
                         <Button
-                          colorScheme="green"
+                          colorScheme="blue"
                           onClick={() => {
                             router.push(`/admin/stores/discounts`);
                           }}

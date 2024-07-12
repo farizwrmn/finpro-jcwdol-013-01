@@ -6,6 +6,7 @@ import {
   Flex,
   Image,
   CloseButton,
+  Text,
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import { IconType } from 'react-icons';
@@ -54,36 +55,50 @@ const LinkItems: Array<LinkItemProps> = [
 
 const SidebarUser = ({ onClose, ...rest }: SidebarProps) => {
   return (
-    <Box
-      transition="3s ease"
-      bg={useColorModeValue('white', 'gray.900')}
-      borderRight="1px"
-      borderRightColor={useColorModeValue('gray.200', 'gray.700')}
-      w={{ base: 'full', md: 60 }}
-      pos="fixed"
-      h="full"
-      // pt={10}
-      {...rest}
-    >
-      <Flex
-        h="20"
-        alignItems="center"
-        mx="8"
-        mb={10}
-        mt={5}
-        justifyContent="space-between"
+    <>
+      <Box
+        transition="3s ease"
+        bg={useColorModeValue('white', 'gray.900')}
+        borderRight="1px"
+        borderRightColor={useColorModeValue('gray.200', 'gray.700')}
+        w={{ base: 'full', md: 60 }}
+        pos="fixed"
+        h="full"
+        bgGradient="linear(to-b, white, blue.500, green.200)"
+        {...rest}
       >
-        <Link href="/">
-          <Image src="/assets/images/logo.png" alt="logo" w={150} />
-        </Link>
-        <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
-      </Flex>
-      {LinkItems.map((link) => (
-        <NavItemUser key={link.name} icon={link.icon} href={link.href}>
-          {link.name}
-        </NavItemUser>
-      ))}
-    </Box>
+        <Flex
+          h="20"
+          alignItems="center"
+          mx="8"
+          mb={10}
+          mt={5}
+          justifyContent="space-between"
+        >
+          <Link href="/">
+            <Image src="/assets/images/logo.png" alt="logo" w={150} />
+          </Link>
+          <CloseButton
+            display={{ base: 'flex', md: 'none' }}
+            onClick={onClose}
+          />
+        </Flex>
+        {LinkItems.map((link) => (
+          <NavItemUser
+            key={link.name}
+            icon={link.icon}
+            href={link.href}
+            onClose={onClose}
+          >
+            {link.name}
+          </NavItemUser>
+        ))}
+
+        <Text align={'center'} pt={200}>
+          © Mind Groceries, 2024
+        </Text>
+      </Box>
+    </>
   );
 };
 export default SidebarUser;

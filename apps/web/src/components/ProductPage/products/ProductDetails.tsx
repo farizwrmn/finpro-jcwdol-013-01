@@ -18,6 +18,7 @@ import {
   Input,
   IconButton,
   Icon,
+  Badge,
 } from '@chakra-ui/react';
 import { FaCartPlus } from 'react-icons/fa';
 import ImageSlider from './ImageSlider';
@@ -35,8 +36,10 @@ import {
   updateCartItemsState,
   updateCartStoreState,
 } from '@/lib/features/cart/cartSlice';
-import { getStockByProductIdAndStoreId } from "@/services/stock.service";
-import { FiMinus, FiPlus } from "react-icons/fi";
+import { getStockByProductIdAndStoreId } from '@/services/stock.service';
+import { FiMinus, FiPlus } from 'react-icons/fi';
+import { getDiscountByProductIdAndStoreId } from '@/services/discount.service';
+import { DISCOUNT_TYPE, DISCOUNT_UNIT } from '@/constants/discount.constant';
 
 type Props = {
   product: any;
@@ -52,6 +55,7 @@ export default function ProductDetails({ product }: Props) {
   const [isAllow, setIsAllow] = useState(false);
   const [stores, setStores] = useState<any[]>([]);
   const [stock, setStock] = useState<any>(null);
+  const [discount, setDiscount] = useState<any>(null);
   const [formData, setFormData] = useState({
     cartId: '',
     productId: product.id,
@@ -59,8 +63,10 @@ export default function ProductDetails({ product }: Props) {
     slug: product.slug,
     image: product.productImages[0]?.image,
     description: product.description,
-    price: product.price,
     quantity: 0,
+    price: product.price,
+    discount: 0,
+    isBuy1Get1: false,
   });
 
   useEffect(() => {
@@ -80,7 +86,6 @@ export default function ProductDetails({ product }: Props) {
         longitude: user.longitude,
         latitude: user.latitude,
       });
-
       setStores(dataStores);
 
       if (dataCart.storeId) {
@@ -97,8 +102,34 @@ export default function ProductDetails({ product }: Props) {
     (async () => {
       if (!product.id || !cart.storeId) return;
 
-      const dataStock = await getStockByProductIdAndStoreId(product.id, cart.storeId);
+      const dataStock = await getStockByProductIdAndStoreId(
+        product.id,
+        cart.storeId,
+      );
       setStock(dataStock);
+
+      const dataDiscount = await getDiscountByProductIdAndStoreId(
+        product.id,
+        cart.storeId,
+      );
+      setDiscount(dataDiscount);
+
+      if (dataDiscount) {
+        if (dataDiscount?.type === DISCOUNT_TYPE.productDiscount) {
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            discount:
+              dataDiscount.unit === DISCOUNT_UNIT.percentage
+                ? Math.round((prevFormData.price * dataDiscount.amount) / 100)
+                : dataDiscount.amount,
+          }));
+        } else if (dataDiscount?.type === DISCOUNT_TYPE.buy1Get1) {
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            isBuy1Get1: true,
+          }));
+        }
+      }
     })();
   }, [product.id, cart.storeId]);
 
@@ -112,7 +143,7 @@ export default function ProductDetails({ product }: Props) {
       ...prevFormData,
       quantity: 0,
     }));
-  }
+  };
 
   const validateQuantity = () => {
     if (formData.quantity < 1) {
@@ -126,7 +157,7 @@ export default function ProductDetails({ product }: Props) {
         quantity: stock.remainingStock,
       }));
     }
-  }
+  };
 
   const decrementQuantity = () => {
     if (formData.quantity > 1) {
@@ -135,7 +166,7 @@ export default function ProductDetails({ product }: Props) {
         quantity: prevFormData.quantity - 1,
       }));
     }
-  }
+  };
 
   const incrementQuantity = () => {
     if (formData.quantity < stock.remainingStock) {
@@ -144,7 +175,7 @@ export default function ProductDetails({ product }: Props) {
         quantity: prevFormData.quantity + 1,
       }));
     }
-  }
+  };
 
   const handleChange = (e: ChangeEvent) => {
     setFormData({
@@ -156,12 +187,7 @@ export default function ProductDetails({ product }: Props) {
   const handleChangeStore = async (e: ChangeEvent) => {
     const newStoreId = e.target.value;
     if (!newStoreId) return;
-    if (
-      !confirm(
-        `Update store will remove all cart items, do you want to continue?`,
-      )
-    )
-      return;
+    if (!confirm(`Update store will remove all cart items, do you want to continue?`)) return;
 
     try {
       const resultUpdate = await updateCart(formData.cartId, {
@@ -181,6 +207,7 @@ export default function ProductDetails({ product }: Props) {
         updateCartItemsState({
           itemsCount: 0,
           itemsPrice: 0,
+          itemsDiscount: 0,
         }),
       );
 
@@ -205,6 +232,7 @@ export default function ProductDetails({ product }: Props) {
           updateCartItemsState({
             itemsCount: dataCart.cartItems.length,
             itemsPrice: dataCart.itemsPrice,
+            itemsDiscount: dataCart.itemsDiscount,
           }),
         );
       }
@@ -242,17 +270,30 @@ export default function ProductDetails({ product }: Props) {
               </Heading>
             </Box>
             <Flex direction={'row'} gap={5} alignItems={'center'}>
-              <Text color={textColor} fontWeight={500} fontSize={'2xl'}>
-                {FormatCurrency(product.price)}
-              </Text>
-              {/* <Text
-                color={textColor}
-                fontWeight={400}
-                fontSize={'xl'}
-                textDecoration={'line-through'}
-              >
-                {FormatCurrency(product.slicedPrice)}
-              </Text> */}
+              {formData.discount > 0 ? (
+                <Flex alignItems="center" gap={5}>
+                  <Text color={textColor} fontWeight={500} fontSize={'2xl'}>
+                    {FormatCurrency(product.price - formData.discount)}
+                  </Text>
+                  <Text
+                    color={textColor}
+                    fontWeight={400}
+                    fontSize={'xl'}
+                    textDecoration={'line-through'}
+                  >
+                    {FormatCurrency(product.price)}
+                  </Text>
+                </Flex>
+              ) : (
+                <Text color={textColor} fontWeight={500} fontSize={'2xl'}>
+                  {FormatCurrency(product.price)}
+                </Text>
+              )}
+              {discount && discount?.type === DISCOUNT_TYPE.buy1Get1 && (
+                <Badge variant="solid" colorScheme="green">
+                  Buy 1 Get 1
+                </Badge>
+              )}
             </Flex>
             <Stack
               spacing={{ base: 4, sm: 6 }}
@@ -263,7 +304,7 @@ export default function ProductDetails({ product }: Props) {
                 {product.description}
               </Text>
               {isAllow && (
-                <Stack spacing={4}>
+                <Stack spacing={6}>
                   <FormControl id="province">
                     <FormLabel>Store</FormLabel>
                     <Select
@@ -287,7 +328,9 @@ export default function ProductDetails({ product }: Props) {
                         icon={<Icon as={FiMinus} />}
                         borderRightRadius={0}
                         onClick={decrementQuantity}
-                        isDisabled={!stock?.remainingStock || !formData.quantity}
+                        isDisabled={
+                          !stock?.remainingStock || !formData.quantity
+                        }
                       />
                       <Input
                         name="quantity"
@@ -305,7 +348,10 @@ export default function ProductDetails({ product }: Props) {
                         icon={<Icon as={FiPlus} />}
                         borderLeftRadius={0}
                         onClick={incrementQuantity}
-                        isDisabled={!stock?.remainingStock || formData.quantity === stock?.remainingStock}
+                        isDisabled={
+                          !stock?.remainingStock ||
+                          formData.quantity === stock?.remainingStock
+                        }
                       />
                     </Box>
                     {stock?.remainingStock > 0 ? (
@@ -314,7 +360,9 @@ export default function ProductDetails({ product }: Props) {
                         <Text as={'span'}>{stock.remainingStock}</Text>
                       </>
                     ) : (
-                      <Text as={'span'} color={'red.500'}>Stock is empty</Text>
+                      <FormLabel display={'inline'} color={'red.500'}>
+                        Out of Stock
+                      </FormLabel>
                     )}
                   </FormControl>
                 </Stack>

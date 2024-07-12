@@ -1,17 +1,14 @@
 'use client';
 
-import {
-  CloseButton,
-  Flex,
-} from '@chakra-ui/react';
+import { CloseButton, Flex } from '@chakra-ui/react';
 import { PriceTag } from './PriceTag';
 import { CartProductMeta } from './CartProductMeta';
-import CartItemQuantity from "./CartItemQuantity";
+import CartItemQuantity from './CartItemQuantity';
 
 type Props = {
-  item: any,
+  item: any;
   handleRemoveCartItem: (id: string) => void;
-}
+};
 
 export const CartItem = ({ item, handleRemoveCartItem }: Props) => {
   return (
@@ -35,7 +32,11 @@ export const CartItem = ({ item, handleRemoveCartItem }: Props) => {
         display={{ base: 'none', md: 'flex' }}
       >
         <CartItemQuantity item={item} />
-        <PriceTag price={item.price} currency="" />
+        <PriceTag
+          price={item.price}
+          discount={item.discount}
+          isBuy1Get1={item.isBuy1Get1}
+        />
         <CloseButton
           aria-label={`Delete ${name} from cart`}
           onClick={() => {
@@ -59,7 +60,11 @@ export const CartItem = ({ item, handleRemoveCartItem }: Props) => {
           }}
         />
         <CartItemQuantity item={item} />
-        <PriceTag price={item.price} currency={''} />
+        <PriceTag
+          price={item.price}
+          discount={item.discount}
+          isBuy1Get1={item.isBuy1Get1}
+        />
       </Flex>
     </Flex>
   );

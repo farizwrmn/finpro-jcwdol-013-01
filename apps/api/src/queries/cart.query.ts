@@ -125,7 +125,6 @@ const createCartItemQuery = async (data: ICartItem): Promise<CartItem> => {
     });
 
     await updateCartItemsPriceQuery(data.cartId);
-
     return cartItem;
   } catch (err) {
     throw err;
@@ -147,7 +146,6 @@ const updateCartItemQuery = async (
     });
 
     await updateCartItemsPriceQuery(data.cartId);
-
     return cartItem;
   } catch (err) {
     throw err;
@@ -163,7 +161,6 @@ const deleteCartItemQuery = async (id: string): Promise<CartItem> => {
     });
 
     await updateCartItemsPriceQuery(cartItem.cartId);
-
     return cartItem;
   } catch (err) {
     throw err;
@@ -183,9 +180,10 @@ const updateCartItemsPriceQuery = async (id: string): Promise<Cart | null> => {
     });
 
     const itemsPrice = cart?.cartItems.reduce((acc, item) => acc + (item.quantity * item.price), 0) || 0;
+    const itemsDiscount = cart?.cartItems.reduce((acc, item) => acc + (item.quantity * item.discount), 0) || 0;
+    const totalPrice = itemsPrice - itemsDiscount;
 
-    await updateCartQuery(id, { itemsPrice });
-
+    await updateCartQuery(id, { itemsPrice, itemsDiscount, totalPrice });
     return cart;
   } catch (err) {
     throw err;

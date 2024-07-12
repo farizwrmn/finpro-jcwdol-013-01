@@ -89,9 +89,11 @@ const deleteProductAction = async (id: string): Promise<Product> => {
   }
 };
 
-const createProductImageAction = async (data: IProductImage): Promise<ProductImage> => {
+const createProductImageAction = async (
+  data: IProductImage,
+): Promise<ProductImage> => {
   try {
-    if (!data.image) throw new Error("Please upload image file");
+    if (!data.image) throw new Error('Please upload image file');
 
     const productImage = await createProductImageQuery(data);
     return productImage;

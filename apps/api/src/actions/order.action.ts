@@ -5,6 +5,7 @@ import {
   IResultOrder,
 } from '@/interfaces/order.interface';
 import {
+  confirmShippingOrderQuery,
   createOrderQuery,
   getOrderByIDQuery,
   getOrdersQuery,
@@ -42,4 +43,18 @@ const createOrderAction = async (data: IOrder): Promise<Order | null> => {
   }
 };
 
-export { getOrdersAction, getOrderByIDAction, createOrderAction };
+const confirmShippingOrderAction = async () => {
+  try {
+    const orders = await confirmShippingOrderQuery();
+    return orders;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export {
+  confirmShippingOrderAction,
+  getOrdersAction,
+  getOrderByIDAction,
+  createOrderAction,
+};

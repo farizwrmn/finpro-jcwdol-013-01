@@ -51,7 +51,7 @@ const Page = ({ params: { id } }: Props) => {
       const data = await getUnassignedUsersByStoreID(id);
       setUnassignedUsers(data);
     })();
-  }, []);
+  }, [id]);
 
   type ChangeEvent =
     | React.ChangeEvent<HTMLInputElement>

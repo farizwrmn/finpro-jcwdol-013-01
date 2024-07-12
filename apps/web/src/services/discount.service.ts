@@ -63,6 +63,22 @@ export const getDiscountByID = async (id: string) => {
   }
 };
 
+export const getDiscountByProductIdAndStoreId = async (productId: string, storeId: string) => {
+  try {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await instance.get(`/discounts/product/${productId}/store/${storeId}`, config);
+    const discount = data?.data;
+    return discount;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const updateDiscount = async (id: string, formData: any) => {
   try {
     const token = localStorage.getItem('token');

@@ -9,8 +9,8 @@ import {
   getProductsController,
   updateProductController,
 } from '../controllers/product.controller';
-import { adminGuard, superAdminGuard, verifyToken } from '@/middlewares/auth.middleware';
-import { uploader } from "@/helpers/multer";
+import { superAdminGuard, verifyToken } from '@/middlewares/auth.middleware';
+import { uploader } from '@/helpers/multer';
 
 const router = express.Router();
 
@@ -27,7 +27,11 @@ router.post(
   uploader('IMG_', '/products').single('image'),
   createProductImageController,
 );
-router.delete('/image/:id', verifyToken, superAdminGuard, deleteProductImageController);
-
+router.delete(
+  '/image/:id',
+  verifyToken,
+  superAdminGuard,
+  deleteProductImageController,
+);
 
 export default router;

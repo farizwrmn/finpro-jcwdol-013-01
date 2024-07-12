@@ -1,4 +1,4 @@
-import { Product } from "@prisma/client";
+import { Product } from '@prisma/client';
 
 export interface IProduct {
   name: string;
@@ -17,6 +17,7 @@ export interface IProductImage {
 }
 
 export interface IFilterProduct {
+  category?: string;
   keyword?: string;
   page?: number;
   size?: number;

@@ -26,6 +26,7 @@ import { deleteUser, getUsers } from '@/services/user.service';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import { formatDate } from '@/utils/date';
+import { USER_ROLE } from "@/constants/user.constant";
 
 const Page = () => {
   const [data, setData] = useState({
@@ -105,7 +106,7 @@ const Page = () => {
                     <Td>{user.name}</Td>
                     <Td>{user.email}</Td>
                     <Td>{user.phone}</Td>
-                    <Td>{user.role.name}</Td>
+                    <Td>{USER_ROLE[user.role.name]}</Td>
                     <Td>{formatDate(user.createdDate)}</Td>
                     <Td>
                       {user.role.name === 'store_admin' && (

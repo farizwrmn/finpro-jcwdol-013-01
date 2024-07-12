@@ -1,7 +1,13 @@
 'use client';
 
 import React, { ReactNode } from 'react';
-import { Box, Drawer, DrawerContent, useDisclosure } from '@chakra-ui/react';
+import {
+  Box,
+  Drawer,
+  DrawerContent,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { FiHome, FiUser } from 'react-icons/fi';
 import { FaAddressBook, FaAtlas, FaPager, FaTicketAlt } from 'react-icons/fa';
 import { IconType } from 'react-icons';
@@ -49,11 +55,15 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
   return (
     <AuthCustomer>
-      <Box>
+      <Box
+        bgImage={'/assets/images/bgline.png'}
+        bgSize={{ base: 'cover', sm: 'cover' }}
+      >
         <SidebarUser
           onClose={() => onClose}
           display={{ base: 'none', md: 'block' }}
           zIndex={100}
+          bgGradient="linear(to-b, white, blue.500, green.200)"
         />
         <Drawer
           autoFocus={false}

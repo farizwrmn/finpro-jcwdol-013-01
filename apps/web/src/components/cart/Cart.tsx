@@ -10,7 +10,7 @@ import {
   useColorModeValue as mode,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { CartItem } from './cartItem';
+import { CartItem } from './CartItems';
 import { CartSummary } from './CartSummary';
 import { deleteCartItem, getCartByUserID } from '@/services/cart.service';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
@@ -46,6 +46,7 @@ const Cart = () => {
           updateCartItemsState({
             itemsCount: dataCart.cartItems.length,
             itemsPrice: dataCart.itemsPrice,
+            itemsDiscount: dataCart.itemsDiscount,
           }),
         );
       }
@@ -102,7 +103,10 @@ const Cart = () => {
               <CartSummary />
               <HStack mt="6" fontWeight="semibold">
                 <p>or</p>
-                <Link style={{ color: 'rgb(49, 130, 206)' }} href="/products">
+                <Link
+                  style={{ color: 'rgb(49, 130, 206)' }}
+                  href="/products?category"
+                >
                   Continue shopping
                 </Link>
               </HStack>

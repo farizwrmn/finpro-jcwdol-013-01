@@ -25,7 +25,9 @@ export interface IOrderItem {
   description: string;
   image?: string;
   quantity: number;
+  bonusQuantity?: number;
   price: number;
+  discount?: number;
 }
 
 export interface IFilterOrder {
