@@ -19,6 +19,7 @@ import { SmallCloseIcon } from '@chakra-ui/icons';
 import { updateAvatar } from '@/lib/features/auth/authSlice';
 import { useAppDispatch } from '@/lib/hooks';
 import { toast } from 'react-toastify';
+import { format } from 'date-fns';
 
 export default function InnerForm(props: FormikProps<FormValues>) {
   const { values, errors, touched, handleChange, handleSubmit, isSubmitting } =
