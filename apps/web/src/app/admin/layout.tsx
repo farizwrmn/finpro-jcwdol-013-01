@@ -100,6 +100,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       <Box
         bgImage={'/assets/images/bgline.png'}
         bgSize={{ base: 'cover', sm: 'cover' }}
+        minH={'100vh'}
       >
         <SidebarAdmin
           onClose={() => onClose}

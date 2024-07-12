@@ -56,8 +56,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <AuthCustomer>
       <Box
-        bgImage={'/assets/images/bgline.png'}
+        bgImage={'/assets/images/bgline1.png'}
         bgSize={{ base: 'cover', sm: 'cover' }}
+        minH={'100vh'}
       >
         <SidebarUser
           onClose={() => onClose}
