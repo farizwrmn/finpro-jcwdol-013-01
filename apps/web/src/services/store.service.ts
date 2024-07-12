@@ -68,16 +68,9 @@ export const getDistanceStores = async (userLocation: IUserLocation) => {
 
 export const getNearestStore = async (userLocation: IUserLocation) => {
   try {
-    const token = localStorage.getItem('token');
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
     const { data } = await instance.post(
       `/stores/nearest`,
       userLocation,
-      config,
     );
     const store = data?.data;
     return store;
