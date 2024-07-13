@@ -45,12 +45,6 @@ const LinkItems: Array<LinkItemProps> = [
     href: '/users/orders',
     key: 'Orders',
   },
-  {
-    name: 'Vouchers',
-    icon: FaTicketAlt,
-    href: '/users/vouchers',
-    key: 'Vouchers',
-  },
 ];
 
 const SidebarUser = ({ onClose, ...rest }: SidebarProps) => {
@@ -64,7 +58,6 @@ const SidebarUser = ({ onClose, ...rest }: SidebarProps) => {
         w={{ base: 'full', md: 60 }}
         pos="fixed"
         h="full"
-        bgGradient="linear(to-b, white, blue.500, green.200)"
         {...rest}
       >
         <Flex

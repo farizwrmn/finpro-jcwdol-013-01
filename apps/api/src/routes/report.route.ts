@@ -4,6 +4,8 @@ import {
   getSalesReportPerCategoryController,
   getSalesReportPerMonthController,
   getSalesReportPerProductController,
+  getSalesReportTotalCategoryController,
+  getSalesReportTotalProductController,
 } from '@/controllers/report.controller';
 
 const router = express.Router();
@@ -27,6 +29,20 @@ router.get(
   verifyToken,
   adminGuard,
   getSalesReportPerCategoryController,
+);
+
+router.get(
+  '/sales/product/total',
+  verifyToken,
+  adminGuard,
+  getSalesReportTotalProductController,
+);
+
+router.get(
+  '/sales/category/total',
+  verifyToken,
+  adminGuard,
+  getSalesReportTotalCategoryController,
 );
 
 export default router;

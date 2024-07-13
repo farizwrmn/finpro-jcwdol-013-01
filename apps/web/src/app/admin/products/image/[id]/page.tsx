@@ -53,7 +53,9 @@ const Page = ({ params: { id } }: Props) => {
       router.refresh();
     } catch (err) {
       console.error(err);
-      toast.error('Upload product image failed');
+      toast.error(
+        'Upload product image failed! Please upload file with extension .jpg, .jpeg, .png, .gif and maximum size 1MB!',
+      );
     }
   };
 

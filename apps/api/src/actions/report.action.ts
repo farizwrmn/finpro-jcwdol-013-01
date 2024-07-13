@@ -2,6 +2,8 @@ import {
   getSalesReportPerCategoryQuery,
   getSalesReportPerMonthQuery,
   getSalesReportPerProductQuery,
+  getSalesReportTotalCategoryQuery,
+  getSalesReportTotalProductQuery,
 } from '@/queries/report.query';
 import { IFilterReport } from '@/interfaces/report.interface';
 
@@ -32,8 +34,28 @@ const getSalesReportPerCategoryAction = async (filters: IFilterReport) => {
   }
 };
 
+const getSalesReportTotalProductAction = async (filters: IFilterReport) => {
+  try {
+    const data = await getSalesReportTotalProductQuery(filters);
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const getSalesReportTotalCategoryAction = async (filters: IFilterReport) => {
+  try {
+    const data = await getSalesReportTotalCategoryQuery(filters);
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
+
 export {
   getSalesReportPerMonthAction,
   getSalesReportPerProductAction,
   getSalesReportPerCategoryAction,
+  getSalesReportTotalProductAction,
+  getSalesReportTotalCategoryAction,
 };

@@ -22,21 +22,16 @@ ChartJS.register(
 );
 
 type Props = {
-  title: string;
   labels: any;
   datasets: any;
 };
 
-export default function LineChart({ title, labels, datasets }: Props) {
+export default function LineChart({ labels, datasets }: Props) {
   const options = {
     responsive: true,
     plugins: {
       legend: {
         position: 'top' as const,
-      },
-      title: {
-        display: true,
-        text: title,
       },
     },
   };

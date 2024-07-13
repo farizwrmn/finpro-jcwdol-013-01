@@ -114,6 +114,8 @@ export default function ProductDetails({ product }: Props) {
       );
       setDiscount(dataDiscount);
 
+      console.log('dataDiscount:', dataDiscount);
+
       if (dataDiscount) {
         if (dataDiscount?.type === DISCOUNT_TYPE.productDiscount) {
           setFormData((prevFormData) => ({
@@ -187,7 +189,12 @@ export default function ProductDetails({ product }: Props) {
   const handleChangeStore = async (e: ChangeEvent) => {
     const newStoreId = e.target.value;
     if (!newStoreId) return;
-    if (!confirm(`Update store will remove all cart items, do you want to continue?`)) return;
+    if (
+      !confirm(
+        `Update store will remove all cart items, do you want to continue?`,
+      )
+    )
+      return;
 
     try {
       const resultUpdate = await updateCart(formData.cartId, {
