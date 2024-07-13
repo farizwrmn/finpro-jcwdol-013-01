@@ -42,12 +42,6 @@ const LinkItems: Array<LinkItemProps> = [
     href: '/users/orders',
     key: 'Orders',
   },
-  {
-    name: 'Vouchers',
-    icon: FaTicketAlt,
-    href: '/users/vouchers',
-    key: 'Vouchers',
-  },
 ];
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
