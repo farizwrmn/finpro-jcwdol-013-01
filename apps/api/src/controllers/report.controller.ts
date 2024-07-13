@@ -3,6 +3,8 @@ import {
   getSalesReportPerCategoryAction,
   getSalesReportPerMonthAction,
   getSalesReportPerProductAction,
+  getSalesReportTotalCategoryAction,
+  getSalesReportTotalProductAction,
 } from '@/actions/report.action';
 
 const getSalesReportPerMonthController = async (
@@ -59,8 +61,46 @@ const getSalesReportPerCategoryController = async (
   }
 };
 
+const getSalesReportTotalProductController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const filters = req.query;
+    const data = await getSalesReportTotalProductAction(filters);
+
+    res.status(200).json({
+      message: 'Get sales report total product success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getSalesReportTotalCategoryController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const filters = req.query;
+    const data = await getSalesReportTotalCategoryAction(filters);
+
+    res.status(200).json({
+      message: 'Get sales report total category success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export {
   getSalesReportPerMonthController,
   getSalesReportPerProductController,
   getSalesReportPerCategoryController,
+  getSalesReportTotalProductController,
+  getSalesReportTotalCategoryController,
 };

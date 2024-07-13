@@ -7,44 +7,41 @@ import PieChart from './PieChart';
 import {
   AspectRatio,
   Box,
-  Center,
-  Flex,
   Grid,
   GridItem,
+  Select,
   Spacer,
   Stack,
   Text,
 } from '@chakra-ui/react';
-import DropDownYear from './DropDownYear';
-import DropDownStore from './DropDownStore';
 import {
   getSalesReportPerCategory,
   getSalesReportPerMonth,
   getSalesReportPerProduct,
+  getSalesReportTotalCategory,
+  getSalesReportTotalProduct,
 } from '@/services/report.service';
 import TableChart from './TableChart';
-
-// Sales Data Interface (replace with your actual data structure)
-interface SalesData {
-  month: string; // Month name
-  revenue: number;
-  expenses: number;
-  profit: number;
-  // Add more properties as needed
-}
-
-const salesData: SalesData[] = [
-  // Replace with your actual sales data for each month
-  { month: 'January', revenue: 10000, expenses: 5000, profit: 5000 },
-  { month: 'February', revenue: 12000, expenses: 6000, profit: 6000 },
-  { month: 'March', revenue: 15000, expenses: 7000, profit: 8000 },
-  // ... data for remaining months
-];
+import { getStores } from "@/services/store.service";
+import { useAppSelector } from "@/lib/hooks";
 
 const DashboardSalesReport: React.FC = () => {
+  const [filters, setFilters] = useState({
+    year: '',
+    storeId: '',
+  });
+  const [stores, setStores] = useState<any[]>([]);
   const [monthDatasets, setMonthDatasets] = useState<any[]>([]);
   const [productDatasets, setProductDatasets] = useState<any[]>([]);
   const [categoryDatasets, setCategoryDatasets] = useState<any[]>([]);
+  const [totalProductDatasets, setTotalProductDatasets] = useState<any[]>([]);
+  const [totalCategoryDatasets, setTotalCategoryDatasets] = useState<any[]>([]);
+  const user = useAppSelector((state) => state.auth.user);
+
+  const yearOptions = Array.from({ length: 2030 - 2024 + 1 }, (_, index) => ({
+    value: 2024 + index,
+    label: (2024 + index).toString(),
+  }));
 
   const monthLabels = [
     'January',
@@ -61,117 +58,75 @@ const DashboardSalesReport: React.FC = () => {
     'December',
   ];
 
-  // const monthDatasets = [
-  //   {
-  //     label: 'Penjualan',
-  //     data: monthData,
-  //     backgroundColor: 'rgba(255, 99, 132, 0.5)',
-  //   },
-  // ];
-
-  // const categoryDatasets = [
-  //   {
-  //     label: 'Sayur',
-  //     data: monthLabels.map(() => 100),
-  //     backgroundColor: 'rgba(255, 99, 132, 0.5)',
-  //   },
-  //   {
-  //     label: 'Daging',
-  //     data: monthLabels.map(() => 200),
-  //     backgroundColor: 'rgba(53, 162, 235, 0.5)',
-  //   },
-  // ];
-
-  // const productDatasets = [
-  //   {
-  //     label: 'Bayam',
-  //     data: monthLabels.map(() => 100),
-  //     borderColor: 'rgb(255, 99, 132)',
-  //     backgroundColor: 'rgba(255, 99, 132, 0.5)',
-  //   },
-  //   {
-  //     label: 'Sapi',
-  //     data: monthLabels.map(() => 200),
-  //     borderColor: 'rgb(53, 162, 235)',
-  //     backgroundColor: 'rgba(53, 162, 235, 0.5)',
-  //   },
-  // ];
-
   const categoryLabels = categoryDatasets.map((item) => item.label);
 
   const productLabels = productDatasets.map((item) => item.label);
 
-  const categoryPieDatasets = [
-    {
-      label: 'Penjualan',
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
-      ],
-      borderWidth: 1,
-    },
-  ];
-
-  const productPieDatasets = [
-    {
-      label: 'Penjualan',
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
-      ],
-      borderWidth: 1,
-    },
-  ];
-
   useEffect(() => {
     (async () => {
-      const dataMonth = await getSalesReportPerMonth({});
-      setMonthDatasets(dataMonth);
-
-      const dataProduct = await getSalesReportPerProduct({});
-      setProductDatasets(dataProduct);
-
-      const dataCategory = await getSalesReportPerCategory({});
-      setCategoryDatasets(dataCategory);
+      const dataStores = await getStores({});
+      setStores(dataStores?.stores);
     })();
   }, []);
 
+  useEffect(() => {
+    if (user.role === "store_admin" && user.storeId) {
+      setFilters(prevFilters => ({ ...prevFilters, storeId: user.storeId as string }));
+    }
+  }, [user.role, user.storeId]);
+
+  useEffect(() => {
+    (async () => {
+      const dataMonth = await getSalesReportPerMonth(filters);
+      setMonthDatasets(dataMonth);
+
+      const dataProduct = await getSalesReportPerProduct(filters);
+      setProductDatasets(dataProduct);
+
+      const dataCategory = await getSalesReportPerCategory(filters);
+      setCategoryDatasets(dataCategory);
+
+      const dataTotalProduct = await getSalesReportTotalProduct(filters);
+      setTotalProductDatasets(dataTotalProduct);
+
+      const dataTotalCategory = await getSalesReportTotalCategory(filters);
+      setTotalCategoryDatasets(dataTotalCategory);
+    })();
+  }, [filters]);
+
   return (
     <Box>
-      <Stack flex={'1'} justify={'center'} direction={'row'} spacing={2}>
-        <DropDownYear
-          yearNow={2024}
-          onYearChange={function (year: number): void {
-            throw new Error('Function not implemented.');
-          }}
-        />
-        <DropDownStore />
+      <Stack flex={'1'} justify={'center'} direction={'row'} spacing={2} mb={10}>
+        <Box>
+          <Text fontWeight={500}>Year:</Text>
+          <Select
+            value={filters.year}
+            onChange={e => setFilters(prevFilters => ({ ...prevFilters, year: e.target.value }))}
+          >
+            <option value="">- All Years -</option>
+            {yearOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </Select>
+        </Box>
+        {user.role === "super_admin" && (
+          <Box>
+            <Text fontWeight={500}>Store:</Text>
+            <Select
+              value={filters.storeId}
+              onChange={e => setFilters(prevFilters => ({ ...prevFilters, storeId: e.target.value }))}
+            >
+              <option value="">- All Stores -</option>
+              {stores?.map((store) => (
+                <option key={store.id} value={store.id}>
+                  {store.name}
+                </option>
+              ))}
+            </Select>
+          </Box>
+        )}
       </Stack>
       <Spacer />
 
@@ -179,10 +134,12 @@ const DashboardSalesReport: React.FC = () => {
       <Grid templateColumns="repeat(auto-fit,minmax(300px,1fr">
         <Grid templateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={4}>
           <GridItem colSpan={1}>
-            <Box w="full" mb={-150}>
+            <Box w="full" mb={{ base: 0, lg: "-150px" }}>
+              <Text align="center" mb={5} fontWeight={500}>
+                Laporan Penjualan Per Bulan
+              </Text>
               <AspectRatio>
                 <BarChart
-                  title="Laporan Penjualan Per Bulan"
                   labels={monthLabels}
                   datasets={monthDatasets}
                 />
@@ -191,10 +148,12 @@ const DashboardSalesReport: React.FC = () => {
           </GridItem>
         </Grid>
         <GridItem colSpan={1}>
-          <Box w="full" mb={-150}>
+          <Box w="full" mb={{ base: 0, lg: "-150px" }}>
+            <Text align="center" mb={5} fontWeight={500}>
+              Laporan Penjualan Per Kategori
+            </Text>
             <AspectRatio>
               <BarChart
-                title="Laporan Penjualan Per Kategori"
                 labels={monthLabels}
                 datasets={categoryDatasets}
               />
@@ -203,9 +162,11 @@ const DashboardSalesReport: React.FC = () => {
         </GridItem>
         <GridItem colSpan={1}>
           <Box w="full" mb={8}>
+            <Text align="center" mb={5} fontWeight={500}>
+              Laporan Penjualan Per Produk
+            </Text>
             <AspectRatio ratio={16 / 9}>
               <LineChart
-                title="Laporan Penjualan Per Produk"
                 labels={monthLabels}
                 datasets={productDatasets}
               />
@@ -219,13 +180,13 @@ const DashboardSalesReport: React.FC = () => {
       <Grid templateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={4}>
         <GridItem colSpan={1}>
           <Box w="full" mb={8}>
-            <Text align="center" mb={5}>
-              Penjualan Per Kategori
-            </Text>{' '}
+            <Text align="center" mb={5} fontWeight={500}>
+              Total Penjualan Per Kategori
+            </Text>
             <AspectRatio ratio={1}>
               <PieChart
                 labels={categoryLabels}
-                datasets={categoryPieDatasets}
+                datasets={totalCategoryDatasets}
               />
             </AspectRatio>
           </Box>
@@ -233,16 +194,18 @@ const DashboardSalesReport: React.FC = () => {
 
         <GridItem colSpan={1}>
           <Box w="full" mb={8}>
-            <Text align="center" mb={5}>
-              Penjualan Per Produk
+            <Text align="center" mb={5} fontWeight={500}>
+              Total Penjualan Per Produk
             </Text>
             <AspectRatio ratio={1}>
-              <PieChart labels={productLabels} datasets={productPieDatasets} />
+              <PieChart
+                labels={productLabels}
+                datasets={totalProductDatasets}
+              />
             </AspectRatio>
           </Box>
         </GridItem>
       </Grid>
-      <TableChart />
     </Box>
   );
 };

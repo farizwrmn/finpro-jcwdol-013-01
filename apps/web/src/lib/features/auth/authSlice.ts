@@ -90,7 +90,7 @@ export const authSlice = createSlice({
 export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
   try {
     const { email, password } = params;
-    const location = JSON.parse(localStorage.getItem('location') || '');
+    const location = JSON.parse(localStorage.getItem('location') || '{}');
     const { data } = await instance.post('/auth/login', {
       email,
       password,
