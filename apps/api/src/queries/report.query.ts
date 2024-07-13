@@ -199,8 +199,83 @@ const getSalesReportPerCategoryQuery = async (filters: IFilterReport) => {
   }
 };
 
+const getSalesReportTotalProductQuery = async (filters: IFilterReport) => {
+  try {
+    const { year = '', storeId = '' } = filters;
+    const report: any[] = await prisma.$queryRawUnsafe(`
+      with master_total as (
+          select b.product_id, sum(b.quantity + b.bonus_quantity) as total 
+          from orders a, order_items b
+          where a.id = b.order_id
+          and a.store_id like '%${storeId}%'
+          and date_format(a.order_date, '%Y') like '%${year}%'
+          group by b.product_id
+      ),
+      master_output as (
+        select a.name product_name, coalesce(b.total, 0) total
+        from products a
+        left join master_total b on a.id = b.product_id
+				order by a.name
+      )
+      select *
+      from master_output;
+    `);
+
+    return [
+      {
+        label: 'Penjualan',
+        data: report.map((item) => Number(item?.total)),
+        backgroundColor: report.map((item, index) => COLORS[index].backgroundColor),
+        borderColor: report.map((item, index) => COLORS[index].borderColor),
+        borderWidth: 1,
+      },
+    ];
+  } catch (err) {
+    throw err;
+  }
+};
+
+const getSalesReportTotalCategoryQuery = async (filters: IFilterReport) => {
+  try {
+    const { year = '', storeId = '' } = filters;
+    const report: any[] = await prisma.$queryRawUnsafe(`
+      with master_total as (
+        select c.category_id, sum(b.quantity + b.bonus_quantity) as total 
+        from orders a, order_items b, products c
+        where a.id = b.order_id
+        and b.product_id = c.id
+        and a.store_id like '%${storeId}%'
+        and date_format(a.order_date, '%Y') like '%${year}%'
+        group by c.category_id
+      ),
+      master_output as (
+        select a.name category_name, coalesce(b.total, 0) total
+        from categories a
+        left join master_total b on a.id = b.category_id
+				order by a.name
+      )
+      select *
+      from master_output;
+    `);
+
+    return [
+      {
+        label: 'Penjualan',
+        data: report.map((item) => Number(item?.total)),
+        backgroundColor: report.map((item, index) => COLORS[index].backgroundColor),
+        borderColor: report.map((item, index) => COLORS[index].borderColor),
+        borderWidth: 1,
+      },
+    ];
+  } catch (err) {
+    throw err;
+  }
+};
+
 export {
   getSalesReportPerMonthQuery,
   getSalesReportPerProductQuery,
   getSalesReportPerCategoryQuery,
+  getSalesReportTotalProductQuery,
+  getSalesReportTotalCategoryQuery,
 };
