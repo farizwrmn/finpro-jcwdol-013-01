@@ -23,6 +23,7 @@ import {
 } from '@/services/report.service';
 import TableChart from './TableChart';
 import { getStores } from "@/services/store.service";
+import { useAppSelector } from "@/lib/hooks";
 
 const DashboardSalesReport: React.FC = () => {
   const [filters, setFilters] = useState({
@@ -35,6 +36,7 @@ const DashboardSalesReport: React.FC = () => {
   const [categoryDatasets, setCategoryDatasets] = useState<any[]>([]);
   const [totalProductDatasets, setTotalProductDatasets] = useState<any[]>([]);
   const [totalCategoryDatasets, setTotalCategoryDatasets] = useState<any[]>([]);
+  const user = useAppSelector((state) => state.auth.user);
 
   const yearOptions = Array.from({ length: 2030 - 2024 + 1 }, (_, index) => ({
     value: 2024 + index,
@@ -62,6 +64,19 @@ const DashboardSalesReport: React.FC = () => {
 
   useEffect(() => {
     (async () => {
+      const dataStores = await getStores({});
+      setStores(dataStores?.stores);
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (user.role === "store_admin" && user.storeId) {
+      setFilters(prevFilters => ({ ...prevFilters, storeId: user.storeId as string }));
+    }
+  }, [user.role, user.storeId]);
+
+  useEffect(() => {
+    (async () => {
       const dataMonth = await getSalesReportPerMonth(filters);
       setMonthDatasets(dataMonth);
 
@@ -79,13 +94,6 @@ const DashboardSalesReport: React.FC = () => {
     })();
   }, [filters]);
 
-  useEffect(() => {
-    (async () => {
-      const dataStores = await getStores({});
-      setStores(dataStores?.stores);
-    })();
-  }, []);
-
   return (
     <Box>
       <Stack flex={'1'} justify={'center'} direction={'row'} spacing={2} mb={10}>
@@ -95,7 +103,7 @@ const DashboardSalesReport: React.FC = () => {
             value={filters.year}
             onChange={e => setFilters(prevFilters => ({ ...prevFilters, year: e.target.value }))}
           >
-            <option value="">--- All Years ---</option>
+            <option value="">- All Years -</option>
             {yearOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -103,20 +111,22 @@ const DashboardSalesReport: React.FC = () => {
             ))}
           </Select>
         </Box>
-        <Box>
-          <Text fontWeight={500}>Store:</Text>
-          <Select
-            value={filters.storeId}
-            onChange={e => setFilters(prevFilters => ({ ...prevFilters, storeId: e.target.value }))}
-          >
-            <option value="">--- All Stores ---</option>
-            {stores?.map((store) => (
-              <option key={store.id} value={store.id}>
-                {store.name}
-              </option>
-            ))}
-          </Select>
-        </Box>
+        {user.role === "super_admin" && (
+          <Box>
+            <Text fontWeight={500}>Store:</Text>
+            <Select
+              value={filters.storeId}
+              onChange={e => setFilters(prevFilters => ({ ...prevFilters, storeId: e.target.value }))}
+            >
+              <option value="">- All Stores -</option>
+              {stores?.map((store) => (
+                <option key={store.id} value={store.id}>
+                  {store.name}
+                </option>
+              ))}
+            </Select>
+          </Box>
+        )}
       </Stack>
       <Spacer />
 
@@ -171,7 +181,7 @@ const DashboardSalesReport: React.FC = () => {
         <GridItem colSpan={1}>
           <Box w="full" mb={8}>
             <Text align="center" mb={5} fontWeight={500}>
-              Penjualan Per Kategori
+              Total Penjualan Per Kategori
             </Text>
             <AspectRatio ratio={1}>
               <PieChart
@@ -185,7 +195,7 @@ const DashboardSalesReport: React.FC = () => {
         <GridItem colSpan={1}>
           <Box w="full" mb={8}>
             <Text align="center" mb={5} fontWeight={500}>
-              Penjualan Per Produk
+              Total Penjualan Per Produk
             </Text>
             <AspectRatio ratio={1}>
               <PieChart
@@ -196,7 +206,6 @@ const DashboardSalesReport: React.FC = () => {
           </Box>
         </GridItem>
       </Grid>
-      <TableChart />
     </Box>
   );
 };

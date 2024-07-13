@@ -21,17 +21,31 @@ const getOrdersQuery = async (filters: IFilterOrder): Promise<IResultOrder> => {
     const {
       userId = '',
       storeId = '',
+      startDate = '',
+      endDate = '',
+      orderStatus = '',
       keyword = '',
       page = 1,
       size = 1000,
     } = filters;
-    const conditions: any = {
+
+    let conditions: any = {
       orderNumber: {
         contains: keyword,
       },
     };
     if (userId) conditions.userId = userId;
     if (storeId) conditions.storeId = storeId;
+    if (orderStatus) conditions.orderStatus = orderStatus;
+    if (startDate && endDate) {
+      conditions = {
+        ...conditions,
+        orderDate: {
+          gte: new Date(startDate),
+          lte: new Date(endDate),
+        },
+      };
+    }
 
     const orders = await prisma.order.findMany({
       include: {

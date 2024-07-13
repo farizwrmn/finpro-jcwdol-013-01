@@ -54,7 +54,7 @@ const ShippingAddress = ({ store }: Props) => {
               onChange={handleChangeAddress}
               flexGrow={1}
             >
-              <option value="">Select Label Address</option>
+              <option value="">- Select Label Address -</option>
               {addresses?.map((address: any) => (
                 <option
                   key={address.id}
