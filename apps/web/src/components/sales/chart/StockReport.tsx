@@ -1,34 +1,32 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import BarChart from './BarChart';
 import LineChart from './LineChart';
-import PieChart from './PieChart';
 import {
   AspectRatio,
   Box,
-  Center,
-  Flex,
   Grid,
   GridItem,
+  Select,
   Spacer,
   Stack,
   Text,
 } from '@chakra-ui/react';
-import DropDownYear from './DropDownYear';
-import DropDownStore from './DropDownStore';
 import TableChart from './TableChart';
 
-// Sales Data Interface (replace with your actual data structure)
-interface SalesData {
-  month: string; // Month name
-  revenue: number;
-  expenses: number;
-  profit: number;
-  // Add more properties as needed
-}
-
 const DashboardSalesReport: React.FC = () => {
+  const [filters, setFilters] = useState({
+    year: '',
+    storeId: '',
+  });
+  const [stores, setStores] = useState<any[]>([]);
+
+  const yearOptions = Array.from({ length: 2030 - 2024 + 1 }, (_, index) => ({
+    value: 2024 + index,
+    label: (2024 + index).toString(),
+  }));
+
   const monthLabels = [
     'January',
     'February',
@@ -148,14 +146,35 @@ const DashboardSalesReport: React.FC = () => {
 
   return (
     <Box>
-      <Stack flex={'1'} justify={'center'} direction={'row'} spacing={2}>
-        <DropDownYear
-          yearNow={2024}
-          onYearChange={function (year: number): void {
-            throw new Error('Function not implemented.');
-          }}
-        />
-        <DropDownStore />
+      <Stack flex={'1'} justify={'center'} direction={'row'} spacing={2} mb={10}>
+        <Box>
+          <Text fontWeight={500}>Year:</Text>
+          <Select
+            value={filters.year}
+            onChange={e => setFilters(prevFilters => ({ ...prevFilters, year: e.target.value }))}
+          >
+            <option value="">--- All Years ---</option>
+            {yearOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </Select>
+        </Box>
+        <Box>
+          <Text fontWeight={500}>Store:</Text>
+          <Select
+            value={filters.storeId}
+            onChange={e => setFilters(prevFilters => ({ ...prevFilters, storeId: e.target.value }))}
+          >
+            <option value="">--- All Stores ---</option>
+            {stores?.map((store) => (
+              <option key={store.id} value={store.id}>
+                {store.name}
+              </option>
+            ))}
+          </Select>
+        </Box>
       </Stack>
       <Spacer />
 
@@ -163,9 +182,11 @@ const DashboardSalesReport: React.FC = () => {
       <Grid templateColumns="repeat(auto-fit,minmax(300px,1fr">
         <GridItem colSpan={1}>
           <Box w="full" mb={-150}>
+            <Text align="center" mb={5} fontWeight={500}>
+              Laporan Stok Produk Per Bulan
+            </Text>
             <AspectRatio>
               <BarChart
-                title="Laporan Stok Produk Pebulan"
                 labels={monthLabels}
                 datasets={categoryDatasets}
               />
@@ -174,9 +195,11 @@ const DashboardSalesReport: React.FC = () => {
         </GridItem>
         <GridItem colSpan={1}>
           <Box w="full" mb={8}>
+            <Text align="center" mb={5} fontWeight={500}>
+              Laporan Penjualan Per Produk
+            </Text>
             <AspectRatio ratio={16 / 9}>
               <LineChart
-                title="Laporan Penjualan Per Produk"
                 labels={monthLabels}
                 datasets={productDatasets}
               />
