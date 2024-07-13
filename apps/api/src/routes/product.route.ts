@@ -26,7 +26,9 @@ router.post(
   '/image',
   verifyToken,
   superAdminGuard,
-  uploader('IMG_', '/products').single('image'),
+  uploader('IMG_', '/products', ['.jpg', '.jpeg', '.png', '.gif']).single(
+    'image',
+  ),
   createProductImageController,
 );
 router.delete(

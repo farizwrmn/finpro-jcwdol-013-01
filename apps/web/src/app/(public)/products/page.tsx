@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import {
   Box,
   Card,
@@ -22,11 +22,12 @@ import Link from 'next/link';
 import { getProducts } from '@/services/product.service';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { getCategories } from '@/services/category.service';
-import { useSearchParams } from 'next/navigation';
+// import { useSearchParams } from 'next/navigation';
 
 const ProductsPage = () => {
-  const searchParams = useSearchParams();
-  const category = searchParams.get('category');
+  // const searchParams = useSearchParams();
+  // const category = searchParams.get('category');
+  const category = "";
 
   const [categories, setCategories] = useState({
     categories: [],
@@ -44,7 +45,7 @@ const ProductsPage = () => {
       const result = await getCategories(catFilters);
       setCategories(result);
     })();
-  }, []);
+  }, [catFilters]);
 
   const [data, setData] = useState({
     products: [],
@@ -65,7 +66,7 @@ const ProductsPage = () => {
   }, [filters]);
 
   return (
-    <>
+    <Suspense>
       <Stack align={'center'}>
         <Heading
           textAlign={'center'}
@@ -83,7 +84,7 @@ const ProductsPage = () => {
         >
           <option value={''}>All</option>
           {categories.categories?.map((category: any) => (
-            <option value={category.slug}>{category.name}</option>
+            <option value={category.slug} key={category.id}>{category.name}</option>
           ))}
         </Select>
       </Stack>
@@ -170,7 +171,7 @@ const ProductsPage = () => {
           </Box>
         )}
       </Stack>
-    </>
+    </Suspense>
   );
 };
 

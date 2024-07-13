@@ -123,8 +123,8 @@ export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
 
     dispatch(
       updateCartItemsState({
-        itemsCount: cart.cartItems.length,
-        itemsPrice: cart.itemsPrice,
+        itemsCount: cart?.cartItems?.length as number,
+        itemsPrice: cart?.itemsPrice as number,
       }),
     );
     dispatch(
@@ -234,9 +234,10 @@ export const updateAvatar =
 
       dispatch(updateAvatarState(image));
       localStorage.setItem('user', JSON.stringify(data?.data));
+      return true;
     } catch (err) {
       console.log(err);
-      toast.error('Update avatar failed');
+      return false;
     }
   };
 

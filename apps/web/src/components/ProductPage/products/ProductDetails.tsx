@@ -215,7 +215,6 @@ export default function ProductDetails({ product }: Props) {
           itemsCount: 0,
           itemsPrice: 0,
           itemsDiscount: 0,
-          totalPrice: 0,
         }),
       );
 
@@ -241,7 +240,6 @@ export default function ProductDetails({ product }: Props) {
             itemsCount: dataCart.cartItems.length,
             itemsPrice: dataCart.itemsPrice,
             itemsDiscount: dataCart.itemsDiscount,
-            totalPrice: dataCart.totalPrice,
           }),
         );
       }

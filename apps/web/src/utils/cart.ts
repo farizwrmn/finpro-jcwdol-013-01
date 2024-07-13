@@ -1,4 +1,5 @@
-import type { Cart } from '@/types/cart';
+// import type { Cart } from '@/types/cart';
+import type { Cart } from "@/lib/features/cart/cartSlice";
 // import { shippingMethodState } from '@/redux'
 
 export const addDecimals = (num: number): number => {
@@ -12,9 +13,9 @@ export const updateCart = (state: Cart) => {
   //   }
 
   // Calculate prices
-  state.itemsPrice = addDecimals(
-    state.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0),
-  );
+  // state.itemsPrice = addDecimals(
+  //   state.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0),
+  // );
   //   state.shippingPrice = state.shippingMethod.cost || 0
   state.totalPrice = addDecimals(
     Number(state.itemsPrice) + Number(state.shippingPrice),

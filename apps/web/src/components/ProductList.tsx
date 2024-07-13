@@ -3,24 +3,35 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
+  Button,
   Card,
   CardBody,
   Divider,
+  Flex,
   Grid,
   GridItem,
   Heading,
   Icon,
   IconButton,
   Image,
+  List,
+  ListIcon,
+  ListItem,
   Stack,
   Text,
 } from '@chakra-ui/react';
 import { FormatCurrency } from '@/utils/FormatCurrency';
 import Link from 'next/link';
-import { getProducts } from '@/services/product.service';
+import {
+  getAvailableProductsByStoreID,
+  getProducts,
+} from '@/services/product.service';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { getStores } from '@/services/store.service';
+import { FaStore } from 'react-icons/fa';
 
 const ProductList = () => {
+  const [stores, setStores] = useState<any[]>([]);
   const [data, setData] = useState({
     products: [],
     pages: 1,
@@ -33,10 +44,27 @@ const ProductList = () => {
 
   useEffect(() => {
     (async () => {
-      const result = await getProducts(filters);
-      setData(result);
+      const location = JSON.parse(localStorage.getItem('location') || '{}');
+      const storeId = location.storeId;
+      if (storeId) {
+        const result = await getAvailableProductsByStoreID({
+          ...filters,
+          storeId,
+        });
+        setData(result);
+      } else {
+        const result = await getProducts(filters);
+        setData(result);
+      }
     })();
   }, [filters]);
+
+  useEffect(() => {
+    (async () => {
+      const data = await getStores({});
+      setStores(data.stores);
+    })();
+  }, []);
 
   return (
     <>
@@ -99,35 +127,63 @@ const ProductList = () => {
             </GridItem>
           ))}
         </Grid>
-        <Box pt={4} display="flex" justifyContent="center">
-          <Box display="flex">
-            <IconButton
-              aria-label="left"
-              icon={<Icon as={FiChevronLeft} />}
-              onClick={() =>
-                setFilters((prevFilters) => ({
-                  ...prevFilters,
-                  page: Math.max(prevFilters.page - 1, 1),
-                }))
-              }
-              isDisabled={filters.page === 1}
-            />
-            <Box p={2}>
-              {filters.page} / {data.pages}
+        {data.pages > 1 && (
+          <Box pt={4} display="flex" justifyContent="center">
+            <Box display="flex">
+              <IconButton
+                aria-label="left"
+                icon={<Icon as={FiChevronLeft} />}
+                onClick={() =>
+                  setFilters((prevFilters) => ({
+                    ...prevFilters,
+                    page: Math.max(prevFilters.page - 1, 1),
+                  }))
+                }
+                isDisabled={filters.page === 1}
+              />
+              <Box p={2}>
+                {filters.page} / {data.pages}
+              </Box>
+              <IconButton
+                aria-label="right"
+                icon={<Icon as={FiChevronRight} />}
+                onClick={() =>
+                  setFilters((prevFilters) => ({
+                    ...prevFilters,
+                    page: Math.min(prevFilters.page + 1, data.pages),
+                  }))
+                }
+                isDisabled={filters.page === data.pages}
+              />
             </Box>
-            <IconButton
-              aria-label="right"
-              icon={<Icon as={FiChevronRight} />}
-              onClick={() =>
-                setFilters((prevFilters) => ({
-                  ...prevFilters,
-                  page: Math.min(prevFilters.page + 1, data.pages),
-                }))
-              }
-              isDisabled={filters.page === data.pages}
-            />
           </Box>
-        </Box>
+        )}
+        {data.pages === 0 && (
+          <Stack flexDirection={'column'} textAlign={'center'} h={'full'}>
+            <Text as={'b'} fontSize={'4xl'}>
+              Our Products only available in Stores below:{' '}
+            </Text>
+            <Box m={2} justifyContent={'center'} mt={10}>
+              {stores.map((store: any, index: number) => (
+                <Flex
+                  key={index}
+                  display="inline-flex"
+                  backgroundColor={'white'}
+                  cursor={'default'}
+                  m={2}
+                  alignItems="center"
+                  borderRadius={5}
+                  width="max-content"
+                  p={1}
+                  pr={4}
+                >
+                  <Icon as={FaStore} color="green.500" m={2} />
+                  {store.name}
+                </Flex>
+              ))}
+            </Box>
+          </Stack>
+        )}
       </Stack>
     </>
   );

@@ -57,7 +57,7 @@ export default function ShippingMethodPage() {
             <Radio key={index}>
               <Flex mb={4} alignItems="center" justifyContent="space-between">
                 <Stack direction="row" alignItems="center" spacing="4">
-                  <Image src={method.imageSrc} m={10} />
+                  <Image src={method.imageSrc} m={10} alt="" />
                   <Box></Box>
                 </Stack>
               </Flex>

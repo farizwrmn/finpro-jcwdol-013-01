@@ -22,10 +22,10 @@ interface IPaymentMethod {
 }
 
 const ewallets: IPaymentMethod[] = [
-  {
-    value: 'GOPAY',
-    image: 'https://shop.rehan.id/assets/images/payment-methods/gopay.png',
-  },
+  // {
+  //   value: 'GOPAY',
+  //   image: 'https://shop.rehan.id/assets/images/payment-methods/gopay.png',
+  // },
   {
     value: 'OVO',
     image: 'https://shop.rehan.id/assets/images/payment-methods/ovo.png',
@@ -152,7 +152,7 @@ export default function PaymentMethod() {
                   {transferBanks.map((method, index) => (
                     <Radio key={index} value={method.value}>
                       <Box pl={2}>
-                        <img width={90} height={25} src={method.image} alt={method.value} />
+                        <Image width={90} height={25} src={method.image} alt={method.value} />
                       </Box>
                     </Radio>
                   ))}
