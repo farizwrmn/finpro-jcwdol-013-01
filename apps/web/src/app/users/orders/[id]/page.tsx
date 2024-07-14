@@ -229,7 +229,6 @@ const Page = ({ params: { id } }: Props) => {
                 <OrderStatus status='info' text={order?.orderStatus} />
               ) : [
                 ORDER_STATUS.dibatalkan,
-                ORDER_STATUS.pembayaranGagal,
               ].includes(order?.orderStatus) ? (
                 <OrderStatus status='error' text={order?.orderStatus} />
               ) : (

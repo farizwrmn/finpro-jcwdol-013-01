@@ -119,7 +119,6 @@ const Page = () => {
               <option value={ORDER_STATUS.dikirim}>{ORDER_STATUS.dikirim}</option>
               <option value={ORDER_STATUS.pesananDikonfirmasi}>{ORDER_STATUS.pesananDikonfirmasi}</option>
               <option value={ORDER_STATUS.dibatalkan}>{ORDER_STATUS.dibatalkan}</option>
-              <option value={ORDER_STATUS.pembayaranGagal}>{ORDER_STATUS.pembayaranGagal}</option>
             </Select>
             <Popover isOpen={showPicker} onClose={() => setShowPicker(false)}>
               <PopoverTrigger>
