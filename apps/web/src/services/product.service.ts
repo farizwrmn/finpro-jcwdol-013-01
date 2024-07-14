@@ -120,7 +120,6 @@ export const createProductImage = async (formData: any) => {
     return productImage;
   } catch (err) {
     console.log(err);
-    toast.error('Upload product image failed');
   }
 };
 

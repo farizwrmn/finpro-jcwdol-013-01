@@ -81,17 +81,17 @@ const getAvailableProductsByStoreIDQuery = async (
         name: {
           contains: keyword,
         },
+        category: {
+          slug: {
+            contains: category,
+          },
+        },
         stocks: {
           some: {
             storeId,
             remainingStock: {
               gt: 0,
             },
-          },
-        },
-        category: {
-          slug: {
-            contains: category,
           },
         },
       },
@@ -113,6 +113,14 @@ const getAvailableProductsByStoreIDQuery = async (
         category: {
           slug: {
             contains: category,
+          },
+        },
+        stocks: {
+          some: {
+            storeId,
+            remainingStock: {
+              gt: 0,
+            },
           },
         },
       },

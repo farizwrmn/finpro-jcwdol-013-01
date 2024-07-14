@@ -49,16 +49,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
   return (
     <AuthCustomer>
-      <Box
-        bgImage={'/assets/images/bgline1.png'}
-        bgSize={{ base: 'cover', sm: 'cover' }}
-        minH={'100vh'}
-      >
+      <Box>
         <SidebarUser
           onClose={() => onClose}
           display={{ base: 'none', md: 'block' }}
           zIndex={100}
-          bgGradient="linear(to-b, white, blue.500, green.200)"
         />
         <Drawer
           autoFocus={false}
