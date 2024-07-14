@@ -37,7 +37,6 @@ import { toast } from 'react-toastify';
 const Page = () => {
   const router = useRouter();
   const user = useAppSelector((state) => state.auth.user);
-  // const [discounts, setDiscounts] = useState<any[]>([]);
   const [data, setData] = useState({
     discounts: [],
     pages: 1,
@@ -85,6 +84,13 @@ const Page = () => {
       <Card my={10}>
         <CardBody>
           <Flex gap={4} pb={8}>
+            <Input
+              placeholder="Search..."
+              value={filters.keyword}
+              onChange={(e) =>
+                setFilters({ ...filters, keyword: e.target.value, page: 1 })
+              }
+            />
             <Input
               placeholder="Search..."
               value={filters.keyword}

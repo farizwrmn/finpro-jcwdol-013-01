@@ -46,7 +46,7 @@ const VerifyView = () => {
           },
         },
       );
-      toast.success('Account verified, please Sign In');
+      toast.success('Account verified');
       router.push('/sign-in');
     } catch (err) {
       console.log(err);

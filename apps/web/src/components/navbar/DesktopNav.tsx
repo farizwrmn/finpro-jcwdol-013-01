@@ -14,13 +14,7 @@ import Link from 'next/link';
 export const NAV_ITEMS: Array<NavItem> = [
   {
     label: 'Products',
-    children: [
-      {
-        label: 'Explore Product',
-        subLabel: 'Grocery for you',
-        href: '/products?category',
-      },
-    ],
+    href: '/products',
   },
   {
     label: 'About us',

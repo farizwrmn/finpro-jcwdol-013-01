@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Box,
@@ -15,8 +15,8 @@ import * as Yup from 'yup';
 import { FormValues, FormProps } from './types';
 import InnerForm from './innerForm';
 import PageWrapper from '../pageWrapper';
-import { forgotPassword } from "@/services/auth.service";
-import { toast } from "react-toastify";
+import { forgotPassword } from '@/services/auth.service';
+import { toast } from 'react-toastify';
 
 const ForgotPasswordSchema = Yup.object().shape({
   email: Yup.string()
@@ -27,6 +27,14 @@ const ForgotPasswordSchema = Yup.object().shape({
 const ForgotPassword = () => {
   const router = useRouter();
 
+  // useEffect(() => {
+  //   const resetPassword = () => {
+  //     localStorage.setItem('resetPassword', 'true');
+  //   };
+
+  //   resetPassword();
+  // }, []);
+
   const ForgotPasswordForm = withFormik<FormProps, FormValues>({
     mapPropsToValues: (props) => ({
       email: props.initialEmail || '',
@@ -36,9 +44,15 @@ const ForgotPassword = () => {
     async handleSubmit({ email }: FormValues, { resetForm }) {
       try {
         const data = await forgotPassword({ email });
-        resetForm();
-        toast.success(data.message);
-        router.push('/sign-in');
+        if (localStorage.getItem('resetPassword') === 'true') {
+          toast.error('Please check your email to reset your password first');
+          return;
+        } else {
+          resetForm();
+          toast.success(data.message);
+          router.push('/sign-in');
+          localStorage.setItem('resetPassword', 'true');
+        }
       } catch (err: any) {
         toast.error(err.message);
       }
