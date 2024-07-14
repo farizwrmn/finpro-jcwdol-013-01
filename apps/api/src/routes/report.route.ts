@@ -6,6 +6,7 @@ import {
   getSalesReportPerProductController,
   getSalesReportTotalCategoryController,
   getSalesReportTotalProductController,
+  getStockReportPerMonthController,
 } from '@/controllers/report.controller';
 
 const router = express.Router();
@@ -43,6 +44,13 @@ router.get(
   verifyToken,
   adminGuard,
   getSalesReportTotalCategoryController,
+);
+
+router.get(
+  '/stock/month',
+  verifyToken,
+  adminGuard,
+  getStockReportPerMonthController,
 );
 
 export default router;

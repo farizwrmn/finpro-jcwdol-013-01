@@ -110,3 +110,25 @@ export const getSalesReportTotalCategory = async ({
     console.error(err);
   }
 };
+
+export const getStockReportPerMonth = async ({
+  year = '',
+  storeId = '',
+}: IFilterReport) => {
+  try {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await instance.get(
+      `/report/stock/month?year=${year}&storeId=${storeId}`,
+      config,
+    );
+    const report = data?.data;
+    return report;
+  } catch (err) {
+    console.error(err);
+  }
+};

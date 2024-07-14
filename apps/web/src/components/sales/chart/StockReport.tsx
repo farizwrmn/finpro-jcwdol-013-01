@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BarChart from './BarChart';
-import LineChart from './LineChart';
 import {
   AspectRatio,
   Box,
@@ -14,6 +13,9 @@ import {
   Text,
 } from '@chakra-ui/react';
 import TableChart from './TableChart';
+import { useAppSelector } from "@/lib/hooks";
+import { getStores } from "@/services/store.service";
+import { getStockReportPerMonth } from "@/services/report.service";
 
 const DashboardSalesReport: React.FC = () => {
   const [filters, setFilters] = useState({
@@ -21,6 +23,8 @@ const DashboardSalesReport: React.FC = () => {
     storeId: '',
   });
   const [stores, setStores] = useState<any[]>([]);
+  const [monthDatasets, setMonthDatasets] = useState<any[]>([]);
+  const user = useAppSelector((state) => state.auth.user);
 
   const yearOptions = Array.from({ length: 2030 - 2024 + 1 }, (_, index) => ({
     value: 2024 + index,
@@ -42,107 +46,26 @@ const DashboardSalesReport: React.FC = () => {
     'December',
   ];
 
-  const monthDatasets = [
-    {
-      label: 'Penjualan',
-      data: monthLabels.map(() => 100),
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-  ];
+  useEffect(() => {
+    (async () => {
+      const dataStores = await getStores({});
+      setStores(dataStores?.stores);
+    })();
+  }, []);
 
-  const categoryDatasets = [
-    {
-      label: 'Sayur',
-      data: monthLabels.map(() => 100),
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Daging',
-      data: monthLabels.map(() => 200),
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ];
+  useEffect(() => {
+    if (user.role === "store_admin" && user.storeId) {
+      setFilters(prevFilters => ({ ...prevFilters, storeId: user.storeId as string }));
+    }
+  }, [user.role, user.storeId]);
 
-  const productDatasets = [
-    {
-      label: 'Bayam',
-      data: monthLabels.map(() => 100),
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: 'Sapi',
-      data: monthLabels.map(() => 200),
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-  ];
+  useEffect(() => {
+    (async () => {
+      const dataMonth = await getStockReportPerMonth(filters);
+      setMonthDatasets(dataMonth);
 
-  const categoryLabels = [
-    'Sayur',
-    'Buah',
-    'Daging',
-    'Minyak',
-    'Garam',
-    'Telur',
-  ];
-
-  const productLabels = [
-    'Cap Kaki Naga',
-    'Cap Buah Khuldi',
-    'Daging Semut Abadi',
-    'Minyak Cap Keikhlasan',
-    'Garam Anti Miskin',
-    'Telur Dinosaurus Gede Sebelah',
-  ];
-
-  const categoryPieDatasets = [
-    {
-      label: 'Penjualan',
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
-      ],
-      borderWidth: 1,
-    },
-  ];
-
-  const productPieDatasets = [
-    {
-      label: 'Penjualan',
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
-      ],
-      borderWidth: 1,
-    },
-  ];
+    })();
+  }, [filters]);
 
   return (
     <Box>
@@ -188,26 +111,19 @@ const DashboardSalesReport: React.FC = () => {
             <AspectRatio>
               <BarChart
                 labels={monthLabels}
-                datasets={categoryDatasets}
-              />
-            </AspectRatio>
-          </Box>
-        </GridItem>
-        <GridItem colSpan={1}>
-          <Box w="full" mb={8}>
-            <Text align="center" mb={5} fontWeight={500}>
-              Laporan Penjualan Per Produk
-            </Text>
-            <AspectRatio ratio={16 / 9}>
-              <LineChart
-                labels={monthLabels}
-                datasets={productDatasets}
+                datasets={monthDatasets}
               />
             </AspectRatio>
           </Box>
         </GridItem>
       </Grid>
-      <TableChart />
+
+      <Box>
+        <Text align="center" mb={5} fontWeight={500}>
+          Detail Laporan Stok Produk
+        </Text>
+        <TableChart />
+      </Box>
     </Box>
   );
 };
