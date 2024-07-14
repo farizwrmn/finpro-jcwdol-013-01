@@ -271,7 +271,7 @@ const Page = ({ params: { id } }: Props) => {
             )}
 
             {order?.orderStatus &&
-              order?.orderStatus === ORDER_STATUS.menungguKonfirmasiPembayaran ? (
+            order?.orderStatus === ORDER_STATUS.menungguKonfirmasiPembayaran ? (
               <Stack spacing={6} direction={['column', 'row']} mt={15}>
                 <Button
                   onClick={handleReject}

@@ -147,6 +147,7 @@ export const signOut = () => async (dispatch: Dispatch) => {
     dispatch(logoutState());
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('lastVisitedPage');
   } catch (err) {
     console.error(err);
   }
@@ -210,9 +211,11 @@ export const updateProfile =
 
       dispatch(updateProfileState({ ...params }));
       localStorage.setItem('user', JSON.stringify(data?.data));
-    } catch (err) {
+
+      return data?.data;
+    } catch (err: any) {
       console.log(err);
-      toast.error('Update profile failed');
+      return err.response.data.message;
     }
   };
 

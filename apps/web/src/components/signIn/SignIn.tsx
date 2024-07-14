@@ -57,7 +57,11 @@ const LoginView = ({ callbackUrl, authError }: Props) => {
         const result = await dispatch(signIn({ email, password }));
         if (!result) throw new Error('Email atau Password salah');
         resetForm();
-        router.push('/');
+        if (localStorage.getItem('lastVisitedPage')) {
+          router.push(`${localStorage.getItem('lastVisitedPage')}`);
+        } else {
+          router.push('/');
+        }
       } catch (err: any) {
         console.error(err);
         toast.error(err.message);
