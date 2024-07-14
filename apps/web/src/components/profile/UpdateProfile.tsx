@@ -30,7 +30,7 @@ export default function UserProfileEdit(): JSX.Element {
       image: props.initialImage || user.image || '',
       phone: props.initialPhone || user.phone || '',
       gender: props.initialGender || user.gender || '',
-      birthDate: format(new Date(user.birthDate as string), 'dd/MM/yyyy'),
+      birthDate: props.initialBirthDate || user.birthDate || '',
     }),
     validationSchema: UpdateProfileSchema,
     enableReinitialize: true,

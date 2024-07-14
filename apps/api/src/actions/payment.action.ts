@@ -37,7 +37,7 @@ const createPaymentAction = async (orderId: string) => {
           'paymentReminder.hbs',
         );
 
-        const url = `http://localhost:3000/users/orders/confirmation/${order.id}`;
+        const url = `${process.env.FRONTEND_URL}/users/orders/confirmation/${order.id}`;
 
         const templateSource = fs.readFileSync(templatePath, 'utf-8');
 

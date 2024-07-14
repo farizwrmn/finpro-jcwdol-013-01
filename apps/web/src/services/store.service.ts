@@ -68,10 +68,7 @@ export const getDistanceStores = async (userLocation: IUserLocation) => {
 
 export const getNearestStore = async (userLocation: IUserLocation) => {
   try {
-    const { data } = await instance.post(
-      `/stores/nearest`,
-      userLocation,
-    );
+    const { data } = await instance.post(`/stores/nearest`, userLocation);
     const store = data?.data;
     return store;
   } catch (err) {

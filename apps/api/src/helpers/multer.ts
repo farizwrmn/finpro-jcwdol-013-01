@@ -7,7 +7,11 @@ type DestinationCallback = (error: Error | null, destination: string) => void;
 type FileNameCallback = (error: Error | null, filename: string) => void;
 type FilterCallback = (error: Error | null, valid: Boolean) => void;
 
-export const uploader = (filePrefix: string, folderName?: string) => {
+export const uploader = (
+  filePrefix: string,
+  folderName?: string,
+  extensions?: string[],
+) => {
   try {
     const defaultDir = join(__dirname, '../public');
 
@@ -41,8 +45,7 @@ export const uploader = (filePrefix: string, folderName?: string) => {
     ) => {
       try {
         const extension = path.extname(file.originalname);
-        console.log(extension);
-        if (extension !== '.png' && extension !== '.jpg' && extension !== '.jpeg') {
+        if (extensions && !extensions.includes(extension)) {
           cb(new Error('Extension type is invalid'));
         }
         cb(null, true);

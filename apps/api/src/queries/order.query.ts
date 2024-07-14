@@ -13,6 +13,7 @@ import { getDiscountsByStoreIDQuery } from './discount.query';
 import { DISCOUNT_TYPE } from '@/constants/discount.constant';
 import { createVoucherQuery } from './voucher.query';
 import { ORDER_STATUS } from '@/constants/order.constant';
+import { subDays, subHours } from 'date-fns';
 
 const prisma = new PrismaClient();
 
@@ -21,17 +22,31 @@ const getOrdersQuery = async (filters: IFilterOrder): Promise<IResultOrder> => {
     const {
       userId = '',
       storeId = '',
+      startDate = '',
+      endDate = '',
+      orderStatus = '',
       keyword = '',
       page = 1,
       size = 1000,
     } = filters;
-    const conditions: any = {
+
+    let conditions: any = {
       orderNumber: {
         contains: keyword,
       },
     };
     if (userId) conditions.userId = userId;
     if (storeId) conditions.storeId = storeId;
+    if (orderStatus) conditions.orderStatus = orderStatus;
+    if (startDate && endDate) {
+      conditions = {
+        ...conditions,
+        orderDate: {
+          gte: new Date(startDate),
+          lte: new Date(endDate),
+        },
+      };
+    }
 
     const orders = await prisma.order.findMany({
       include: {
@@ -159,20 +174,38 @@ const createOrderQuery = async (data: IOrder): Promise<Order> => {
   }
 };
 
-const confirmShippingOrderQuery = async () => {
+const confirmShippingOrdersQuery = async () => {
   try {
-    const twoDaysAgo = new Date();
-    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-
     const orders = await prisma.order.updateMany({
+      data: {
+        orderStatus: ORDER_STATUS.pesananDikonfirmasi,
+      },
       where: {
         orderStatus: ORDER_STATUS.dikirim,
         shippingDate: {
-          gt: twoDaysAgo,
+          lt: subDays(new Date(), 2),
         },
       },
+    });
+    return orders;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const cancelUnconfirmedOrdersQuery = async () => {
+  try {
+    const orders = await prisma.order.updateMany({
       data: {
-        orderStatus: ORDER_STATUS.pesananDikonfirmasi,
+        orderStatus: ORDER_STATUS.dibatalkan,
+      },
+      where: {
+        paymentMethod: 'BANK',
+        paymentImage: null,
+        orderStatus: ORDER_STATUS.menungguPembayaran,
+        orderDate: {
+          lt: subHours(new Date(), 1),
+        },
       },
     });
     return orders;
@@ -182,7 +215,8 @@ const confirmShippingOrderQuery = async () => {
 };
 
 export {
-  confirmShippingOrderQuery,
+  confirmShippingOrdersQuery,
+  cancelUnconfirmedOrdersQuery,
   getOrdersQuery,
   getOrderByIDQuery,
   createOrderQuery,

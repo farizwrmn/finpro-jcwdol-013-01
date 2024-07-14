@@ -39,12 +39,6 @@ const LinkItems: Array<LinkItemProps> = [
     href: '/users/orders',
     key: 'Orders',
   },
-  {
-    name: 'Vouchers',
-    icon: FaTicketAlt,
-    href: '/users/vouchers',
-    key: 'Vouchers',
-  },
 ];
 
 const NavItemUser = ({

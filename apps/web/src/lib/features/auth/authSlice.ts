@@ -90,7 +90,7 @@ export const authSlice = createSlice({
 export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
   try {
     const { email, password } = params;
-    const location = JSON.parse(localStorage.getItem('location') || '');
+    const location = JSON.parse(localStorage.getItem('location') || '{}');
     const { data } = await instance.post('/auth/login', {
       email,
       password,
@@ -234,9 +234,10 @@ export const updateAvatar =
 
       dispatch(updateAvatarState(image));
       localStorage.setItem('user', JSON.stringify(data?.data));
+      return true;
     } catch (err) {
       console.log(err);
-      toast.error('Update avatar failed');
+      return false;
     }
   };
 
