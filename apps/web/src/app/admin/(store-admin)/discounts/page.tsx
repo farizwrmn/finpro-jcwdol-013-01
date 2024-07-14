@@ -91,6 +91,13 @@ const Page = () => {
                 setFilters({ ...filters, keyword: e.target.value, page: 1 })
               }
             />
+            <Input
+              placeholder="Search..."
+              value={filters.keyword}
+              onChange={(e) =>
+                setFilters({ ...filters, keyword: e.target.value, page: 1 })
+              }
+            />
             <Button
               colorScheme="blue"
               onClick={() => {
