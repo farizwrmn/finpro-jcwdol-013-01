@@ -64,7 +64,7 @@ const SidebarUser = ({ onClose, ...rest }: SidebarProps) => {
           h="20"
           alignItems="center"
           mx="8"
-          mb={10}
+          mb={5}
           mt={5}
           justifyContent="space-between"
         >

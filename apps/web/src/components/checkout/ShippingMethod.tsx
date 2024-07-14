@@ -42,6 +42,8 @@ export default function ShippingMethod({ couriers = [] }: Props) {
     }));
   }
 
+  console.log(cart.shippingCourier, '|', cart.shippingService);
+
   return (
     <Stack spacing={8}>
       <Heading as="h1" fontSize="2xl">
@@ -53,7 +55,10 @@ export default function ShippingMethod({ couriers = [] }: Props) {
           spacing={8}
           w={'full'}
         >
-          <RadioGroup onChange={handleChange}>
+          <RadioGroup
+            value={`${cart.shippingCourier}|${cart.shippingService}|${cart.shippingPrice}`}
+            onChange={handleChange}
+          >
             {couriers.map((courier, index) => (
               <Box key={index} mb={6}>
                 <Heading as="h3" fontSize="md" mb={4}>
@@ -65,10 +70,6 @@ export default function ShippingMethod({ couriers = [] }: Props) {
                       size='md'
                       colorScheme='green'
                       value={`${courier.code.toUpperCase()}|${service.service}|${service.cost[0].value}`}
-                      checked={
-                        cart.shippingCourier === courier.code.toUpperCase() &&
-                        cart.shippingService === service.service
-                      }
                     >
                       {`${service.description} (${service.cost[0].etd} days)`}
                     </Radio>

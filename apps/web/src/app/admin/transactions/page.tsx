@@ -38,6 +38,8 @@ import { endOfMonth, format, startOfMonth } from "date-fns";
 import { DateRange, Range, RangeKeyDict } from "react-date-range";
 import { FaCalendarAlt } from "react-icons/fa";
 import { ORDER_STATUS } from "@/constants/order.constant";
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 
 const Page = () => {
   const router = useRouter();
