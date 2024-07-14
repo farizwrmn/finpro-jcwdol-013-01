@@ -234,9 +234,10 @@ export const updateAvatar =
 
       dispatch(updateAvatarState(image));
       localStorage.setItem('user', JSON.stringify(data?.data));
+      return true;
     } catch (err) {
       console.log(err);
-      toast.error('Update avatar failed');
+      return false;
     }
   };
 

@@ -34,7 +34,6 @@ const SidebarAdmin = ({ onClose, linkItems, ...rest }: SidebarProps) => {
       w={{ base: 'full', md: 60 }}
       pos="fixed"
       h="full"
-      bgGradient="linear(to-b, white, blue.500, green.200)"
       {...rest}
     >
       <Flex

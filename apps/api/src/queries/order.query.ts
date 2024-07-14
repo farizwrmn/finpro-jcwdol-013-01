@@ -13,6 +13,7 @@ import { getDiscountsByStoreIDQuery } from './discount.query';
 import { DISCOUNT_TYPE } from '@/constants/discount.constant';
 import { createVoucherQuery } from './voucher.query';
 import { ORDER_STATUS } from '@/constants/order.constant';
+import { subDays, subHours } from 'date-fns';
 
 const prisma = new PrismaClient();
 
@@ -173,20 +174,38 @@ const createOrderQuery = async (data: IOrder): Promise<Order> => {
   }
 };
 
-const confirmShippingOrderQuery = async () => {
+const confirmShippingOrdersQuery = async () => {
   try {
-    const twoDaysAgo = new Date();
-    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-
     const orders = await prisma.order.updateMany({
+      data: {
+        orderStatus: ORDER_STATUS.pesananDikonfirmasi,
+      },
       where: {
         orderStatus: ORDER_STATUS.dikirim,
         shippingDate: {
-          gt: twoDaysAgo,
+          lt: subDays(new Date(), 2),
         },
       },
+    });
+    return orders;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const cancelUnconfirmedOrdersQuery = async () => {
+  try {
+    const orders = await prisma.order.updateMany({
       data: {
-        orderStatus: ORDER_STATUS.pesananDikonfirmasi,
+        orderStatus: ORDER_STATUS.dibatalkan,
+      },
+      where: {
+        paymentMethod: 'BANK',
+        paymentImage: null,
+        orderStatus: ORDER_STATUS.menungguPembayaran,
+        orderDate: {
+          lt: subHours(new Date(), 1),
+        },
       },
     });
     return orders;
@@ -196,7 +215,8 @@ const confirmShippingOrderQuery = async () => {
 };
 
 export {
-  confirmShippingOrderQuery,
+  confirmShippingOrdersQuery,
+  cancelUnconfirmedOrdersQuery,
   getOrdersQuery,
   getOrderByIDQuery,
   createOrderQuery,

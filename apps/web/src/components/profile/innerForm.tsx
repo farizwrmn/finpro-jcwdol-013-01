@@ -32,10 +32,14 @@ export default function InnerForm(props: FormikProps<FormValues>) {
       const inputFile = document.getElementById('image') as HTMLInputElement;
       formData.append('image', inputFile?.files?.item(0) as File);
 
-      dispatch(updateAvatar(values.id, formData));
+      const result = await dispatch(updateAvatar(values.id, formData));
+      if (!result) throw new Error('Update Avatar Failed');
       toast.success('Update Avatar Success');
     } catch (err) {
       console.error(err);
+      toast.error(
+        'Update avatar failed! Please upload file with extension .jpg, .jpeg, .png, .gif and maximum size 1MB!',
+      );
     }
   };
 
