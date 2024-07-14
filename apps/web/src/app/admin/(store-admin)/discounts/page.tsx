@@ -37,7 +37,6 @@ import { toast } from 'react-toastify';
 const Page = () => {
   const router = useRouter();
   const user = useAppSelector((state) => state.auth.user);
-  // const [discounts, setDiscounts] = useState<any[]>([]);
   const [data, setData] = useState({
     discounts: [],
     pages: 1,

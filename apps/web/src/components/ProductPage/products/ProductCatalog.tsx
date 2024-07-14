@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 import {
   Box,
   Card,
@@ -13,26 +13,45 @@ import {
   Icon,
   IconButton,
   Image,
+  Select,
   Stack,
   Text,
 } from '@chakra-ui/react';
 import { FormatCurrency } from '@/utils/FormatCurrency';
 import Link from 'next/link';
-import {
-  getAvailableProductsByStoreID,
-  getProducts,
-} from '@/services/product.service';
+import { getProducts } from '@/services/product.service';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { getStores } from '@/services/store.service';
-import { FaStore } from 'react-icons/fa';
+import { getCategories } from '@/services/category.service';
+import { useSearchParams } from 'next/navigation';
 
-const ProductList = () => {
-  const [stores, setStores] = useState<any[]>([]);
+const ProductCatalog = () => {
+  const searchParams = useSearchParams();
+  const category = searchParams.get('category') || '';
+
+  const [categories, setCategories] = useState({
+    categories: [],
+    pages: 1,
+  });
+
+  const [catFilters, setCatFilters] = useState({
+    keyword: '',
+    page: 1,
+    size: 20,
+  });
+
+  useEffect(() => {
+    (async () => {
+      const result = await getCategories(catFilters);
+      setCategories(result);
+    })();
+  }, [catFilters]);
+
   const [data, setData] = useState({
     products: [],
     pages: 1,
   });
   const [filters, setFilters] = useState({
+    category: category as string,
     keyword: '',
     page: 1,
     size: 8,
@@ -40,38 +59,36 @@ const ProductList = () => {
 
   useEffect(() => {
     (async () => {
-      const location = JSON.parse(localStorage.getItem('location') || '{}');
-      const storeId = location.storeId;
-      if (storeId) {
-        const result = await getAvailableProductsByStoreID({
-          ...filters,
-          storeId,
-        });
-        setData(result);
-      } else {
-        const result = await getProducts(filters);
-        setData(result);
-      }
+      const result = await getProducts(filters);
+      setData(result);
     })();
   }, [filters]);
 
-  useEffect(() => {
-    (async () => {
-      const data = await getStores({});
-      setStores(data.stores);
-    })();
-  }, []);
-
   return (
     <>
-      <Heading
-        textAlign={'center'}
-        mt={{ base: '10', sm: '10' }}
-        mb={5}
-        fontFamily={'monospace'}
-      >
-        Groceries Near You
-      </Heading>
+      <Stack align={'center'}>
+        <Heading
+          textAlign={'center'}
+          mt={{ base: '10', sm: '10' }}
+          fontFamily={'monospace'}
+        >
+          Category
+        </Heading>
+        <Select
+          w={'auto'}
+          mb={5}
+          mt={5}
+          value={filters.category}
+          onChange={(e) => setFilters({ ...filters, category: e.target.value })}
+        >
+          <option value={''}>All</option>
+          {categories.categories?.map((category: any) => (
+            <option value={category.slug} key={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </Select>
+      </Stack>
       <Divider mb={10} />
       <Stack
         pb={10}
@@ -154,35 +171,9 @@ const ProductList = () => {
             </Box>
           </Box>
         )}
-        {data.pages === 0 && (
-          <Stack flexDirection={'column'} textAlign={'center'} h={'full'}>
-            <Text as={'b'} fontSize={'4xl'}>
-              Our Products only available in Stores below:{' '}
-            </Text>
-            <Box m={2} justifyContent={'center'} mt={10}>
-              {stores.map((store: any, index: number) => (
-                <Flex
-                  key={index}
-                  display="inline-flex"
-                  backgroundColor={'white'}
-                  cursor={'default'}
-                  m={2}
-                  alignItems="center"
-                  borderRadius={5}
-                  width="max-content"
-                  p={1}
-                  pr={4}
-                >
-                  <Icon as={FaStore} color="green.500" m={2} />
-                  {store.name}
-                </Flex>
-              ))}
-            </Box>
-          </Stack>
-        )}
       </Stack>
     </>
   );
 };
 
-export default ProductList;
+export default ProductCatalog;

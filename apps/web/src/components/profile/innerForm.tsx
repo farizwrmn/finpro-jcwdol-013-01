@@ -26,11 +26,16 @@ export default function InnerForm(props: FormikProps<FormValues>) {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useAppDispatch();
 
-  const handleUpdateAvatar = async () => {
+  const handleUpdateAvatar = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+
     try {
       const formData = new FormData();
       const inputFile = document.getElementById('image') as HTMLInputElement;
-      formData.append('image', inputFile?.files?.item(0) as File);
+      const file = inputFile?.files?.item(0) as File;
+      if (!file.name) return;
+
+      formData.append('image', file);
 
       const result = await dispatch(updateAvatar(values.id, formData));
       if (!result) throw new Error('Update Avatar Failed');
@@ -45,36 +50,38 @@ export default function InnerForm(props: FormikProps<FormValues>) {
 
   return (
     <Box>
-      <Form onSubmit={handleSubmit}>
-        <Stack spacing={6} w={'full'} rounded={'xl'} p={10} my={6}>
-          <FormControl id="userName">
-            <Stack spacing={4}>
-              <Center>
-                <Avatar
-                  size="xl"
-                  src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/avatar/${values.image}`}
-                >
-                  <AvatarBadge
-                    as={IconButton}
-                    size="sm"
-                    rounded="full"
-                    top="-10px"
-                    colorScheme="red"
-                    aria-label="remove Image"
-                    icon={<SmallCloseIcon />}
-                  />
-                </Avatar>
-              </Center>
-              <Center w="full">
-                <Input
-                  type="file"
-                  id="image"
-                  name="image"
-                  onChange={handleUpdateAvatar}
+      <Stack spacing={6} w={'full'} rounded={'xl'} p={10} mt={6} pb={0}>
+        <FormControl id="avatar">
+          <Stack spacing={4}>
+            <Center>
+              <Avatar
+                size="xl"
+                src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/avatar/${values.image}`}
+              >
+                <AvatarBadge
+                  as={IconButton}
+                  size="sm"
+                  rounded="full"
+                  top="-10px"
+                  colorScheme="red"
+                  aria-label="remove Image"
+                  icon={<SmallCloseIcon />}
                 />
-              </Center>
-            </Stack>
-          </FormControl>
+              </Avatar>
+            </Center>
+            <Center w="full">
+              <Input
+                type="file"
+                id="image"
+                name="image"
+                onChange={handleUpdateAvatar}
+              />
+            </Center>
+          </Stack>
+        </FormControl>
+      </Stack>
+      <Form onSubmit={handleSubmit}>
+        <Stack spacing={6} w={'full'} rounded={'xl'} p={10} mb={6}>
           <FormControl id="Name">
             <FormLabel>Name</FormLabel>
             <Field

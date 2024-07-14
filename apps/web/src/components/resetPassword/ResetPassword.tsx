@@ -16,8 +16,8 @@ import * as Yup from 'yup';
 import { FormValues, FormProps } from './types';
 import InnerForm from './innerForm';
 import PageWrapper from '../pageWrapper';
-import { resetPassword } from "@/services/auth.service";
-import { toast } from "react-toastify";
+import { resetPassword } from '@/services/auth.service';
+import { toast } from 'react-toastify';
 
 const PasswordSchema = Yup.object().shape({
   password: Yup.string().required('Password is required'),
@@ -39,6 +39,9 @@ const ResetPassword = () => {
     async handleSubmit({ password }: FormValues, { resetForm }) {
       try {
         const data = await resetPassword({ token, password });
+        if (data) {
+          localStorage.removeItem('resetPassword');
+        }
         resetForm();
         toast.success(data.message);
         router.push('/sign-in');

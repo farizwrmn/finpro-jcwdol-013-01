@@ -23,19 +23,19 @@ export default function Hero() {
       title: 'You order? We Deliver!',
       image:
         'https://images.unsplash.com/photo-1548695607-9c73430ba065?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y291cmllcnxlbnwwfHwwfHx8MA%3D%3D',
-      link: '/products?category',
+      link: '/products',
     },
     {
       title: '24 / 7, No matter the weather',
       image:
         'https://images.unsplash.com/photo-1621972750749-0fbb1abb7736?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGNvdXJpZXJ8ZW58MHx8MHx8fDA%3D',
-      link: '/products?category',
+      link: '/products',
     },
     {
       title: 'Enjoy 20% Discount for New comers',
       image:
         'https://images.unsplash.com/photo-1588964895597-cfccd6e2dbf9?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Z3JvY2VyaWVzfGVufDB8fDB8fHww',
-      link: '/products?category',
+      link: '/products',
     },
   ];
 

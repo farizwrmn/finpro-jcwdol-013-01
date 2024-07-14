@@ -19,6 +19,8 @@ import {
   IconButton,
   Icon,
   Badge,
+  Alert,
+  AlertIcon,
 } from '@chakra-ui/react';
 import { FaCartPlus } from 'react-icons/fa';
 import ImageSlider from './ImageSlider';
@@ -40,6 +42,7 @@ import { getStockByProductIdAndStoreId } from '@/services/stock.service';
 import { FiMinus, FiPlus } from 'react-icons/fi';
 import { getDiscountByProductIdAndStoreId } from '@/services/discount.service';
 import { DISCOUNT_TYPE, DISCOUNT_UNIT } from '@/constants/discount.constant';
+import Link from 'next/link';
 
 type Props = {
   product: any;
@@ -113,8 +116,6 @@ export default function ProductDetails({ product }: Props) {
         cart.storeId,
       );
       setDiscount(dataDiscount);
-
-      console.log('dataDiscount:', dataDiscount);
 
       if (dataDiscount) {
         if (dataDiscount?.type === DISCOUNT_TYPE.productDiscount) {
@@ -252,6 +253,21 @@ export default function ProductDetails({ product }: Props) {
     }
   };
 
+  useEffect(() => {
+    const lastVisitedPage = () => {
+      const lastVisited = localStorage.getItem('lastVisitedPage');
+
+      if (!lastVisited) {
+        const currentPage = window.location.href;
+        localStorage.setItem('lastVisitedPage', currentPage);
+      }
+    };
+
+    localStorage.removeItem('lastVisitedPage');
+
+    lastVisitedPage();
+  }, []);
+
   return (
     <Container maxW={'7xl'}>
       <SimpleGrid
@@ -283,13 +299,16 @@ export default function ProductDetails({ product }: Props) {
                     {FormatCurrency(product.price - formData.discount)}
                   </Text>
                   <Text
-                    color={textColor}
+                    color={'red'}
                     fontWeight={400}
                     fontSize={'xl'}
                     textDecoration={'line-through'}
                   >
                     {FormatCurrency(product.price)}
                   </Text>
+                  <Badge variant="solid" colorScheme="green">
+                    {discount.type + ' ' + FormatCurrency(discount.amount)}
+                  </Badge>
                 </Flex>
               ) : (
                 <Text color={textColor} fontWeight={500} fontSize={'2xl'}>
@@ -375,7 +394,7 @@ export default function ProductDetails({ product }: Props) {
                 </Stack>
               )}
             </Stack>
-            {isAllow && (
+            {isAllow ? (
               <Button
                 rounded={'full'}
                 w={'full'}
@@ -394,10 +413,23 @@ export default function ProductDetails({ product }: Props) {
                   Add to Cart
                 </Text>
               </Button>
+            ) : (
+              <Alert status="info" borderRadius={5} mt={4}>
+                <AlertIcon />
+                Please login as customer and verify your email address!
+              </Alert>
             )}
             <FormControl id="category">
               <FormLabel display={'inline'}>Category:</FormLabel>
-              <Text as={'span'}>{product.category.name}</Text>
+              <Link href={`/products?category=${product.category.slug}`}>
+                <Text
+                  as={'span'}
+                  color={'green.500'}
+                  _hover={{ textDecoration: 'underline' }}
+                >
+                  {product.category.name}
+                </Text>
+              </Link>
             </FormControl>
           </Stack>
         </form>
