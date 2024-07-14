@@ -27,6 +27,7 @@ const getSalesReportPerMonthQuery = async (filters: IFilterReport) => {
           from orders
           where store_id like '%${storeId}%'
           and date_format(order_date, '%Y') like '%${year}%'
+          and upper(order_status) = upper('Pesanan Dikonfirmasi')
           group by month
           order by month
       ),
@@ -75,6 +76,7 @@ const getSalesReportPerProductQuery = async (filters: IFilterReport) => {
           where a.id = b.order_id
           and a.store_id like '%${storeId}%'
           and date_format(a.order_date, '%Y') like '%${year}%'
+          and upper(a.order_status) = upper('Pesanan Dikonfirmasi')
           group by date_format(a.order_date, '%m'), b.product_id
       ),
       master_group as (
@@ -150,6 +152,7 @@ const getSalesReportPerCategoryQuery = async (filters: IFilterReport) => {
         and b.product_id = c.id
         and a.store_id like '%${storeId}%'
         and date_format(a.order_date, '%Y') like '%${year}%'
+        and upper(a.order_status) = upper('Pesanan Dikonfirmasi')
         group by date_format(a.order_date, '%m'), c.category_id
       ),
       master_group as (
@@ -209,6 +212,7 @@ const getSalesReportTotalProductQuery = async (filters: IFilterReport) => {
           where a.id = b.order_id
           and a.store_id like '%${storeId}%'
           and date_format(a.order_date, '%Y') like '%${year}%'
+          and upper(a.order_status) = upper('Pesanan Dikonfirmasi')
           group by b.product_id
       ),
       master_output as (
@@ -246,6 +250,7 @@ const getSalesReportTotalCategoryQuery = async (filters: IFilterReport) => {
         and b.product_id = c.id
         and a.store_id like '%${storeId}%'
         and date_format(a.order_date, '%Y') like '%${year}%'
+        and upper(a.order_status) = upper('Pesanan Dikonfirmasi')
         group by c.category_id
       ),
       master_output as (

@@ -123,8 +123,9 @@ export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
 
     dispatch(
       updateCartItemsState({
-        itemsCount: cart?.cartItems?.length as number,
-        itemsPrice: cart?.itemsPrice as number,
+        itemsCount: Number(cart?.cartItems?.length),
+        itemsPrice: Number(cart?.itemsPrice),
+        itemsDiscount: Number(cart?.itemsDiscount),
       }),
     );
     dispatch(

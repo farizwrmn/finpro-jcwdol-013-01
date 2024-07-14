@@ -5,7 +5,7 @@ import {
 import cron from 'node-cron';
 
 export const scheduleTask = () => {
-  cron.schedule('*/5 * * * * *', async () => {
+  cron.schedule('0 * * * * *', async () => {
     await confirmShippingOrdersAction();
     console.log('Confirm shipping orders finished');
 
