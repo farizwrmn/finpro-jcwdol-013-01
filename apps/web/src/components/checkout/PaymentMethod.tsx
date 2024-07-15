@@ -10,75 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { updateCartPaymentState } from '@/lib/features/cart/cartSlice';
-
-interface IPaymentMethod {
-  value: string;
-  image: string;
-}
-
-const ewallets: IPaymentMethod[] = [
-  // {
-  //   value: 'GOPAY',
-  //   image: 'https://shop.rehan.id/assets/images/payment-methods/gopay.png',
-  // },
-  {
-    value: 'OVO',
-    image: 'https://shop.rehan.id/assets/images/payment-methods/ovo.png',
-  },
-  {
-    value: 'DANA',
-    image: 'https://shop.rehan.id/assets/images/payment-methods/dana.png',
-  },
-  {
-    value: 'SHOPEEPAY',
-    image: 'https://shop.rehan.id/assets/images/payment-methods/shopeepay.png',
-  },
-];
-
-const virtualAccounts: IPaymentMethod[] = [
-  {
-    value: 'BCA',
-    image: 'https://shop.rehan.id/assets/images/payment-methods/bca.png',
-  },
-  {
-    value: 'BNI',
-    image: 'https://shop.rehan.id/assets/images/payment-methods/bni.png',
-  },
-  {
-    value: 'BRI',
-    image: 'https://shop.rehan.id/assets/images/payment-methods/bri.png',
-  },
-  {
-    value: 'BSI',
-    image: 'https://shop.rehan.id/assets/images/payment-methods/bsi.png',
-  },
-  {
-    value: 'MANDIRI',
-    image: 'https://shop.rehan.id/assets/images/payment-methods/mandiri.png',
-  },
-  {
-    value: 'PERMATA',
-    image: 'https://shop.rehan.id/assets/images/payment-methods/permata.png',
-  },
-];
-
-const transferBanks: IPaymentMethod[] = [
-  {
-    value: 'BANK',
-    image: 'https://www.bankeka.co.id/assets/img/layanan/logo-atm-bersama.png',
-  },
-];
-
-const minimarkets: IPaymentMethod[] = [
-  {
-    value: 'ALFAMART',
-    image: 'https://shop.rehan.id/assets/images/payment-methods/alfamart.png',
-  },
-  {
-    value: 'INDOMARET',
-    image: 'https://shop.rehan.id/assets/images/payment-methods/indomaret.png',
-  },
-];
+import { ewallets, minimarkets, transferBanks, virtualAccounts } from "@/constants/payment.constant";
 
 export default function PaymentMethod() {
   const dispatch = useAppDispatch();

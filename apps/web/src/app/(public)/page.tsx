@@ -1,8 +1,8 @@
-import ProductList from '@/components/ProductList';
-import Category from '@/components/category';
-import Hero from '@/components/hero';
+import ProductList from '@/components/products/ProductList';
+import Category from '@/components/products/category';
+import Hero from '@/components/hero/hero';
 import GeoLocation from '@/components/navbar/GeoLocation';
-import BannerPromo from '@/components/promo/bannerPromo/page';
+import BannerPromo from '@/components/promo/BannerPromo';
 import { Divider } from '@chakra-ui/react';
 
 export default function Home() {
