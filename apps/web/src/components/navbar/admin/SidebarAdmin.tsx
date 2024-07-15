@@ -39,7 +39,7 @@ const SidebarAdmin = ({ onClose, linkItems, ...rest }: SidebarProps) => {
       <Flex
         h="20"
         alignItems="center"
-        mb={10}
+        mb={5}
         mt={5}
         mx="8"
         justifyContent="space-between"
@@ -60,7 +60,12 @@ const SidebarAdmin = ({ onClose, linkItems, ...rest }: SidebarProps) => {
         </NavItemAdmin>
       ))}
 
-      <Text align={'center'} pt={110}>
+      <Text
+        align={'center'}
+        pt={110}
+        fontSize={'sm'}
+        color={useColorModeValue('gray.600', 'gray.400')}
+      >
         © Mind Groceries, 2024
       </Text>
     </Box>

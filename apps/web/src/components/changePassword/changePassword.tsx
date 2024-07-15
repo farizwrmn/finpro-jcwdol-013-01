@@ -1,27 +1,15 @@
 'use client';
 
 import React from 'react';
-import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
-import {
-  Box,
-  Stack,
-  Flex,
-  useColorModeValue,
-  Heading,
-  Divider,
-  Text,
-  Card,
-  CardBody,
-} from '@chakra-ui/react';
+import { Box, Text, Card, CardBody } from '@chakra-ui/react';
 import { withFormik } from 'formik';
 import * as Yup from 'yup';
 import { FormValues, FormProps } from './types';
-import { IUsers } from '@/interface/user.interface';
 import InnerForm from './innerForm';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { toast } from "react-toastify";
-import { updatePassword } from "@/services/user.service";
+import { useAppSelector } from '@/lib/hooks';
+import { toast } from 'react-toastify';
+import { updatePassword } from '@/services/user.service';
 
 const PasswordSchema = Yup.object().shape({
   currentPassword: Yup.string().required('Current Password is required'),
@@ -41,9 +29,15 @@ const ChangePassword = () => {
     }),
     validationSchema: PasswordSchema,
     enableReinitialize: true,
-    async handleSubmit({ currentPassword, newPassword }: FormValues, { resetForm }) {
+    async handleSubmit(
+      { currentPassword, newPassword }: FormValues,
+      { resetForm },
+    ) {
       try {
-        const data = await updatePassword(user.id as string, { currentPassword, newPassword });
+        const data = await updatePassword(user.id as string, {
+          currentPassword,
+          newPassword,
+        });
         resetForm();
         toast.success(data.message);
         router.push('/users');

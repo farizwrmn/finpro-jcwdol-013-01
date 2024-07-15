@@ -19,15 +19,15 @@ const ShippingAddress = ({ store }: Props) => {
   useEffect(() => {
     (async () => {
       const data = await getAddresses({ userId: user.id as string, size: 1000 });
-      setAddresses(data?.addresses);
+      setAddresses(data?.addresses || []);
     })()
   }, [user.id]);
 
-  const address = useMemo(() => addresses.find(address => address.id === cart.userAddressId), [addresses, cart.userAddressId]);
+  const address = useMemo(() => addresses?.find(address => address.id === cart.userAddressId), [addresses, cart.userAddressId]);
 
   const handleChangeAddress = (e: any) => {
     const newUserAddressId = e.target.value;
-    const data = addresses.find(address => address.id === newUserAddressId);
+    const data = addresses?.find(address => address.id === newUserAddressId);
 
     dispatch(updateCartDestinationState({
       destination: data?.subdistrictId,

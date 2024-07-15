@@ -49,7 +49,7 @@ const VerifyView = () => {
       toast.success('Account verified');
       router.push('/sign-in');
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 

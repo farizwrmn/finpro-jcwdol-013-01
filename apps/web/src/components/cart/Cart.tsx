@@ -1,14 +1,6 @@
 'use client';
 
-import {
-  Box,
-  Divider,
-  Flex,
-  HStack,
-  Heading,
-  Stack,
-  useColorModeValue as mode,
-} from '@chakra-ui/react';
+import { Box, Divider, Flex, HStack, Heading, Stack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { CartItem } from './CartItems';
 import { CartSummary } from './CartSummary';

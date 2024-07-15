@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Button,
   Card,
   CardBody,
   Divider,
@@ -14,9 +13,6 @@ import {
   Icon,
   IconButton,
   Image,
-  List,
-  ListIcon,
-  ListItem,
   Stack,
   Text,
 } from '@chakra-ui/react';
@@ -84,13 +80,25 @@ const ProductList = () => {
         bgGradient={'linear(to-r, teal.200, green.500)'}
       >
         <Grid
-          templateColumns={{ base: 'repeat(1, 2fr)', sm: 'repeat(4, 2fr)' }}
+          templateColumns={{
+            base: 'repeat(1, 1fr)',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+            lg: 'repeat(4, 1fr)',
+          }}
           gap={6}
         >
           {data.products?.map((product: any, index: number) => (
-            <GridItem w={'full'} flexDirection={'column'} p={5} key={index}>
+            <GridItem
+              w={'full'}
+              flexDirection={'column'}
+              alignItems={'flex-start'}
+              p={5}
+              key={index}
+              mb={{ md: 10, sm: 0, base: 0 }}
+            >
               <Card
-                h={'100%'}
+                h={{ base: '100%', sm: '100%' }}
                 key={index}
                 maxW="xl"
                 shadow={'xl'}
@@ -109,14 +117,15 @@ const ProductList = () => {
                       alt="Green double couch with wooden legs"
                       borderRadius="2xl"
                       width={'500px'}
-                      height={'200px'}
+                      height={{ md: '200px', sm: '200px', base: '200px' }}
                       fit={'cover'}
+                      // mb={20}
                     />
                     <Stack mt="3" spacing="3" textAlign={'center'}>
-                      <Heading size="md" noOfLines={4}>
+                      <Heading size={{ md: 'sm', sm: 'md' }}>
                         {product.name}
                       </Heading>
-                      <Text>{product.category.name}</Text>
+                      <Text display={'block'}>{product.category.name}</Text>
                       <Text color="blue.600" fontSize="lg" mt={5} as={'b'}>
                         {FormatCurrency(product.price)}
                       </Text>
@@ -127,6 +136,7 @@ const ProductList = () => {
             </GridItem>
           ))}
         </Grid>
+
         {data.pages > 1 && (
           <Box pt={4} display="flex" justifyContent="center">
             <Box display="flex">

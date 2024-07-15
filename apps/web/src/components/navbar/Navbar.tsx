@@ -166,11 +166,7 @@ export default function Navbar() {
                       </Box>
                     </HStack>
                   </MenuButton>
-                  <MenuList
-                    // bg={useColorModeValue('white', 'gray.900')}
-                    // borderColor={useColorModeValue('gray.200', 'gray.700')}
-                    zIndex={10}
-                  >
+                  <MenuList zIndex={10}>
                     <MenuItem
                       onClick={() => {
                         router.push(

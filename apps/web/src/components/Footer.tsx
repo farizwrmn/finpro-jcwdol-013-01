@@ -9,7 +9,7 @@ import {
   useColorModeValue,
   VisuallyHidden,
 } from '@chakra-ui/react';
-import { FaInstagram, FaLocationArrow, FaTwitter } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaTwitter } from 'react-icons/fa';
 import { ReactNode } from 'react';
 
 const SocialButton = ({
@@ -67,8 +67,8 @@ export default function Footer() {
           <SocialButton label={'Twitter'} href={'/'}>
             <FaTwitter />
           </SocialButton>
-          <SocialButton label={'GPS'} href={'/'}>
-            <FaLocationArrow />
+          <SocialButton label={'Facebook'} href={'/'}>
+            <FaFacebook />
           </SocialButton>
           <SocialButton label={'Instagram'} href={'/'}>
             <FaInstagram />

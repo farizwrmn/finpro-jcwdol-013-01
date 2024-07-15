@@ -123,8 +123,9 @@ export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
 
     dispatch(
       updateCartItemsState({
-        itemsCount: cart?.cartItems?.length as number,
-        itemsPrice: cart?.itemsPrice as number,
+        itemsCount: Number(cart?.cartItems?.length),
+        itemsPrice: Number(cart?.itemsPrice),
+        itemsDiscount: Number(cart?.itemsDiscount),
       }),
     );
     dispatch(
@@ -213,7 +214,7 @@ export const updateProfile =
 
       return data?.data;
     } catch (err: any) {
-      console.log(err);
+      console.error(err);
       return err.response.data.message;
     }
   };
@@ -239,7 +240,7 @@ export const updateAvatar =
       localStorage.setItem('user', JSON.stringify(data?.data));
       return true;
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return false;
     }
   };

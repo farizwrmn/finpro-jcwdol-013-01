@@ -51,22 +51,26 @@ const getDistanceStoresAction = async (userLocation: IUserLocation) => {
   try {
     const { stores } = await getStoresQuery({});
 
+    if (!userLocation.longitude || !userLocation.latitude) {
+      return stores;
+    }
+
     let distanceStores = stores.map((store) => {
       const distance =
         userLocation.longitude &&
-        userLocation.latitude &&
-        store.longitude &&
-        store.latitude
+          userLocation.latitude &&
+          store.longitude &&
+          store.latitude
           ? haversine(
-              {
-                longitude: userLocation.longitude,
-                latitude: userLocation.latitude,
-              },
-              {
-                longitude: store.longitude,
-                latitude: store.latitude,
-              },
-            )
+            {
+              longitude: userLocation.longitude,
+              latitude: userLocation.latitude,
+            },
+            {
+              longitude: store.longitude,
+              latitude: store.latitude,
+            },
+          )
           : null;
       return { ...store, distance };
     });
