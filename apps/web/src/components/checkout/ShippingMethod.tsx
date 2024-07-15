@@ -42,8 +42,6 @@ export default function ShippingMethod({ couriers = [] }: Props) {
     }));
   }
 
-  console.log(cart.shippingCourier, '|', cart.shippingService);
-
   return (
     <Stack spacing={8}>
       <Heading as="h1" fontSize="2xl">

@@ -214,7 +214,7 @@ export const updateProfile =
 
       return data?.data;
     } catch (err: any) {
-      console.log(err);
+      console.error(err);
       return err.response.data.message;
     }
   };
@@ -240,7 +240,7 @@ export const updateAvatar =
       localStorage.setItem('user', JSON.stringify(data?.data));
       return true;
     } catch (err) {
-      console.log(err);
+      console.error(err);
       return false;
     }
   };

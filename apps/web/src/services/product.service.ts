@@ -119,7 +119,7 @@ export const createProductImage = async (formData: any) => {
     const productImage = data?.data;
     return productImage;
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 
