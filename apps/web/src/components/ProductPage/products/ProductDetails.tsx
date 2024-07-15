@@ -307,7 +307,10 @@ export default function ProductDetails({ product }: Props) {
                     {FormatCurrency(product.price)}
                   </Text>
                   <Badge variant="solid" colorScheme="green">
-                    {discount.type + ' ' + FormatCurrency(discount.amount)}
+                    {discount.type === DISCOUNT_TYPE.productDiscount &&
+                    discount.unit === DISCOUNT_UNIT.amount
+                      ? discount.type + ' ' + FormatCurrency(discount.amount)
+                      : discount.type + ' ' + discount.amount + '%'}
                   </Badge>
                 </Flex>
               ) : (
