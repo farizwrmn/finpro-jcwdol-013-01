@@ -16,29 +16,27 @@ import {
   IconButton,
   Icon,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/navigation';
-import { getStores } from '@/services/store.service';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { formatDate } from "@/utils/date";
 
-const TableChart = () => {
-  const [data, setData] = useState({
-    stores: [],
-    pages: 1,
-  });
-  const [filters, setFilters] = useState({
-    keyword: '',
-    page: 1,
-    size: 10,
-  });
-  const router = useRouter();
+type Filters = {
+  year: string;
+  storeId: string;
+  keyword: string;
+  page: number;
+  size: number;
+}
 
-  useEffect(() => {
-    (async () => {
-      const result = await getStores(filters);
-      setData(result);
-    })();
-  }, [filters]);
+type Props = {
+  detailDatasets: {
+    reports: any[];
+    pages: number;
+  };
+  filters: Filters;
+  setFilters: (filters: any) => void;
+}
 
+const StockTableChart = ({ detailDatasets, filters, setFilters }: Props) => {
   return (
     <Box>
       <Flex gap={4} pb={8}>
@@ -55,20 +53,24 @@ const TableChart = () => {
           <Thead>
             <Tr>
               <Th>No.</Th>
-              <Th>Name</Th>
-              <Th>Subdistrict</Th>
-              <Th>City</Th>
-              <Th>Province</Th>
+              <Th>Product</Th>
+              <Th>Store</Th>
+              <Th>Stock</Th>
+              <Th>Type</Th>
+              <Th>Created By</Th>
+              <Th>Created Date</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {data.stores?.map((store: any, index: number) => (
-              <Tr key={store.id}>
+            {detailDatasets?.reports?.map((report: any, index: number) => (
+              <Tr key={report.id}>
                 <Td>{filters.size * (filters.page - 1) + index + 1}</Td>
-                <Td>{store.name}</Td>
-                <Td>{store.subdistrictName}</Td>
-                <Td>{store.cityName}</Td>
-                <Td>{store.provinceName}</Td>
+                <Td>{report.stockProduct?.product?.name}</Td>
+                <Td>{report.stockProduct?.store?.name}</Td>
+                <Td>{report.stock}</Td>
+                <Td>{report.type === 'tambah' ? 'Penambahan' : 'Pengurangan'}</Td>
+                <Td>{report.createdByUser?.name}</Td>
+                <Td>{formatDate(report.createdDate)}</Td>
               </Tr>
             ))}
           </Tbody>
@@ -97,7 +99,7 @@ const TableChart = () => {
             aria-label="left"
             icon={<Icon as={FiChevronLeft} />}
             onClick={() =>
-              setFilters((prevFilters) => ({
+              setFilters((prevFilters: any) => ({
                 ...prevFilters,
                 page: Math.max(prevFilters.page - 1, 1),
               }))
@@ -105,18 +107,18 @@ const TableChart = () => {
             isDisabled={filters.page === 1}
           />
           <Box p={2}>
-            {filters.page} / {data.pages}
+            {filters.page} / {detailDatasets?.pages}
           </Box>
           <IconButton
             aria-label="right"
             icon={<Icon as={FiChevronRight} />}
             onClick={() =>
-              setFilters((prevFilters) => ({
+              setFilters((prevFilters: any) => ({
                 ...prevFilters,
-                page: Math.min(prevFilters.page + 1, data.pages),
+                page: Math.min(prevFilters.page + 1, detailDatasets?.pages),
               }))
             }
-            isDisabled={filters.page === data.pages}
+            isDisabled={filters.page === detailDatasets?.pages}
           />
         </Box>
       </Box>
@@ -124,4 +126,4 @@ const TableChart = () => {
   );
 };
 
-export default TableChart;
+export default StockTableChart;

@@ -1,4 +1,4 @@
-import { IFilterReport } from '@/interface/report.interface';
+import { IFilterReport, IFilterReportTable } from '@/interface/report.interface';
 import instance from '@/utils/axiosInstance';
 
 export const getSalesReportPerMonth = async ({
@@ -102,6 +102,53 @@ export const getSalesReportTotalCategory = async ({
     };
     const { data } = await instance.get(
       `/report/sales/category/total?year=${year}&storeId=${storeId}`,
+      config,
+    );
+    const report = data?.data;
+    return report;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getStockReportPerMonth = async ({
+  year = '',
+  storeId = '',
+}: IFilterReport) => {
+  try {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await instance.get(
+      `/report/stock/month?year=${year}&storeId=${storeId}`,
+      config,
+    );
+    const report = data?.data;
+    return report;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export const getStockReportDetail = async ({
+  year = '',
+  storeId = '',
+  keyword = "",
+  page = 1,
+  size = 10,
+}: IFilterReportTable) => {
+  try {
+    const token = localStorage.getItem('token');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await instance.get(
+      `/report/stock/detail?year=${year}&storeId=${storeId}&keyword=${keyword}&page=${page}&size=${size}`,
       config,
     );
     const report = data?.data;
