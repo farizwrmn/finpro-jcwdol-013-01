@@ -2,12 +2,9 @@
 
 import React from 'react';
 import { Box, IconButton, useBreakpointValue } from '@chakra-ui/react';
-// Here we have used react-icons package for the icons
 import { BiLeftArrowAlt, BiRightArrowAlt } from 'react-icons/bi';
-// And react-slick as our Carousel Lib
 import Slider from 'react-slick';
 
-// Settings for the slider
 const settings = {
   dots: true,
   arrows: false,
@@ -21,16 +18,11 @@ const settings = {
 };
 
 export default function Carousel() {
-  // As we have used custom buttons, we need a reference variable to
-  // change the state
   const [slider, setSlider] = React.useState<Slider | null>(null);
 
-  // These are the breakpoints which changes the position of the
-  // buttons as the screen size changes
-  const top = useBreakpointValue({ base: '90%', md: '50%' });
-  const side = useBreakpointValue({ base: '30%', md: '10px' });
+  const top = useBreakpointValue({ base: '90%', sm: '35%', md: 'none' });
+  const side = useBreakpointValue({ base: '30%', sm: '10px', md: 'none' });
 
-  // These are the images used in the slide
   const cards = [
     '/assets/images/Diskon.gif',
     '/assets/images/Gratis.gif',
@@ -50,7 +42,6 @@ export default function Carousel() {
       bgSize={{ base: 'unset', sm: 'cover' }}
       bgPos={{ base: 'left', sm: 'bottom' }}
     >
-      {/* CSS files for react-slick */}
       <link
         rel="stylesheet"
         type="text/css"
@@ -61,8 +52,7 @@ export default function Carousel() {
         type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
       />
-      <Box display={{ base: 'none', sm: 'block' }}>
-        {/* Left Icon */}
+      <Box display={{ base: 'none', sm: 'block', md: 'none' }}>
         <IconButton
           aria-label="left-arrow"
           colorScheme="messenger"
@@ -75,9 +65,8 @@ export default function Carousel() {
           onClick={() => slider?.slickPrev()}
           ml={{ base: 0, sm: 40 }}
         >
-          <BiLeftArrowAlt />
+          <BiLeftArrowAlt size={30} />
         </IconButton>
-        {/* Right Icon */}
         <IconButton
           aria-label="right-arrow"
           colorScheme="messenger"
@@ -90,10 +79,9 @@ export default function Carousel() {
           onClick={() => slider?.slickNext()}
           mr={{ base: 0, sm: 40 }}
         >
-          <BiRightArrowAlt />
+          <BiRightArrowAlt size={30} />
         </IconButton>
       </Box>
-      {/* Slider */}
       <Slider {...settings} ref={(slider) => setSlider(slider)}>
         {cards.map((url, index) => (
           <Box

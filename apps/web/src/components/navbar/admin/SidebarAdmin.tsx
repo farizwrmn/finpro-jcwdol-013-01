@@ -60,7 +60,12 @@ const SidebarAdmin = ({ onClose, linkItems, ...rest }: SidebarProps) => {
         </NavItemAdmin>
       ))}
 
-      <Text align={'center'} pt={110}>
+      <Text
+        align={'center'}
+        pt={110}
+        fontSize={'sm'}
+        color={useColorModeValue('gray.600', 'gray.400')}
+      >
         © Mind Groceries, 2024
       </Text>
     </Box>

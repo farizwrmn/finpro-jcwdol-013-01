@@ -5,11 +5,10 @@ import {
   Button,
   Stack,
   Text,
-  Input,
 } from '@chakra-ui/react';
 import { FormikProps, Form, Field } from 'formik';
 import { FormValues } from './types';
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
 export default function InnerForm(props: FormikProps<FormValues>) {
   const { values, errors, touched, handleChange, handleSubmit, isSubmitting } =
@@ -29,13 +28,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
   return (
     <Box>
       <Form onSubmit={handleSubmit}>
-        <Stack
-          spacing={6}
-          w={'full'}
-          rounded={'xl'}
-          p={10}
-          my={6}
-        >
+        <Stack spacing={6} w={'full'} rounded={'xl'} p={10} my={6}>
           <FormControl id="currentPassword" isRequired>
             <FormLabel htmlFor="currentPassword">Current Password </FormLabel>
             <Field
@@ -47,7 +40,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
                 padding: '5px',
                 border: '0.5px solid grey',
                 borderRadius: '5px',
-                width: '100%'
+                width: '100%',
               }}
             />
             {touched.currentPassword && errors.currentPassword && (
@@ -73,7 +66,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
                 padding: '5px',
                 border: '0.5px solid grey',
                 borderRadius: '5px',
-                width: '100%'
+                width: '100%',
               }}
             />
             {touched.newPassword && errors.newPassword && (
@@ -99,10 +92,13 @@ export default function InnerForm(props: FormikProps<FormValues>) {
                 padding: '5px',
                 border: '0.5px solid grey',
                 borderRadius: '5px',
-                width: '100%'
+                width: '100%',
               }}
               validate={() =>
-                validateConfirmPassword(values.newPassword, values.confirmPassword)
+                validateConfirmPassword(
+                  values.newPassword,
+                  values.confirmPassword,
+                )
               }
             />
             {errors.confirmPassword && (
@@ -114,14 +110,15 @@ export default function InnerForm(props: FormikProps<FormValues>) {
           <Stack spacing={6} direction={['column', 'row']}>
             <Button
               onClick={() => {
-                router.push("/users");
+                router.push('/users');
               }}
               bg={'red.400'}
               color={'white'}
               w="full"
               _hover={{
                 bg: 'red.500',
-              }}>
+              }}
+            >
               Cancel
             </Button>
             {errors.confirmPassword ? (

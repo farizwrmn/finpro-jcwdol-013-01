@@ -7,14 +7,9 @@ import {
   Stack,
   Image,
   SimpleGrid,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionIcon,
-  AccordionPanel,
 } from '@chakra-ui/react';
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { updateCartPaymentState } from "@/lib/features/cart/cartSlice";
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { updateCartPaymentState } from '@/lib/features/cart/cartSlice';
 
 interface IPaymentMethod {
   value: string;
@@ -36,8 +31,7 @@ const ewallets: IPaymentMethod[] = [
   },
   {
     value: 'SHOPEEPAY',
-    image:
-      'https://shop.rehan.id/assets/images/payment-methods/shopeepay.png',
+    image: 'https://shop.rehan.id/assets/images/payment-methods/shopeepay.png',
   },
 ];
 
@@ -56,18 +50,15 @@ const virtualAccounts: IPaymentMethod[] = [
   },
   {
     value: 'BSI',
-    image:
-      'https://shop.rehan.id/assets/images/payment-methods/bsi.png',
+    image: 'https://shop.rehan.id/assets/images/payment-methods/bsi.png',
   },
   {
     value: 'MANDIRI',
-    image:
-      'https://shop.rehan.id/assets/images/payment-methods/mandiri.png',
+    image: 'https://shop.rehan.id/assets/images/payment-methods/mandiri.png',
   },
   {
     value: 'PERMATA',
-    image:
-      'https://shop.rehan.id/assets/images/payment-methods/permata.png',
+    image: 'https://shop.rehan.id/assets/images/payment-methods/permata.png',
   },
 ];
 
@@ -95,7 +86,7 @@ export default function PaymentMethod() {
 
   const handleChange = (paymentMethod: string) => {
     dispatch(updateCartPaymentState({ paymentMethod }));
-  }
+  };
 
   return (
     <Stack spacing={8}>
@@ -103,12 +94,8 @@ export default function PaymentMethod() {
         Payment Method
       </Heading>
 
-      <Stack
-        spacing={8}
-        w={'full'}
-      >
-        <RadioGroup
-          value={cart.paymentMethod} onChange={handleChange}>
+      <Stack spacing={8} w={'full'}>
+        <RadioGroup value={cart.paymentMethod} onChange={handleChange}>
           <Box>
             <Box>
               <Heading as="h3" fontSize="md" color="#4A5568" flex='1' textAlign='left'>E-Wallet</Heading>
@@ -138,7 +125,12 @@ export default function PaymentMethod() {
                 {transferBanks.map((method, index) => (
                   <Radio key={index} value={method.value}>
                     <Box pl={2}>
-                      <Image width={90} height={50} src={method.image} alt={method.value} />
+                      <Image
+                        width={90}
+                        height={50}
+                        src={method.image}
+                        alt={method.value}
+                      />
                     </Box>
                   </Radio>
                 ))}

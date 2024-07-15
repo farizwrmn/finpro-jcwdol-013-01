@@ -68,7 +68,7 @@ const SidebarUser = ({ onClose, ...rest }: SidebarProps) => {
           mt={5}
           justifyContent="space-between"
         >
-          <Link href="/">
+          <Link href="/" onClick={onClose}>
             <Image src="/assets/images/logo.png" alt="logo" w={150} />
           </Link>
           <CloseButton
@@ -87,7 +87,12 @@ const SidebarUser = ({ onClose, ...rest }: SidebarProps) => {
           </NavItemUser>
         ))}
 
-        <Text align={'center'} pt={200}>
+        <Text
+          align={'center'}
+          pt={200}
+          fontSize={'sm'}
+          color={useColorModeValue('gray.600', 'gray.400')}
+        >
           © Mind Groceries, 2024
         </Text>
       </Box>
