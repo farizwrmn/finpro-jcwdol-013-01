@@ -12,18 +12,25 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import TableChart from './TableChart';
+import StockTableChart from './StockTableChart';
 import { useAppSelector } from "@/lib/hooks";
 import { getStores } from "@/services/store.service";
-import { getStockReportPerMonth } from "@/services/report.service";
+import { getStockReportDetail, getStockReportPerMonth } from "@/services/report.service";
 
 const DashboardSalesReport: React.FC = () => {
   const [filters, setFilters] = useState({
     year: '',
     storeId: '',
+    keyword: '',
+    page: 1,
+    size: 10,
   });
   const [stores, setStores] = useState<any[]>([]);
   const [monthDatasets, setMonthDatasets] = useState<any[]>([]);
+  const [detailDatasets, setDetailDatasets] = useState({
+    reports: [],
+    pages: 1,
+  });
   const user = useAppSelector((state) => state.auth.user);
 
   const yearOptions = Array.from({ length: 2030 - 2024 + 1 }, (_, index) => ({
@@ -64,6 +71,8 @@ const DashboardSalesReport: React.FC = () => {
       const dataMonth = await getStockReportPerMonth(filters);
       setMonthDatasets(dataMonth);
 
+      const dataDetail = await getStockReportDetail(filters);
+      setDetailDatasets(dataDetail);
     })();
   }, [filters]);
 
@@ -76,7 +85,7 @@ const DashboardSalesReport: React.FC = () => {
             value={filters.year}
             onChange={e => setFilters(prevFilters => ({ ...prevFilters, year: e.target.value }))}
           >
-            <option value="">--- All Years ---</option>
+            <option value="">- All Years -</option>
             {yearOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -84,24 +93,25 @@ const DashboardSalesReport: React.FC = () => {
             ))}
           </Select>
         </Box>
-        <Box>
-          <Text fontWeight={500}>Store:</Text>
-          <Select
-            value={filters.storeId}
-            onChange={e => setFilters(prevFilters => ({ ...prevFilters, storeId: e.target.value }))}
-          >
-            <option value="">--- All Stores ---</option>
-            {stores?.map((store) => (
-              <option key={store.id} value={store.id}>
-                {store.name}
-              </option>
-            ))}
-          </Select>
-        </Box>
+        {user.role === "super_admin" && (
+          <Box>
+            <Text fontWeight={500}>Store:</Text>
+            <Select
+              value={filters.storeId}
+              onChange={e => setFilters(prevFilters => ({ ...prevFilters, storeId: e.target.value }))}
+            >
+              <option value="">- All Stores -</option>
+              {stores?.map((store) => (
+                <option key={store.id} value={store.id}>
+                  {store.name}
+                </option>
+              ))}
+            </Select>
+          </Box>
+        )}
       </Stack>
       <Spacer />
 
-      {/* Charts Section */}
       <Grid templateColumns="repeat(auto-fit,minmax(300px,1fr">
         <GridItem colSpan={1}>
           <Box w="full" mb={-150}>
@@ -118,11 +128,15 @@ const DashboardSalesReport: React.FC = () => {
         </GridItem>
       </Grid>
 
-      <Box>
+      <Box mt={{ base: 100, lg: 0 }}>
         <Text align="center" mb={5} fontWeight={500}>
           Detail Laporan Stok Produk
         </Text>
-        <TableChart />
+        <StockTableChart
+          detailDatasets={detailDatasets}
+          filters={filters}
+          setFilters={setFilters}
+        />
       </Box>
     </Box>
   );

@@ -1,6 +1,7 @@
-import { PrismaClient } from '@prisma/client';
-import { IFilterReport } from '@/interfaces/report.interface';
+import { PrismaClient, StockHistory } from '@prisma/client';
+import { IFilterReport, IFilterReportTable } from '@/interfaces/report.interface';
 import { COLORS } from '@/constants/color.constant';
+import { endOfYear, startOfYear } from "date-fns";
 
 const prisma = new PrismaClient();
 
@@ -381,6 +382,85 @@ const getStockReportPerMonthQuery = async (filters: IFilterReport) => {
   }
 };
 
+const getStockReportDetailQuery = async (filters: IFilterReportTable) => {
+  try {
+    const {
+      year = '',
+      storeId = '',
+      keyword = '',
+      page = 1,
+      size = 1000,
+    } = filters;
+
+    let conditions: any = {};
+
+    if (storeId) {
+      conditions = {
+        ...conditions,
+        stockProduct: {
+          storeId,
+        },
+      }
+    }
+
+    if (keyword) {
+      conditions = {
+        ...conditions,
+        product: {
+          name: {
+            contains: keyword,
+          }
+        },
+      }
+    }
+
+    if (year) {
+      const startOfYearDate = startOfYear(new Date(Number(year), 0, 1));
+      const endOfYearDate = endOfYear(new Date(Number(year), 11, 31));
+      
+      conditions = {
+        ...conditions,
+        createdDate: {
+          gte: startOfYearDate,
+          lt: endOfYearDate,
+        }
+      }
+    }
+
+    const reports = await prisma.stockHistory.findMany({
+      include: {
+        stockProduct: {
+          select: {
+            store: true,
+            product: true,
+          }
+        },
+        createdByUser: true,
+      },
+      where: {
+        ...conditions,
+      },
+      skip: Number(page) > 0 ? (Number(page) - 1) * Number(size) : 0,
+      take: Number(size),
+    });
+
+    const data = await prisma.stockHistory.aggregate({
+      _count: {
+        id: true,
+      },
+      where: {
+        ...conditions,
+      },
+    });
+    const count = data._count.id;
+    const pages = Math.ceil(count / size);
+
+    return { reports, pages };
+  } catch (err) {
+    throw err;
+  }
+};
+
 export {
   getSalesReportPerMonthQuery,
   getSalesReportPerProductQuery,
@@ -388,4 +468,5 @@ export {
   getSalesReportTotalProductQuery,
   getSalesReportTotalCategoryQuery,
   getStockReportPerMonthQuery,
+  getStockReportDetailQuery,
 };

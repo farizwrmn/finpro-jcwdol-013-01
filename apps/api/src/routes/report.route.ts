@@ -6,6 +6,7 @@ import {
   getSalesReportPerProductController,
   getSalesReportTotalCategoryController,
   getSalesReportTotalProductController,
+  getStockReportDetailController,
   getStockReportPerMonthController,
 } from '@/controllers/report.controller';
 
@@ -51,6 +52,13 @@ router.get(
   verifyToken,
   adminGuard,
   getStockReportPerMonthController,
+);
+
+router.get(
+  '/stock/detail',
+  verifyToken,
+  adminGuard,
+  getStockReportDetailController,
 );
 
 export default router;

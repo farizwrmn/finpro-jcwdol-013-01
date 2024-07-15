@@ -5,6 +5,7 @@ import {
   getSalesReportPerProductAction,
   getSalesReportTotalCategoryAction,
   getSalesReportTotalProductAction,
+  getStockReportDetailAction,
   getStockReportPerMonthAction,
 } from '@/actions/report.action';
 
@@ -116,6 +117,24 @@ const getStockReportPerMonthController = async (
   }
 };
 
+const getStockReportDetailController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const filters = req.query;
+    const data = await getStockReportDetailAction(filters);
+
+    res.status(200).json({
+      message: 'Get stock report detail success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export {
   getSalesReportPerMonthController,
   getSalesReportPerProductController,
@@ -123,4 +142,5 @@ export {
   getSalesReportTotalProductController,
   getSalesReportTotalCategoryController,
   getStockReportPerMonthController,
+  getStockReportDetailController,
 };

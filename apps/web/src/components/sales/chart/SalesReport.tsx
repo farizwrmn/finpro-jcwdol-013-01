@@ -21,7 +21,6 @@ import {
   getSalesReportTotalCategory,
   getSalesReportTotalProduct,
 } from '@/services/report.service';
-import TableChart from './TableChart';
 import { getStores } from "@/services/store.service";
 import { useAppSelector } from "@/lib/hooks";
 
@@ -130,7 +129,6 @@ const DashboardSalesReport: React.FC = () => {
       </Stack>
       <Spacer />
 
-      {/* Charts Section */}
       <Grid templateColumns="repeat(auto-fit,minmax(300px,1fr">
         <Grid templateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={4}>
           <GridItem colSpan={1}>
@@ -174,8 +172,6 @@ const DashboardSalesReport: React.FC = () => {
           </Box>
         </GridItem>
       </Grid>
-
-      {/* Additional Charts (optional) */}
 
       <Grid templateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={4}>
         <GridItem colSpan={1}>
