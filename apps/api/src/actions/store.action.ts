@@ -51,6 +51,10 @@ const getDistanceStoresAction = async (userLocation: IUserLocation) => {
   try {
     const { stores } = await getStoresQuery({});
 
+    if (!userLocation.longitude || !userLocation.latitude) {
+      return stores;
+    }
+
     let distanceStores = stores.map((store) => {
       const distance =
         userLocation.longitude &&

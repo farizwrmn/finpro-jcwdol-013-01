@@ -34,22 +34,29 @@ export default function UserProfileEdit(): JSX.Element {
     }),
     validationSchema: UpdateProfileSchema,
     enableReinitialize: true,
-    handleSubmit(
+    async handleSubmit(
       { name, email, phone, gender, birthDate }: FormValues,
       { resetForm },
     ) {
-      dispatch(
-        updateProfile(user.id as string, {
-          name,
-          email,
-          phone,
-          gender,
-          birthDate,
-        }),
-      );
-      resetForm();
-      toast.success('Update user profile success');
-      router.push('/users/profile');
+      try {
+        const data = await dispatch(
+          updateProfile(user.id as string, {
+            name,
+            email,
+            phone,
+            gender,
+            birthDate,
+          }),
+        );
+
+        if (!data.id) throw new Error(data);
+
+        resetForm();
+        toast.success('Update user profile success');
+        router.push('/users/profile');
+      } catch (err: any) {
+        toast.error(err.message);
+      }
     },
   })(InnerForm);
 

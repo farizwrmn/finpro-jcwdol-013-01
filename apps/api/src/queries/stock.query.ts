@@ -4,7 +4,7 @@ import {
   IStock,
   IUpdateStock,
 } from '@/interfaces/stock.interface';
-import { Stock, PrismaClient } from '@prisma/client';
+import { Stock, PrismaClient, Order } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -236,6 +236,35 @@ const getStockByProductIdAndStoreIdQuery = async (
   }
 };
 
+const returnOrderStocksQuery = async (order: Order) => {
+  try {
+    const orderItems = await prisma.orderItem.findMany({
+      where: {
+        orderId: order.id,
+      },
+    });
+
+    // return stock
+    for (const item of orderItems) {
+      const stock = await getStockByProductIdAndStoreIdQuery(
+        item.productId,
+        order.storeId,
+      );
+
+      if (stock) {
+        await updateStockQuery(stock.id, {
+          type: 'tambah',
+          stock: Number(item.quantity + (item.bonusQuantity || 0)),
+        });
+      }
+    }
+
+    return order;
+  } catch (err) {
+    throw err;
+  }
+};
+
 export {
   createStockQuery,
   updateStockQuery,
@@ -243,4 +272,5 @@ export {
   getStocksByProductIDQuery,
   getStockByIDQuery,
   getStockByProductIdAndStoreIdQuery,
+  returnOrderStocksQuery,
 };

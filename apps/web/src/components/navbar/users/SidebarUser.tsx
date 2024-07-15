@@ -6,46 +6,14 @@ import {
   Flex,
   Image,
   CloseButton,
-  Text,
 } from '@chakra-ui/react';
 import Link from 'next/link';
-import { IconType } from 'react-icons';
-import { FaPager, FaAddressBook, FaAtlas, FaTicketAlt } from 'react-icons/fa';
-import { FiHome, FiUser } from 'react-icons/fi';
 import NavItemUser from './NavItemsUser';
+import { USER_LINK_ITEMS } from "@/constants/navbar.constant";
 
 interface SidebarProps extends BoxProps {
   onClose: () => void;
 }
-
-interface LinkItemProps {
-  name: string;
-  icon: IconType;
-  href: string;
-  key: string;
-}
-const LinkItems: Array<LinkItemProps> = [
-  { name: 'Home', icon: FiHome, href: '/users', key: 'Home' },
-  { name: 'Profile', icon: FiUser, href: '/users/profile', key: 'Profile' },
-  {
-    name: 'Change Password',
-    icon: FaPager,
-    href: '/users/change-password',
-    key: 'Change Password',
-  },
-  {
-    name: 'Address',
-    icon: FaAddressBook,
-    href: '/users/address',
-    key: 'Address',
-  },
-  {
-    name: 'Orders',
-    icon: FaAtlas,
-    href: '/users/orders',
-    key: 'Orders',
-  },
-];
 
 const SidebarUser = ({ onClose, ...rest }: SidebarProps) => {
   return (
@@ -64,11 +32,11 @@ const SidebarUser = ({ onClose, ...rest }: SidebarProps) => {
           h="20"
           alignItems="center"
           mx="8"
-          mb={10}
+          mb={5}
           mt={5}
           justifyContent="space-between"
         >
-          <Link href="/">
+          <Link href="/" onClick={onClose}>
             <Image src="/assets/images/logo.png" alt="logo" w={150} />
           </Link>
           <CloseButton
@@ -76,7 +44,7 @@ const SidebarUser = ({ onClose, ...rest }: SidebarProps) => {
             onClick={onClose}
           />
         </Flex>
-        {LinkItems.map((link) => (
+        {USER_LINK_ITEMS.map((link) => (
           <NavItemUser
             key={link.name}
             icon={link.icon}
@@ -86,12 +54,9 @@ const SidebarUser = ({ onClose, ...rest }: SidebarProps) => {
             {link.name}
           </NavItemUser>
         ))}
-
-        <Text align={'center'} pt={200}>
-          © Mind Groceries, 2024
-        </Text>
       </Box>
     </>
   );
 };
+
 export default SidebarUser;

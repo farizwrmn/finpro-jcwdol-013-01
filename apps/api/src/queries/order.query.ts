@@ -7,6 +7,7 @@ import {
 import { getCartByUserIDQuery, resetCartItemsQuery } from './cart.query';
 import {
   getStockByProductIdAndStoreIdQuery,
+  returnOrderStocksQuery,
   updateStockQuery,
 } from './stock.query';
 import { getDiscountsByStoreIDQuery } from './discount.query';
@@ -14,6 +15,7 @@ import { DISCOUNT_TYPE } from '@/constants/discount.constant';
 import { createVoucherQuery } from './voucher.query';
 import { ORDER_STATUS } from '@/constants/order.constant';
 import { subDays, subHours } from 'date-fns';
+import { updatePaymentStatusQuery } from "./payment.query";
 
 const prisma = new PrismaClient();
 
@@ -195,20 +197,30 @@ const confirmShippingOrdersQuery = async () => {
 
 const cancelUnconfirmedOrdersQuery = async () => {
   try {
-    const orders = await prisma.order.updateMany({
-      data: {
-        orderStatus: ORDER_STATUS.dibatalkan,
-      },
-      where: {
-        paymentMethod: 'BANK',
-        paymentImage: null,
-        orderStatus: ORDER_STATUS.menungguPembayaran,
-        orderDate: {
-          lt: subHours(new Date(), 1),
-        },
-      },
+    const trx = await prisma.$transaction(async (prisma) => {
+      try {
+        const orders = await prisma.order.findMany({
+          where: {
+            paymentMethod: 'BANK',
+            paymentImage: null,
+            orderStatus: ORDER_STATUS.menungguPembayaran,
+            orderDate: {
+              lt: subHours(new Date(), 1),
+            },
+          },
+        });
+
+        for (const order of orders) {
+          await updatePaymentStatusQuery(order.id, ORDER_STATUS.dibatalkan);
+        }
+
+        return orders;
+      } catch (err) {
+        throw err;
+      }
     });
-    return orders;
+
+    return trx;
   } catch (err) {
     throw err;
   }
