@@ -26,7 +26,7 @@ import { useAppSelector } from "@/lib/hooks";
 
 const DashboardSalesReport: React.FC = () => {
   const [filters, setFilters] = useState({
-    year: '',
+    year: '2024',
     storeId: '',
   });
   const [stores, setStores] = useState<any[]>([]);
@@ -102,7 +102,6 @@ const DashboardSalesReport: React.FC = () => {
             value={filters.year}
             onChange={e => setFilters(prevFilters => ({ ...prevFilters, year: e.target.value }))}
           >
-            <option value="">- All Years -</option>
             {yearOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}

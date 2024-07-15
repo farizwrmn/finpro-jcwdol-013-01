@@ -21,6 +21,7 @@ import { formatDate } from "@/utils/date";
 
 type Filters = {
   year: string;
+  month: string;
   storeId: string;
   keyword: string;
   page: number;
@@ -32,14 +33,15 @@ type Props = {
     reports: any[];
     pages: number;
   };
+  monthLabels: string[],
   filters: Filters;
   setFilters: (filters: any) => void;
 }
 
-const StockTableChart = ({ detailDatasets, filters, setFilters }: Props) => {
+const StockTableChart = ({ detailDatasets, monthLabels, filters, setFilters }: Props) => {
   return (
     <Box>
-      <Flex gap={4} pb={8}>
+      <Flex gap={4} pb={8} direction={{ base: 'column', md: 'row' }}>
         <Input
           placeholder="Search..."
           value={filters.keyword}
@@ -47,6 +49,17 @@ const StockTableChart = ({ detailDatasets, filters, setFilters }: Props) => {
             setFilters({ ...filters, keyword: e.target.value, page: 1 })
           }
         />
+        <Select
+          value={filters.month}
+          onChange={e => setFilters((prevFilters: any) => ({ ...prevFilters, month: e.target.value }))}
+        >
+          <option value="">- All Months -</option>
+          {monthLabels.map((month, index) => (
+            <option key={index} value={String(index + 1).padStart(2, '0')}>
+              {month}
+            </option>
+          ))}
+        </Select>
       </Flex>
       <TableContainer>
         <Table variant="striped">

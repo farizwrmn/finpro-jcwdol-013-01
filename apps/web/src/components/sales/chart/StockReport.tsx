@@ -17,9 +17,10 @@ import { useAppSelector } from "@/lib/hooks";
 import { getStores } from "@/services/store.service";
 import { getStockReportDetail, getStockReportPerMonth } from "@/services/report.service";
 
-const DashboardSalesReport: React.FC = () => {
+const StockReport: React.FC = () => {
   const [filters, setFilters] = useState({
-    year: '',
+    year: '2024',
+    month: '',
     storeId: '',
     keyword: '',
     page: 1,
@@ -85,7 +86,6 @@ const DashboardSalesReport: React.FC = () => {
             value={filters.year}
             onChange={e => setFilters(prevFilters => ({ ...prevFilters, year: e.target.value }))}
           >
-            <option value="">- All Years -</option>
             {yearOptions.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -129,11 +129,12 @@ const DashboardSalesReport: React.FC = () => {
       </Grid>
 
       <Box mt={{ base: 100, lg: 0 }}>
-        <Text align="center" mb={5} fontWeight={500}>
+        <Text align="center" mb={10} fontWeight={500}>
           Detail Laporan Stok Produk
         </Text>
         <StockTableChart
           detailDatasets={detailDatasets}
+          monthLabels={monthLabels}
           filters={filters}
           setFilters={setFilters}
         />
@@ -142,4 +143,4 @@ const DashboardSalesReport: React.FC = () => {
   );
 };
 
-export default DashboardSalesReport;
+export default StockReport;
