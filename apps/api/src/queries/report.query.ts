@@ -1,7 +1,7 @@
 import { PrismaClient, StockHistory } from '@prisma/client';
 import { IFilterReport, IFilterReportTable } from '@/interfaces/report.interface';
 import { COLORS } from '@/constants/color.constant';
-import { endOfYear, startOfYear } from "date-fns";
+import { endOfMonth, endOfYear, startOfMonth, startOfYear } from "date-fns";
 
 const prisma = new PrismaClient();
 
@@ -386,6 +386,7 @@ const getStockReportDetailQuery = async (filters: IFilterReportTable) => {
   try {
     const {
       year = '',
+      month = '',
       storeId = '',
       keyword = '',
       page = 1,
@@ -415,14 +416,27 @@ const getStockReportDetailQuery = async (filters: IFilterReportTable) => {
     }
 
     if (year) {
-      const startOfYearDate = startOfYear(new Date(Number(year), 0, 1));
-      const endOfYearDate = endOfYear(new Date(Number(year), 11, 31));
-      
-      conditions = {
-        ...conditions,
-        createdDate: {
-          gte: startOfYearDate,
-          lt: endOfYearDate,
+      if (month) {
+        const startOfMonthDate = startOfMonth(new Date(Number(year), Number(month) - 1, 1));
+        const endOfMonthDate = endOfMonth(new Date(Number(year), Number(month) - 1, 1));
+
+        conditions = {
+          ...conditions,
+          createdDate: {
+            gte: startOfMonthDate,
+            lt: endOfMonthDate,
+          }
+        }
+      } else {
+        const startOfYearDate = startOfYear(new Date(Number(year), 0, 1));
+        const endOfYearDate = endOfYear(new Date(Number(year), 11, 31));
+        
+        conditions = {
+          ...conditions,
+          createdDate: {
+            gte: startOfYearDate,
+            lt: endOfYearDate,
+          }
         }
       }
     }
@@ -440,6 +454,9 @@ const getStockReportDetailQuery = async (filters: IFilterReportTable) => {
       where: {
         ...conditions,
       },
+      orderBy: {
+        createdDate: 'desc'
+      },
       skip: Number(page) > 0 ? (Number(page) - 1) * Number(size) : 0,
       take: Number(size),
     });
@@ -450,6 +467,9 @@ const getStockReportDetailQuery = async (filters: IFilterReportTable) => {
       },
       where: {
         ...conditions,
+      },
+      orderBy: {
+        createdDate: 'desc'
       },
     });
     const count = data._count.id;

@@ -5,6 +5,7 @@ export interface IFilterReport {
 
 export interface IFilterReportTable {
   year?: string;
+  month?: string;
   storeId?: string;
   keyword?: string;
   page?: number;

@@ -135,6 +135,7 @@ export const getStockReportPerMonth = async ({
 
 export const getStockReportDetail = async ({
   year = '',
+  month = '',
   storeId = '',
   keyword = "",
   page = 1,
@@ -148,7 +149,7 @@ export const getStockReportDetail = async ({
       },
     };
     const { data } = await instance.get(
-      `/report/stock/detail?year=${year}&storeId=${storeId}&keyword=${keyword}&page=${page}&size=${size}`,
+      `/report/stock/detail?year=${year}&month=${month}&storeId=${storeId}&keyword=${keyword}&page=${page}&size=${size}`,
       config,
     );
     const report = data?.data;
