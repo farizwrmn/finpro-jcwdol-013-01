@@ -268,6 +268,21 @@ export default function ProductDetails({ product }: Props) {
     lastVisitedPage();
   }, []);
 
+  useEffect(() => {
+    const lastVisitedPage = () => {
+      const lastVisited = localStorage.getItem('lastVisitedPage');
+
+      if (!lastVisited) {
+        const currentPage = window.location.href;
+        localStorage.setItem('lastVisitedPage', currentPage);
+      }
+    };
+
+    localStorage.removeItem('lastVisitedPage');
+
+    lastVisitedPage();
+  }, []);
+
   return (
     <Container maxW={'7xl'}>
       <SimpleGrid
@@ -292,24 +307,33 @@ export default function ProductDetails({ product }: Props) {
                 {product.name}
               </Heading>
             </Box>
-            <Flex direction={'row'} gap={5} alignItems={'center'}>
+            <Flex
+              direction={{ base: 'column', sm: 'row' }}
+              gap={5}
+              alignItems={{ base: 'start', sm: 'center' }}
+            >
               {formData.discount > 0 ? (
-                <Flex alignItems="center" gap={5}>
-                  <Text color={textColor} fontWeight={500} fontSize={'2xl'}>
-                    {FormatCurrency(product.price - formData.discount)}
-                  </Text>
-                  <Text
-                    color={'red'}
-                    fontWeight={400}
-                    fontSize={'xl'}
-                    textDecoration={'line-through'}
-                  >
-                    {FormatCurrency(product.price)}
-                  </Text>
+                <>
+                  <Flex alignItems="center" gap={5}>
+                    <Text color={textColor} fontWeight={500} fontSize={'2xl'}>
+                      {FormatCurrency(product.price - formData.discount)}
+                    </Text>
+                    <Text
+                      color={'red'}
+                      fontWeight={400}
+                      fontSize={'xl'}
+                      textDecoration={'line-through'}
+                    >
+                      {FormatCurrency(product.price)}
+                    </Text>
+                  </Flex>
                   <Badge variant="solid" colorScheme="green">
-                    {discount.type + ' ' + FormatCurrency(discount.amount)}
+                    {discount.type === DISCOUNT_TYPE.productDiscount &&
+                    discount.unit === DISCOUNT_UNIT.amount
+                      ? discount.type + ' ' + FormatCurrency(discount.amount)
+                      : discount.type + ' ' + discount.amount + '%'}
                   </Badge>
-                </Flex>
+                </>
               ) : (
                 <Text color={textColor} fontWeight={500} fontSize={'2xl'}>
                   {FormatCurrency(product.price)}
@@ -342,7 +366,7 @@ export default function ProductDetails({ product }: Props) {
                         <option
                           key={store.id}
                           value={store.id}
-                        >{store.name + `${store.distance ? ' - ' + parseFloat(store.distance).toFixed(2) + 'km' : ''}`}</option>
+                        >{`${store.name} - ${parseFloat(store.distance).toFixed(2)} km`}</option>
                       ))}
                     </Select>
                   </FormControl>
@@ -416,7 +440,7 @@ export default function ProductDetails({ product }: Props) {
             ) : (
               <Alert status="info" borderRadius={5} mt={4}>
                 <AlertIcon />
-                Please login as customer and verify your email address!
+                Please login as customer or verify your email address!
               </Alert>
             )}
             <FormControl id="category">

@@ -1,9 +1,17 @@
 'use client';
 
 import React from 'react';
-import { Box, Stack, Heading, Container } from '@chakra-ui/react';
+import {
+  Box,
+  Stack,
+  Heading,
+  Container,
+  IconButton,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 import Slider from 'react-slick';
 import Link from 'next/link';
+import { BiLeftArrowAlt, BiRightArrowAlt } from 'react-icons/bi';
 const settings = {
   dots: true,
   arrows: false,
@@ -18,6 +26,10 @@ const settings = {
 
 export default function Hero() {
   const [slider, setSlider] = React.useState<Slider | null>(null);
+
+  const top = useBreakpointValue({ base: '90%', sm: '35%', md: '50%' });
+  const side = useBreakpointValue({ base: '30%', sm: '10px', md: '10px' });
+
   const cards = [
     {
       title: 'You order? We Deliver!',
@@ -56,6 +68,38 @@ export default function Hero() {
         type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
       />
+      <Box display={{ base: 'none', sm: 'block', md: 'none', xs: 'none' }}>
+        <IconButton
+          aria-label="left-arrow"
+          colorScheme="gray"
+          variant={'outline'}
+          _hover={{ bgColor: 'gray' }}
+          borderRadius="full"
+          position="absolute"
+          left={side}
+          top={top}
+          transform={'translate(0%, -50%)'}
+          zIndex={2}
+          onClick={() => slider?.slickPrev()}
+        >
+          <BiLeftArrowAlt color="white" />
+        </IconButton>
+        <IconButton
+          aria-label="right-arrow"
+          colorScheme="gray"
+          variant={'outline'}
+          _hover={{ bgColor: 'gray' }}
+          borderRadius="full"
+          position="absolute"
+          right={side}
+          top={top}
+          transform={'translate(0%, -50%)'}
+          zIndex={99}
+          onClick={() => slider?.slickNext()}
+        >
+          <BiRightArrowAlt color="white" />
+        </IconButton>
+      </Box>
       <Slider {...settings} ref={(slider) => setSlider(slider)}>
         {cards.map((card, index) => (
           <Box
