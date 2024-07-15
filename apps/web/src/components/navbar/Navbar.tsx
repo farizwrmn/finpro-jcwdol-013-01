@@ -76,7 +76,7 @@ export default function Navbar() {
                   <HamburgerIcon w={5} h={5} />
                 )
               }
-              variant={'ghost'}
+              variant={'outline'}
               aria-label={'Toggle Navigation'}
             />
           </Flex>
