@@ -1,4 +1,4 @@
-import ProductCatalog from '@/components/ProductPage/products/ProductCatalog';
+import ProductCatalog from '@/components/products/ProductCatalog';
 import React, { Suspense } from 'react';
 
 const page = () => {

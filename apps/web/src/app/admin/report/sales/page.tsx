@@ -1,7 +1,7 @@
 'use client';
 
 import { Card, CardBody, Box, Text } from '@chakra-ui/react';
-import DashboardSalesReport from '@/components/sales/chart/SalesReport';
+import SalesReport from '@/components/report/SalesReport';
 
 const Page = () => {
   return (
@@ -11,7 +11,7 @@ const Page = () => {
       </Text>
       <Card my={10}>
         <CardBody>
-          <DashboardSalesReport />
+          <SalesReport />
         </CardBody>
       </Card>
     </Box>
