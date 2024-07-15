@@ -30,7 +30,6 @@ export const uploader = (
         cb: FileNameCallback,
       ) => {
         const originalNameParts = file.originalname.split('.');
-        console.log(originalNameParts);
         const fileExtension = originalNameParts[originalNameParts.length - 1];
         const newFileName = filePrefix + Date.now() + '.' + fileExtension;
 
