@@ -5,6 +5,7 @@ import {
   Box,
   Card,
   CardBody,
+  Center,
   Divider,
   Grid,
   GridItem,
@@ -107,6 +108,7 @@ const ProductCatalog = () => {
         bg={'teal'}
         bgGradient={'linear(to-r, teal.200, green.500)'}
       >
+        <Center>
         <Grid
           templateColumns={{
             base: 'repeat(1, 1fr)',
@@ -115,47 +117,49 @@ const ProductCatalog = () => {
             lg: 'repeat(4, 1fr)',
           }}
           gap={6}
+          maxWidth={1200}
         >
-          {data.products?.map((product: any, index: number) => (
-            <GridItem w={'full'} flexDirection={'column'} p={5} key={index}>
-              <Card
-                h={'100%'}
-                key={index}
-                maxW="xl"
-                shadow={'xl'}
-                w={'full'}
-                transition={'0.25s all ease-in-out'}
-                _hover={{
-                  transform: 'translateY(-15px)',
-                  boxShadow: 'lg',
-                }}
-                borderRadius={'2xl'}
-              >
-                <CardBody>
-                  <Link href={`/products/${product.slug}`}>
-                    <Image
-                      src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/products/${product.productImages[0]?.image}`}
-                      alt={product.name}
-                      borderRadius="2xl"
-                      width={'500px'}
-                      height={'200px'}
-                      fit={'cover'}
-                    />
-                    <Stack mt="3" spacing="3" textAlign={'center'}>
-                      <Heading size="md" noOfLines={4}>
-                        {product.name}
-                      </Heading>
-                      <Text>{product.category.name}</Text>
-                      <Text color="blue.600" fontSize="lg" mt={5} as={'b'}>
-                        {FormatCurrency(product.price)}
-                      </Text>
-                    </Stack>
-                  </Link>
-                </CardBody>
-              </Card>
-            </GridItem>
-          ))}
+            {data.products?.map((product: any, index: number) => (
+              <GridItem w={'full'} flexDirection={'column'} p={5} key={index}>
+                <Card
+                  h={'100%'}
+                  key={index}
+                  maxW="xl"
+                  shadow={'xl'}
+                  w={'full'}
+                  transition={'0.25s all ease-in-out'}
+                  _hover={{
+                    transform: 'translateY(-15px)',
+                    boxShadow: 'lg',
+                  }}
+                  borderRadius={'2xl'}
+                >
+                  <CardBody>
+                    <Link href={`/products/${product.slug}`}>
+                      <Image
+                        src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/products/${product.productImages[0]?.image}`}
+                        alt={product.name}
+                        borderRadius="2xl"
+                        width={'500px'}
+                        height={'200px'}
+                        fit={'cover'}
+                      />
+                      <Stack mt="3" spacing="3" textAlign={'center'}>
+                        <Heading size="md" noOfLines={4}>
+                          {product.name}
+                        </Heading>
+                        <Text>{product.category.name}</Text>
+                        <Text color="blue.600" fontSize="lg" mt={5} as={'b'}>
+                          {FormatCurrency(product.price)}
+                        </Text>
+                      </Stack>
+                    </Link>
+                  </CardBody>
+                </Card>
+              </GridItem>
+            ))}
         </Grid>
+        </Center>
         {data.pages > 1 && (
           <Box pt={4} display="flex" justifyContent="center">
             <Box display="flex">
