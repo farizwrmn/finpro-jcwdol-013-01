@@ -123,16 +123,16 @@ const ProductCatalog = () => {
         bgGradient={'linear(to-r, teal.200, green.500)'}
       >
         <Center>
-        <Grid
-          templateColumns={{
-            base: 'repeat(1, 1fr)',
-            sm: 'repeat(2, 1fr)',
-            md: 'repeat(3, 1fr)',
-            lg: 'repeat(4, 1fr)',
-          }}
-          gap={6}
-          maxWidth={1200}
-        >
+          <Grid
+            templateColumns={{
+              base: 'repeat(1, 1fr)',
+              sm: 'repeat(2, 1fr)',
+              md: 'repeat(3, 1fr)',
+              lg: 'repeat(4, 1fr)',
+            }}
+            gap={6}
+            maxWidth={1200}
+          >
             {data.products?.map((product: any, index: number) => (
               <GridItem w={'full'} flexDirection={'column'} p={5} key={index}>
                 <Card
@@ -172,7 +172,7 @@ const ProductCatalog = () => {
                 </Card>
               </GridItem>
             ))}
-        </Grid>
+          </Grid>
         </Center>
         {data.pages > 1 && (
           <Box pt={4} display="flex" justifyContent="center">
