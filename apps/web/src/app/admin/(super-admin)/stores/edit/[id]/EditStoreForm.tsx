@@ -6,6 +6,7 @@ import {
   Input,
   Select,
   Stack,
+  Switch,
   Textarea,
 } from '@chakra-ui/react';
 import React from 'react';
@@ -18,6 +19,7 @@ type Props = {
   handleChangeProvince: any;
   handleChangeCity: any;
   handleChangeSubdistrict: any;
+  handleChangeIsDefault: any;
   provinces: any;
   cities: any;
   subdistricts: any;
@@ -30,6 +32,7 @@ const EditStoreForm = ({
   handleChangeProvince,
   handleChangeCity,
   handleChangeSubdistrict,
+  handleChangeIsDefault,
   provinces,
   cities,
   subdistricts,
@@ -133,7 +136,14 @@ const EditStoreForm = ({
             onChange={handleChange}
           />
         </FormControl>
-        <Stack spacing={6} direction={['column', 'row']}>
+        <FormControl id="isDefault">
+          <FormLabel>Is Default Store?</FormLabel>
+          <Switch
+            isChecked={formData.isDefault}
+            onChange={handleChangeIsDefault}
+          />
+        </FormControl>
+        <Stack spacing={6} direction={['column', 'row']} mt={15}>
           <Button
             onClick={() => {
               router.push('/admin/stores');

@@ -28,6 +28,7 @@ const Page = () => {
     subdistrictName: '',
     longitude: 0,
     latitude: 0,
+    isDefault: false,
   });
 
   const router = useRouter();
@@ -118,6 +119,13 @@ const Page = () => {
     });
   };
 
+  const handleChangeIsDefault = () => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      isDefault: !prevFormData.isDefault,
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -144,6 +152,7 @@ const Page = () => {
         handleChangeProvince={handleChangeProvince}
         handleChangeCity={handleChangeCity}
         handleChangeSubdistrict={handleChangeSubdistrict}
+        handleChangeIsDefault={handleChangeIsDefault}
         provinces={provinces}
         cities={cities}
         subdistricts={subdistricts}
