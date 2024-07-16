@@ -6,7 +6,6 @@ import {
   Card,
   CardBody,
   Divider,
-  Flex,
   Grid,
   GridItem,
   Heading,
@@ -36,7 +35,7 @@ const ProductCatalog = () => {
   const [catFilters, setCatFilters] = useState({
     keyword: '',
     page: 1,
-    size: 20,
+    size: 8,
   });
 
   useEffect(() => {
@@ -62,6 +61,18 @@ const ProductCatalog = () => {
       const result = await getProducts(filters);
       setData(result);
     })();
+
+    const lastVisitedPage = () => {
+      const lastVisited = localStorage.getItem('lastVisitedPage');
+
+      if (!lastVisited) {
+        const currentPage = window.location.href;
+        localStorage.setItem('lastVisitedPage', currentPage);
+      }
+    };
+    localStorage.removeItem('lastVisitedPage');
+
+    lastVisitedPage();
   }, [filters]);
 
   return (
@@ -97,7 +108,12 @@ const ProductCatalog = () => {
         bgGradient={'linear(to-r, teal.200, green.500)'}
       >
         <Grid
-          templateColumns={{ base: 'repeat(1, 2fr)', sm: 'repeat(4, 2fr)' }}
+          templateColumns={{
+            base: 'repeat(1, 1fr)',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+            lg: 'repeat(4, 1fr)',
+          }}
           gap={6}
         >
           {data.products?.map((product: any, index: number) => (
@@ -119,7 +135,7 @@ const ProductCatalog = () => {
                   <Link href={`/products/${product.slug}`}>
                     <Image
                       src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/products/${product.productImages[0]?.image}`}
-                      alt="Green double couch with wooden legs"
+                      alt={product.name}
                       borderRadius="2xl"
                       width={'500px'}
                       height={'200px'}
