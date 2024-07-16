@@ -140,6 +140,13 @@ const Page = ({ params: { id } }: Props) => {
     });
   };
 
+  const handleChangeIsDefault = () => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      isDefault: !prevFormData.isDefault,
+    }));
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -169,6 +176,7 @@ const Page = ({ params: { id } }: Props) => {
               handleChangeProvince={handleChangeProvince}
               handleChangeCity={handleChangeCity}
               handleChangeSubdistrict={handleChangeSubdistrict}
+              handleChangeIsDefault={handleChangeIsDefault}
               provinces={provinces}
               cities={cities}
               subdistricts={subdistricts}
