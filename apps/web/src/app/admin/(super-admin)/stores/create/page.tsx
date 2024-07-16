@@ -14,6 +14,7 @@ import {
   FormLabel,
   Stack,
   Textarea,
+  Switch,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import {
@@ -41,6 +42,7 @@ const Page = () => {
     subdistrictName: '',
     longitude: 0,
     latitude: 0,
+    isDefault: false,
   });
 
   const router = useRouter();
@@ -251,7 +253,17 @@ const Page = () => {
                     readOnly
                   />
                 </FormControl>
-                <Stack spacing={6} direction={['column', 'row']}>
+                <FormControl id="isDefault">
+                  <FormLabel>Is Default Store?</FormLabel>
+                  <Switch
+                    isChecked={formData.isDefault}
+                    onChange={() => setFormData((prevFormData) => ({
+                      ...prevFormData,
+                      isDefault: !prevFormData.isDefault,
+                    }))}
+                  />
+                </FormControl>
+                <Stack spacing={6} direction={['column', 'row']} mt={15}>
                   <Button
                     onClick={() => {
                       router.push('/admin/stores');
