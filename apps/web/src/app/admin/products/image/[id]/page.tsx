@@ -127,8 +127,9 @@ const Page = ({ params: { id } }: Props) => {
             </form>
             <TableContainer>
               <Grid templateColumns="repeat(4, 1fr)" gap={6}>
-                {product?.productImages?.map((item: any) => (
+                {product?.productImages?.map((item: any, index: number) => (
                   <Stack
+                    key={index}
                     direction={['column', 'row']}
                     spacing={6}
                     position="relative"

@@ -59,7 +59,7 @@ export default function ShippingMethod({ couriers = [] }: Props) {
           >
             {couriers.map((courier, index) => (
               <Box key={index} mb={6}>
-                <Heading as="h3" fontSize="md" mb={4}>
+                <Heading as="h3" fontSize="md" color="#4A5568" mb={4}>
                   {courier.name}
                 </Heading>
                 {courier.costs.map((service: any, index: number) => (

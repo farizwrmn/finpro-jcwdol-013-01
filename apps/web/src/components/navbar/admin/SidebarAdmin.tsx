@@ -1,4 +1,5 @@
 'use client';
+
 import {
   BoxProps,
   Box,
@@ -59,16 +60,8 @@ const SidebarAdmin = ({ onClose, linkItems, ...rest }: SidebarProps) => {
           {link.name}
         </NavItemAdmin>
       ))}
-
-      <Text
-        align={'center'}
-        pt={110}
-        fontSize={'sm'}
-        color={useColorModeValue('gray.600', 'gray.400')}
-      >
-        © Mind Groceries, 2024
-      </Text>
     </Box>
   );
 };
+
 export default SidebarAdmin;
