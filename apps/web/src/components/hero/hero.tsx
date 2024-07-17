@@ -1,7 +1,14 @@
 'use client';
 
 import React from 'react';
-import { Box, IconButton, useBreakpointValue } from '@chakra-ui/react';
+import {
+  Box,
+  Stack,
+  Heading,
+  Container,
+  IconButton,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 import Slider from 'react-slick';
 import Link from 'next/link';
 import { BiLeftArrowAlt, BiRightArrowAlt } from 'react-icons/bi';
@@ -30,7 +37,7 @@ export default function Hero() {
     base: '30%',
     sm: '10px',
     md: '10px',
-    lg: '20px',
+    lg: '160px',
   });
 
   const cards = [
@@ -68,9 +75,9 @@ export default function Hero() {
       <Box display={{ base: 'none', sm: 'block', md: 'none', xs: 'none' }}>
         <IconButton
           aria-label="left-arrow"
-          colorScheme="gray"
+          colorScheme="green"
           variant={'outline'}
-          _hover={{ bgColor: 'gray' }}
+          _hover={{ bgColor: 'white' }}
           borderRadius="full"
           position="absolute"
           left={side}
@@ -79,13 +86,13 @@ export default function Hero() {
           zIndex={2}
           onClick={() => slider?.slickPrev()}
         >
-          <BiLeftArrowAlt color="white" />
+          <BiLeftArrowAlt color="green" />
         </IconButton>
         <IconButton
           aria-label="right-arrow"
-          colorScheme="gray"
+          colorScheme="green"
           variant={'outline'}
-          _hover={{ bgColor: 'gray' }}
+          _hover={{ bgColor: 'white' }}
           borderRadius="full"
           position="absolute"
           right={side}
@@ -94,7 +101,7 @@ export default function Hero() {
           zIndex={99}
           onClick={() => slider?.slickNext()}
         >
-          <BiRightArrowAlt color="white" />
+          <BiRightArrowAlt color="green" />
         </IconButton>
       </Box>
       <Slider {...settings} ref={(slider) => setSlider(slider)}>
@@ -105,10 +112,23 @@ export default function Hero() {
             position="relative"
             backgroundPosition="center"
             backgroundRepeat="no-repeat"
-            backgroundSize="cover"
+            backgroundSize="contain"
             backgroundImage={`url(${card.image})`}
+            bgPos={'top'}
           >
-            <Link href={card.link}></Link>
+            <Link href={card.link}>
+              <Container size="box.lg" height="600px" position="relative">
+                <Stack
+                  w={'fit'}
+                  maxW={'lg'}
+                  position="absolute"
+                  top={{ base: '15%', sm: '40%' }}
+                  transform="translate(0, -50%)"
+                  bgGradient={'linear(to-b, whiteAlpha.800, transparent)'}
+                  borderRadius={'20'}
+                ></Stack>
+              </Container>
+            </Link>
           </Box>
         ))}
       </Slider>
