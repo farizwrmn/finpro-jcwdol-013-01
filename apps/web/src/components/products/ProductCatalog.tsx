@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
+  Button,
   Card,
   CardBody,
   Center,
@@ -19,7 +20,10 @@ import {
 } from '@chakra-ui/react';
 import { FormatCurrency } from '@/utils/FormatCurrency';
 import Link from 'next/link';
-import { getProducts } from '@/services/product.service';
+import {
+  getAvailableProductsByStoreID,
+  getProducts,
+} from '@/services/product.service';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { getCategories } from '@/services/category.service';
 import { useSearchParams } from 'next/navigation';
@@ -59,8 +63,18 @@ const ProductCatalog = () => {
 
   useEffect(() => {
     (async () => {
-      const result = await getProducts(filters);
-      setData(result);
+      const location = JSON.parse(localStorage.getItem('location') || '{}');
+      const storeId = location.storeId;
+      if (storeId) {
+        const result = await getAvailableProductsByStoreID({
+          ...filters,
+          storeId,
+        });
+        setData(result);
+      } else {
+        const result = await getProducts(filters);
+        setData(result);
+      }
     })();
 
     const lastVisitedPage = () => {
@@ -91,7 +105,7 @@ const ProductCatalog = () => {
           mb={5}
           mt={5}
           value={filters.category}
-          onChange={(e) => setFilters({ ...filters, category: e.target.value })}
+          onChange={(e) => setFilters({ ...filters, category: e.target.value, page: 1 })}
         >
           <option value={''}>All</option>
           {categories.categories?.map((category: any) => (

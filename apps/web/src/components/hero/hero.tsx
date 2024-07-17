@@ -1,14 +1,7 @@
 'use client';
 
 import React from 'react';
-import {
-  Box,
-  Stack,
-  Heading,
-  Container,
-  IconButton,
-  useBreakpointValue,
-} from '@chakra-ui/react';
+import { Box, IconButton, useBreakpointValue } from '@chakra-ui/react';
 import Slider from 'react-slick';
 import Link from 'next/link';
 import { BiLeftArrowAlt, BiRightArrowAlt } from 'react-icons/bi';
@@ -58,7 +51,7 @@ export default function Hero() {
   return (
     <Box
       position={'relative'}
-      height={{ base: '200px', sm: '700px' }}
+      height={{ base: '200px', sm: '500px', md: '700px', lg: '700px' }}
       width={'full'}
       overflow={'hidden'}
     >
@@ -116,19 +109,7 @@ export default function Hero() {
             backgroundImage={`url(${card.image})`}
             bgPos={'top'}
           >
-            <Link href={card.link}>
-              <Container size="box.lg" height="600px" position="relative">
-                <Stack
-                  w={'fit'}
-                  maxW={'lg'}
-                  position="absolute"
-                  top={{ base: '15%', sm: '40%' }}
-                  transform="translate(0, -50%)"
-                  bgGradient={'linear(to-b, whiteAlpha.800, transparent)'}
-                  borderRadius={'20'}
-                ></Stack>
-              </Container>
-            </Link>
+            <Link href={card.link}></Link>
           </Box>
         ))}
       </Slider>
