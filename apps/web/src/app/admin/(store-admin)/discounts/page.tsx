@@ -169,7 +169,7 @@ const Page = () => {
                         <Button
                           colorScheme="blue"
                           onClick={() => {
-                            router.push(`/admin/stores/discounts`);
+                            router.push(`/admin/discounts/edit/${discount.id}`);
                           }}
                         >
                           Edit
